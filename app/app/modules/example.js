@@ -2,22 +2,12 @@
 
 define(["app"], function(app) {
   var Example;
-  Example = namespace.module();
+  Example = app.module();
   Example.Model = Backbone.Model.extend({});
   Example.Collection = Backbone.Collection.extend({});
   Example.Router = Backbone.Router.extend({});
-  Example.Views.Tutorial = Backbone.View.extend({
-    template: "app/templates/example.html",
-    render: function(done) {
-      var view;
-      view = this;
-      return namespace.fetchTemplate(this.template, function(tmpl) {
-        view.el.innerHTML = tmpl();
-        if (_.isFunction(done)) {
-          return done(view.el);
-        }
-      });
-    }
+  Example.Views.Head = Backbone.View.extend({
+    template: "head"
   });
   return Example;
 });

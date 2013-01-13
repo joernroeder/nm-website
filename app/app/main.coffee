@@ -1,9 +1,16 @@
 require [
 	'app'
 	'router'
-], (app, Router) ->
+	'modules/example'
+], (app, Router, Example) ->
 
-	app.router = new Router()
+	app.Router = new Router()
+	app.Layouts = {}
+
+	app.Layouts.Main = app.useLayout 'main', 
+		views:
+			'.head': new Example.Views.Head()
+			
 
 	## Treat the jQuery ready function as the entry point to the application.
 	## Inside this function, kick-off all initialization, everything up to this

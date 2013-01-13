@@ -16,9 +16,7 @@ define [
 		Backbone.LayoutManager.configure
 			manage: true
 
-			paths: 
-				layout: 'app/templates/layouts/'
-				template: 'app/templates/'
+			prefix: "app/app/templates/"
 
 			fetch: (path) ->
 				done = undefined
@@ -49,7 +47,7 @@ define [
 			# Helper for using layouts.
 			useLayout: (name, options) ->
 				# If already using this Layout, then don't re-inject into the DOM.
-				if @.layout and @.layout.options.template is name
+				if @.layout and @.layout.options.template is 'layouts/' + name
 					return @.layout
 
 				# If a layout already exists, remove it from the DOM.
@@ -57,7 +55,7 @@ define [
 
 				# Create a new Layout with options.
 				layout = new Backbone.Layout _.extend({
-					template: name
+					template: 'layouts/' + name
 					className: "layout " + name
 					id: "layout"
 				}, options)

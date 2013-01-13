@@ -11,7 +11,7 @@
 
 <body>
   <!-- Main container. -->
-  <div role="main" id="main"></div>
+  <div id="main"></div>
 
   <!-- Application source. -->
   <script data-main="/app/app/config" src="/app/assets/js/libs/require.js"></script>

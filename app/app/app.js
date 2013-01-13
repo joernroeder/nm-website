@@ -8,10 +8,7 @@ define(["jquery", "underscore", "backbone", "handlebars", "plugins/backbone.layo
   JST = window.JST = window.JST || {};
   Backbone.LayoutManager.configure({
     manage: true,
-    paths: {
-      layout: 'app/templates/layouts/',
-      template: 'app/templates/'
-    },
+    prefix: "app/app/templates/",
     fetch: function(path) {
       var done;
       done = void 0;
@@ -41,14 +38,14 @@ define(["jquery", "underscore", "backbone", "handlebars", "plugins/backbone.layo
     },
     useLayout: function(name, options) {
       var layout;
-      if (this.layout && this.layout.options.template === name) {
+      if (this.layout && this.layout.options.template === 'layouts/' + name) {
         return this.layout;
       }
       if (this.layout) {
         this.layout.remove();
       }
       layout = new Backbone.Layout(_.extend({
-        template: name,
+        template: 'layouts/' + name,
         className: "layout " + name,
         id: "layout"
       }, options));
