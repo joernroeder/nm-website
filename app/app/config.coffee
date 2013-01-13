@@ -1,32 +1,32 @@
-## Set the require.js configuration for your application.
+# Set the require.js configuration for your application.
 require.config
 
-	## Initialize the application with the main application file
-	deps: ["main"]
+	# Initialize the application with the main application file
+	deps: ['main']
 
 	paths:
-		## JavaScript folders
-		libs	: "../assets/js/libs"
-		plugins	: "../assets/js/plugins"
+		# JavaScript folders
+		libs	: '../assets/js/libs'
+		plugins	: '../assets/js/plugins'
 
-		## Libraries
-		jquery		: "../assets/js/libs/jquery"
-		underscore	: "../assets/js/libs/underscore"
-		backbone	: "../assets/js/libs/backbone"
-		handlebars	: "../assets/js/libs/handlebars"
+		# Libraries
+		jquery		: '../assets/js/libs/jquery'
+		underscore	: '../assets/js/libs/underscore'
+		backbone	: '../assets/js/libs/backbone'
+		handlebars	: '../assets/js/libs/handlebars'
 
 	shim:
 		backbone:
 			deps: [
-		  		"underscore"
-		  		"jquery"
+		  		'underscore'
+		  		'jquery'
 		  	]
-			exports: "Backbone"
+			exports: 'Backbone'
 
 		underscore:
-			exports: "_"
+			exports: '_'
 
 		handlebars:
-			exports: "Handlebars"
+			exports: 'Handlebars'
 
-		"plugins/backbone.layoutmanager": ["backbone"]
+		'plugins/backbone.layoutmanager': ['backbone']

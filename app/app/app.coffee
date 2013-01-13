@@ -1,10 +1,10 @@
 define [
-		## Libs
-		"jquery"
-		"underscore"
-		"backbone"
-		"handlebars"
-		"plugins/backbone.layoutmanager"
+		# Libs
+		'jquery'
+		'underscore'
+		'backbone'
+		'handlebars'
+		'plugins/backbone.layoutmanager'
 	],
 
 	($, _, Backbone, Handlebars) ->
@@ -16,7 +16,7 @@ define [
 		Backbone.LayoutManager.configure
 			manage: true
 
-			prefix: "app/app/templates/"
+			prefix: 'app/app/templates/'
 
 			fetch: (path) ->
 				done = undefined
@@ -36,7 +36,7 @@ define [
 					JST[path] = Handlebars.template JST[path]
 					JST[path].__compiled__ = true
 				
-				JST[path]
+				return JST[path]
 
 		# Mix Backbone.Events, modules, and layout management into the app object.
 		return _.extend app, {
@@ -56,12 +56,12 @@ define [
 				# Create a new Layout with options.
 				layout = new Backbone.Layout _.extend({
 					template: 'layouts/' + name
-					className: "layout " + name
-					id: "layout"
+					className: 'layout ' + name
+					id: 'layout'
 				}, options)
 
 				# Insert into the DOM.
-				$("#main").empty().append layout.el
+				$('#main').empty().append layout.el
 
 				# Render the layout.
 				layout.render()
