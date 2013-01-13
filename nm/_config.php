@@ -1,7 +1,7 @@
 <?php
 
 global $project;
-$project = 'mysite';
+$project = 'nm';
 
 global $databaseConfig;
 $databaseConfig = array(
