@@ -1,35 +1,17 @@
 require [
-	"namespace"
+	'app'
+	'router'
+], (app, Router) ->
 
-	## Libs
-	"jquery"
-	"use!backbone" 
-
-	## Modules
-	"modules/example"
-], (namespace, $, Backbone, Example) ->
-
-	## Defining the application router, you can attach sub routers here.
-	Router = Backbone.Router.extend(
-		routes:
-			"": "index"
-			":hash": "index"
-
-		index: (hash) ->
-			console.log 'index'
-	)
-
-	## Shorthand the application namespace
-	app = namespace.app
+	app.router = new Router()
 
 	## Treat the jQuery ready function as the entry point to the application.
 	## Inside this function, kick-off all initialization, everything up to this
 	## point should be definitions.
 	$ ->
-		app.router = new Router()
 		Backbone.history.start pushState: true
 		
-		
+
 	## All navigation that is relative should be passed through the navigate
 	## method, to be processed by the router.  If the link has a data-bypass
 	## attribute, bypass the delegation completely.

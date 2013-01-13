@@ -13,17 +13,20 @@ require.config
 		jquery		: "../assets/js/libs/jquery"
 		underscore	: "../assets/js/libs/underscore"
 		backbone	: "../assets/js/libs/backbone"
+		handlebars	: "../assets/js/libs/handlebars"
 
-		## Shim Plugin
-		use: "../assets/js/plugins/use"
-
-	use:
+	shim:
 		backbone:
 			deps: [
-		  		"use!underscore"
+		  		"underscore"
 		  		"jquery"
 		  	]
-			attach: "Backbone"
+			exports: "Backbone"
 
 		underscore:
-			attach: "_"
+			exports: "_"
+
+		handlebars:
+			exports: "Handlebars"
+
+		"plugins/backbone.layoutmanager": ["backbone"]

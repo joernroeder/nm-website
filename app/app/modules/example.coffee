@@ -1,15 +1,8 @@
 define [
-		"namespace"
-
-		## Libs
-		"use!backbone"
-
-		## Modules
-
-		## Plugins
+		"app"
 	],
 	
-	(namespace, Backbone) ->
+	(app) ->
 
 		## Create a new module
 		Example = namespace.module()

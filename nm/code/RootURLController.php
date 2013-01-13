@@ -2,8 +2,13 @@
 
 class RootURLController extends Controller {
 
+	static $url_handlers = array(
+		'$Action/$ID/$OtherID'	=> 'index'
+	);
+
 	function index() {
-		echo "<html>Your site is now set up. Start adding controllers to mysite to get started.</html>";
+		return $this->customise(array(
+		));
 	}
 
 }

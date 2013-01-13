@@ -1,0 +1,10 @@
+---
+Name: approutes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'admin': 'AdminRootController'
+    'dev': 'DevelopmentAdmin'
+    'Security//$Action/$ID/$OtherID': 'Security'
+    '$Action/$ID/$OtherID': 'RootURLController'
