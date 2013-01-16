@@ -6,7 +6,7 @@ class CalendarEntryAdmin extends ModelAdmin {
 		'CalendarEntry',
 	);
 
-	static $url_segment = 'calendarentries';
-	static $menu_title = 'CalendarEntries';
+	static $url_segment = 'calendar';
+	static $menu_title = 'Calendar';
 
 }
