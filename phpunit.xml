@@ -19,7 +19,7 @@
 <phpunit bootstrap="framework/tests/bootstrap.php" colors="true" backupGlobals="false" backupStaticAttributes="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" syntaxCheck="false" verbose="true" strict="true">
 
 	<testsuite name="Default">
-		<directory>mysite/tests</directory>
+		<directory>nm/tests</directory>
 		<directory>cms/tests</directory>
 		<directory>framework/tests</directory>
 	</testsuite>
@@ -33,4 +33,8 @@
 			<group>sanitychecks</group>
 		</exclude>
 	</groups>
+	
+	<php>
+		<get name="db" value="test" />
+	</php>
 </phpunit>
