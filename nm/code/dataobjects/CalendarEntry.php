@@ -21,10 +21,10 @@
 class CalendarEntry extends DataObject {
 
 	static $db = array(
-		'Title'		=> 'Varchar(255)',
-		'StartDate'	=> 'Date',
-		'EndDate'	=> 'Date',
-		'Text'		=> 'Text'
+		'Title'		=> 'Varchar(255)',				// Titel der News
+		'StartDate'	=> 'Date',						// Start-Datum
+		'EndDate'	=> 'Date',						// End-Datum
+		'Text'		=> 'Text'						// News-Text (Markdown formatiert)
 	);
 
 	static $many_many = array(

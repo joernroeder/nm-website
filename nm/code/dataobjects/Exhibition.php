@@ -21,12 +21,12 @@
 class Exhibition extends DataObject {
 
 	static $db = array(
-		'Title'		=> 'Varchar(255)',
-		'StartDate'	=> 'Date',
-		'EndDate'	=> 'Date',
-		'Space'		=> 'Varchar(255)',
-		'Location'	=> 'Varchar(255)',
-		'Text'		=> 'Text'
+		'Title'		=> 'Varchar(255)',				// Ausstellungs-Titel
+		'StartDate'	=> 'Date',						// Start-Datum
+		'EndDate'	=> 'Date',						// End-Datum
+		'Space'		=> 'Varchar(255)',				// Veranstaltungs-Ort (Galerie)
+		'Location'	=> 'Varchar(255)',				// Ort des Workshops (Stadt, Land)
+		'Text'		=> 'Text'						// Beschreibungstext (Markdown formatiert)
 	);
 
 }

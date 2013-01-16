@@ -28,11 +28,11 @@ class Person extends DataObject {
 		'Bio'				=> 'Text',				// Biografie
 		'GraduationYear'	=> 'Int',				// Abschlussjahr
 		'MasterYear'		=> 'Int',				// Meisterschülerjahr
-		'IsStudent'			=> 'Boolean',			// Ist ein Student ?
-		'IsProfessor'		=> 'Boolean',			// Ist der Professor ?
-		'IsAlumni'			=> 'Boolean',			// Ist Alumni ?
-		'IsEmployee'		=> 'Boolean',			// Ist ein Mitarbeiter ?
-		'IsExternal'		=> 'Boolean',			// Ist eine externe Person ?
+		'IsStudent'			=> 'Boolean',			// Flagge: Ist ein Student ?
+		'IsProfessor'		=> 'Boolean',			// Flagge: Ist der Professor ?
+		'IsAlumni'			=> 'Boolean',			// Flagge: Ist Alumni ?
+		'IsEmployee'		=> 'Boolean',			// Flagge: Ist ein Mitarbeiter ?
+		'IsExternal'		=> 'Boolean',			// Flagge: Ist eine externe Person ?
 	);
 
 	static $has_many = array(

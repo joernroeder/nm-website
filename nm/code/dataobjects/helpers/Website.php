@@ -26,8 +26,8 @@
 class Website extends DataObject {
 
 	static $db = array(
-		'Varchar(55)'	=> 'Title',
-		'Varchar(255)'	=> 'Link'
+		'Varchar(55)'	=> 'Title',						// Sichtbarer Titel des Links
+		'Varchar(255)'	=> 'Link'						// zu verlinkende URL
 	);
 
 	static $belongs_many_many = array(

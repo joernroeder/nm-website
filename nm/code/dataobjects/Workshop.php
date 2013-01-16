@@ -21,11 +21,12 @@
 class Workshop extends DataObject {
 
 	static $db = array(
-		'Title'		=> 'Varchar(255)',
-		'StartDate'	=> 'Date',
-		'EndDate'	=> 'Date',
-		'Location'	=> 'Varchar(255)',
-		'Text'		=> 'Text'
+		'Title'		=> 'Varchar(255)',			// Workshop Titel
+		'StartDate'	=> 'Date',					// Start-Datum des Workshops
+		'EndDate'	=> 'Date',					// End-Datum des Workshops
+		'Space'		=> 'Varchar(255)',			// Veranstaltungs-Ort (kunsthochschule)
+		'Location'	=> 'Varchar(255)',			// Ort des Workshops (Stadt, Land)
+		'Text'		=> 'Text'					// Beschreibungstext
 	);
 
 	static $belongs_many_many = array(

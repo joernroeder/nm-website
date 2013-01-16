@@ -23,7 +23,7 @@
 class Category extends DataObject {
 
 	static $db = array(
-		'Varchar(55)'	=> 'Title'
+		'Varchar(55)'	=> 'Title'					// Name der Kategorie
 	);
 
 	static $belongs_many_many = array(

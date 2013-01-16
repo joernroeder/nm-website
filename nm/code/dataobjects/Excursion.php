@@ -21,11 +21,11 @@
 class Excursion extends DataObject {
 
 	static $db = array(
-		'Title'		=> 'Varchar(255)',
-		'StartDate'	=> 'Date',
-		'EndDate'	=> 'Date',
-		'Location'	=> 'Varchar(255)',
-		'Text'		=> 'Text'
+		'Title'		=> 'Varchar(255)',				// Titel der Exkursion
+		'StartDate'	=> 'Date',						// Start-Datum
+		'EndDate'	=> 'Date',						// End-Datum
+		'Location'	=> 'Varchar(255)',				// Ort (Stadt, Land)
+		'Text'		=> 'Text'						// Beschreibungstext (Markdown formatiert)
 	);
 
 	static $belongs_many_many = array(
