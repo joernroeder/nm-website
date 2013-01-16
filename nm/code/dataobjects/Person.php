@@ -40,8 +40,11 @@ class Person extends DataObject {
 	);
 
 	static $many_many = array(
-		'Projects'			=> 'Project',
-		'Websites'			=> 'Website'			// Webseiten
+		'Projects'			=> 'Project',			// Projekte
+		'Websites'			=> 'Website',			// Webseiten
+		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
+		'Excursions'		=> 'Excursion',			// Exkursionen
+		'Workshops'			=> 'Workshop',			// Workshops
 	);
 
 }
