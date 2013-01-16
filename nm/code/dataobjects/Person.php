@@ -36,7 +36,7 @@ class Person extends DataObject {
 	);
 
 	static $has_many = array(
-		'Rankings'			=> 'Ranking'			// Bewertungssystem eigener Arbeiten
+		'Rankings'			=> 'Ranking'			// Sortierungssystem eigener Arbeiten
 	);
 
 	static $many_many = array(
@@ -45,6 +45,10 @@ class Person extends DataObject {
 		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
 		'Excursions'		=> 'Excursion',			// Exkursionen
 		'Workshops'			=> 'Workshop',			// Workshops
+	);
+
+	static $belongs_many_many = array(
+		'CalendarEntries'	=> 'CalendarEntry'
 	);
 
 }

@@ -27,5 +27,9 @@ class Workshop extends DataObject {
 		'Location'	=> 'Varchar(255)',
 		'Text'		=> 'Text'
 	);
+
+	static $belongs_many_many = array(
+		'CalendarEntries'		=> 'CalendarEntry'
+	);
 }
 

@@ -27,5 +27,13 @@ class CalendarEntry extends DataObject {
 		'Text'		=> 'Text'
 	);
 
+	static $many_many = array(
+		'Websites'		=> 'Website',
+		'Workshops'		=> 'Workshop',
+		'Excursions'	=> 'Excursion',
+		'Projects'		=> 'Project',
+		'Exhibitions'	=> 'Exhibition'
+	);
+
 }
 

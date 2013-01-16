@@ -28,5 +28,9 @@ class Excursion extends DataObject {
 		'Text'		=> 'Text'
 	);
 
+	static $belongs_many_many = array(
+		'CalendarEntries'	=> 'CalendarEntry'
+	);
+
 }
 

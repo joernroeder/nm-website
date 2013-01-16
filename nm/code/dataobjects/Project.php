@@ -33,5 +33,9 @@ class Project extends DataObject {
 	static $has_many = array(
 		'Rankings' => 'Ranking'				// Sortierungssystem {@see Ranking}
 	);
+
+	static $belongs_many_many = array(
+		'CalendarEntries'	=> 'CalendarEntry'
+	);
 }
 
