@@ -22,15 +22,16 @@ class Project extends DataObject {
 
 	static $db = array(
 		'Title'			=> 'Varchar(255)',	// Projekt Titel
-		'Date'			=> 'Date',			// Projekt-Datum. Hierbei werden nur Monat und Jahr berücksichtigt.
-		'Text'			=> 'Text',			//
-		'Code'			=> 'Text',			//
-		'IsPortfolio'	=> 'Boolean',		//
-		'IsFeatured'	=> 'Boolean'		//
+		'Date'			=> 'Date',			// Projekt-Datum: Hierbei werden nur Monat und Jahr berücksichtigt.
+		'Text'			=> 'Text',			// Text des Projekts
+		'Code'			=> 'Text',			// Code, der teil des Projektes ist und auf der Projektseite ausgeführt wird
+
+		'IsPortfolio'	=> 'Boolean',		// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
+		'IsFeatured'	=> 'Boolean'		// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
 	);
 
 	static $has_many = array(
-		'Rankings' => 'Ranking'				// 
+		'Rankings' => 'Ranking'				// Sortierungssystem {@see Ranking}
 	);
 }
 

@@ -15,8 +15,7 @@
  */
 
 /**
- * 
- * {@link Person}
+ * Sortierungssystem für Arbeiten einer {@link Person}
  */
 class Ranking extends DataObject {
 
