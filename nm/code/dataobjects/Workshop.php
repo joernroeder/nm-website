@@ -30,7 +30,8 @@ class Workshop extends DataObject {
 	);
 
 	static $belongs_many_many = array(
-		'CalendarEntries'		=> 'CalendarEntry'
+		'CalendarEntries'		=> 'CalendarEntry',
+		'Persons'				=> 'Person'
 	);
 }
 

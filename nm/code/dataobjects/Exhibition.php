@@ -29,5 +29,14 @@ class Exhibition extends DataObject {
 		'Text'		=> 'Text'						// Beschreibungstext (Markdown formatiert)
 	);
 
+	static $many_many = array(
+		'Websites'	=> 'Website',
+		'Projects'	=> 'Project'
+	);
+
+	static $belongs_many_many = array(
+		'Persons'	=> 'Person'
+	);
+
 }
 

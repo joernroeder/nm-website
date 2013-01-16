@@ -33,7 +33,8 @@ class Website extends DataObject {
 	static $belongs_many_many = array(
 		'CalendarEntries'	=> 'CalendarEntry',
 		'Exhibitions'		=> 'Exhibition',
-		'Persons'			=> 'Person'
+		'Persons'			=> 'Person',
+		'Exhibitions'		=> 'Exhibition'
 	);
 }
 
