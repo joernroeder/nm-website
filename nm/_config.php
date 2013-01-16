@@ -1,7 +1,11 @@
 <?php
 
+// ! Server Einstellungen -------------------------
 
 ini_set('memory_limit', '1000M');
+
+
+// ! Globale Silverstripe Einstellung -------------
 
 global $project;
 $project = 'nm';
@@ -11,23 +15,28 @@ $database = 'db10674345-nm';
 
 MySQLDatabase::set_connection_charset('utf8');
 
-// Set the current theme. More themes can be downloaded from
-// http://www.silverstripe.org/themes/
 SSViewer::set_theme('nm');
 
-// Set the site locale
 i18n::set_locale('en_US');
-
-// Enable nested URLs for this site (e.g. page/sub-page/)
 if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
 
-// ! DataObject Extensions
+
+// ! DataObject Extensions ------------------------
+
 DataObject::add_extension('Member', 'MemberPersonExtension');
 
 
+// ! Admin-Config ---------------------------------
+
+DateField::set_default_config('showcalendar', true);
+
+
+// include environment config 
 require_once('conf/ConfigureFromEnv.php');
 
-// ! Database config for php unit testing
+
+// ! Database config for php unit testing ---------
+
 if (Director::isDev()) {
 	Session::start();
 	if(@$_GET['db']) {
