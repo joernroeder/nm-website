@@ -20,6 +20,13 @@
  */
 class Person extends DataObject {
 
+	// ! Singular und Plural ---------------
+
+	static $singular_name = 'Person';
+	static $plural_name = 'Persons';
+
+	// ! Datenbank und Beziehungen ---------
+
 	static $db = array(
 		'FirstName'			=> 'Varchar(55)',		// Vorname
 		'Surname'			=> 'Varchar(55)',		// Nachname
@@ -54,6 +61,37 @@ class Person extends DataObject {
 	static $belongs_to = array(
 		'Member'			=> 'Member'				// Benutzer
 	);
+
+	// ! Such-Felder -----------------------
+
+	static $searchable_fields = array(
+		'FirstName',
+		'Surname',
+		'Email',
+		'Phone',
+		'Bio',
+		'GraduationYear',
+		'MasterYear',
+		'IsStudent',
+		'IsProfessor',
+		'IsAlumni',
+		'IsEmployee',
+		'IsExternal'
+	);
+
+	// ! Admin -----------------------------
+
+	// Felder für die Listen/Übersichten im Admin
+	static $summary_fields = array(
+		'Name',
+		'Email',
+		'Phone',
+		'GraduationYear'
+	);
+
+	public function getName() {
+		return $this->dataRecord->FirstName . ' ' . $this->dataRecord->Surname;
+	}
 
 }
 
