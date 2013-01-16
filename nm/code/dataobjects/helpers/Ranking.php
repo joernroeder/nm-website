@@ -20,7 +20,7 @@
 class Ranking extends DataObject {
 
 	static $db = array(
-		'Ranking'	=> 'Integer'	// Sortierung: Größer -> Wichtiger
+		'Ranking'	=> 'Int'		// Sortierung: Größer -> Wichtiger
 	);
 
 	static $has_one = array(
