@@ -22,8 +22,8 @@ class CalendarEntry extends DataObject {
 
 	static $db = array(
 		'Title'		=> 'Varchar(255)',				// Titel der News
-		'StartDate'	=> 'Date',						// Start-Datum
-		'EndDate'	=> 'Date',						// End-Datum
+		'StartDate'	=> 'SS_DateTime',				// Start-Datum
+		'EndDate'	=> 'SS_DateTime',				// End-Datum
 		'Text'		=> 'Text'						// News-Text (Markdown formatiert)
 	);
 
