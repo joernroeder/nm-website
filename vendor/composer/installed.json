@@ -1,0 +1,115 @@
+[
+    {
+        "name": "composer/installers",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/installers",
+            "reference": "a04e254642d88a9c21e70261072ad486ac675251"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/composer/installers/archive/a04e254642d88a9c21e70261072ad486ac675251.zip",
+            "reference": "a04e254642d88a9c21e70261072ad486ac675251",
+            "shasum": ""
+        },
+        "replace": {
+            "shama/baton": "*"
+        },
+        "require-dev": {
+            "composer/composer": "1.0.*@dev",
+            "phpunit/phpunit": "3.7.*"
+        },
+        "time": "2013-01-14 07:14:45",
+        "type": "composer-installer",
+        "extra": {
+            "class": "Composer\\Installers\\Installer"
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Composer\\Installers\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Robinson Young",
+                "email": "kyle@dontkry.com",
+                "homepage": "https://github.com/shama",
+                "role": "Developer"
+            }
+        ],
+        "description": "A multi-framework Composer library installer",
+        "homepage": "http://composer.github.com/installers/",
+        "keywords": [
+            "symfony",
+            "installer",
+            "zend",
+            "wordpress",
+            "cakephp",
+            "codeigniter",
+            "fuelphp",
+            "drupal",
+            "lithium",
+            "li3",
+            "joomla",
+            "laravel",
+            "phpbb",
+            "ppi",
+            "silverstripe",
+            "kohana",
+            "mako",
+            "TYPO3 Flow",
+            "TYPO3 Neos",
+            "agl"
+        ]
+    },
+    {
+        "name": "silverstripe/framework",
+        "version": "3.0.3",
+        "version_normalized": "3.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silverstripe/sapphire",
+            "reference": "3.0.3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/silverstripe/sapphire/archive/3.0.3.zip",
+            "reference": "3.0.3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2",
+            "composer/installers": "*"
+        },
+        "time": "2012-11-25 22:20:21",
+        "type": "silverstripe-module",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "SilverStripe",
+                "homepage": "http://silverstripe.com"
+            },
+            {
+                "name": "The SilverStripe Community",
+                "homepage": "http://silverstripe.org"
+            }
+        ],
+        "description": "The SilverStripe framework",
+        "homepage": "http://silverstripe.org",
+        "keywords": [
+            "framework",
+            "silverstripe"
+        ]
+    }
+]
