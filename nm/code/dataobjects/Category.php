@@ -27,7 +27,7 @@ class Category extends DataObject {
 	);
 
 	static $belongs_many_many = array(
-		'Projects'	=> 'Project'
+		'Projects'	=> 'Project'					// Projekte
 	);
 }
 

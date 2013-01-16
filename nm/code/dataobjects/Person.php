@@ -48,7 +48,7 @@ class Person extends DataObject {
 	);
 
 	static $belongs_many_many = array(
-		'CalendarEntries'	=> 'CalendarEntry'
+		'CalendarEntries'	=> 'CalendarEntry'		// Kalendereinträge
 	);
 
 }

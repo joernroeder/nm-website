@@ -30,12 +30,15 @@ class Exhibition extends DataObject {
 	);
 
 	static $many_many = array(
-		'Websites'	=> 'Website',
-		'Projects'	=> 'Project'
+		'Websites'	=> 'Website',					// Webseite
+		'Projects'	=> 'Project'					// Projekte
 	);
 
 	static $belongs_many_many = array(
-		'Persons'	=> 'Person'
+		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
+		'Persons'	=> 'Person',					// Personen
+		'Workshops'	=> 'Workshop',					// Workshops
+		'Excursions'	=> 'Excursion'				// Exkursionen
 	);
 
 }

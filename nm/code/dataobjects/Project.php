@@ -17,6 +17,7 @@
 /**
  * Project Object
  *
+ * {@todo: `RelatedProjects()` that merges ParentProjects and ChildProjects}
  */
 class Project extends DataObject {
 
@@ -31,13 +32,20 @@ class Project extends DataObject {
 	);
 
 	static $has_many = array(
-		'Rankings' => 'Ranking'						// Sortierungssystem {@see Ranking}
+		'Rankings' 		=> 'Ranking'				// Sortierungssystem {@see Ranking}
+	);
+
+	static $many_many = array(
+		'ChildProjects'		=> 'Project',			// Verknüpfte "Kind"-Projekte, die zugehörig zu diesem Projekt sind 
+		'Categories'		=> 'Category'			// Kategorie (z.B. Installation)
 	);
 
 	static $belongs_many_many = array(
-		'CalendarEntries'	=> 'CalendarEntry',
-		'Projects'			=> 'Project',
-		'Exhibitions'		=> 'Exhibition'
+		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
+		'ParentProjects'	=> 'Project',			// "Eltern"-Projekte, die mit diesem Projekt verknüpft sind.
+		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
+		'Workshops'			=> 'Workshop',			// Workshops
+		'Excursions'		=> 'Excursion'			// Exkursionen
 	);
 }
 

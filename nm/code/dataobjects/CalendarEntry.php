@@ -28,11 +28,11 @@ class CalendarEntry extends DataObject {
 	);
 
 	static $many_many = array(
-		'Websites'		=> 'Website',
-		'Workshops'		=> 'Workshop',
-		'Excursions'	=> 'Excursion',
-		'Projects'		=> 'Project',
-		'Exhibitions'	=> 'Exhibition'
+		'Websites'		=> 'Website',				// Webseiten
+		'Workshops'		=> 'Workshop',				// Workshops
+		'Excursions'	=> 'Excursion',				// Exkursionen
+		'Projects'		=> 'Project',				// Projekte
+		'Exhibitions'	=> 'Exhibition'				// Ausstellungen
 	);
 
 }

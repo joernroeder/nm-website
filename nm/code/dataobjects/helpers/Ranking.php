@@ -24,7 +24,8 @@ class Ranking extends DataObject {
 	);
 
 	static $has_one = array(
-		'Person'	=> 'Person'
+		'Person'	=> 'Person',	// Person, die von ihrer Seite aus das Projekt sortiert
+		'Project'	=> 'Project'	// Das zu sortierende Projekt
 	);
 
 }

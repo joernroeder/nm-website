@@ -24,13 +24,20 @@ class Excursion extends DataObject {
 		'Title'		=> 'Varchar(255)',				// Titel der Exkursion
 		'StartDate'	=> 'Date',						// Start-Datum
 		'EndDate'	=> 'Date',						// End-Datum
+		'Space'		=> 'Varchar(255)',				// Veranstaltungs-Ort (z.B. TOCA-ME)
 		'Location'	=> 'Varchar(255)',				// Ort (Stadt, Land)
 		'Text'		=> 'Text'						// Beschreibungstext (Markdown formatiert)
 	);
 
+	static $many_many = array(
+		'Workshops'		=> 'Workshop',				// Workshops
+		'Exhibitions'	=> 'Exhibition',			// Ausstellungen
+		'Projects'		=> 'Project'				// Projekte
+	);
+
 	static $belongs_many_many = array(
-		'CalendarEntries'	=> 'CalendarEntry',
-		'Persons'			=> 'Person'
+		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
+		'Persons'			=> 'Person'				// Personen
 	);
 
 }

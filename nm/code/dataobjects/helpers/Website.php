@@ -31,10 +31,9 @@ class Website extends DataObject {
 	);
 
 	static $belongs_many_many = array(
-		'CalendarEntries'	=> 'CalendarEntry',
-		'Exhibitions'		=> 'Exhibition',
-		'Persons'			=> 'Person',
-		'Exhibitions'		=> 'Exhibition'
+		'CalendarEntries'	=> 'CalendarEntry',			// Kalendereinträge
+		'Persons'			=> 'Person',				// Personen
+		'Exhibitions'		=> 'Exhibition'				// Ausstellungen
 	);
 }
 
