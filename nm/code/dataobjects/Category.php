@@ -22,12 +22,32 @@
  */
 class Category extends DataObject {
 
+	// ! Singular und Plural ---------------
+	
+	static $singular_name = 'Category';
+	static $plural_name = 'Categories';
+
+	// ! Datenbank und Beziehungen ---------
+
 	static $db = array(
 		'Title'		=> 'Varchar(55)'				// Name der Kategorie
 	);
 
 	static $belongs_many_many = array(
 		'Projects'	=> 'Project'					// Projekte
+	);
+
+	// ! Such-Felder -----------------------
+
+	static $searchable_fields = array(
+		'Title'
+	);
+
+	// ! Admin -----------------------------
+
+	// Felder für die Listen/Übersichten im Admin
+	static $summary_fields = array(
+		'Title'
 	);
 }
 

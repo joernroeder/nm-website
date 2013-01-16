@@ -20,6 +20,13 @@
  */
 class Excursion extends DataObject {
 
+	// ! Singular und Plural ---------------
+
+	static $singular_name = 'Excursion';
+	static $plural_name = 'Excursions';
+
+	// ! Datenbank und Beziehungen ---------
+
 	static $db = array(
 		'Title'		=> 'Varchar(255)',				// Titel der Exkursion
 		'StartDate'	=> 'Date',						// Start-Datum
@@ -38,6 +45,35 @@ class Excursion extends DataObject {
 	static $belongs_many_many = array(
 		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
 		'Persons'			=> 'Person'				// Personen
+	);
+
+	// ! Erweiterungen ---------------------
+
+	static $extensions = array(
+		'DataObjectHasSummaryExtension'
+	);
+
+	// ! Such-Felder -----------------------
+
+	static $searchable_fields = array(
+		'Title',
+		'StartDate',
+		'EndDate',
+		'Space',
+		'Location',
+		'Text'
+	);
+
+	// ! Admin -----------------------------
+
+	// Felder für die Listen/Übersichten im Admin
+	static $summary_fields = array(
+		'Title',
+		'StartDate',
+		'EndDate',
+		'Space',
+		'Location',
+		'Summary'
 	);
 
 }
