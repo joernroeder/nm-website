@@ -15,9 +15,9 @@ form input.maxlength { width: auto; }
 
 form .actions { float: right; }
 
-form .validation, form .error, form .required { border: 1px solid #f00; background: #fcc; padding: 0.5em; width: 50%; }
+form .validation, form .error, form .required { border: 1px solid red; background: #fcc; padding: 0.5em; width: 50%; }
 
-form .field span.readonly { border: 1px #CCC dotted; background-color: #F7F7F7; display: block; width: 98%; padding: 3px; margin: 5px 0; }
+form .field span.readonly { border: 1px #cccccc dotted; background-color: #F7F7F7; display: block; width: 98%; padding: 3px; margin: 5px 0; }
 
 form .indicator.inline { display: inline; margin-left: 5px; vertical-align: middle; }
 
