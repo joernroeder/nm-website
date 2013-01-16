@@ -1,0 +1,28 @@
+en:
+  CalendarEntry:
+    PLURALNAME: 'Calendar Entries'
+    SINGULARNAME: 'Calendar Entry'
+  Category:
+    PLURALNAME: Categories
+    SINGULARNAME: Category
+  Excursion:
+    PLURALNAME: Excursions
+    SINGULARNAME: Excursion
+  Exhibition:
+    PLURALNAME: Exhibitions
+    SINGULARNAME: Exhibition
+  Person:
+    PLURALNAME: Persons
+    SINGULARNAME: Person
+  Project:
+    PLURALNAME: Projects
+    SINGULARNAME: Project
+  Ranking:
+    PLURALNAME: Rankings
+    SINGULARNAME: Ranking
+  Website:
+    PLURALNAME: Websits
+    SINGULARNAME: Website
+  Workshop:
+    PLURALNAME: Workshops
+    SINGULARNAME: Workshop
