@@ -47,7 +47,8 @@ class CalendarEntry extends DataObject {
 	// ! Extensions ------------------------
 	
 	static $extensions = array(
-		'DataObjectHasSummaryExtension'
+		'DataObjectHasSummaryExtension',
+		'StartEndDateExtension'
 	);
 
 
@@ -69,8 +70,7 @@ class CalendarEntry extends DataObject {
 	// Felder für dies Listen/Übersichten im Admin
 	static $summary_fields = array(
 		'Title',
-		'StartDate',
-		'EndDate',
+		'Date',
 		'Summary'	// ruft $this->getSummary() auf {@see DataObjectHasSummaryExtension}
 	);
 

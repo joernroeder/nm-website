@@ -21,6 +21,13 @@
  */
 class Project extends DataObject {
 
+	// ! Singular und Plural ---------------
+
+	static $singular_name = 'Project';
+	static $plural_name = 'Projects';
+
+	// ! Datenbank und Beziehungen ---------
+
 	static $db = array(
 		'Title'				=> 'Varchar(255)',			// Projekt Titel
 		'PreviewImageID'	=> 'Int',					// ID des Vorschaubildes
@@ -47,6 +54,36 @@ class Project extends DataObject {
 		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
 		'Workshops'			=> 'Workshop',			// Workshops
 		'Excursions'		=> 'Excursion'			// Exkursionen
+	);
+
+	// ! Erweiterungen ---------------------
+
+	static $extensions = array(
+		'DataObjectHasSummaryExtension',
+		'StartEndDateExtension'
+	);
+
+	// ! Such-Felder -----------------------
+
+	static $searchable_fields = array(
+		'Title',
+		'Date',
+		'Text',
+		'IsPortfolio',
+		'IsFeatured'
+	);
+
+	static $date_format = 'F, Y';				// Format des Datums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+
+	// ! Admin -----------------------------
+
+	// Felder für die Listen/Übersichten im Admin
+	static $summary_fields = array(
+		'Title',
+		'FormattedDate',							// ruft $this->FormattedDate() auf {@see: StartEndDateExtension.php}
+		'Summary',									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
+		'IsPortfolio',
+		'IsFeatured'
 	);
 }
 

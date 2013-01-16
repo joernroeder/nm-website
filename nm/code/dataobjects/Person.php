@@ -54,10 +54,6 @@ class Person extends DataObject {
 		'Workshops'			=> 'Workshop',			// Workshops
 	);
 
-	static $belongs_many_many = array(
-		'CalendarEntries'	=> 'CalendarEntry'		// Kalendereinträge
-	);
-
 	static $belongs_to = array(
 		'Member'			=> 'Member'				// Benutzer
 	);
@@ -83,14 +79,14 @@ class Person extends DataObject {
 
 	// Felder für die Listen/Übersichten im Admin
 	static $summary_fields = array(
-		'Name',
+		'FullName',
 		'Email',
 		'Phone',
 		'GraduationYear'
 	);
 
-	public function getName() {
-		return $this->dataRecord->FirstName . ' ' . $this->dataRecord->Surname;
+	public function getFullName() {
+		return $this->FirstName . ' ' . $this->Surname;
 	}
 
 }

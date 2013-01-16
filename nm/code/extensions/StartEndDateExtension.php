@@ -2,7 +2,7 @@
 
 class StartEndDateExtension extends DataExtension {
 
-	function Date() {
+	public function Date() {
 		$startFormat = $this->owner->stat('start_date_format');
 		$endFormat = $this->owner->stat('end_date_format');
 
@@ -17,7 +17,7 @@ class StartEndDateExtension extends DataExtension {
 		$start = $this->owner->dbObject('StartDate');
 		$end = $this->owner->dbObject('EndDate');
 
-		return $end && $end->value ? $start->format($startFormat) . '-' . $end->format($endFormat) : $start->format($endFormat);
+		return $end && $end->value ? $start->format($startFormat) . ' - ' . $end->format($endFormat) : $start->format($endFormat);
 	}
 
 	/**
@@ -25,7 +25,7 @@ class StartEndDateExtension extends DataExtension {
 	 *
 	 *  @return string
 	 */
-	function FormattedStartDate() {
+	public function FormattedStartDate() {
 		return $this->getFormattedDate('Start');
 	}
 
@@ -34,7 +34,7 @@ class StartEndDateExtension extends DataExtension {
 	 *
 	 *  @return string
 	 */
-	function FormattedEndDate() {
+	public function FormattedEndDate() {
 		return $this->getFormattedDate('End');
 	}
 
@@ -45,12 +45,12 @@ class StartEndDateExtension extends DataExtension {
 	 *
 	 * @return string
 	 */
-	private function getFormattedDate($dateName) {
+	public function getFormattedDate($dateName = '') {
 		$lowerName = strtolower($dateName);
-		$format = $this->owner->stat($lowerName . '_date_format');
+		$format = $lowerName ? $this->owner->stat($lowerName . '_date_format') : $this->owner->stat('date_format');
 
 		if (!$format) {
-			user_error("you have to set the {$dataName}Date formatter (static \${$lowerName}_date_format) in {$this->owner->class}", E_USER_ERROR);
+			user_error("you have to set the {$dateName}Date formatter (static \${$lowerName}_date_format) in {$this->owner->class}", E_USER_ERROR);
 		}
 
 		$date = $this->owner->dbObject($dateName . 'Date');
