@@ -20,6 +20,14 @@
  */
 class CalendarEntry extends DataObject {
 
+	// ! Singular und Plural ---------------
+	
+	static $singular_name = 'Calendar';
+	static $plural_name = 'Calendar';
+
+
+	// ! Datenbank und Beziehungen ---------
+
 	static $db = array(
 		'Title'		=> 'Varchar(255)',				// Titel der News
 		'StartDate'	=> 'SS_DateTime',				// Start-Datum
@@ -33,6 +41,34 @@ class CalendarEntry extends DataObject {
 		'Excursions'	=> 'Excursion',				// Exkursionen
 		'Projects'		=> 'Project',				// Projekte
 		'Exhibitions'	=> 'Exhibition'				// Ausstellungen
+	);
+
+
+	// ! Extensions ------------------------
+	
+	static $extensions = array(
+		'DataObjectHasSummaryExtension'
+	);
+
+
+	// ! Such-Felder -----------------------
+
+	static $searchable_fields = array(
+		'Title',
+		'StartDate',
+		'EndDate',
+		'Text'
+	);
+
+	
+	// ! Admin -----------------------------
+
+	// Felder für dies Listen/Übersichten im Admin
+	static $summary_fields = array(
+		'Title',
+		'StartDate',
+		'EndDate',
+		'Summary'	// ruft $this->getSummary() auf {@see DataObjectHasSummaryExtension}
 	);
 
 }
