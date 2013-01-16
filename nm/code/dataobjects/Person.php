@@ -51,5 +51,9 @@ class Person extends DataObject {
 		'CalendarEntries'	=> 'CalendarEntry'		// Kalendereinträge
 	);
 
+	static $belongs_to = array(
+		'Member'			=> 'Member'				// Benutzer
+	);
+
 }
 

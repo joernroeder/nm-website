@@ -21,9 +21,13 @@ i18n::set_locale('en_US');
 // Enable nested URLs for this site (e.g. page/sub-page/)
 if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
 
+// ! DataObject Extensions
+DataObject::add_extension('Member', 'MemberPersonExtension');
+
+
 require_once('conf/ConfigureFromEnv.php');
 
-// Database config for php unit testing
+// ! Database config for php unit testing
 if (Director::isDev()) {
 	Session::start();
 	if(@$_GET['db']) {
