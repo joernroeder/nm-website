@@ -50,7 +50,8 @@ class Excursion extends DataObject {
 	// ! Erweiterungen ---------------------
 
 	static $extensions = array(
-		'DataObjectHasSummaryExtension'
+		'DataObjectHasSummaryExtension',
+		'StartEndDateExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -64,16 +65,18 @@ class Excursion extends DataObject {
 		'Text'
 	);
 
+	static $start_date_format = 'd.m.Y';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	static $end_date_format = 'd.m.Y';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+
 	// ! Admin -----------------------------
 
 	// Felder für die Listen/Übersichten im Admin
 	static $summary_fields = array(
 		'Title',
-		'StartDate',
-		'EndDate',
+		'Date',										// ruft $this->getDate() auf {@see: StartEndDateExtension.php}
 		'Space',
 		'Location',
-		'Summary'
+		'Summary'									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
 	);
 
 }

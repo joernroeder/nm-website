@@ -60,6 +60,9 @@ class CalendarEntry extends DataObject {
 		'Text'
 	);
 
+	static $start_date_format = 'd.m.Y H:i';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	static $end_date_format = 'd.m.Y H:i';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+
 	
 	// ! Admin -----------------------------
 

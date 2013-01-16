@@ -20,6 +20,13 @@
  */
 class Exhibition extends DataObject {
 
+	// ! Singular und Plural ---------------
+
+	static $singular_name = 'Exhibition';
+	static $plural_name = 'Exhibitions';
+
+	// ! Datenbank und Beziehungen ---------
+
 	static $db = array(
 		'Title'		=> 'Varchar(255)',				// Ausstellungs-Titel
 		'StartDate'	=> 'Date',						// Start-Datum
@@ -39,6 +46,38 @@ class Exhibition extends DataObject {
 		'Persons'	=> 'Person',					// Personen
 		'Workshops'	=> 'Workshop',					// Workshops
 		'Excursions'	=> 'Excursion'				// Exkursionen
+	);
+
+	// ! Erweiterungen ---------------------
+
+	static $extensions = array(
+		'DataObjectHasSummaryExtension',
+		'StartEndDateExtension'
+	);
+
+	// ! Such-Felder -----------------------
+
+	static $searchable_fields = array(
+		'Title',
+		'StartDate',
+		'EndDate',
+		'Space',
+		'Location',
+		'Text'
+	);
+
+	static $start_date_format = 'd.m.Y';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	static $end_date_format = 'd.m.Y';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+
+	// ! Admin -----------------------------
+
+	// Felder für die Listen/Übersichten im Admin
+	static $summary_fields = array(
+		'Title',
+		'Date',										// ruft $this->getDate() auf {@see: StartEndDateExtension.php}
+		'Space',
+		'Location',
+		'Summary'									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
 	);
 
 }
