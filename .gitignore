@@ -3,3 +3,9 @@ app/app/*.js
 silverstripe-cache/*
 assets
 _ss_environment.php
+
+compass
+
+docsviewer
+
+docsviewer
