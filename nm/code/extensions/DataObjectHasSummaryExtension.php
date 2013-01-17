@@ -27,7 +27,8 @@ class DataObjectHasSummaryExtension extends DataExtension {
 	 * @return string
 	 */
 	public function getSummary() {
-		$text = $this->owner->dbObject('Text');
+		$teaser = $this->owner->dbObject('Teaser');
+		$text = $teaser ? $teaser : $this->owner->dbObject('Text');
 		if (!$text)  return '';
 		$summary = $text->Summary();
 		
