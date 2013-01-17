@@ -28,12 +28,14 @@ class Exhibition extends DataObject {
 	// ! Datenbank und Beziehungen ---------
 
 	static $db = array(
-		'Title'		=> 'Varchar(255)',				// Ausstellungs-Titel
-		'StartDate'	=> 'Date',						// Start-Datum
-		'EndDate'	=> 'Date',						// End-Datum
-		'Space'		=> 'Varchar(255)',				// Veranstaltungs-Ort (Galerie)
-		'Location'	=> 'Varchar(255)',				// Ort des Workshops (Stadt, Land)
-		'Text'		=> 'Text'						// Beschreibungstext (Markdown formatiert)
+		'Title'				=> 'Varchar(255)',				// Ausstellungs-Titel
+		'PreviewImageID'	=> 'Int',						// ID des Vorschaubildes
+		'TeaserText'		=> 'Varchar(156)',				// Teaser Text
+		'StartDate'			=> 'Date',						// Start-Datum
+		'EndDate'			=> 'Date',						// End-Datum
+		'Space'				=> 'Varchar(255)',				// Veranstaltungs-Ort (Galerie)
+		'Location'			=> 'Varchar(255)',				// Ort des Workshops (Stadt, Land)
+		'Text'				=> 'Text'						// Beschreibungstext (Markdown formatiert)
 	);
 
 	static $many_many = array(

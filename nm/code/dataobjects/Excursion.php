@@ -28,12 +28,14 @@ class Excursion extends DataObject {
 	// ! Datenbank und Beziehungen ---------
 
 	static $db = array(
-		'Title'		=> 'Varchar(255)',				// Titel der Exkursion
-		'StartDate'	=> 'Date',						// Start-Datum
-		'EndDate'	=> 'Date',						// End-Datum
-		'Space'		=> 'Varchar(255)',				// Veranstaltungs-Ort (z.B. TOCA-ME)
-		'Location'	=> 'Varchar(255)',				// Ort (Stadt, Land)
-		'Text'		=> 'Text'						// Beschreibungstext (Markdown formatiert)
+		'Title'				=> 'Varchar(255)',				// Titel der Exkursion
+		'PreviewImageID'	=> 'Int',						// ID des Vorschaubildes
+		'TeaserText'		=> 'Varchar(156)',				// Teaser Text
+		'StartDate'			=> 'Date',						// Start-Datum
+		'EndDate'			=> 'Date',						// End-Datum
+		'Space'				=> 'Varchar(255)',				// Veranstaltungs-Ort (z.B. TOCA-ME)
+		'Location'			=> 'Varchar(255)',				// Ort (Stadt, Land)
+		'Text'				=> 'Text'						// Beschreibungstext (Markdown formatiert)
 	);
 
 	static $many_many = array(

@@ -31,6 +31,7 @@ class Project extends DataObject {
 	static $db = array(
 		'Title'				=> 'Varchar(255)',			// Projekt Titel
 		'PreviewImageID'	=> 'Int',					// ID des Vorschaubildes
+		'TeaserText'		=> 'Varchar(156)',			// Teaser Text
 		'Date'				=> 'Date',					// Projekt-Datum: Hierbei werden nur Monat und Jahr berücksichtigt.
 		'Text'				=> 'Text',					// Text des Projekts (Markdown formatiert)
 		'Code'				=> 'Text',					// Code, der teil des Projektes ist und auf der Projektseite ausgeführt wird
