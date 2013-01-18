@@ -54,7 +54,8 @@ class Project extends DataObject {
 		'ParentProjects'	=> 'Project',			// "Eltern"-Projekte, die mit diesem Projekt verknüpft sind.
 		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
 		'Workshops'			=> 'Workshop',			// Workshops
-		'Excursions'		=> 'Excursion'			// Exkursionen
+		'Excursions'		=> 'Excursion',			// Exkursionen
+		'Persons'			=> 'Person'				// Projekt-Teilnehmer
 	);
 
 	// ! Erweiterungen ---------------------
