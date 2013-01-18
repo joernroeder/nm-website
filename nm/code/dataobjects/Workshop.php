@@ -17,6 +17,7 @@
 /**
  * Workshop Object
  *
+ * @todo: check if this object has a relationshop witz itself
  */
 class Workshop extends DataObject {
 
@@ -48,7 +49,8 @@ class Workshop extends DataObject {
 	
 	static $extensions = array(
 		'StartEndDateExtension',
-		'DataObjectHasSummaryExtension'
+		'DataObjectHasSummaryExtension',
+		'TeaserCMSFieldsExtension'
 	);
 
 

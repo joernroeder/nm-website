@@ -89,5 +89,11 @@ class Person extends DataObject {
 		return $this->FirstName . ' ' . $this->Surname;
 	}
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		return $fields;
+	}
+
 }
 

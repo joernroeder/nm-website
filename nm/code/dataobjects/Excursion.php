@@ -16,7 +16,8 @@
 
 /**
  * Excursion Object
- *
+ * 
+ * @todo: check if this object has a relationshop witz itself
  */
 class Excursion extends DataObject {
 
@@ -53,7 +54,8 @@ class Excursion extends DataObject {
 
 	static $extensions = array(
 		'DataObjectHasSummaryExtension',
-		'StartEndDateExtension'
+		'StartEndDateExtension',
+		'TeaserCMSFieldsExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -80,6 +82,7 @@ class Excursion extends DataObject {
 		'Location',
 		'Summary'									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
 	);
+
 
 }
 

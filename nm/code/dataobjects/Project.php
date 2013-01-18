@@ -62,7 +62,8 @@ class Project extends DataObject {
 
 	static $extensions = array(
 		'DataObjectHasSummaryExtension',
-		'StartEndDateExtension'
+		'StartEndDateExtension',
+		'TeaserCMSFieldsExtension'
 	);
 
 	// ! Such-Felder -----------------------
