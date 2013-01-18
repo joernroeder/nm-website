@@ -20,4 +20,32 @@ class MemberPersonExtension extends DataExtension {
 		'Person'	=> 'Person'		// Personenobjekt
 	);
 
+	public function updateCMSFields(FieldList $fields) {
+
+		$dropDownField = new DropdownField(
+			'PersonID',
+			'Person',
+			Person::get()->map('ID', 'FullName')
+        );
+        $dropDownField->setHasEmptyDefault(true);
+        $dropDownField->setEmptyString('(none)');
+
+        $fields->addFieldToTab('Root.Main', $dropDownField);
+	}
+
+	public function updateSummaryFields(&$fields) {
+		$fields = array(
+			'FullName' 	=> 'Full Name',
+			'Email'		=> 'Email',
+			'Person.FullName'	=> 'Person'
+		);
+	}
+
+	public function getFullName() {
+		$name = '';
+		$name .= $this->owner->FirstName ? $this->owner->FirstName . ' ' : '';
+		$name .= $this->owner->Surname ? $this->owner->Surname : '';
+		return $name;
+	}
+
 }
