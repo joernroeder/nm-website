@@ -29,6 +29,7 @@ DataObject::add_extension('Member', 'MemberPersonExtension');
 // ! Admin-Config ---------------------------------
 
 DateField::set_default_config('showcalendar', true);
+SecurityAdmin::$menu_icon = '/nm/images/admin/login16.png'; // Überschreiben des Security-Admin icons
 
 
 // include environment config 
