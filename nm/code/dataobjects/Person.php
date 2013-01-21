@@ -42,6 +42,10 @@ class Person extends DataObject {
 		'IsExternal'		=> 'Boolean',			// Flagge: Ist eine externe Person ?
 	);
 
+	static $has_one = array(
+		'Image'				=> 'PersonImage'		// Foto der Person
+	);
+
 	static $has_many = array(
 		'Rankings'			=> 'Ranking'			// Sortierungssystem eigener Arbeiten
 	);
