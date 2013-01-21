@@ -19,7 +19,7 @@
  *
  *
  */
-class DataObjectHasSummaryExtension extends DataExtension {
+class DataObjectHasSummaryExtension extends Extension {
 
 	/**
 	 * Gibt den ersten Abschnitt des Datenbank-Feldes "Text" falls vorhanden zurück

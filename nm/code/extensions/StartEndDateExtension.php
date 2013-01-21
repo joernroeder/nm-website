@@ -1,6 +1,6 @@
 <?php
 
-class StartEndDateExtension extends DataExtension {
+class StartEndDateExtension extends Extension {
 
 	public function Date() {
 		$startFormat = $this->owner->stat('start_date_format');
