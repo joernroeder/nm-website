@@ -46,7 +46,8 @@ class Project extends DataObject {
 
 	static $many_many = array(
 		'ChildProjects'		=> 'Project',			// Verknüpfte "Kind"-Projekte, die zugehörig zu diesem Projekt sind 
-		'Categories'		=> 'Category'			// Kategorie (z.B. Installation)
+		'Categories'		=> 'Category',			// Kategorie (z.B. Installation)
+		'Images'			=> 'DocImage'			// Bilder
 	);
 
 	static $belongs_many_many = array(

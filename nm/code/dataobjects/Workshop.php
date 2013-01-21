@@ -36,7 +36,8 @@ class Workshop extends DataObject {
 		
 	static $many_many = array(
 		'Exhibitions'	=> 'Exhibition',					// Ausstellungen
-		'Projects'		=> 'Project'						// Projekte
+		'Projects'		=> 'Project',						// Projekte
+		'Images'		=> 'DocImage'						// Bilder
 	);
 
 	static $belongs_many_many = array(

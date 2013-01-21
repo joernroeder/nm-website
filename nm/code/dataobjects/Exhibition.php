@@ -41,7 +41,8 @@ class Exhibition extends DataObject {
 
 	static $many_many = array(
 		'Websites'	=> 'Website',					// Webseite
-		'Projects'	=> 'Project'					// Projekte
+		'Projects'	=> 'Project',					// Projekte
+		'Images'		=> 'DocImage'				// Bilder
 	);
 
 	static $belongs_many_many = array(
