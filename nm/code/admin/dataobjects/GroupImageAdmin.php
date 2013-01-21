@@ -19,6 +19,8 @@ class GroupImageAdmin extends ModelAdmin {
 		'GroupImage'
 	);
 
+	public static $menu_priority = 29;
+
 	static $url_segment = 'group-images';
 	static $menu_title = 'Group-Images';
 

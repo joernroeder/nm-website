@@ -19,6 +19,8 @@ class ExcursionAdmin extends ModelAdmin {
 		'Excursion'
 	);
 
+	public static $menu_priority = 60;
+
 	static $url_segment = 'excursions';
 	static $menu_title = 'Excursions';
 

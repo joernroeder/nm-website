@@ -19,6 +19,8 @@ class RankingAdmin extends ModelAdmin {
 		'Ranking'
 	);
 
+	public static $menu_priority = 20;
+
 	static $url_segment = 'rankings';
 	static $menu_title = 'Rankings';
 	

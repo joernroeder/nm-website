@@ -19,6 +19,8 @@ class ProjectAdmin extends ModelAdmin {
 		'Project'
 	);
 
+	public static $menu_priority = 90;
+
 	static $url_segment = 'projects';
 	static $menu_title = 'Projects';
 

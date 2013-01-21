@@ -19,6 +19,8 @@ class CalendarEntryAdmin extends ModelAdmin {
 		'CalendarEntry'
 	);
 
+	public static $menu_priority = 80;
+
 	static $url_segment = 'calendar';
 	static $menu_title = 'Calendar';
 

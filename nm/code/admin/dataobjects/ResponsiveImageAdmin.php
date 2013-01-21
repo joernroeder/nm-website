@@ -19,6 +19,8 @@ class ResponsiveImageAdmin extends ModelAdmin {
 		'ResponsiveImage'
 	);
 
+	public static $menu_priority = 30;
+
 	static $url_segment = 'images';
 	static $menu_title = 'Images';
 

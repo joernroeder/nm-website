@@ -19,6 +19,8 @@ class WorkshopAdmin extends ModelAdmin {
 		'Workshop'
 	);
 
+	public static $menu_priority = 50;
+
 	static $url_segment = 'workshops';
 	static $menu_title = 'Workshops';
 

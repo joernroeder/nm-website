@@ -19,6 +19,8 @@ class PersonAdmin extends ModelAdmin {
 		'Person'
 	);
 
+	public static $menu_priority = 40;
+
 	static $url_segment = 'persons';
 	static $menu_title = 'Persons';
 

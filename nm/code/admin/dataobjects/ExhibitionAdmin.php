@@ -19,6 +19,8 @@ class ExhibitionAdmin extends ModelAdmin {
 		'Exhibition'
 	);
 
+	public static $menu_priority = 70;
+
 	static $url_segment = 'exhibitions';
 	static $menu_title = 'Exhibitions';
 

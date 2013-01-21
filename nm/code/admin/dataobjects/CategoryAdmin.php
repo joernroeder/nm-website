@@ -19,6 +19,8 @@ class CategoryAdmin extends ModelAdmin {
 		'Category'
 	);
 
+	public static $menu_priority = 20;
+
 	static $url_segment = 'categories';
 	static $menu_title = 'Categories';
 

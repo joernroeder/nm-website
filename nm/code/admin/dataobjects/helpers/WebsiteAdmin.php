@@ -19,6 +19,8 @@ class WebsiteAdmin extends ModelAdmin {
 		'Website'
 	);
 
+	public static $menu_priority = 20;
+
 	static $url_segment = 'websites';
 	static $menu_title = 'Websites';
 
