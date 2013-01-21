@@ -20,13 +20,24 @@ class ResponsiveImageCaptionExtension extends DataExtension {
 		'Caption' => 'Varchar(255)'
 	);
 
-	static $summary_fields = array(
-		'Caption'
-	);
-
 	static $searchable_fields = array(
 		'Caption'
 	);
 
+	public function updateSummaryFields(&$fields) {
+		$summaryFields = array(
+			'Thumbnail',
+			'Title',
+			'Caption',
+			'ID'
+		);
+
+		// reset
+		$fields = array();
+
+		foreach ($summaryFields as $field) {
+			$fields[$field] = $field;
+		}
+	}
 }
 
