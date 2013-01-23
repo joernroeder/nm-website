@@ -80,7 +80,7 @@
 }
 
 /**
- * Link
+ * Link & Button
  *
  */
 .link() {
@@ -92,6 +92,36 @@
 	&:focus,
 	&:active {
 		color: @linkHover;
+	}
+}
+
+.btn {
+	.aller;
+	.small-caps;
+	color: @btnColor;
+
+	// Pfeil
+	&:after {
+		display: block;
+		position: relative;
+		font-family: 'Lucida Grande';
+		content: "→";
+		color: @btnArrow;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		bottom: -1.5 / @em;
+		padding-left: 3 / @em;
+	}
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: @btnHover;
+		//border-bottom: 1px solid @btnColor;
+
+		&:after {
+			color: @btnArrowHover;
+		}
 	}
 }
 

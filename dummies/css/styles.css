@@ -58,9 +58,36 @@
  * {@link .small-caps}
  */
 /**
- * Link
+ * Link & Button
  *
  */
+.btn {
+  font-family: 'Aller', 'Helvetica', sans-serif;
+  font-weight: normal;
+  font-variant: small-caps;
+  color: #525252;
+}
+.btn:after {
+  display: block;
+  position: relative;
+  font-family: 'Lucida Grande';
+  content: "→";
+  color: #747474;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  bottom: -0.09375em;
+  padding-left: 0.1875em;
+}
+.btn:hover,
+.btn:focus,
+.btn:active {
+  color: #262626;
+}
+.btn:hover:after,
+.btn:focus:after,
+.btn:active:after {
+  color: #525252;
+}
 /**
  * Liste
  *
