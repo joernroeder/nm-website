@@ -46,6 +46,17 @@
  * Kapitälichen
  */
 /**
+ * Kleine Kapitälchen 
+ *
+ * {@link .small-caps}
+ */
+/**
+ * Kleine graue Kapitälchen 
+ *
+ * z.B. fürs Datum bei dem Kalender
+ * {@link .mini-caps}
+ */
+/**
  * Große Kapitälchen
  *
  * Wird verwendet für Untertitel {@see "article header p"}
@@ -574,6 +585,42 @@ div.students ul {
 .badge ul a:focus,
 .badge ul a:active {
   color: #d9df20;
+}
+.calendar {
+  width: 12.5em;
+  margin-bottom: 3em;
+  text-align: right;
+}
+.calendar h1 {
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  margin-top: 1.3333333333333333em;
+  font-variant: small-caps;
+}
+.calendar ul {
+  list-style: none;
+}
+.calendar li {
+  margin-top: 0.75em;
+}
+.calendar h1 {
+  color: #696969;
+}
+.calendar a {
+  color: #505050;
+}
+.calendar h1 {
+  margin-top: 0;
+}
+.calendar time {
+  font-variant: small-caps;
+  font-size: 0.875em;
+  line-height: 1.7142857142857142em;
+  color: #ababab;
+  display: block;
+}
+.calendar ul {
+  margin-bottom: 0.75em;
 }
 /*
  *
