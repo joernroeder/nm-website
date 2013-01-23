@@ -332,6 +332,12 @@ cite {
   font-variant: small-caps;
   font-style: normal;
 }
+.test {
+  font-variant: small-caps;
+  font-style: normal;
+  font-size: 1.125em;
+  color: #919191;
+}
 /*
  *
  *  Four-column grid active
