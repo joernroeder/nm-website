@@ -1,0 +1,56 @@
+@red: blue;
+
+.rounded-corners(@radius: 5px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	-ms-border-radius: @radius;
+	-o-border-radius: @radius;
+	border-radius: @radius;
+}
+
+
+
+body {
+	background: #999;
+	color: #fff;
+}
+
+a {
+	color: @red;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+h1 {
+	font-family: 'Helvetica';
+}
+
+article {
+
+	&:not(.foo) {
+		background: #fff;
+		.rounded-corners(5px);
+
+		h1 {
+			color: green;
+		}
+	}
+
+	h1,
+	p {
+		color: black;
+	}
+}
+
+input {
+	padding: 10px;
+	border: none;
+	.rounded-corners(2px);
+
+	&[type^="t"] {
+		background: @red;
+	}
+}
