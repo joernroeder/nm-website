@@ -48,6 +48,29 @@
  */
 .small-caps() {
 	font-variant: small-caps;
+	//text-rendering: optimizeLegibility; // bug in google chrome http://code.google.com/p/chromium/issues/detail?id=51973
+}
+
+/**
+ * Kleine Kapitälchen 
+ *
+ * {@link .small-caps}
+ */
+.mini-caps() {
+	.small-caps;
+	font-size: @font-small / @em;
+	line-height: @line / @font-small * 1em;
+}
+
+/**
+ * Kleine graue Kapitälchen 
+ *
+ * z.B. fürs Datum bei dem Kalender
+ * {@link .mini-caps}
+ */
+.mini-caps-light() {
+	.mini-caps;
+	color: @grayLight;
 }
 
 /**
