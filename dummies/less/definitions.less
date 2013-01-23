@@ -80,6 +80,22 @@
 }
 
 /**
+ * Link
+ *
+ */
+.link() {
+	color: @linkColor;
+	text-decoration: none;
+	outline: none;
+
+	&:hover, // mouseover
+	&:focus,
+	&:active {
+		color: @linkHover;
+	}
+}
+
+/**
  * Liste
  *
  * @param int @width Die Breite der Liste
