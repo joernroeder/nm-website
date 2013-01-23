@@ -51,6 +51,24 @@
  * Wird verwendet für {@see h3, aside h1}
  * {@link .small-caps}
  */
+/**
+ * Liste
+ *
+ * @param int @width Die Breite der Liste
+ */
+/**
+ * Liste mit hellerem Text
+ *
+ * @param int @width Die Breite der Liste
+ */
+/**
+ * Mehrspaltige Liste
+ *
+ * {@see http://weedygarden.net/demos/css3-column-lists/}
+ *
+ * @param int @cols 	Spaltenanzahl
+ * @param int @width 	Breite innerhalb der sich die Spalten teilen können
+ */
 /*
 *
 *  Golden Grid System (1.01)	<http://goldengridsystem.com/>
@@ -350,6 +368,7 @@ h2 {
   }
 }
 body {
+  background: #e6e6e6;
   font-family: 'AllerLight', 'Helvetica', sans-serif;
   font-weight: normal;
   color: #262626;
@@ -445,7 +464,6 @@ aside h1 {
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
   font-variant: small-caps;
-  color: #696969;
 }
 aside ul {
   list-style: none;
@@ -453,8 +471,35 @@ aside ul {
 aside li {
   margin-top: 0.75em;
 }
+aside h1 {
+  color: #696969;
+}
 aside a {
   color: #505050;
+}
+div.students {
+  width: 31.25em;
+  margin-bottom: 3em;
+}
+div.students h1 {
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  margin-top: 1.3333333333333333em;
+  font-variant: small-caps;
+}
+div.students ul {
+  list-style: none;
+}
+div.students li {
+  margin-top: 0.75em;
+}
+div.students ul {
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+  -webkit-column-gap: 2.5em;
+  -moz-column-gap: 2.5em;
+  column-gap: 2.5em;
 }
 /*
  *

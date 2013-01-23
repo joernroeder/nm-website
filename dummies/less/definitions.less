@@ -78,3 +78,66 @@
 
 	.small-caps;
 }
+
+/**
+ * Liste
+ *
+ * @param int @width Die Breite der Liste
+ */
+.list(@width: 200) {
+	width: @width / @em;
+	margin-bottom: 2 * @line / @em;
+
+	h1 {
+		.caps-headline;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	li {
+		margin-top: @line / 2 / @em;
+	}
+}
+
+/**
+ * Liste mit hellerem Text
+ *
+ * @param int @width Die Breite der Liste
+ */
+.list-light(@width: 200) {
+	.list(@width);
+
+	h1 {
+		color: @asideHeadline;
+	}
+
+	a {
+		color: @asideColor;
+	}
+}
+
+
+/**
+ * Mehrspaltige Liste
+ *
+ * {@see http://weedygarden.net/demos/css3-column-lists/}
+ *
+ * @param int @cols 	Spaltenanzahl
+ * @param int @width 	Breite innerhalb der sich die Spalten teilen können
+ */
+.list-columns(@cols: 2, @width: 200) {
+	.list(@width);
+
+	ul {
+		@colGap: @columnGap / @em;
+
+		.column-count(@cols); 
+		.column-gap(@colGap);
+	}
+}
+
+
+
+

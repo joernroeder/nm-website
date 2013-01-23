@@ -22,6 +22,7 @@
 // ! - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 body {
+	background: @bgColor;
 	.aller-light;
 	color: @black;
 }
@@ -129,25 +130,11 @@ article {
  *
  */
 aside {
-	width: 200 / @em;
-	margin-bottom: 2 * @line / @em;
+	.list-light(200);
+}
 
-	h1 {
-		.caps-headline;
-		color: @asideHeadline;
-	}
-
-	ul {
-		list-style: none;
-	}
-
-	li {
-		margin-top: @line / 2 / @em;
-	}
-
-	a {
-		color: @asideColor;
-	}
+div.students {
+	.list-columns(2, 500);
 }
 
 /*
