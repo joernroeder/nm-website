@@ -27,23 +27,54 @@
 	font-style: normal;
 }
 
+/**
+ * Verwende  den "Aller"-Font. Zurücksetzen auf den normalen Style
+ */
 .aller() {
 	font-family: 'Aller', 'Helvetica', sans-serif;
 	font-weight: normal;
 }
 
+/**
+ * Verwende  den "Aller Light"-Font. Zurücksetzen auf den normalen Style
+ */
 .aller-light() {
 	font-family: 'AllerLight', 'Helvetica', sans-serif;
 	font-weight: normal;
 }
 
+/**
+ * Kapitälichen
+ */
 .small-caps() {
 	font-variant: small-caps;
 }
 
+/**
+ * Große Kapitälchen
+ *
+ * Wird verwendet für Untertitel {@see "article header p"}
+ * {@link .small-caps}
+ */
 .big-caps() {
 	.small-caps();
 	font-size: @bigCapsSize / @em;
 	line-height: @line / @bigCapsSize * 1em;
 	color: @gray;
+}
+
+/**
+ * Überchrift mit Kapitälchen
+ *
+ * Wird verwendet für {@see h3, aside h1}
+ * {@link .small-caps}
+ */
+.caps-headline() {
+	font-size: @h3Size / @em;
+	line-height: @h3LineHeight / @h3Size * 1em;
+
+	// Abstand nach oben
+	margin-top: @line / @h3Size * 1em;
+
+	.small-caps;
 }

@@ -30,6 +30,27 @@
   font-weight: normal;
   font-style: normal;
 }
+/**
+ * Verwende  den "Aller"-Font. Zurücksetzen auf den normalen Style
+ */
+/**
+ * Verwende  den "Aller Light"-Font. Zurücksetzen auf den normalen Style
+ */
+/**
+ * Kapitälichen
+ */
+/**
+ * Große Kapitälchen
+ *
+ * Wird verwendet für Untertitel {@see "article header p"}
+ * {@link .small-caps}
+ */
+/**
+ * Überchrift mit Kapitälchen
+ *
+ * Wird verwendet für {@see h3, aside h1}
+ * {@link .small-caps}
+ */
 /*
 *
 *  Golden Grid System (1.01)	<http://goldengridsystem.com/>
@@ -339,16 +360,27 @@ h3 {
   font-family: 'Aller', 'Helvetica', sans-serif;
   font-weight: normal;
 }
+/** 
+ * Überschrift ersten Rangs
+ */
 h1 {
   font-size: 1.5em;
   line-height: 1.3333333333333333em;
   margin-bottom: -0.041666666666666664em;
 }
+/** 
+ * Überschrift zweiten Rangs
+ */
 h2 {
   font-size: 1.1875em;
   line-height: 1.263157894736842em;
   margin-top: 1.263157894736842em;
 }
+/**
+ * Überschrift dritten Rangs
+ *
+ * Verwendet die .caps-headline Definition {@see definitions.less}
+ */
 h3 {
   font-size: 1em;
   line-height: 1.5em;
@@ -363,15 +395,22 @@ cite {
   font-variant: small-caps;
   font-style: normal;
 }
+/**
+ * Links
+ */
 a {
   color: #262626;
   text-decoration: none;
+  outline: none;
 }
 a:hover,
 a:focus,
 a:active {
   color: #d9df20;
 }
+/**
+ * Artikel-Element
+ */
 article header {
   margin-bottom: 1.5em;
 }
