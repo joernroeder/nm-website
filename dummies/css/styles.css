@@ -382,9 +382,9 @@ h2 {
  * Verwendet die .caps-headline Definition {@see definitions.less}
  */
 h3 {
-  font-size: 1em;
-  line-height: 1.5em;
-  margin-top: 1.5em;
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  margin-top: 1.3333333333333333em;
   font-variant: small-caps;
 }
 h1 + h2,
@@ -431,6 +431,30 @@ article a:hover,
 article a:focus,
 article a:active {
   border-bottom: 1px solid #000000;
+}
+/**
+ * Related-Box
+ *
+ */
+aside {
+  width: 12.5em;
+  margin-bottom: 3em;
+}
+aside h1 {
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  margin-top: 1.3333333333333333em;
+  font-variant: small-caps;
+  color: #696969;
+}
+aside ul {
+  list-style: none;
+}
+aside li {
+  margin-top: 0.75em;
+}
+aside a {
+  color: #505050;
 }
 /*
  *

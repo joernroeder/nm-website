@@ -123,6 +123,33 @@ article {
 		}
 	}
 }
+
+/**
+ * Related-Box
+ *
+ */
+aside {
+	width: 200 / @em;
+	margin-bottom: 2 * @line / @em;
+
+	h1 {
+		.caps-headline;
+		color: @asideHeadline;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	li {
+		margin-top: @line / 2 / @em;
+	}
+
+	a {
+		color: @asideColor;
+	}
+}
+
 /*
  *
  *  Four-column grid active
