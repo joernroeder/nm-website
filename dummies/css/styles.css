@@ -12,6 +12,10 @@
  *    http://neuemedienkassel.de
  *
  */
+/**
+ * @todo: check welche Zahlen bei den Caps benutzt werden;
+ *
+ */
 @font-face {
   font-family: 'AllerLight';
   src: url('/dummies/webfonts/aller-light/aller_lt-webfont.eot');
@@ -200,16 +204,15 @@ body {
 *  5.55555% | %  25  50  75  100 | 5.55555%
 *
 */
-h1,
-h2 {
-  margin: 0.9230769230769231em 0 1.3846153846153846em;
-}
+/*h1, h2 {
+	margin: (24/26*1em) 0 (36/26*1em);
+}*/
 h2 {
   font-weight: normal;
 }
-h3 {
-  margin: 1.5em 0 1.5em;
-}
+/*h3 {
+	margin: (24/@em) 0 (24/@em);
+}*/
 /*
 *  Simple elastic gutters
 *  Note: box-sizing will not work in IE6-7
@@ -327,16 +330,68 @@ h3 {
 }
 body {
   font-family: 'AllerLight', 'Helvetica', sans-serif;
+  font-weight: normal;
+  color: #262626;
+}
+h1,
+h2,
+h3 {
+  font-family: 'Aller', 'Helvetica', sans-serif;
+  font-weight: normal;
+}
+h1 {
+  font-size: 1.5em;
+  line-height: 1.3333333333333333em;
+  margin-bottom: -0.041666666666666664em;
+}
+h2 {
+  font-size: 1.1875em;
+  line-height: 1.263157894736842em;
+  margin-top: 1.263157894736842em;
+}
+h3 {
+  font-size: 1em;
+  line-height: 1.5em;
+  margin-top: 1.5em;
+  font-variant: small-caps;
+}
+h1 + h2,
+h2 + h3 {
+  margin-top: 0;
 }
 cite {
   font-variant: small-caps;
   font-style: normal;
 }
-.test {
+a {
+  color: #262626;
+  text-decoration: none;
+}
+a:hover,
+a:focus,
+a:active {
+  color: #d9df20;
+}
+article header {
+  margin-bottom: 1.5em;
+}
+article header h1 {
+  margin-bottom: -0.08333333333333333em;
+}
+article header p {
   font-variant: small-caps;
-  font-style: normal;
   font-size: 1.125em;
+  line-height: 1.3333333333333333em;
   color: #919191;
+  padding-bottom: 0.0625em;
+}
+article a {
+  border-bottom: 1px dashed #919191;
+}
+article a:hover,
+article a:focus,
+article a:active {
+  border-bottom: 1px solid #000000;
 }
 /*
  *

@@ -1,3 +1,7 @@
+/**
+ * @todo: check welche Zahlen bei den Caps benutzt werden;
+ *
+ */
 
 // ! Typo
 
@@ -23,13 +27,23 @@
 	font-style: normal;
 }
 
+.aller() {
+	font-family: 'Aller', 'Helvetica', sans-serif;
+	font-weight: normal;
+}
+
+.aller-light() {
+	font-family: 'AllerLight', 'Helvetica', sans-serif;
+	font-weight: normal;
+}
+
 .small-caps() {
 	font-variant: small-caps;
-	font-style: normal;
 }
 
 .big-caps() {
 	.small-caps();
-	font-size: 18 / @em;
+	font-size: @bigCapsSize / @em;
+	line-height: @line / @bigCapsSize * 1em;
 	color: @gray;
 }

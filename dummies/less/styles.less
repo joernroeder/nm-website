@@ -22,15 +22,90 @@
 // ! - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 body {
-	font-family: 'AllerLight', 'Helvetica', sans-serif;
+	.aller-light;
+	color: @black;
+}
+
+// temporärer Abstand um bei den Tests im Grid zu starten.
+article {
+//	margin-top: 7 / @em;
+}
+
+// ------------
+
+h1, h2, h3 {
+	.aller;
+}
+
+h1 {
+	font-size: @h1Size / @em;
+	line-height: @h1LineHeight / @h1Size * 1em;
+	margin-bottom: -1 / @h1Size * 1em;
+}
+
+h2 {
+	font-size: @h2Size / @em;
+	line-height: @h2LineHeight / @h2Size * 1em;
+
+	// Abstand nach oben
+	margin-top: @line / @h2Size * 1em;
+}
+
+h3 {
+	font-size: @h3Size / @em;
+	line-height: @h3LineHeight / @h3Size * 1em;
+
+	// Abstand nach oben
+	margin-top: @line / @h3Size * 1em;
+
+	.small-caps;
+}
+
+// kein Abstand bei aufeinander folgenden Überschriften
+h1 + h2,
+h2 + h3 {
+	margin-top: 0;
 }
 
 cite {
 	.small-caps;
+	font-style: normal;
 }
 
-.test {
-	.big-caps;
+a {
+	color: @linkColor;
+	text-decoration: none;
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: @linkHover;
+	}
+}
+
+article {
+	header { 
+		margin-bottom: @line / @em;
+
+		h1 {
+		margin-bottom: -2 / @h1Size * 1em;
+		}
+
+		p {
+			.big-caps;
+			padding-bottom: 1 / @em;
+		}
+	}
+
+	a {
+		border-bottom: 1px dashed @gray;
+
+		&:hover,
+		&:focus,
+		&:active {
+			border-bottom: 1px solid @linkHoverBorder;
+		}
+	}
 }
 /*
  *
