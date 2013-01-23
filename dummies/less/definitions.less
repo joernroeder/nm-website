@@ -43,12 +43,20 @@
 	font-weight: normal;
 }
 
+/**
+ * Kleinerer Schnitt
+ */
 .mini() {
 	font-size: @font-small / @em;
 	line-height: @line / @font-small * 1em;
 	margin-top: 4 / @em;
 }
 
+/**
+ * Kleinerer grauer Schnitt
+ *
+ * {@link .mini}
+ */
 .mini-light() {
 	.mini;
 	color: @grayLight;
