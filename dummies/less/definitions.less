@@ -43,6 +43,17 @@
 	font-weight: normal;
 }
 
+.mini() {
+	font-size: @font-small / @em;
+	line-height: @line / @font-small * 1em;
+	margin-top: 4 / @em;
+}
+
+.mini-light() {
+	.mini;
+	color: @grayLight;
+}
+
 /**
  * Kapitälichen
  */
@@ -55,11 +66,11 @@
  * Kleine Kapitälchen 
  *
  * {@link .small-caps}
+ * {@link .mini}
  */
 .mini-caps() {
 	.small-caps;
-	font-size: @font-small / @em;
-	line-height: @line / @font-small * 1em;
+	.mini;
 }
 
 /**

@@ -127,7 +127,7 @@ aside {
 	.list-light(200);
 }
 
-div.students {
+.students {
 	.list-columns(2, 500);
 }
 
@@ -190,6 +190,33 @@ div.students {
 
 	ul {
 		margin-bottom: @line / 2 / @em;
+	}
+}
+
+
+// ! --- Person --------------------------------------------
+
+.person {
+	// clearfix
+	overflow: hidden;
+
+	// dummy image
+	.img {
+		display: block;
+		background-color: pink;
+		width: 85 / @em;
+		height: 85 / @em;
+		float: left;
+		margin-right: 20 / @em;
+	}
+
+	h1 {
+		margin-top: 21 / @em;
+		font-size: @font-size / @em;
+	}
+
+	p {
+		.mini-light;
 	}
 }
 
