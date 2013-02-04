@@ -481,7 +481,8 @@ a {
 }
 a:hover,
 a:focus,
-a:active {
+a:active,
+a.active {
   color: #d9df20;
 }
 /**
@@ -577,7 +578,8 @@ aside a {
 }
 .badge > a:hover,
 .badge > a:focus,
-.badge > a:active {
+.badge > a:active,
+.badge > a.active {
   background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNTA0cHgiIGhlaWdodD0iMjAwcHgiIHZpZXdCb3g9IjAgMCA1MDQgMjAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MDQgMjAwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwb2x5Z29uIGZpbGw9IiNEOURGMjAiIHBvaW50cz0iNzEsMjAwIDEsMTMwIDEsMCA3MSwwIAkiLz4NCgk8cG9seWdvbiBmaWxsPSIjRDlERjIwIiBwb2ludHM9IjE2OSwwIDg1LDAgODUsNzAgMTY5LDcwIDE2OSwyMDAgMjM5LDIwMCAyMzksNzAgMjM5LDAgCSIvPg0KCTxwb2x5Z29uIGZpbGw9IiNEOURGMjAiIHBvaW50cz0iNDM1LDAgMzM3LDAgMjY3LDAgMjY3LDcwIDI2NywyMDAgMzM3LDIwMCAzMzcsNzAgMzUxLDcwIDQyMSwxNDAgNDIxLDcwIDQzNSw3MCA0MzUsMjAwIDUwNSwyMDAgDQoJCTUwNSw3MCAJIi8+DQo8L2c+DQo8L3N2Zz4NCg==");
 }
 .badge ul {
@@ -593,7 +595,8 @@ aside a {
 }
 .badge ul a:hover,
 .badge ul a:focus,
-.badge ul a:active {
+.badge ul a:active,
+.badge ul a.active {
   color: #d9df20;
 }
 .calendar {
