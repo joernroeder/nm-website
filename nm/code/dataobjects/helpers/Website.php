@@ -46,5 +46,9 @@ class Website extends DataObject {
 		)
 	);
 
+	function Link() {
+		return strpos($this->Link, 'http://') === false ? 'http://' . $this->Link : $this->Link;
+	}
+
 }
 
