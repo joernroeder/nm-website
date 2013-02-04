@@ -2,22 +2,27 @@
 
 class StartEndDateExtension extends Extension {
 
-	public function Date() {
-		$startFormat = $this->owner->stat('start_date_format');
-		$endFormat = $this->owner->stat('end_date_format');
-
-		if (!$startFormat) {
-			user_error("you have to set the StartDate formatter (static \$start_date_format) in {$this->owner->class}", E_USER_ERROR);
+	public function getDate() {
+		if ($this->owner->dbObject('Date')) {
+			return $this->owner->hasMethod('getDate') ? $this->owner->getDate() : $this->getFormattedDate();
 		}
+		else {
+			$startFormat = $this->owner->stat('start_date_format');
+			$endFormat = $this->owner->stat('end_date_format');
 
-		if (!$endFormat) {
-			user_error("you have to set the StartDate formatter (static \$start_date_format) in {$this->owner->class}", E_USER_ERROR);
+			if (!$startFormat) {
+				user_error("you have to set the StartDate formatter (static \$start_date_format) in {$this->owner->class}", E_USER_ERROR);
+			}
+
+			if (!$endFormat) {
+				user_error("you have to set the StartDate formatter (static \$start_date_format) in {$this->owner->class}", E_USER_ERROR);
+			}
+
+			$start = $this->owner->dbObject('StartDate');
+			$end = $this->owner->dbObject('EndDate');
+
+			return $end && $end->value ? $start->format($startFormat) . ' - ' . $end->format($endFormat) : $start->format($endFormat);
 		}
-
-		$start = $this->owner->dbObject('StartDate');
-		$end = $this->owner->dbObject('EndDate');
-
-		return $end && $end->value ? $start->format($startFormat) . ' - ' . $end->format($endFormat) : $start->format($endFormat);
 	}
 
 	/**
@@ -57,7 +62,6 @@ class StartEndDateExtension extends Extension {
 
 		return $date ? $date->format($format) : '';
 	}
-
 
 
 }
