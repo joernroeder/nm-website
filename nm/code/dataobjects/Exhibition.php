@@ -85,6 +85,25 @@ class Exhibition extends DataObject {
 		'Summary'									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
 	);
 
+		// ! API -------------------------------
 
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'PreviewImageID',
+			'TeaserText',
+			'Date',
+			'Space',
+			'Location',
+			'Text',
+			'Websites',
+			'Projects',
+			'Images',
+			'CalendarEntries',
+			'Persons',
+			'Workshops',
+			'Excursions'
+		)
+	);
 }
 

@@ -78,5 +78,25 @@ class Workshop extends DataObject {
 		'Date',
 		'Summary'	// ruft $this->getSummary() auf {@see DataObjectHasSummaryExtension}
 	);
+
+	// ! API -------------------------------
+
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'PreviewImageID',
+			'TeaserText',
+			'Date',
+			'Space',
+			'Location',
+			'Text',
+			'Exhibitions',
+			'Projects',
+			'Images',
+			'CalendarEntries',
+			'Persons',
+			'Excursions'
+		)
+	);
 }
 
