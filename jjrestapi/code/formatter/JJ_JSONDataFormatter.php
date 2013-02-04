@@ -80,7 +80,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 
 			// it's an object field
 			if (is_string($fieldType)) {
-				
+
 				//check if it's a relation without specified array => get only ids
 				if (in_array($fieldType, $this->getBase()->getRelationTypes())) {
 					$rel = $obj->getRelation($fieldName, $fieldType);
@@ -111,7 +111,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 					}
 				}
 			} else if (is_array($fieldType) && isset($fieldType['ClassName'])) {
-				$rel = $this->getBase()->getRelation($obj, $fieldName, $fieldType['Type']);
+				$rel = $obj->getRelation($fieldName, $fieldType['Type']);
 			
 				if (!$rel || $rel->ID === 0) continue;
 
@@ -167,6 +167,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		$items = array();
 
 		foreach ($set as $do) {
+			//print_r($do->class);
 			$obj = $this->convertDataObjectToJSONObject($do, $fields);
 			
 			if ($obj) {
