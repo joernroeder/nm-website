@@ -125,6 +125,7 @@ class ResponsiveImage extends DataObject {
 	protected $extraClasses;
 
 	protected $imageSizesCache = null;
+	protected $urlSizesCache = null;
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -258,6 +259,20 @@ class ResponsiveImage extends DataObject {
 		}
 		
 		return $this->imageSizesCache;
+	}
+
+	function getLinksBySize() {
+		if (!$this->urlSizeCache) {
+			$urls = array();
+
+			foreach ($this->Images() as $image) {
+				$urls[] = $image->getLinksBySize();
+			}
+
+			$this->urlSizesCache = $urls;
+		}
+
+		return $this->urlSizesCache;
 	}
 
 	public function forTemplate() {

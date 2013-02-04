@@ -26,5 +26,21 @@ class DocImage extends ResponsiveImage {
 	static $singular_name = 'Image';
 	static $plural_name = 'Images';
 
+
+	// ! API -------------------------------
+
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'Caption',
+			'Urls'
+		)
+	);
+
+	public function getUrls() {
+		//print_r($this->getLinksBySize());
+
+		return $this->getLinksBySize();
+	}
 }
 

@@ -89,5 +89,30 @@ class Project extends DataObject {
 		'IsPortfolio',
 		'IsFeatured'
 	);
+
+
+	// ! API -------------------------------
+
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'TeaserText',
+			'FormattedDate',
+			'Text',
+			'Code',
+			'IsPortfolio',
+			'IsFeatured',
+
+			'Categories.Title',
+			'Images.Urls',
+			'CalendarEntries',
+			'ParentProjects',
+			'Exhibitions',
+			'Workshops',
+			'Excursions',
+			'Persons',
+		)
+	);
+
 }
 

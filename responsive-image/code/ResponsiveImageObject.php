@@ -114,6 +114,25 @@ class ResponsiveImageObject extends Image {
 		return $tags;
 	}
 
+	function getLinksBySize() {
+		$sizes = array_keys(ResponsiveImage::$responsive_breakpoints); //$this->getMinWidths();
+		$urls = array();
+
+		foreach ($sizes as $s) {
+			$str_size = (string) $s;
+
+			if ($this->getWidth() > $s) {
+				$resized = $this->getImageByWidth($s);
+				$urls[$str_size] = $resized->Link();
+			}
+			else {
+				$urls[$str_size] = $this->Link();
+			}
+		}
+
+		return $urls;
+	}
+
 	/**
 	 * returns the link for the formatted image
 	 *

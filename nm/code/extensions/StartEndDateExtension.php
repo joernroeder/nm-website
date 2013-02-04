@@ -2,9 +2,9 @@
 
 class StartEndDateExtension extends Extension {
 
-	public function getDate() {
-		if ($this->owner->dbObject('Date')) {
-			return $this->owner->hasMethod('getDate') ? $this->owner->getDate() : $this->getFormattedDate();
+	public function Date() {
+		if ($this->owner->hasField('Date')) {
+			return $this->owner->hasMethod('Date') ? $this->owner->Date() : $this->getFormattedDate();
 		}
 		else {
 			$startFormat = $this->owner->stat('start_date_format');

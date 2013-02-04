@@ -49,9 +49,11 @@ class Category extends DataObject {
 	static $summary_fields = array(
 		'Title'
 	);
-}
 
-static $api_access = array(
+
+	// ! API -------------------------------
+
+	static $api_access = array(
 		'view' => array(
 			'Title',
 			'Projects'
