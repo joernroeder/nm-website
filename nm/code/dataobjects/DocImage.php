@@ -23,5 +23,8 @@ class DocImage extends ResponsiveImage {
 		'Workshops'		=> 'Workshop'		// Workshops
 	);
 
+	static $singular_name = 'Image';
+	static $plural_name = 'Images';
+
 }
 
