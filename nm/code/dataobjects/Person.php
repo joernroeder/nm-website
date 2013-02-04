@@ -114,8 +114,7 @@ class Person extends DataObject {
 			'IsAlumni',
 			'IsEmployee',
 			'IsExternal',
-			'Websites.Title',
-			'Websites.Link',
+			'Websites',
 			'Exhibitions',
 			'Excursions',
 			'Workshops'
