@@ -74,18 +74,19 @@ class CalendarEntry extends DataObject {
 		'Summary'	// ruft $this->getSummary() auf {@see DataObjectHasSummaryExtension}
 	);
 
-}
-
-static $api_access = array(
+	
+	// ! API -------------------------------	
+	
+	static $api_access = array(
 		'view' => array(
-		'Title',
-		'Text',
-		'Date',
-		'Websites',
-		'Exhibitions',
-		'Workshops',
-		'Projects',
-		'Excursions'
+			'Title',
+			'Text',
+			'Date',
+			'Websites',
+			'Exhibitions',
+			'Workshops',
+			'Projects',
+			'Excursions'
 		)
 	);
 
