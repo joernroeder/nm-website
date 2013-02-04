@@ -186,7 +186,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 					);*/
 				} 
 				// @todo Possible security risk by making methods accessible - implement field-level security
-				else if ($this->owner->hasField($fieldName) || $this->owner->hasMethod("get{$fieldName}")) {
+				else if ($this->owner->hasField($fieldName) || $this->owner->hasMethod("get{$fieldName}") || $this->owner->hasMethod("{$fieldName}")) {
 					$dbFields[$fieldName] = $fieldName;	
 				}
 				else if (in_array($fieldName, array_keys($relationKeys))) {
@@ -238,7 +238,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		if (is_array($customAddFields)) {
 			foreach($customAddFields as $fieldName) {
 				// @todo Possible security risk by making methods accessible - implement field-level security
-				if($this->owner->hasField($fieldName) || $this->owner->hasMethod("get{$fieldName}")) $dbFields[$fieldName] = $fieldName; 
+				if($this->owner->hasField($fieldName) || $this->owner->hasMethod("get{$fieldName}")  || $this->owner->hasMethod("{$fieldName}")) $dbFields[$fieldName] = $fieldName; 
 			}
 		}
 
