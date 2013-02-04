@@ -1,0 +1,130 @@
+
+
+
+
+
+
+
+
+
+
+
+
+// Response
+{
+	sucessful: false,
+	validate: {
+		FirstName: 'required'
+	}
+}
+
+{
+	valid: true,
+	redirect: 'www.foo.bar'
+}
+
+{
+	valid: true,
+	alert: 'kiffen?'
+}
+
+
+// PUT Request
+{
+	Title: 'foo',
+	HasManyTest:  {
+		'+': [1, 2,	3, {
+				Title: 'bar'
+			}
+		],
+		'=': [1, 3, 4]
+		'-': [5, 6]
+	}
+}
+
+
+{
+//	Title: 'foo',
+	HasManyTest: [1,2,3]
+}
+Model.save();
+
+// Response
+{
+	valid: true,
+	item: {
+		HasManyTest: 4
+	}
+}
+
+
+{
+	valid: true,
+	item: {
+		HasManyTest: 1,2,3,4,5,6,7
+	}
+}
+
+
+Storage {
+	TestObjects: Collection
+		TestObject[1]
+			add(key, 4)
+				TestObject->key = 4
+				save()
+}
+
+
+
+
+.click ->
+	Storage.ModelClass.get($el.get('id')).add('HasManyTest', 4);
+
+
+
+
+
+/**
+ * Structure for an Object
+ * -------------------------
+ *
+ * don't pass ID to all Objects, set it once at config->defaultFields
+ *
+ * backbone colletcion fetchUrl will be generated with api_base + className
+ *
+ */
+
+{
+	config: {
+		defaultFields: {
+			'ID'
+		}
+	},
+	TestObject: {
+		ClassName: 'TestObject',
+		Fields: [
+			'Title',
+			'Content'
+		],
+		Relations: [
+			HasOneTest: {
+				ClassName: 'HasOneTestObject',
+				Type: 'has_one',
+				Fields: [
+					'Title',
+					'Content'
+				],
+				Relations: [
+					HasManyTest2: {
+						ClassName: 'HasManyTestObject',
+						Type: 'has_many',
+						Fields: [
+							'Title',
+							'Content'
+						]
+					}
+				]
+			}
+		]
+	}
+}
