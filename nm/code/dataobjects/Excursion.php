@@ -85,5 +85,23 @@ class Excursion extends DataObject {
 	);
 
 
+	// ! API -------------------------------
+
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'Location',
+			'Space',
+			'Date',
+			'TeaserText',
+			'Text',
+			'Projects',
+			'CalendarEnties',
+			'Workshops',
+			'Persons',
+			'Exhibitions'
+		)
+	);
+
 }
 

@@ -99,5 +99,30 @@ class Person extends DataObject {
 		return $fields;
 	}
 
+
+	// ! API -------------------------------
+
+	static $api_access = array(
+		'view' => array(
+			'FullName',
+			'Email',
+			'Bio',
+			'GraduationYear',
+			'MasterYear',
+			'IsStudent',
+			'IsProfessor',
+			'IsAlumni',
+			'IsEmployee',
+			'IsExternal',
+
+			'Projects',
+			//'Websites',	
+			'Exhibitions',
+			'Excursions',
+			'Workshops'
+
+		)
+	);
+
 }
 

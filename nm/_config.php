@@ -37,8 +37,21 @@ Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 //CMSMenu::remove_menu_item('Help');
 
 
+// --------------- JJRestApi -------------------------------------
+
+
+Structure_RestApiExtension::add(array(
+	'Excursion'
+));
+
+/*Structure_RestApiExtension::ignore(array(
+	'SiteConfig'
+));*/
+
+
 // include environment config 
 require_once('conf/ConfigureFromEnv.php');
+
 
 
 // ! Database config for php unit testing ---------
