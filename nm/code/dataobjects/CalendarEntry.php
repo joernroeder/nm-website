@@ -76,3 +76,20 @@ class CalendarEntry extends DataObject {
 
 }
 
+static $api_access = array(
+		'view' => array(
+		'Title',
+		'Text',
+		'Date',
+		'Websites',
+		'Exhibitions',
+		'Workshops',
+		'Projects',
+		'Excursions'
+		)
+	);
+
+}
+
+
+
