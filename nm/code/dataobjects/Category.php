@@ -51,3 +51,11 @@ class Category extends DataObject {
 	);
 }
 
+static $api_access = array(
+		'view' => array(
+			'Title',
+			'Projects'
+		)
+	);
+
+}
