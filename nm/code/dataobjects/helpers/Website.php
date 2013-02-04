@@ -35,5 +35,16 @@ class Website extends DataObject {
 		'Persons'			=> 'Person',				// Personen
 		'Exhibitions'		=> 'Exhibition'				// Ausstellungen
 	);
+
+
+	// ! API -------------------------------
+
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'Link'
+		)
+	);
+
 }
 
