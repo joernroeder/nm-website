@@ -2,6 +2,7 @@
 
 class JJ_BaseDataFormatter {
 
+
 	/**
 	 *
 	 * @var array
@@ -9,6 +10,7 @@ class JJ_BaseDataFormatter {
 	static $relation_types = array(
 		'has_one', 'has_many', 'belongs_to', 'many_many'
 	);
+
 
 	/**
 	 * additional fields for every object
@@ -18,11 +20,13 @@ class JJ_BaseDataFormatter {
 	 */
 	protected $additionalFields = array();
 
+
 	/** 
 	 *
 	 * @var JJ_{JSON|XML}DataFormatter;
 	 */
 	protected $owner = null;
+
 
 	/**
 	 * @param the current JJ_FORMATDataFormatter
@@ -32,11 +36,14 @@ class JJ_BaseDataFormatter {
 		$this->owner = $extensionFormatter;
 	}
 
+
 	public function getRelationTypes() {
 		return self::$relation_types;
 	}
 
+
 	// ! API Helper
+	
 	/**
 	 * super unique 
 	 *
@@ -46,16 +53,31 @@ class JJ_BaseDataFormatter {
 	 * @return array
 	 */
 	public function superUnique($array) {
-		$result = array_map('unserialize', array_unique(array_map('serialize', $array)));
+		$new = array();
+		
+		$result = array_map('serialize', $array);
 
+		// check for key and merge serialized arrays together 
 		foreach ($result as $key => $value) {
-			if (is_array($value)) {
-				$result[$key] = $this->superUnique($value);
+			if (isset($new[$key])) {
+				$new[$key] .= $value;
+			}
+			else {
+				$new[$key] = $value;
 			}
 		}
 
-		return $result;
+		$new = array_map('unserialize', $new);
+
+		foreach ($new as $key => $value) {
+			if (is_array($value)) {
+				$new[$key] = $this->superUnique($value);
+			}
+		}
+
+		return $new;
 	}
+
 
 	/**
 	 * checks if the fieldName exists in the fields.
@@ -77,6 +99,7 @@ class JJ_BaseDataFormatter {
 
 		return true;
 	}
+
 
 	/**
 	 * casts a DBField Subclass
@@ -106,4 +129,6 @@ class JJ_BaseDataFormatter {
 
 		return $val;
 	}
+
 }
+
