@@ -105,6 +105,7 @@ class Project extends DataObject {
 
 			'Categories.Title',
 			'Images.Urls',
+			
 			'CalendarEntries',
 			'ParentProjects',
 			'Exhibitions',
