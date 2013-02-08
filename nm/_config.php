@@ -41,12 +41,21 @@ Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 
 
 Structure_RestApiExtension::add(array(
-	'Excursion'
+	'Person'
 ));
 
-/*Structure_RestApiExtension::ignore(array(
-	'SiteConfig'
-));*/
+Structure_RestApiExtension::ignore(array(
+	'Member',
+	'Ranking',
+	'DashboardPanel',
+	'Group',
+	'Permission',
+	'PermissionRole',
+	'PermissionRoleCode',
+	'ResponsiveImage',
+	'ResponsiveImageObject',
+	'File'
+));
 
 
 // include environment config 
