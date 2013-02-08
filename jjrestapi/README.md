@@ -457,13 +457,20 @@ Gibt den Owner ([JJ_RestfulServer](#restfulserver)-Instanz) der Extension zurüc
 
 Einfacher Basis-Handler für Abfragen über die API ([`to_api()`](#restapiextension-for_api)). Checkt [$isReadOnly](#restapiextension-isreadonly) und setzt die Response-Header für `Content-Type` etc.
 
-#### convert(_array|object_ $data)
+<a name="restapiextension-convert"></a>
+#### convert(_array|object_ $data, _null|array_ $fields)
 
 Konvertiert den mitgegebenen Datensatz mit Hilfe des [DataFormatters](#dataformatter) der [JJ_RestfulServer](#restfulserver)-Instanz.
 
-##### getData($extension = null)
+<a name="restapiextension-getdata"></a>
+#### getData($extension = null)
 
 Gibt die Daten in Rohform (_array|object_) zurück, die dann mit [`convert()`](#restapiextension-convert) konvertiert und zurückgegeben werden. `$extension` zeigt dabei die momentane Extension der API an, aufgrund dessen die Daten unterschiedlich strukturiert werden können.
+
+<a name="restapiextension-getfields"></a>
+#### getFields($api_access = array(), $context = null)
+
+Falls in der Extension `static $api_access = array()` definiert wurde, werden die Daten aus [`getData()`](#restapiextension-getdata) mit den Feldern des Kontextes konvertiert.
 
 <a name="restapiextension-howto"></a>
 ### Wie schreibe ich meine eigene Erweiterung?
@@ -572,6 +579,11 @@ Fügt ein DataObject zu den zu ignorierenden Objekten.
 
 Gibt die DataObjects der Struktur zurück.
 
+<a name="structure-getignored"></a>
+#### static get_ignored()
+
+Gibt die ClassNames der DataObjects zurück, die in der Struktur ignoriert werden sollen.
+
 <a name="structure-remove"></a>
 #### static remove(_string|array_ $className)
 
@@ -585,6 +597,7 @@ Löscht ein DataObject von den zu ignorierenden Objekten.
 #### getData($extension = 'json')
 
 Gibt die Struktur, optimiert für den zu verwendenden [Formatter](#), als Array zurück.
+
 
 ---
 

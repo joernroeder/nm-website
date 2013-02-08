@@ -13,6 +13,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		//'Created'	=> 'SS_DateTime'
 	);
 
+
 	/**
 	 * sets the api
 	 *
@@ -21,6 +22,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 */
 	public static $api_extension = 'json';
 
+
 	/**
 	 *
 	 * @static
@@ -28,19 +30,23 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 */
 	public static $api_logged_in_context_name = 'logged_in';
 
+
 	// ! Context Handler
 	
 	public function getViewContext($member = null) {
 		return $this->getContextName($member);
 	}
 
+
 	public function getEditContext($member = null) {
 		return $this->getContextName($member);
 	}
 
+
 	public function getDeleteContext($member = null) {
 		return $this->getContextName($member);
 	}
+
 
 	/**
 	 * @param DataObject $member
@@ -174,18 +180,12 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 			
 			$relationKeys = $this->getRelationKeys();
 
-			//print_r($preparedCustomFields);
-			
 			foreach ($preparedCustomFields as $key => $fieldNameArray) {
 				$fieldName = is_integer($key) ? $fieldNameArray : $key;
 
-				//
-				//if (in_array($fieldName, $this->owner->getRemoveFields())) continue;
-
 				// field is a relation but no relation key is set -> get only an array of ids
 				if (in_array($fieldName, array_keys($relationKeys)) && $fieldName == $fieldNameArray) {
-					//print_r($fieldName);
-					//print_r((int)isset($preparedCustomFields[$fieldName]));
+
 					// respect this only if there are no other keys set within the same relation
 					if (!isset($preparedCustomFields[$fieldName])) {
 						$dbFields[$fieldName] = $relationKeys[$fieldName]['Type'];
@@ -360,6 +360,9 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		foreach ($relationKeys as $key => $relation) {
 			if (is_array($relation) && !empty($relation)) {
 				foreach ($relation as $k => $v) {
+
+					if (!class_exists($v)) continue;
+
 					$relations[$k] = array(
 						'ClassName'		=> $v,
 						'Type'			=> $key,

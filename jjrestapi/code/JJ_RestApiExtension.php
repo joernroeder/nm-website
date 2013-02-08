@@ -10,6 +10,7 @@ class JJ_RestApiExtension extends Object {
 	 */
 	protected $isReadOnly = true;
 
+
 	/**
 	 * Use the template key to make your extension accessable in as Template-Var
 	 * 
@@ -34,10 +35,14 @@ class JJ_RestApiExtension extends Object {
 	 */
 	public static $enabled = true;
 
+
 	/**
-	 *
+	 * owner, ussually a JJ_RestfulServer instance
+	 * 
+	 * @var JJ_RestfulServer
 	 */
 	protected $owner = null;
+
 
 	/**
 	 * registers your {@link self::$template_key} as global variable
@@ -63,6 +68,7 @@ class JJ_RestApiExtension extends Object {
 		}
 	}
 
+
 	/**
 	 * returns the structure in a script tag for the template.
 	 *
@@ -77,12 +83,6 @@ class JJ_RestApiExtension extends Object {
 		return new JJ_DataElement($elementKey, $self->getData($extension), $extension);
 	}
 
-	
-	/*public static function for_template() {
-		$self = self::create();
-		
-		return $self->convert($self->getData());
-	}*/
 
 	/**
 	 * returns the extension data to the API
@@ -97,19 +97,11 @@ class JJ_RestApiExtension extends Object {
 		$extensions = $self->getOwner()->getResponseFormatter()->supportedExtensions();
 		$extension = !empty($extensions) ? $extensions[0] : $self->getOwner()->stat('default_extension');
 
-		$api_access = $self->stat('api_access');
-		$fields = array();
-		$context = $self->getContext();
-
-		if (!isset($api_access[$context])) {
-			user_error('Kein Context definiert.', E_USER_WARNING);
-		}
-		else {
-			$fields = $api_access[$context];
-		}
+		$fields = $self->getFields($self->stat('api_access'));
 
 		return $self->convert($self->getData($extension), $fields);
 	}
+
 
 	/**
 	 *
@@ -125,6 +117,7 @@ class JJ_RestApiExtension extends Object {
 
 		return $self;
 	}
+
 
 	/**
 	 * returns the extension key defined in a subclass
@@ -147,6 +140,7 @@ class JJ_RestApiExtension extends Object {
 		return $this->owner;
 	}
 
+
 	/**
 	 * abstract handle method.
 	 * call parent::handle() for security and response header in your sub-class
@@ -168,62 +162,38 @@ class JJ_RestApiExtension extends Object {
 		$this->getOwner()->addContentTypeHeader();
 	}
 
+
 	public function convert($data, $fields = null) {
 		return $this->getOwner()->getResponseFormatter()->convert($data, $fields);
 	}
+
 
 	public function getData($extension = null) {
 		return array();
 	}
 
+
 	public function getContext() {
 		return Member::CurrentUserID() ? 'view.logged_in' : 'view';
 	}
 
-	/**
-	 * returns the options for a Object
-	 *
-	 * @param string objName
-	 * @param string context -> api_access key (view/edit/delete etc)
-	 *
-	 * @return object
-	 */
-	/*function getOptionsFor($objName, $context) {
-		$opts = new stdClass();
 
-		$opts->context = $context;
-		$opts->fields = $this->getOwner()->getResponseFormatter()->getBase()->getFields($objName, $context);
-		$opts->extension = $this->getOwner()->getResponseFormatter()->stat('href_extension');
+	public function getFields($api_access = array(), $context = null) {
+		$fields = null;
+		$context = $context ? $context : $this->getContext();
 
-		return $opts;
-	}*/
+		// api access fields defined. going to check context
+		if (!empty($api_access)) {
+			if (!isset($api_access[$context])) {
+				user_error("You have defined your api-fields throught the static \$api_access but there is no context $context", E_USER_WARNING);
+			}
+			else {
+				$fields = $api_access[$context];
+			}
+		}
 
-	/**
-	 *
-	 * @link JJ_RestApiExtension->getOptions()
-	 * 
-	 * @param object Object
-	 * @param object Options
-	 *
-	 * @return object
-	 */
-	/*function toApiObject($obj, $opts) {
-		return $obj->toApiObject($opts->context, $opts->extension, $opts->fields);
-	}*/
+		return $fields;
+	}
 
-	/**
-	 * returns "false" formatted by the current datatype json/xml
-	 */
-	/*function returnFalse() {
-		return $this->getOwner()->getResponseFormatter()->convertObj(false);
-	}*/
-
-	/**
-	 * returns "true" formatted by the current datatype json/xml
-	 *
-	 * @todo implement it. it's only a dummy function at the moment
-	 */
-	/*function returnTrue() {
-		return ''; //$this->getOwner()->getResponseFormatter()->convertObj(true);
-	}*/
 }
+

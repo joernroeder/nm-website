@@ -19,7 +19,7 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 	 * @static
 	 * @var array
 	 */
-	protected static $ignore_objects = array();
+	protected static $ignored_objects = array();
 
 	//public static $default_fields = array();
 
@@ -61,7 +61,7 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 	protected static function add_to($list_flag, $objects) {
 
 		// get list
-		$list = 'ignore' == $list_flag ? self::$ignore_objects : self::$structured_objects;
+		$list = 'ignore' == $list_flag ? self::$ignored_objects : self::$structured_objects;
 
 		if (!is_array($objects)) {
 			$objects = array($objects);
@@ -78,7 +78,7 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 
 		// push back
 		if ('ignore' == $list_flag) {
-			self::$ignore_objects = $list;
+			self::$ignored_objects = $list;
 		}
 		else {
 			self::$structured_objects = $list;
@@ -128,7 +128,7 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 
 		// push back
 		if ('ignore' == $list_flag) {
-			self::$ignore_objects = $list;
+			self::$ignored_objects = $list;
 		}
 		else {
 			self::$structured_objects = $list;
@@ -144,6 +144,16 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 	 */
 	public static function get() {
 		return self::$structured_objects;
+	}
+
+
+	/**
+	 * Returns all class-names that are part of the structure.
+	 *
+	 * @return array
+	 */
+	public static function get_ignored() {
+		return self::$ignored_objects;
 	}
 
 
@@ -186,9 +196,13 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 	 * @return array
 	 */
 	public function getData($extension = null) {
+		return $this->_getData();
+	}
+
+	public function _getData($extension = null) {
 		$extension = $extension ? $extension : 'json';
-		$objects = is_array(self::$structured_objects) ? array_keys(self::$structured_objects) : array();
-		$ignore = is_array(self::$ignore_objects) ? self::$ignore_objects : array();
+		$objects = self::get();
+		$ignore = self::get_ignored();
 		
 		if (empty($objects)) return $this->isFalse();
 
@@ -198,8 +212,10 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 		$structure = array();
 		$i = 0;
 
-		while ($i < sizeOf($objects)) {
-			$class = $objects[$i];
+		// get classnames array
+		$keys = array_keys($objects);
+		while ($i < sizeOf($keys)) {
+			$class = $keys[$i];
 			//$className = $objs[$i];
 			if (!class_exists($class)) {
 				user_error("You've added '{$class}' to JJ_RestApis Structure-Extension. But '{$class}' doesn't exists.", E_USER_WARNING);
@@ -216,7 +232,10 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 			foreach ($obj->getRelationKeys() as $key => $relation) {
 				if (!array_key_exists($relation['ClassName'], $ignore)) {
 					if (!in_array($relation['ClassName'], $objects)) {
-						$objects[] = $relation['ClassName'];
+						// update classnames array
+						$keys[] = $relation['ClassName'];
+						
+						//$keys = array_keys($objects);
 					}
 					$relationKeys[] = $relation;
 				}

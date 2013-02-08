@@ -149,13 +149,17 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @return json object
 	 */
 	public function convertObj(DataObject $obj, $keys = null) {
-		// optimize
-		$keykeys = array();
-		foreach($keys as $key) {
-			$keykeys[$key] = $key;
+
+		if (is_array($keys)) {
+			$keykeys = array();
+
+			foreach($keys as $key) {
+				$keykeys[$key] = $key;
+			}
+
+			$obj = array_intersect_key($obj, $keykeys);
 		}
 
-		$obj = array_intersect_key($obj, $keykeys);
 		return Convert::array2json($obj);
 	}
 
