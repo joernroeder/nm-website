@@ -718,6 +718,12 @@ aside a {
   -moz-column-gap: 2.5em;
   column-gap: 2.5em;
 }
+.about .students {
+  margin-left: 12.5%;
+}
+.about .alumni {
+  margin-right: 12.5%;
+}
 /*
  *
  *  Four-column grid active
