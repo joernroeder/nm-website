@@ -28,11 +28,6 @@ require [
 			ProjectCollection = JJRestApi.Collection 'Project'
 			PersonCollection = JJRestApi.Collection 'Person'
 
-			PersonModel = JJRestApi.Model 'Person'
-
-			isi = new PersonModel {name: 'Isi Paehr'}
-			isi.sayHello()						
-
 			app.Collections.Projects = new ProjectCollection()
 			app.Collections.Persons = new PersonCollection()
 

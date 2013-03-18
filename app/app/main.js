@@ -6,15 +6,10 @@ require(['app', 'router', 'modules/example', 'modules/Project', 'modules/Person'
   app.Collections = {};
   $(function() {
     return JJRestApi.bootstrapWithStructure(function() {
-      var PersonCollection, PersonModel, ProjectCollection, isi;
+      var PersonCollection, ProjectCollection;
 
       ProjectCollection = JJRestApi.Collection('Project');
       PersonCollection = JJRestApi.Collection('Person');
-      PersonModel = JJRestApi.Model('Person');
-      isi = new PersonModel({
-        name: 'Isi Paehr'
-      });
-      isi.sayHello();
       app.Collections.Projects = new ProjectCollection();
       app.Collections.Persons = new PersonCollection();
       app.Layouts.Main = app.useLayout('main', {
