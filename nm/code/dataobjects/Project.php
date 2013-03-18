@@ -114,8 +114,17 @@ class Project extends DataObject {
 			'Workshops',
 			'Excursions',
 			'Persons',
+		),
+		'view.portfolio_init' => array(
+			'Title'
 		)
 	);
+
+	public function canView($member = null) {
+		return true;
+	}
+
+	// ! WRITE / DATA GENERATION
 
 	public function onBeforeWrite() {
 		if (!$this->UglyHash && $this->ID) {

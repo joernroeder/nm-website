@@ -28,6 +28,11 @@
 	<!-- JJRestApi.Structure -->
 	$JJRestApi.Structure
 
+	<!-- InitialData -->
+	<% if InitialData %>
+		$InitialData
+	<% end_if %>
+
 	<!-- Main container. Everything gets injected here. -->
 	<div id="wrapper">
 		<!-- This is our header which won't change. Ever. -->
