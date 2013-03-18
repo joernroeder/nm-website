@@ -1,6 +1,6 @@
 ###*
  * Backbone JJRelational
- * v0.2.0
+ * v0.2.1
  *
  * A relational plugin for Backbone JS that provides one-to-one, one-to-many and many-to-many relations between Backbone models.
  * 
@@ -426,24 +426,34 @@ do () ->
 				attrs[key] = val
 			
 			options = options or {}
+
+			# Run validation
+			if not @._validate(attrs, options) then return false
+
 			# Extract attributes and options
 			silent = options and options.silent
 			unset = options and options.unset
 			ignoreChanges = options and options.ignoreChanges
-		
-			# Run validation
-			if not @._validate(attrs, options) then return false
+			changes = []
+			changing = @._changing
+			@._changing = true
+
+			if not changing
+				@._previousAttributes = _.clone @.attributes
+				@.changes = {}
+			current = @.attributes
+			prev = @._previousAttributes
 
 			# Check for changes of `id`
 			if @.idAttribute of attrs then @.id = attrs[@.idAttribute]
-
-			now = @.attributes
 
 			# ignore changes for subsequent `set`-calls
 			options.ignoreChanges = true
 
 			# iterate over the attributes to set
 			for key, value of attrs
+				if not _.isEqual current[key], value then changes.push key
+				if not _.isEqual prev[key], value then @.changed[key] = val else delete @.changed[key]
 				# check if it's a relation that is to be set
 				if (relation = @.getRelationByKey key) and @.relationsInstalled
 					# if yes, empty relation
@@ -453,16 +463,24 @@ do () ->
 						# check the value and add it to the relation accordingly
 						@.checkAndAdd(v, relation, options) unless unset
 				else
-					if unset then delete now[key] else now[key] = value
+					if unset then delete current[key] else current[key] = value
 				if not ignoreChanges then @._changes.push key, value
 
-			# Signal that the model's state has potentially changed, and we need to recompute
-			# the actual change
 
-			@._hasComputes = false
+			# Trigger all relevant attribute changes.
+			if not silent
+				if changes.length then this._pending = true
+				for change in changes
+					@.trigger 'change:' + cahnge, @, current[change], options
 
-			# Fire the `"change"` events.
-			if not silent then @.change options
+			if changing then return @
+			if not silent
+				while @._pending
+					@._pending = false
+					@.trigger 'change', @, options
+			@._pending = false
+			@._changing = false
+
 			@
 
 		###*
