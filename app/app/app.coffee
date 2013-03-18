@@ -56,7 +56,8 @@ define [
 				layout = new Backbone.Layout _.extend({
 					template: 'layouts/' + name
 					className: 'layout ' + name
-					id: 'layout'
+					id: 'layout',
+					selector: '#layout'
 				}, options)
 
 				# Insert into the DOM.

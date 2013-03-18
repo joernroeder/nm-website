@@ -817,15 +817,10 @@ do () ->
 				if relation.relatedModel.prototype.storeIdentifier is identifier then return relation
 			false
 
-		###*
-		 * 
-		 * @end Helper methods
-		 *
-		###
+		# @end Helper methods
 
-	# !-
+
 	# ! Backbone Collection
-	# !-
 
 	###*
 	 * Sums up "`fetchByIdQueue`"-calls on the same relation in a whole collection
@@ -859,7 +854,7 @@ do () ->
 			if idQueue.length > 0
 				options.url = getUrlForIdQueue relModel.prototype, idQueue
 				if options.parse is undefined then options.parse = true
-			
+
 				success = options.success
 				options.success = (resp, status, xhr) =>
 					parsedObjs = []
@@ -889,7 +884,7 @@ do () ->
 	 * Backbone.Collection hacks
 	 * 
 	###
-	
+
 
 	Backbone.Collection.prototype.__add = Backbone.Collection.prototype.add
 	###*
