@@ -33,8 +33,10 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 
 	// ! Context Handler
 	
+	protected $specificContext = '';
+	
 	public function getViewContext($member = null) {
-		return $this->getContextName($member);
+		return $this->specificContext ? $this->specificContext : $this->getContextName($member) ;
 	}
 
 
@@ -43,6 +45,9 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	}
 
 
+	/*
+		rethink. there should be no deleteContext, as you can either delete or not
+	 */
 	public function getDeleteContext($member = null) {
 		return $this->getContextName($member);
 	}
@@ -146,13 +151,15 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * }
 	 *
 	 */
-	public function toDataElement($name = '') {
+	public function toDataElement($name = '', $context = '') {
+		$fields = null;
+
 		if (!$name) {
 			$name = $this->owner instanceof DataList ? $this->owner->dataClass() : $this->class;
 			$name = strtolower($name);
 		}
 
-		return new JJ_DataElement($name, $this->owner);
+		return new JJ_DataElement($name, $this->owner, null, $context);
 	}
 
 
@@ -168,10 +175,13 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @param FieldSet $fields
 	 * @return array
 	 */
-	public function getApiFields($fields = null) {
+	public function getApiFields($fields = null, $specificContext = '') {
+		if ($specificContext) {
+			$this->specificContext = $specificContext;
+		}
+
 		$dbFields = array();
 		$customFields = $fields ? $fields : $this->getApiContextFields();
-
 		// if custom fields are specified, only select these
 		if (is_array($customFields)) {
 			

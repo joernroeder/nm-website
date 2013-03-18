@@ -91,9 +91,8 @@ class JJ_BaseDataFormatter {
 			$filterFields = array();
 			foreach ($fields as $field) {
 				$f = explode('.', $field);
-				$filterFields[] = $f[0];	
+				$filterFields[] = $f[0];
 			}
-
 			if (!in_array($fieldName, $filterFields)) return false;
 		}
 

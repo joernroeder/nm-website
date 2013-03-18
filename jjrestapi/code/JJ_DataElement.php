@@ -34,6 +34,11 @@ class JJ_DataElement extends ViewableData {
 	 */
 	protected $name;
 
+	/**
+	 *
+	 * @var string
+	 */
+	protected $context;
 
 	/**
 	 *
@@ -53,14 +58,15 @@ class JJ_DataElement extends ViewableData {
 	/**
 	 * Constructor: Creates a new JJ_DataElement
 	 *
-	 * @param string name
-	 * @param array|object data
+	 * @param string $name
+	 * @param array|object $data
 	 * @param string $extension (optional)
+	 * @param string $context (optional)
 	 */
-	public function __construct($name, $data = array(), $extension = null) {
+	public function __construct($name, $data = array(), $extension = null, $context = '') {
 		$this->setName($name);
 		$this->setData($data);
-
+		$this->setContext($context);
 		if ($extension) {
 			$this->setExtension($extension);
 		}
@@ -148,6 +154,24 @@ class JJ_DataElement extends ViewableData {
 		$this->data = $value;
 	}
 
+	/** 
+	 *
+	 *
+	 */
+	public function context() {
+		return $this->context;
+	}
+
+
+	/**
+	 * Context setter
+	 *
+	 * @param array
+	 */
+	public function setContext($value) {
+		$this->context = $value;
+	}
+
 
 	/**
 	 * formats and returns the data based on {@link getExtension()}
@@ -156,8 +180,8 @@ class JJ_DataElement extends ViewableData {
 	 */
 	public function formattedData() {
 		$data = $this->data();
-
-		return $this->formatter()->convert($data);
+		$context = $this->context();
+		return $this->formatter()->convert($data, null, $context);
 	}
 
 
