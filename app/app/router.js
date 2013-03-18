@@ -5,10 +5,37 @@ define(['app'], function(app) {
   Router = Backbone.Router.extend({
     routes: {
       '': 'index',
-      ':hash': 'index'
+      'about/': 'showAboutPage',
+      'about/student/:nameSlug/': 'showStudentPage',
+      'about/student/:nameSlug/:uglyHash/': 'showStudentDetailed',
+      'portfolio/': 'showPortfolio',
+      'portfolio/:slug/': 'showPortfolioDetailed',
+      '*url/': 'catchAllRoute'
     },
     index: function(hash) {
       return console.log('index');
+    },
+    showAboutPage: function() {
+      return console.log('show about page');
+    },
+    showStudentPage: function(nameSlug) {
+      console.log('show student page of %s', nameSlug);
+      return console.log('check if student has custom template');
+    },
+    showStudentDetailed: function(nameSlug, uglyHash) {
+      console.log('show project %s of %s', uglyHash, nameSlug);
+      return console.log('check if student has custom template for details');
+    },
+    showPortfolio: function() {
+      return console.log('show portfolio');
+    },
+    showPortfolioDetailed: function(slug) {
+      console.log('portfolio with uglyHash/Filter %s', slug);
+      return console.log('check if slug is filter or uglyHash and handle page accordingly');
+    },
+    catchAllRoute: function(url) {
+      console.log('catching url %s', url);
+      return console.log('find page with url, else four oh four');
     }
   });
   return Router;
