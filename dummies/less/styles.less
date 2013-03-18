@@ -26,6 +26,7 @@ body {
 	background: @bgColor;
 	.aller-light;
 	color: @black;
+	width: 100%;
 }
 
 // temporärer Abstand um bei den Tests im Grid zu starten.
@@ -127,10 +128,6 @@ aside {
 	.list-light(200);
 }
 
-.students {
-	.list-columns(2, 500);
-}
-
 
 // ! --- Badge ---------------------------------------------
 
@@ -219,6 +216,65 @@ aside {
 
 	p {
 		.mini-light;
+	}
+}
+
+// ! - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#main {
+	margin: 0 @column;
+	overflow: hidden;
+}
+// ! --- Home ----------------------------------------------
+
+
+.home {
+	.gravity {
+		display: inline-block;
+		.wrapper;
+		.columnsWidth(8, 6);
+	}
+
+	.calendar {
+		float: right;
+		display: inline-block;
+		.wrapper;
+		.columnsWidth(8, 2);
+		/*display: table-cell;
+    	vertical-align: middle;*/
+	}
+}
+
+.about {
+	.text {
+		float: right;
+		.columnsWidth(8, 4);
+		.wrapper;
+		margin-right: 100% / 8 * 1;
+	}
+
+	.group-image {
+		max-width: 100% / 8 * 3;
+		float: right;
+		.wrapper;
+	}
+
+	.person {
+		float: left;
+		.columnsWidth(8, 3);
+		.wrapper;
+	}
+
+	.students,
+	.alumni {
+		float: left;
+		.list-columns(2, 500);
+		.columnsWidth(8, 3);
+		.wrapper;
+	}
+
+	.alumni {
+
 	}
 }
 

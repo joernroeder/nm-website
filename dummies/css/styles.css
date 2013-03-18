@@ -88,7 +88,7 @@
   color: #525252;
 }
 .btn:after {
-  display: block;
+  display: inline-block;
   position: relative;
   font-family: 'Lucida Grande';
   content: "→";
@@ -429,6 +429,7 @@ body {
   font-family: 'AllerLight', 'Helvetica', sans-serif;
   font-weight: normal;
   color: #262626;
+  width: 100%;
 }
 h1,
 h2,
@@ -535,30 +536,6 @@ aside h1 {
 aside a {
   color: #505050;
 }
-.students {
-  width: 31.25em;
-  margin-bottom: 3em;
-}
-.students h1 {
-  font-size: 1.125em;
-  line-height: 1.3333333333333333em;
-  margin-top: 1.3333333333333333em;
-  font-variant: small-caps;
-}
-.students ul {
-  list-style: none;
-}
-.students li {
-  margin-top: 0.75em;
-}
-.students ul {
-  -webkit-column-count: 2;
-  -moz-column-count: 2;
-  column-count: 2;
-  -webkit-column-gap: 2.5em;
-  -moz-column-gap: 2.5em;
-  column-gap: 2.5em;
-}
 .badge {
   display: inline-block;
   background: #262626;
@@ -656,6 +633,90 @@ aside a {
   line-height: 1.7142857142857142em;
   margin-top: 0.25em;
   color: #ababab;
+}
+#main {
+  margin: 0 5.555555555555555%;
+  overflow: hidden;
+}
+.home .gravity {
+  display: inline-block;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 75%;
+}
+.home .calendar {
+  float: right;
+  display: inline-block;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 25%;
+  /*display: table-cell;
+    	vertical-align: middle;*/
+
+}
+.about .text {
+  float: right;
+  width: 50%;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-right: 12.5%;
+}
+.about .group-image {
+  max-width: 37.5%;
+  float: right;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.about .person {
+  float: left;
+  width: 37.5%;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.about .students,
+.about .alumni {
+  float: left;
+  width: 31.25em;
+  margin-bottom: 3em;
+  width: 37.5%;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.about .students h1,
+.about .alumni h1 {
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  margin-top: 1.3333333333333333em;
+  font-variant: small-caps;
+}
+.about .students ul,
+.about .alumni ul {
+  list-style: none;
+}
+.about .students li,
+.about .alumni li {
+  margin-top: 0.75em;
+}
+.about .students ul,
+.about .alumni ul {
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+  -webkit-column-gap: 2.5em;
+  -moz-column-gap: 2.5em;
+  column-gap: 2.5em;
 }
 /*
  *
