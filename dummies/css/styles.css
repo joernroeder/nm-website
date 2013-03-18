@@ -673,9 +673,6 @@ aside a {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   width: 25%;
-  /*display: table-cell;
-    	vertical-align: middle;*/
-
 }
 .about article {
   margin: 6.4375em 0;
