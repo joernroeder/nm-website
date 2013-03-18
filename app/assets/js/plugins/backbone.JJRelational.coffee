@@ -1,6 +1,6 @@
 ###*
  * Backbone JJRelational
- * v0.2.1
+ * v0.2.2
  *
  * A relational plugin for Backbone JS that provides one-to-one, one-to-many and many-to-many relations between Backbone models.
  * 
@@ -336,7 +336,7 @@ do () ->
 				done = false
 				options.success = (resp, status, xhr) =>
 					done = true
-					serverAttrs = @.parse resp, xhr
+					serverAttrs = @.parse resp
 					if options.wait then serverAttrs = _.extend(attrs || {}, serverAttrs)
 					if not @.set(serverAttrs, options) then return false
 					if success then success @, resp
@@ -806,7 +806,7 @@ do () ->
 							# added twice to the relation (by Backbone.JJStore.Events trigger)
 							@.setHasOneRelation relation, null, true
 							options.ignoreModel = @
-							model = new relModel relModel.prototype.parse(resp[0], xhr), options
+							model = new relModel relModel.prototype.parse(resp[0]), options
 							@.set relation, model
 							
 							if success then success(model, resp)
@@ -878,11 +878,11 @@ do () ->
 					parsedObjs = []
 					# check if there's a collection type for the relation. if yes, parse with it
 					if relation.collectionType and (collType = Backbone.JJRelational.__getCollectionType relation.collectionType)
-						parsedObjs = collType.prototype.parse(resp, xhr)
+						parsedObjs = collType.prototype.parse(resp)
 					else if _.isArray resp
 						# parse each object in it with the related model's parse-function
 						for respObj in resp
-							if _.isObject respObj then parsedObjs.push relModel.prototype.parse(respObj, xhr)
+							if _.isObject respObj then parsedObjs.push relModel.prototype.parse(respObj)
 					
 					# build up the new models
 					for parsedObj in parsedObjs
@@ -1090,7 +1090,7 @@ do () ->
 			# if this is the case, merely update the existing model instead of creating a new one
 			idAttribute = @.model.prototype.idAttribute
 			storeIdentifier = @.model.prototype.storeIdentifier
-			parsedResp = @.parse resp, xhr
+			parsedResp = @.parse resp
 			existingModels = []
 			args = []
 			args.push parsedResp
@@ -1140,7 +1140,7 @@ do () ->
 				# as we're fetching the rest which isn't present, we're always `add`-ing the model
 				# and we have to empty the idQueue, otherwise we'll double add the models (by Backbone.JJStore.Events)
 				@._relational.idQueue = []
-				@.add(@.parse(resp, xhr), options)
+				@.add(@.parse(resp), options)
 				
 				if success then success(@, resp)
 
