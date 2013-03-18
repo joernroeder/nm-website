@@ -1,6 +1,6 @@
 ###*
  * Backbone JJRelational
- * v0.2.2
+ * v0.2.3
  *
  * A relational plugin for Backbone JS that provides one-to-one, one-to-many and many-to-many relations between Backbone models.
  * 
@@ -440,7 +440,7 @@ do () ->
 
 			if not changing
 				@._previousAttributes = _.clone @.attributes
-				@.changes = {}
+				@.changed = {}
 			current = @.attributes
 			prev = @._previousAttributes
 
@@ -464,14 +464,13 @@ do () ->
 						@.checkAndAdd(v, relation, options) unless unset
 				else
 					if unset then delete current[key] else current[key] = value
-				if not ignoreChanges then @._changes.push key, value
 
 
 			# Trigger all relevant attribute changes.
 			if not silent
 				if changes.length then this._pending = true
 				for change in changes
-					@.trigger 'change:' + cahnge, @, current[change], options
+					@.trigger 'change:' + change, @, current[change], options
 
 			if changing then return @
 			if not silent
