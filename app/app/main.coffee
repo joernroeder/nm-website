@@ -2,11 +2,19 @@ require [
 	'app'
 	'router'
 	'modules/example'
-	'modules/Project'
-], (app, Router, Example, Project) ->
+	'modules/Project',
+	'modules/Person'
+], (app, Router, Example, Project, Person) ->
 
+	# Backbone specific
 	app.Router = new Router()
 	app.Layouts = {}
+
+	# for caching page infos
+	app.PageInfos = {}
+
+	# our objects which get populated over time
+	app.Collections = {}
 			
 
 	# Treat the jQuery ready function as the entry point to the application.
@@ -16,6 +24,18 @@ require [
 
 		# Build up our structure from Silverstripe
 		JJRestApi.bootstrapWithStructure ->
+			# make classes accessible from JJRestApi
+			ProjectCollection = JJRestApi.Collection 'Project'
+			PersonCollection = JJRestApi.Collection 'Person'
+
+			PersonModel = JJRestApi.Model 'Person'
+
+			isi = new PersonModel {name: 'Isi Paehr'}
+			isi.sayHello()						
+
+			app.Collections.Projects = new ProjectCollection()
+			app.Collections.Persons = new PersonCollection()
+
 			# short test
 
 			app.Layouts.Main = app.useLayout 'main', 
