@@ -29,9 +29,9 @@ include './includes/header.inc.php' ?>
 </section>
 
 <section class="gravity">
-	<img src="http://dummyimage.com/140x4:9">
-	<img src="http://dummyimage.com/360x4:6">
-	<img src="http://dummyimage.com/240x2:3">
+	<img src="http://placekitten.com/200/320">
+	<img src="http://placekitten.com/540/360">
+	<img src="http://placekitten.com/360/240">
 </section>
 
 <?php include './includes/footer.inc.php' ?>

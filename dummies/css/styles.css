@@ -646,6 +646,10 @@ aside a {
   box-sizing: border-box;
   width: 75%;
 }
+.home .gravity img {
+  display: block;
+  float: left;
+}
 .home .calendar {
   float: right;
   display: inline-block;
