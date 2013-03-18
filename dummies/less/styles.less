@@ -224,11 +224,23 @@ aside {
 #main {
 	margin: 0 @column;
 	overflow: hidden;
+	//height: 100%;
+	min-height: 100%;
+
+	&:after {
+		visibility: hidden;
+		display: block;
+		font-size: 0;
+		content: " ";
+		clear: both;
+		height: 0;
+	}
 }
 // ! --- Home ----------------------------------------------
 
 
 .home {
+
 	.gravity {
 		display: inline-block;
 		.wrapper;
@@ -242,7 +254,12 @@ aside {
 
 	.calendar {
 		float: right;
+		position: relative;
+		top: 0;
+		right: 0;	
+		bottom: 0;
 		display: inline-block;
+		vertical-align: middle;
 		.wrapper;
 		.columnsWidth(8, 2);
 		/*display: table-cell;
