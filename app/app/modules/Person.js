@@ -5,11 +5,11 @@ define(['app'], function(app) {
   Person = app.module();
   JJRestApi.Modules.extend('Person', function(Person) {
     JJRestApi.extendModel('Person', {
-      sayHello: function() {
-        return alert('Hi. My name is ' + this.get('name'));
-      }
+      foo: 'bar'
     });
-    return JJRestApi.extendCollection('Person', function() {});
+    return JJRestApi.extendCollection('Person', {
+      foo: 'bar'
+    });
   });
   return Person;
 });

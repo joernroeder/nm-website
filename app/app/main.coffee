@@ -1,10 +1,13 @@
 require [
 	'app'
 	'router'
-	'modules/example'
 	'modules/Project',
-	'modules/Person'
-], (app, Router, Example, Project, Person) ->
+	'modules/Person',
+	'modules/Excursion',
+	'modules/Workshop',
+	'modules/Exhibition',
+	'modules/CalendarEntry'
+], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry) ->
 
 	# Backbone specific
 	app.Router = new Router()
@@ -24,13 +27,15 @@ require [
 
 		# Build up our structure from Silverstripe
 		JJRestApi.bootstrapWithStructure ->
-			# make classes accessible from JJRestApi
-			ProjectCollection = JJRestApi.Collection 'Project'
-			PersonCollection = JJRestApi.Collection 'Person'
 
-			app.Collections.Projects = new ProjectCollection()
-			app.Collections.Persons = new PersonCollection()
+			buildCollections = (names) ->
+				for name in names
+					# make class accessible
+					CollClass = JJRestApi.Collection name
+					app.Collections[name] = new CollClass()
 
+			buildCollections ['Project', 'Person', 'Excursion', 'Workshop', 'Exhibition', 'CalendarEntry']
+			console.log app
 			# short test
 
 			app.Layouts.Main = app.useLayout 'main', 
