@@ -658,6 +658,10 @@ aside a {
     	vertical-align: middle;*/
 
 }
+.about article {
+  margin: 6.4375em 0;
+  overflow: hidden;
+}
 .about .text {
   float: right;
   width: 50%;
@@ -723,6 +727,37 @@ aside a {
 }
 .about .alumni {
   margin-right: 12.5%;
+}
+.detail article {
+  margin: 6em 6.25% 6em 18.75%;
+  overflow: hidden;
+}
+.detail article header {
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.detail article section {
+  float: left;
+  width: 66.66666666666667%;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.detail article section img {
+  display: inline-block;
+  margin-top: 1.5em;
+  max-width: 100%;
+}
+.detail article aside {
+  display: inline-block;
+  width: 33.333333333333336%;
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 /*
  *

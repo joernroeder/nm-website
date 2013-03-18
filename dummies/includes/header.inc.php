@@ -1,7 +1,8 @@
 <?php
 
 $nav = array(
-	'about.php' => 'About'
+	'about.php'		=> 'About',
+	'detail.php'	=> 'Detail'
 );
 
 ?><!doctype html>

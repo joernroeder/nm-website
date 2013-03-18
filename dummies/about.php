@@ -13,8 +13,7 @@ include './includes/header.inc.php' ?>
 		<p>To study “New Media” is to be an author. To learn from oneself, to learn seeing, speaking and thinking. To develop a culture of debate. To work on projects together. To mix media and ideas, to fail and learn from it. The aim is to shape a personal position and methodology.</p>
 	</section>
 
-	<img src="http://dummyimage.com/420x300/000/fff" class="group-image">
-
+	<img src="http://placekitten.com/420/300" class="group-image">
 	
 	<section class="person">
 		<!-- Dummy Bild -->

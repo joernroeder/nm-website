@@ -246,6 +246,11 @@ aside {
 }
 
 .about {
+	article {
+		margin: (@line * 4 / @em) + @typoPrefix 0;
+		overflow: hidden;
+	}
+
 	.text {
 		float: right;
 		.columnsWidth(8, 4);
@@ -279,6 +284,45 @@ aside {
 
 	.alumni {
 		margin-right: 100% / 8 * 1;
+	}
+}
+
+.detail {
+	article {
+		@articleMarginLeft: 1.5;
+		@articleMarginRight: .5;
+
+		@articleMarginCols: @articleMarginLeft + @articleMarginRight;
+
+		@marginTop: (@line * 4 / @em);
+		@marginRight: 100% / 8 * @articleMarginRight;
+		@marginBottom: @marginTop;
+		@marginLeft: 100% / 8 * @articleMarginLeft;
+
+		margin: @marginTop @marginRight @marginBottom @marginLeft;
+		overflow: hidden;
+
+		header  {
+			.wrapper;
+		}
+
+		section {
+			float: left;
+			.columnsWidth(8 - @articleMarginCols, 4);
+			.wrapper;
+
+			img {
+				display: inline-block;
+				margin-top: @line / @em;
+				max-width: 100%;
+			}
+		}
+
+		aside {
+			display: inline-block;
+			.columnsWidth(8 - @articleMarginCols, 2);
+			.wrapper;
+		}
 	}
 }
 
