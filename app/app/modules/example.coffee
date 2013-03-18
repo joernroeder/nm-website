@@ -22,7 +22,9 @@ define [
 
 		## This will fetch the tutorial template and render it.
 		Example.Views.Head = Backbone.View.extend(
-			template: "head"
+			template: 'head'
+			tagName: 'div'
+			className: 'head'
 		)
 
 		## Required, return the module for AMD compliance

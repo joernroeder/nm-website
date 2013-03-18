@@ -7,7 +7,9 @@ define(["app"], function(app) {
   Example.Collection = Backbone.Collection.extend({});
   Example.Router = Backbone.Router.extend({});
   Example.Views.Head = Backbone.View.extend({
-    template: "head"
+    template: 'head',
+    tagName: 'div',
+    className: 'head'
   });
   return Example;
 });

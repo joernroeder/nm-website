@@ -10,10 +10,9 @@ define [
 	($, _, Backbone, Handlebars) ->
 		app =
 			root: '/'
-
 		JST = window.JST = window.JST || {}
 
-		Backbone.LayoutManager.configure
+		Backbone.Layout.configure
 			manage: true
 
 			prefix: 'app/app/templates/'

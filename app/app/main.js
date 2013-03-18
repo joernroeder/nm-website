@@ -5,7 +5,7 @@ require(['app', 'router', 'modules/example'], function(app, Router, Example) {
   app.Layouts = {};
   app.Layouts.Main = app.useLayout('main', {
     views: {
-      '.head': new Example.Views.Head()
+      '': [new Example.Views.Head()]
     }
   });
   $(function() {
@@ -13,11 +13,11 @@ require(['app', 'router', 'modules/example'], function(app, Router, Example) {
       pushState: true
     });
   });
-  return $(document).on("click", "a:not([data-bypass])", function(evt) {
+  return $(document).on('click', 'a:not([data-bypass])', function(evt) {
     var href, protocol;
-    href = $(this).attr("href");
-    protocol = this.protocol + "//";
-    if (href && href.slice(0, protocol.length) !== protocol && href.indexOf("javascript:") !== 0) {
+    href = $(this).attr('href');
+    protocol = this.protocol + '//';
+    if (href && href.slice(0, protocol.length) !== protocol && href.indexOf('javascript:') !== 0) {
       evt.preventDefault();
       return Backbone.history.navigate(href, true);
     }

@@ -9,7 +9,9 @@ require [
 
 	app.Layouts.Main = app.useLayout 'main', 
 		views:
-			'.head': new Example.Views.Head()
+			'': [
+				new Example.Views.Head()
+			]
 			
 
 	# Treat the jQuery ready function as the entry point to the application.
