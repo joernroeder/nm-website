@@ -17,14 +17,11 @@ require [
 		# Build up our structure from Silverstripe
 		JJRestApi.bootstrapWithStructure ->
 			# short test
-			ProjectModel = JJRestApi.Model 'Project'
-			project = new ProjectModel()
-			project.sayHello()
 
 			app.Layouts.Main = app.useLayout 'main', 
 			views:
 				'': [
-					new Project.Views.Test()
+			#		new Project.Views.Test()
 				]
 
 			Backbone.history.start pushState: true

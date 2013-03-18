@@ -4,21 +4,11 @@ define(['app'], function(app) {
 
   Project = app.module();
   JJRestApi.Modules.extend(Project, function(Project) {
-    JJRestApi.extendModel('Project', {
-      sayHello: function() {
-        return console.log('I am a project model');
-      }
-    });
-    JJRestApi.extendCollection('Project', {
-      sayHello: function() {
-        return console.log('I am a project collection');
-      }
-    });
-    return Project.Views.Test = Backbone.View.extend({
+    return JJRestApi.extendModel('Project', JJRestApi.extendCollection('Project', Project.Views.Test = Backbone.View.extend({
       template: 'head',
       tagName: 'div',
       className: 'head'
-    });
+    })));
   });
   return Project;
 });

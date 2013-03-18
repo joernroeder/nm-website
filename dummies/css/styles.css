@@ -635,12 +635,12 @@ aside a {
   margin-top: 0.25em;
   color: #ababab;
 }
-#main {
+#wrapper {
   margin: 0 5.555555555555555%;
   overflow: hidden;
   min-height: 100%;
 }
-#main:after {
+#wrapper:after {
   visibility: hidden;
   display: block;
   font-size: 0;

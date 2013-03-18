@@ -4,14 +4,9 @@ require(['app', 'router', 'modules/example', 'modules/Project'], function(app, R
   app.Layouts = {};
   $(function() {
     return JJRestApi.bootstrapWithStructure(function() {
-      var ProjectModel, project;
-
-      ProjectModel = JJRestApi.Model('Project');
-      project = new ProjectModel();
-      project.sayHello();
       app.Layouts.Main = app.useLayout('main', {
         views: {
-          '': [new Project.Views.Test()]
+          '': []
         }
       });
       return Backbone.history.start({
