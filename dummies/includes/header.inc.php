@@ -1,4 +1,10 @@
-<!doctype html>
+<?php
+
+$nav = array(
+	'about.php' => 'About'
+);
+
+?><!doctype html>
 <!--[if lt IE 9]><html class="ie"><![endif]-->
 <!--[if gte IE 9]><!--><html><!--<![endif]-->
 
@@ -36,12 +42,13 @@
 		<div id="main">
 
 			<section class="badge">
-				<a href="#">Neue Medien Kassel</a>
+				<a href="home.php">Neue Medien Kassel</a>
 
 				<nav>
 					<ul>
-						<li><a href="#">Portfolio</a></li>
-						<li><a href="#" class="active">About</a></li>
+						<?php foreach($nav as $page => $title) : ?>
+							<li><a href="<?php echo $page; ?>"><?php echo $title; ?></a></li>
+						<?php endforeach; ?>
 					</ul>
 				</nav>
 			</section>
