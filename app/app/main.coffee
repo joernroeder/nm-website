@@ -2,23 +2,32 @@ require [
 	'app'
 	'router'
 	'modules/example'
-], (app, Router, Example) ->
+	'modules/Project'
+], (app, Router, Example, Project) ->
 
 	app.Router = new Router()
 	app.Layouts = {}
-
-	app.Layouts.Main = app.useLayout 'main', 
-		views:
-			'': [
-				new Example.Views.Head()
-			]
 			
 
 	# Treat the jQuery ready function as the entry point to the application.
 	# Inside this function, kick-off all initialization, everything up to this
 	# point should be definitions.
 	$ ->
-		Backbone.history.start pushState: true
+
+		# Build up our structure from Silverstripe
+		JJRestApi.bootstrapWithStructure ->
+			# short test
+			ProjectModel = JJRestApi.Model 'Project'
+			project = new ProjectModel()
+			project.sayHello()
+
+			app.Layouts.Main = app.useLayout 'main', 
+			views:
+				'': [
+					new Project.Views.Test()
+				]
+
+			Backbone.history.start pushState: true
 		
 
 	# All navigation that is relative should be passed through the navigate
