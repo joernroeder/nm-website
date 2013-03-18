@@ -5,6 +5,8 @@ define [
 		'backbone'
 		'handlebars'
 		'plugins/backbone.layoutmanager'
+		'plugins/backbone.JJRelational'
+		'plugins/backbone.JJRestApi'
 	],
 
 	($, _, Backbone, Handlebars) ->

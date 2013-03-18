@@ -30,3 +30,5 @@ require.config
 			exports: 'Handlebars'
 
 		'plugins/backbone.layoutmanager': ['backbone']
+		'plugins/backbone.JJRelational': ['backbone']
+		'plugins/backbone.JJRestApi': ['backbone']
