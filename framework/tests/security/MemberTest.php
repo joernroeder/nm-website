@@ -29,8 +29,8 @@ class MemberTest extends FunctionalTest {
 	}
 
 	public function __destruct() {
-        i18n::set_default_locale($this->local);
-    }
+		i18n::set_default_locale($this->local);
+	}
 
 	public function setUp() {
 		parent::setUp();
@@ -113,6 +113,23 @@ class MemberTest extends FunctionalTest {
 		$this->assertTrue($result->valid());
 		
 		Security::set_password_encryption_algorithm($origAlgo);
+	}
+
+	public function testKeepsEncryptionOnEmptyPasswords() {
+		$member = new Member();
+		$member->Password = 'mypassword';
+		$member->PasswordEncryption = 'sha1_v2.4';
+		$member->write();
+		
+		$member->Password = '';
+		$member->write();
+		
+		$this->assertEquals(
+			$member->PasswordEncryption, 
+			'sha1_v2.4'
+		);
+		$result = $member->checkPassword('');
+		$this->assertTrue($result->valid());
 	}
 	
 	public function testSetPassword() {

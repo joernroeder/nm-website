@@ -2,7 +2,7 @@
 
 class SQLQueryTest extends SapphireTest {
 	
-	static $fixture_file = null;
+	public static $fixture_file = 'SQLQueryTest.yml';
 
 	protected $extraDataObjects = array(
 		'SQLQueryTest_DO',
@@ -292,6 +292,7 @@ class SQLQueryTest extends SapphireTest {
 			$query->sql()
 		);
 	}
+	
 
 	public function testSetWhereAny() {
 		$query = new SQLQuery();
@@ -300,6 +301,97 @@ class SQLQueryTest extends SapphireTest {
 		$query->setWhereAny(array("Monkey = 'Chimp'", "Color = 'Brown'"));
 		$this->assertEquals("SELECT * FROM MyTable WHERE (Monkey = 'Chimp' OR Color = 'Brown')",$query->sql());
 	}
+	
+	public function testSelectFirst() {
+		
+		// Test first from sequence
+		$query = new SQLQuery();
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy('"Name"');
+		$result = $query->firstRow()->execute();
+		
+		$this->assertCount(1, $result);
+		foreach($result as $row) {
+			$this->assertEquals('Object 1', $row['Name']);
+		}
+		
+		// Test first from empty sequence
+		$query = new SQLQuery();
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy('"Name"');
+		$query->setWhere(array("\"Name\" = 'Nonexistent Object'"));
+		$result = $query->firstRow()->execute();
+		$this->assertCount(0, $result);
+		
+		// Test that given the last item, the 'first' in this list matches the last
+		$query = new SQLQuery();
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy('"Name"');
+		$query->setLimit(1, 1);
+		$result = $query->firstRow()->execute();
+		$this->assertCount(1, $result);
+		foreach($result as $row) {
+			$this->assertEquals('Object 2', $row['Name']);
+		}
+	}
+	
+	public function testSelectLast() {
+		
+		// Test last in sequence
+		$query = new SQLQuery();
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy('"Name"');
+		$result = $query->lastRow()->execute();
+		
+		$this->assertCount(1, $result);
+		foreach($result as $row) {
+			$this->assertEquals('Object 2', $row['Name']);
+		}
+		
+		// Test last from empty sequence
+		$query = new SQLQuery();
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy('"Name"');
+		$query->setWhere(array("\"Name\" = 'Nonexistent Object'"));
+		$result = $query->lastRow()->execute();
+		$this->assertCount(0, $result);
+		
+		// Test that given the first item, the 'last' in this list matches the first
+		$query = new SQLQuery();
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy('"Name"');
+		$query->setLimit(1);
+		$result = $query->lastRow()->execute();
+		$this->assertCount(1, $result);
+		foreach($result as $row) {
+			$this->assertEquals('Object 1', $row['Name']);
+		}
+	}
+
+	/**
+	 * Test that "_SortColumn0" is added for an aggregate in the ORDER BY
+	 * clause, in combination with a LIMIT and GROUP BY clause.
+	 * For some databases, like MSSQL, this is a complicated scenario
+	 * because a subselect needs to be done to query paginated data.
+	 */
+	public function testOrderByContainingAggregateAndLimitOffset() {
+		$query = new SQLQuery();
+		$query->setSelect(array('"Name"', '"Meta"'));
+		$query->setFrom('"SQLQueryTest_DO"');
+		$query->setOrderBy(array('MAX(Date)'));
+		$query->setGroupBy(array('"Name"', '"Meta"'));
+		$query->setLimit('1', '1');
+
+		$records = array();
+		foreach($query->execute() as $record) {
+			$records[] = $record;
+		}
+
+		$this->assertCount(1, $records);
+
+		$this->assertEquals('Object 2', $records[0]['Name']);
+		$this->assertEquals('2012-05-01 09:00:00', $records['0']['_SortColumn0']);
+	}
 
 }
 
@@ -307,7 +399,21 @@ class SQLQueryTest_DO extends DataObject implements TestOnly {
 	static $db = array(
 		"Name" => "Varchar",
 		"Meta" => "Varchar",
+		"Date" => "SS_Datetime"
 	);
 }
 
+class SQLQueryTestBase extends DataObject implements TestOnly {
+	static $db = array(
+		"Title" => "Varchar",
+	);
+}
 
+class SQLQueryTestChild extends SQLQueryTestBase {
+	static $db = array(
+		"Name" => "Varchar",
+	);
+
+	static $has_one = array(
+	);
+}

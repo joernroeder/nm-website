@@ -171,6 +171,10 @@ class DataObjectTest extends SapphireTest {
 		$this->assertEquals('Bob', $comment->Name);
 		$comment = DataObject::get_one('DataObjectTest_TeamComment', '', true, '"Name" DESC');
 		$this->assertEquals('Phil', $comment->Name);
+
+		// Test get_one() with bad case on the classname
+		$subteam1 = DataObject::get_one('dataobjecttest_subteam', "\"Title\" = 'Subteam 1'", true);
+		$this->assertEquals($subteam1->Title, "Subteam 1");
 	}
 
 	public function testGetSubclassFields() {
@@ -259,8 +263,8 @@ class DataObjectTest extends SapphireTest {
 		$team->Comments()->add($newComment);
 		$this->assertEquals($team->ID, $newComment->TeamID);
 
-		$comment1 = $this->fixture->objFromFixture('DataObjectTest_TeamComment', 'comment1');
-		$comment2 = $this->fixture->objFromFixture('DataObjectTest_TeamComment', 'comment2');
+		$comment1 = $this->objFromFixture('DataObjectTest_TeamComment', 'comment1');
+		$comment2 = $this->objFromFixture('DataObjectTest_TeamComment', 'comment2');
 		$team->Comments()->remove($comment2);
 
 		$commentIDs = $team->Comments()->sort('ID')->column('ID');
@@ -767,8 +771,14 @@ class DataObjectTest extends SapphireTest {
 		$obj = new DataObjectTest_Fixture();
 		$this->assertEquals(
 			$obj->MyFieldWithDefault,
-			"Default Value",
-			"Defaults are populated for in-memory object from \$defaults array"
+			'Default Value',
+			'Defaults are populated for in-memory object from $defaults array'
+		);
+
+		$this->assertEquals(
+			$obj->MyFieldWithAltDefault,
+			'Default Value',
+			'Defaults are populated from overloaded populateDefaults() method'
 		);
 	}
 	
@@ -1033,23 +1043,18 @@ class DataObjectTest extends SapphireTest {
 		);
 	}
 	
+	/**
+	 * @expectedException LogicException
+	 */
 	public function testInvalidate() {
 		$do = new DataObjectTest_Fixture();
 		$do->write();
 		
 		$do->delete();
 
-		try {
-			// Prohibit invalid object manipulation
-			$do->delete();
-			$do->write();
-			$do->duplicate();
-		}
-		catch(Exception $e) {
-			return;
-		}
-		
-		$this->fail('Should throw an exception');
+		$do->delete(); // Prohibit invalid object manipulation
+		$do->write();
+		$do->duplicate();
 	}
 	
 	public function testToMap() {
@@ -1090,6 +1095,9 @@ class DataObjectTest extends SapphireTest {
 		$player = $this->objFromFixture('DataObjectTest_Player', 'player2');
 		// Test that we can traverse more than once, and that arbitrary methods are okay
 		$this->assertEquals("Team 1", $player->relField('Teams.First.Title'));
+		
+		$newPlayer = new DataObjectTest_Player();
+		$this->assertNull($newPlayer->relField('Teams.First.Title'));
 	}
 
 	public function testRelObject() {
@@ -1126,7 +1134,6 @@ class DataObjectTest extends SapphireTest {
 		DataObject::get();
 		
 	}
-	
 
 }
 
@@ -1143,7 +1150,6 @@ class DataObjectTest_Player extends Member implements TestOnly {
 	static $belongs_many_many = array(
 		'Teams' => 'DataObjectTest_Team'
 	);
-   
 }
 
 class DataObjectTest_Team extends DataObject implements TestOnly {
@@ -1191,18 +1197,25 @@ class DataObjectTest_Fixture extends DataObject implements TestOnly {
 		'Data' => 'Varchar',
 		'Duplicate' => 'Varchar',
 		'DbObject' => 'Varchar',
-		
-		// Field with default
-		'MyField' => 'Varchar',
-		
+
 		// Field types
-		"DateField" => "Date",
-		"DatetimeField" => "Datetime",
+		'DateField' => 'Date',
+		'DatetimeField' => 'Datetime',
+
+		'MyFieldWithDefault' => 'Varchar',
+		'MyFieldWithAltDefault' => 'Varchar'
 	);
 
 	static $defaults = array(
-		'MyFieldWithDefault' => 'Default Value', 
+		'MyFieldWithDefault' => 'Default Value',
 	);
+
+	public function populateDefaults() {
+		parent::populateDefaults();
+
+		$this->MyFieldWithAltDefault = 'Default Value';
+	}
+
 }
 
 class DataObjectTest_SubTeam extends DataObjectTest_Team implements TestOnly {
@@ -1294,6 +1307,7 @@ class DataObjectTest_TeamComment extends DataObject {
 	static $has_one = array(
 		'Team' => 'DataObjectTest_Team'
 	);
+
 }
 
 DataObject::add_extension('DataObjectTest_Team', 'DataObjectTest_Team_Extension');

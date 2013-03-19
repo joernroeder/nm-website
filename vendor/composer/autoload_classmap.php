@@ -6,4 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'SilverStripe\\Framework\\Test\\Behaviour\\CmsFormsContext' => $baseDir . '/framework/tests/behat/features/bootstrap/SilverStripe/Framework/Test/Behaviour/CmsFormsContext.php',
+    'SilverStripe\\Framework\\Test\\Behaviour\\CmsUiContext' => $baseDir . '/framework/tests/behat/features/bootstrap/SilverStripe/Framework/Test/Behaviour/CmsUiContext.php',
+    'SilverStripe\\Framework\\Test\\Behaviour\\FeatureContext' => $baseDir . '/framework/tests/behat/features/bootstrap/FeatureContext.php',
 );

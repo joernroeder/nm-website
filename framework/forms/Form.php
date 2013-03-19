@@ -250,7 +250,9 @@ class Form extends RequestHandler {
 		// Protection against CSRF attacks
 		$token = $this->getSecurityToken();
 		if(!$token->checkRequest($request)) {
-			$this->httpError(400, "Sorry, your session has timed out.");
+			$this->httpError(400, _t("Form.CSRF_FAILED_MESSAGE",
+				"There seems to have been a technical problem. Please click the back button,"
+				. " refresh your browser, and try again."));
 		}
 		
 		// Determine the action button clicked
@@ -287,7 +289,7 @@ class Form extends RequestHandler {
 			$this->controller->hasMethod($funcName)
 			&& !$this->controller->checkAccessAction($funcName)
 			// If a button exists, allow it on the controller
-			&& !$this->actions->fieldByName('action_' . $funcName)
+			&& !$this->actions->dataFieldByName('action_' . $funcName)
 		) {
 			return $this->httpError(
 				403, 
@@ -707,8 +709,16 @@ class Form extends RequestHandler {
 
 		if(!$attrs || is_string($attrs)) $attrs = $this->getAttributes();
 
-		// Forms shouldn't be cached, cos their error messages won't be shown
-		HTTP::set_cache_age(0);
+		// Figure out if we can cache this form
+		// - forms with validation shouldn't be cached, cos their error messages won't be shown
+		// - forms with security tokens shouldn't be cached because security tokens expire
+		$needsCacheDisabled = false;
+		if ($this->getSecurityToken()->isEnabled()) $needsCacheDisabled = true;
+		if ($this->FormMethod() != 'get') $needsCacheDisabled = true;
+		if (!($this->validator instanceof RequiredFields) || count($this->validator->getRequired())) $needsCacheDisabled = true;
+
+		// If we need to disable cache, do it
+		if ($needsCacheDisabled) HTTP::set_cache_age(0);
 
 		$attrs = $this->getAttributes();
 
@@ -974,9 +984,7 @@ class Form extends RequestHandler {
 	 */
 	public function Message() {
 		$this->getMessageFromSession();
-		$message = $this->message;
-		$this->clearMessage();
-		return $message;
+		return $this->message;
 	}
 	
 	/**
@@ -993,8 +1001,6 @@ class Form extends RequestHandler {
 		}else{
 			$this->message = Session::get("FormInfo.{$this->FormName()}.formError.message");
 			$this->messageType = Session::get("FormInfo.{$this->FormName()}.formError.type");
-
-			Session::clear("FormInfo.{$this->FormName()}");
 		}
 	}
 
@@ -1030,9 +1036,11 @@ class Form extends RequestHandler {
 		$this->message  = null;
 		Session::clear("FormInfo.{$this->FormName()}.errors");
 		Session::clear("FormInfo.{$this->FormName()}.formError");
+		Session::clear("FormInfo.{$this->FormName()}.data");
 	}
 	public function resetValidation() {
 		Session::clear("FormInfo.{$this->FormName()}.errors");
+		Session::clear("FormInfo.{$this->FormName()}.data");
 	}
 
 	/**
@@ -1065,7 +1073,7 @@ class Form extends RequestHandler {
 	 * 
 	 * @return boolean
 	 */
-	 public function validate(){
+	public function validate(){
 		if($this->validator){
 			$errors = $this->validator->validate();
 
@@ -1313,10 +1321,15 @@ class Form extends RequestHandler {
 	 * than <% control FormObject %>
 	 */
 	public function forTemplate() {
-		return $this->renderWith(array_merge(
+		$return = $this->renderWith(array_merge(
 			(array)$this->getTemplate(),
 			array('Form')
 		));
+
+		// Now that we're rendered, clear message
+		$this->clearMessage();
+
+		return $return;
 	}
 
 	/**
@@ -1533,7 +1546,7 @@ class Form extends RequestHandler {
 		$result .= "</ul>";
 
 		if( $this->validator )
-		        $result .= '<h3>'._t('Form.VALIDATOR', 'Validator').'</h3>' . $this->validator->debug();
+			$result .= '<h3>'._t('Form.VALIDATOR', 'Validator').'</h3>' . $this->validator->debug();
 
 		return $result;
 	}
@@ -1550,8 +1563,8 @@ class Form extends RequestHandler {
 	 */
 	public function testSubmission($action, $data) {
 		$data['action_' . $action] = true;
-        
-        return Director::test($this->FormAction(), $data, Controller::curr()->getSession());
+
+		return Director::test($this->FormAction(), $data, Controller::curr()->getSession());
 		
 		//$response = $this->controller->run($data);
 		//return $response;

@@ -4,7 +4,7 @@ class StartEndDateExtension extends Extension {
 
 	public function Date() {
 		if ($this->owner->hasField('Date')) {
-			return $this->owner->hasMethod('Date') ? $this->owner->Date() : $this->getFormattedDate();
+			return $this->owner->hasMethod('getDate') ? $this->owner->getDate() : $this->getFormattedDate();
 		}
 		else {
 			$startFormat = $this->owner->stat('start_date_format');
@@ -26,7 +26,7 @@ class StartEndDateExtension extends Extension {
 	}
 
 	/**
-	 * Gibt das formattierte Start-Datum zurück
+	 * Gibt das formatierte Start-Datum zurück
 	 *
 	 *  @return string
 	 */
@@ -35,8 +35,17 @@ class StartEndDateExtension extends Extension {
 	}
 
 	/**
-	 * Gibt das formattierte End-Datum zurück
+	 * Gibt das formatiert
 	 *
+	 * 
+	 */
+	public function getFrontendDate() {
+		return $this->getFormattedDate('', 'frontend');
+	}
+
+	/**
+	 * Gibt das formatierte End-Datum zurück
+	 * 
 	 *  @return string
 	 */
 	public function FormattedEndDate() {
@@ -44,15 +53,16 @@ class StartEndDateExtension extends Extension {
 	}
 
 	/**
-	 * gibt das formatierte Datum zurück
+	 * Gibt das formatierte Datum zurück
 	 *
-	 * @param string $dateName Der Name es Datums z.B. 'Start' oder 'End'
+	 * @param string $dateName Der Name des Datums z.B. 'Start' oder 'End'
 	 *
 	 * @return string
 	 */
-	public function getFormattedDate($dateName = '') {
+	public function getFormattedDate($dateName = '', $formatName) {
 		$lowerName = strtolower($dateName);
-		$format = $lowerName ? $this->owner->stat($lowerName . '_date_format') : $this->owner->stat('date_format');
+		$formatName = $formatName ? $formatName : $lowerName;
+		$format = $lowerName ? $this->owner->stat($formatName . '_date_format') : $this->owner->stat('date_format');
 
 		if (!$format) {
 			user_error("you have to set the {$dateName}Date formatter (static \${$lowerName}_date_format) in {$this->owner->class}", E_USER_ERROR);

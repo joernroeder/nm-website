@@ -89,7 +89,7 @@ table.ss-gridfield-table tr.ss-gridfield-item.even { background: #F0F4F7; }
 .ModelAdmin .cms-content-fields .cms-content-tools .cms-panel-content .cms-search-form { overflow: hidden; }
 .ModelAdmin .cms-content-fields .cms-content-tools .cms-panel-content .cms-search-form input { width: 160px; }
 
-.cms .cms-content-tools { border-right: 1px solid #cccccc; }
+.cms .cms-content-tools { border-right: 1px solid #CCC; }
 
 .cms .ss-gridfield table.ss-gridfield-table tbody td.col-listChildrenLink { width: 16px; }
 .cms .ss-gridfield table.ss-gridfield-table tbody td.col-listChildrenLink .list-children-link { background: transparent url(../images/sitetree_ss_default_icons.png) no-repeat 4px -4px; display: block; }

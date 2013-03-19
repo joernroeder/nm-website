@@ -72,14 +72,17 @@ for the search form, override `[api:DataObject->getCustomSearchContext()]` on yo
 The results are shown in a tabular listing, powered by the `[GridField](/reference/grid-field)`,
 more specifically the `[api:GridFieldDataColumns]` component.
 It looks for a `[api:DataObject::$summary_fields]` static on your model class,
-where you can add or remove columns, or change their title.
+where you can add or remove columns. To change the title, use `[api:DataObject::$field_labels]`.
 
 	:::php
 	class Product extends DataObject {
 	   // ...
+	   static $field_labels = array(
+	      'Price' => 'Cost' // renames the column to "Cost"
+	   );
 	   static $summary_fields = array(
-	      'Name' => 'Name',
-	      'Price' => 'Cost', // renames the column to "Cost"
+	      'Name',
+	      'Price',
 	      // leaves out the 'ProductCode' field, removing the column
 	   );
 	}
@@ -127,6 +130,19 @@ For example, we might want to have a checkbox which limits search results to exp
 				$list->exclude('Price:LessThan', '100');
 			}
 			return $list;
+		}
+	}
+
+To alter how the results are displayed (via `[api:GridField]`), you can also overload the `getEditForm()` method. For example, to add a new component.
+
+	:::php
+	class MyAdmin extends ModelAdmin {
+		// ...
+		public function getEditForm($id = null, $fields = null) {
+			$form = parent::getEditForm($id, $fields);
+			$gridField = $form->Fields()->fieldByName($this->sanitiseClassName($this->modelClass));
+			$gridField->getConfig()->addComponent(new GridFieldFilterHeader());
+			return $form;
 		}
 	}
 
@@ -217,8 +233,8 @@ For an introduction how to customize the CMS templates, see our [CMS Architectur
 
 ## Related
 
-* [/reference/grid-field](GridField): The UI component powering ModelAdmin
-* [/tutorials/5-dataobject-relationship-management](Tutorial 5: Dataobject Relationship Management)
+* [GridField](../reference/grid-field): The UI component powering ModelAdmin
+* [Tutorial 5: Dataobject Relationship Management](../tutorials/5-dataobject-relationship-management)
 *  `[api:SearchContext]`
 * [genericviews Module](http://silverstripe.org/generic-views-module)
 * [Presentation about ModelAdmin at SupperHappyDevHouse Wellington](http://www.slideshare.net/chillu/modeladmin-in-silverstripe-23)

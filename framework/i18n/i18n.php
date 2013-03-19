@@ -654,6 +654,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 		'zh_yue' => array('Chinese (Cantonese)', '&#24291;&#26481;&#35441; [&#24191;&#19996;&#35805;]'),
 		'zh_cmn' => array('Chinese (Mandarin)', '&#26222;&#36890;&#35441; [&#26222;&#36890;&#35805;]'),
 		'hr' => array('Croatian', 'Hrvatski'),
+		'zh' => array('Chinese','中国的'),
 		'cs' => array('Czech', '&#x010D;e&#353;tina'),
 		'cy' => array('Welsh', 'Welsh/Cymraeg'),
 		'da' => array('Danish', 'dansk'),
@@ -744,6 +745,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 		'bn_BD' => array('Bengali', '&#2476;&#2494;&#2434;&#2482;&#2494;'),
 		'bg_BG' => array('Bulgarian', '&#1073;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080;'),
 		'ca_ES' => array('Catalan', 'catal&agrave;'),
+		'zh_CN' => array('Chinese','中国的'),
 		'zh_yue' => array('Chinese (Cantonese)', '&#24291;&#26481;&#35441; [&#24191;&#19996;&#35805;]'),
 		'zh_cmn' => array('Chinese (Mandarin)', '&#26222;&#36890;&#35441; [&#26222;&#36890;&#35805;]'),
 		'hr_HR' => array('Croatian', 'Hrvatski'),
@@ -938,14 +940,14 @@ class i18n extends Object implements TemplateGlobalProvider {
 		'nn_NO' => 'nn',
 		'pl_PL' => 'pl',
 		'pl_UA' => 'pl',
-		'pt_AO' => 'pt_br',
-		'pt_BR' => 'pt_br',
-		'pt_CV' => 'pt_br',
-		'pt_GW' => 'pt_br',
-		'pt_MZ' => 'pt_br',
-		'pt_PT' => 'pt_br',
-		'pt_ST' => 'pt_br',
-		'pt_TL' => 'pt_br',
+		'pt_AO' => 'pt',
+		'pt_BR' => 'pt',
+		'pt_CV' => 'pt',
+		'pt_GW' => 'pt',
+		'pt_MZ' => 'pt',
+		'pt_PT' => 'pt',
+		'pt_ST' => 'pt',
+		'pt_TL' => 'pt',
 		'ro_MD' => 'ro',
 		'ro_RO' => 'ro',
 		'ro_RS' => 'ro',
@@ -1534,7 +1536,13 @@ class i18n extends Object implements TemplateGlobalProvider {
 				// Legacy mode: If no injection placeholders are found, 
 				// replace sprintf placeholders in fixed order.
 				// Fail silently in case the translation is outdated
-				$replaced = @vsprintf($returnValue, array_values($injectionArray));	
+				preg_match_all('/%[s,d]/', $returnValue, $returnValueArgs);
+				if($returnValueArgs) foreach($returnValueArgs[0] as $i => $returnValueArg) {
+					if($i >= count($injectionArray)) {
+						$injectionArray[] = '';
+					}
+				}
+				$replaced = vsprintf($returnValue, array_values($injectionArray));	
 				if($replaced) $returnValue = $replaced;
 			} else if(!ArrayLib::is_associative($injectionArray)) {
 				// Legacy mode: If injection placeholders are found,
@@ -1954,7 +1962,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 		
 		// Sort modules by inclusion priority, then alphabetically
 		// TODO Should be handled by priority flags within modules
-		$prios = array('sapphire' => 10, 'framework' => 10, 'admin' => 11, 'cms' => 12, 'mysite' => 90);
+		$prios = array('sapphire' => 10, 'framework' => 10, 'admin' => 11, 'cms' => 12, project() => 90);
 		$modules = SS_ClassLoader::instance()->getManifest()->getModules();
 		ksort($modules);
 		uksort(

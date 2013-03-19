@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Mailer objects are responsible for actually sending emails.
  * The default Mailer class will use PHP's mail() function.
@@ -41,7 +42,7 @@ class Mailer extends Object {
 /*
  * Sends an email as a both HTML and plaintext
  *   $attachedFiles should be an array of file names
- *    - if you pass the entire $_FILES entry, the user-uploaded filename will be preserved
+ *   - if you pass the entire $_FILES entry, the user-uploaded filename will be preserved
  *   use $plainContent to override default plain-content generation
  * 
  * @return bool
@@ -54,9 +55,9 @@ function htmlEmail($to, $from, $subject, $htmlContent, $attachedFiles = false, $
 		dieprintr($customheaders);
 	}
 
-    
+	
 	$bodyIsUnicode = (strpos($htmlContent,"&#") !== false);
-    $plainEncoding = "";
+	$plainEncoding = "";
 	
 	// We generate plaintext content by default, but you can pass custom stuff
 	$plainEncoding = '';
@@ -80,7 +81,7 @@ function htmlEmail($to, $from, $subject, $htmlContent, $attachedFiles = false, $
 
 	// Make the HTML part
 	$headers["Content-Type"] = "text/html; charset=utf-8";
-        
+	
 	
 	// Add basic wrapper tags if the body tag hasn't been given
 	if(stripos($htmlContent, '<body') === false) {
@@ -134,14 +135,14 @@ function htmlEmail($to, $from, $subject, $htmlContent, $attachedFiles = false, $
 	$headers["From"] = validEmailAddr($from);
 
 	// Messages with the X-SilverStripeMessageID header can be tracked
-    if(isset($customheaders["X-SilverStripeMessageID"]) && defined('BOUNCE_EMAIL')) {
-            $bounceAddress = BOUNCE_EMAIL;
-    } else {
-            $bounceAddress = $from;
-    }
+	if(isset($customheaders["X-SilverStripeMessageID"]) && defined('BOUNCE_EMAIL')) {
+		$bounceAddress = BOUNCE_EMAIL;
+	} else {
+		$bounceAddress = $from;
+	}
 
-    // Strip the human name from the bounce address
-    if(preg_match('/^([^<>]*)<([^<>]+)> *$/', $bounceAddress, $parts)) $bounceAddress = $parts[2];	
+	// Strip the human name from the bounce address
+	if(preg_match('/^([^<>]*)<([^<>]+)> *$/', $bounceAddress, $parts)) $bounceAddress = $parts[2];	
 
 	// $headers["Sender"] 		= $from;
 	$headers["X-Mailer"]	= X_MAILER;
@@ -163,7 +164,7 @@ function htmlEmail($to, $from, $subject, $htmlContent, $attachedFiles = false, $
 	$to = validEmailAddr($to);
 	
 	// Try it without the -f option if it fails
-	if(!($result = @mail($to, $subject, $fullBody, $headers, "-f$bounceAddress"))) {
+	if(!($result = @mail($to, $subject, $fullBody, $headers, escapeshellarg("-f$bounceAddress")))) {
 		$result = mail($to, $subject, $fullBody, $headers);
 	}
 	
@@ -248,8 +249,9 @@ function plaintextEmail($to, $from, $subject, $plainContent, $attachedFiles, $cu
 	$to = validEmailAddr($to);
 
 	// Try it without the -f option if it fails
-	if(!$result = @mail($to, $subject, $fullBody, $headers, "-f$bounceAddress"))
+	if(!$result = @mail($to, $subject, $fullBody, $headers, escapeshellarg("-f$bounceAddress"))) {
 		$result = mail($to, $subject, $fullBody, $headers);
+	}
 	
 	if($result)
 		return array($to,$subject,$fullBody,$headers);
@@ -289,7 +291,7 @@ function encodeMultipart($parts, $contentType, $headers = false) {
  */
 function wrapImagesInline($htmlContent) {
 	global $_INLINED_IMAGES;
-	$_INLINED_IMAGES = null;
+	$_INLINED_IMAGES = array();
 	
 	$replacedContent = imageRewriter($htmlContent, 'wrapImagesInline_rewriter($URL)');
 	
@@ -301,8 +303,8 @@ function wrapImagesInline($htmlContent) {
 	
 	// Make all the image parts		
 	global $_INLINED_IMAGES;
-	foreach($_INLINED_IMAGES as $url => $cid) {
-		$multiparts[] = encodeFileForEmail($url, false, "inline", "Content-ID: <$cid>\n");		
+	if($_INLINED_IMAGES) foreach($_INLINED_IMAGES as $url => $cid) {
+		$multiparts[] = encodeFileForEmail(BASE_PATH . '/' . $url, false, "inline", "Content-ID: <$cid>\n");		
 	}
 
 	// Merge together in a multipart
@@ -310,10 +312,10 @@ function wrapImagesInline($htmlContent) {
 	return processHeaders($headers, $body);
 }
 function wrapImagesInline_rewriter($url) {
-	$url = relativiseURL($url);
+	$url = Director::makeRelative($url);
 	
 	global $_INLINED_IMAGES;
-	if(!$_INLINED_IMAGES[$url]) {
+	if(!isset($_INLINED_IMAGES[$url])) {
 		$identifier = "automatedmessage." . rand(1000,1000000000) . "@silverstripe.com";
 		$_INLINED_IMAGES[$url] = $identifier;
 	}
@@ -382,6 +384,7 @@ function encodeFileForEmail($file, $destFileName = false, $disposition = NULL, $
 		$file = array('filename' => $file);
 		$fh = fopen($file['filename'], "rb");
 		if ($fh) {
+			$file['contents'] = "";
 			while(!feof($fh)) $file['contents'] .= fread($fh, 10000);	
 			fclose($fh);
 		}
@@ -391,12 +394,12 @@ function encodeFileForEmail($file, $destFileName = false, $disposition = NULL, $
 	if(!$destFileName) $base = basename($file['filename']);
 	else $base = $destFileName;
 
-	$mimeType = $file['mimetype'] ? $file['mimetype'] : HTTP::get_mime_type($file['filename']);
+	$mimeType = !empty($file['mimetype']) ? $file['mimetype'] : HTTP::get_mime_type($file['filename']);
 	if(!$mimeType) $mimeType = "application/unknown";
 	if (empty($disposition)) $disposition = isset($file['contentLocation']) ? 'inline' : 'attachment';
 	
 	// Encode for emailing
-	if (substr($file['mimetype'], 0, 4) != 'text') {
+	if (substr($mimeType, 0, 4) != 'text') {
 		$encoding = "base64";
 		$file['contents'] = chunk_split(base64_encode($file['contents']));
 	} else {
@@ -406,9 +409,9 @@ function encodeFileForEmail($file, $destFileName = false, $disposition = NULL, $
 		$file['contents'] = QuotedPrintable_encode($file['contents']);		
 	}
 
-	$headers = "Content-type: $mimeType;\n\tname=\"$base\"\n".
-	           "Content-Transfer-Encoding: $encoding\n".
-	           "Content-Disposition: $disposition;\n\tfilename=\"$base\"\n" ;
+	$headers =	"Content-type: $mimeType;\n\tname=\"$base\"\n".
+				"Content-Transfer-Encoding: $encoding\n".
+				"Content-Disposition: $disposition;\n\tfilename=\"$base\"\n";
 	
 	if ( isset($file['contentLocation']) ) $headers .= 'Content-Location: ' . $file['contentLocation'] . "\n" ;
 	

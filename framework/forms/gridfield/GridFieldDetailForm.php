@@ -296,6 +296,7 @@ class GridFieldDetailForm_ItemRequest extends RequestHandler {
 				->setAttribute('data-icon', 'accept'));
 
 			$actions->push(FormAction::create('doDelete', _t('GridFieldDetailForm.Delete', 'Delete'))
+				->setUseButtonTag(true)
 				->addExtraClass('ss-ui-action-destructive'));
 
 		}else{ // adding new record
@@ -347,7 +348,7 @@ class GridFieldDetailForm_ItemRequest extends RequestHandler {
 
 		$cb = $this->component->getItemEditFormCallback();
 		if($cb) $cb($form, $this);
-
+		$this->extend("updateItemEditForm", $form);
 		return $form;
 	}
 
@@ -376,10 +377,10 @@ class GridFieldDetailForm_ItemRequest extends RequestHandler {
 			} elseif($this->popupController->hasMethod('Breadcrumbs')) {
 				$parents = $this->popupController->Breadcrumbs(false)->items;
 				$backlink = array_pop($parents)->Link;
-			} else {
-				$backlink = $toplevelController->Link();
-			}
+			} 
 		}
+		if(!$backlink) $backlink = $toplevelController->Link();
+		
 		return $backlink;
 	}
 
@@ -411,10 +412,16 @@ class GridFieldDetailForm_ItemRequest extends RequestHandler {
 
 		// TODO Save this item into the given relationship
 
-		$message = sprintf(
-			_t('GridFieldDetailForm.Saved', 'Saved %s %s'),
-			$this->record->singular_name(),
-			'<a href="' . $this->Link('edit') . '">"' . htmlspecialchars($this->record->Title, ENT_QUOTES) . '"</a>'
+		$link = '<a href="' . $this->Link('edit') . '">"' 
+			. htmlspecialchars($this->record->Title, ENT_QUOTES) 
+			. '"</a>';
+		$message = _t(
+			'GridFieldDetailForm.Saved', 
+			'Saved {name} {link}',
+			array(
+				'name' => $this->record->i18n_singular_name(),
+				'link' => $link
+			)
 		);
 		
 		$form->sessionMessage($message, 'good');
@@ -450,7 +457,7 @@ class GridFieldDetailForm_ItemRequest extends RequestHandler {
 
 		$message = sprintf(
 			_t('GridFieldDetailForm.Deleted', 'Deleted %s %s'),
-			$this->record->singular_name(),
+			$this->record->i18n_singular_name(),
 			htmlspecialchars($title, ENT_QUOTES)
 		);
 		

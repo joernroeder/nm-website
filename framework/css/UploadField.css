@@ -11,7 +11,7 @@
 .ss-uploadfield .ss-uploadfield-item { margin: 0; padding: 15px; overflow: auto; }
 .ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-preview { height: 60px; line-height: 60px; width: 80px; text-align: center; font-weight: bold; float: left; overflow: hidden; }
 .ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-preview.ss-uploadfield-dropzone { -webkit-box-shadow: #9a9a9a 0 0 3px 3px inset; -moz-box-shadow: #9a9a9a 0 0 3px 3px inset; box-shadow: #9a9a9a 0 0 3px 3px inset; border: 2px dashed gray; background: rgba(201, 205, 206, 0.8); display: none; }
-.ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-info { margin: 0 0 0 100px; }
+.ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-info { float: left; margin-left: 15px; }
 .ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name { display: block; line-height: 13px; height: 26px; margin: 0; text-align: left; }
 .ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name b { font-weight: bold; padding: 0 5px 0 0; }
 .ss-uploadfield .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .name { font-size: 11px; color: #848484; width: 290px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; -o-text-overflow: ellipsis; display: inline; float: left; }
@@ -39,4 +39,4 @@
 .ss-uploadfield .ss-uploadfield-addfile.borderTop { border-top: 1px solid #b3b3b3; }
 
 .ss-upload .clear { clear: both; }
-.ss-upload .ss-uploadfield-fromcomputer input { /* since we can't really style the file input, we use this hack to make it as big as the button and hide it */ position: absolute; top: 0; right: 0; margin: 0; border: solid black; border-width: 0 0 100px 200px; opacity: 0; filter: alpha(opacity=0); -o-transform: translate(250px, -50px) scale(1); -moz-transform: translate(-300px, 0) scale(4); direction: ltr; cursor: pointer; }
+.ss-upload .ss-uploadfield-fromcomputer input { /* since we can't really style the file input, we use this hack to make it as big as the button and hide it */ position: absolute; top: 0; right: 0; margin: 0; border: solid #000; border-width: 0 0 100px 200px; opacity: 0; filter: alpha(opacity=0); -o-transform: translate(250px, -50px) scale(1); -moz-transform: translate(-300px, 0) scale(4); direction: ltr; cursor: pointer; }

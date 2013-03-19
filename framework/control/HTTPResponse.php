@@ -150,6 +150,9 @@ class SS_HTTPResponse {
 	
 	public function setBody($body) {
 		$this->body = $body;
+		
+		// Set content-length in bytes. Use mbstring to avoid problems with mb_internal_encoding() and mbstring.func_overload
+		$this->headers['Content-Length'] = mb_strlen($this->body,'8bit');
 	}
 	
 	public function getBody() {
@@ -220,11 +223,17 @@ class SS_HTTPResponse {
 			<meta http-equiv=\"refresh\" content=\"1; url=$url\" />
 			<script type=\"text/javascript\">setTimeout('window.location.href = \"$url\"', 50);</script>";
 		} else {
-			if(!headers_sent()) {
+		    $line = $file = null;
+			if(!headers_sent($file, $line)) {
 				header($_SERVER['SERVER_PROTOCOL'] . " $this->statusCode " . $this->getStatusDescription());
 				foreach($this->headers as $header => $value) {
 					header("$header: $value", true, $this->statusCode);
 				}
+			} else {
+			    // It's critical that these status codes are sent; we need to report a failure if not.
+			    if($this->statusCode >= 300) {
+			        user_error("Couldn't set response type to $this->statusCode because of output on line $line of $file", E_USER_WARNING);
+			    }
 			}
 			
 			// Only show error pages or generic "friendly" errors if the status code signifies
@@ -245,14 +254,6 @@ class SS_HTTPResponse {
 	 */
 	public function isFinished() {
 		return in_array($this->statusCode, array(301, 302, 401, 403));
-	}
-
-	/**
-	 * Set content-length in bytes. Should be called right before {@link output()}.
-	 */
-	public function fixContentLength() {
-		// Use mbstring to avoid problems with mb_internal_encoding() and mbstring.func_overload
-		$this->headers['Content-Length'] = mb_strlen($this->body,'8bit');	
 	}
 	
 }
@@ -277,28 +278,28 @@ class SS_HTTPResponse_Exception extends Exception {
 	/**
 	 * @see SS_HTTPResponse::__construct();
 	 */
-	 public function __construct($body = null, $statusCode = null, $statusDescription = null) {
-	 	if($body instanceof SS_HTTPResponse) {
-	 		$this->setResponse($body);
-	 	} else {
-	 		$this->setResponse(new SS_HTTPResponse($body, $statusCode, $statusDescription));
-	 	}
-	 	
-	 	parent::__construct($this->getResponse()->getBody(), $this->getResponse()->getStatusCode());
-	 }
-	 
-	 /**
-	  * @return SS_HTTPResponse
-	  */
-	 public function getResponse() {
-	 	return $this->response;
-	 }
-	 
-	 /**
-	  * @param SS_HTTPResponse $response
-	  */
-	 public function setResponse(SS_HTTPResponse $response) {
-	 	$this->response = $response;
-	 }
+	public function __construct($body = null, $statusCode = null, $statusDescription = null) {
+		if($body instanceof SS_HTTPResponse) {
+			$this->setResponse($body);
+		} else {
+			$this->setResponse(new SS_HTTPResponse($body, $statusCode, $statusDescription));
+		}
+		
+		parent::__construct($this->getResponse()->getBody(), $this->getResponse()->getStatusCode());
+	}
+	
+	/**
+	 * @return SS_HTTPResponse
+	 */
+	public function getResponse() {
+		return $this->response;
+	}
+	
+	/**
+	 * @param SS_HTTPResponse $response
+	 */
+	public function setResponse(SS_HTTPResponse $response) {
+		$this->response = $response;
+	}
 	
 }

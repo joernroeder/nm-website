@@ -229,8 +229,7 @@ class TreeDropdownField extends FormField {
 			? (int)$request->latestparam('ID')
 			: (int)$request->requestVar('ID');
 
-		$forceFullTree = $request->requestVar('forceFullTree')?$request->requestVar('forceFullTree'):false;
-		if($ID && !$forceFullTree) {
+		if($ID && !$request->requestVar('forceFullTree')) {
 			$obj       = DataObject::get_by_id($this->sourceObject, $ID);
 			$isSubTree = true;
 			if(!$obj) {
@@ -370,6 +369,7 @@ class TreeDropdownField_Readonly extends TreeDropdownField {
 		$field = new LookupField($this->name, $this->title, $source);
 		$field->setValue($this->value);
 		$field->setForm($this->form);
+		$field->dontEscape = true;
 		return $field->Field();
 	}
 }

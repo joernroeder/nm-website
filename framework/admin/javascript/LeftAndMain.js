@@ -230,7 +230,7 @@ jQuery.noConflict();
 			 */
 			submitForm: function(form, button, callback, ajaxOptions) {
 				var self = this;
-		  
+		
 				// look for save button
 				if(!button) button = this.find('.Actions :submit[name=action_save]');
 				// default to first button if none given - simulates browser behaviour
@@ -368,7 +368,13 @@ jQuery.noConflict();
 			 * Can be hooked into an ajax 'success' callback.
 			 */
 			handleAjaxResponse: function(data, status, xhr) {
-				var self = this, url, selectedTabs, guessFragment;
+				var self = this, url, activeTabs, guessFragment;
+
+				// Support a full reload
+				if(xhr.getResponseHeader('X-Reload') && xhr.getResponseHeader('X-ControllerURL')) {
+					document.location.href = xhr.getResponseHeader('X-ControllerURL');
+					return;
+				}
 
 				// Pseudo-redirects via X-ControllerURL might return empty data, in which
 				// case we'll ignore the response
@@ -489,15 +495,15 @@ jQuery.noConflict();
 			saveTabState: function() {
 				if(typeof(window.sessionStorage)=="undefined" || window.sessionStorage == null) return;
 
-				var selectedTabs = [], url = this._tabStateUrl();
+				var activeTabs = [], url = this._tabStateUrl();
 				this.find('.cms-tabset,.ss-tabset').each(function(i, el) {
 					var id = $(el).attr('id');
 					if(!id) return; // we need a unique reference
 					if(!$(el).data('tabs')) return; // don't act on uninit'ed controls
 					if($(el).data('ignoreTabState')) return; // allow opt-out
-					selectedTabs.push({id:id, selected:$(el).tabs('option', 'selected')});
+					activeTabs.push({id:id, active:$(el).tabs('option', 'active')});
 				});
-				if(selectedTabs) window.sessionStorage.setItem('tabs-' + url, JSON.stringify(selectedTabs));
+				if(activeTabs) window.sessionStorage.setItem('tabs-' + url, JSON.stringify(activeTabs));
 			},
 
 			/**
@@ -509,12 +515,12 @@ jQuery.noConflict();
 
 				var self = this, url = this._tabStateUrl(),
 					data = window.sessionStorage.getItem('tabs-' + url),
-					selectedTabs = data ? JSON.parse(data) : false;
-				if(selectedTabs) {
-					$.each(selectedTabs, function(i, selectedTab) {
-						var el = self.find('#' + selectedTab.id);
+					activeTabs = data ? JSON.parse(data) : false;
+				if(activeTabs) {
+					$.each(activeTabs, function(i, activeTab) {
+						var el = self.find('#' + activeTab.id);
 						if(!el.data('tabs')) return; // don't act on uninit'ed controls
-						el.tabs('select', selectedTab.selected);
+						el.tabs('option', 'active', activeTab.active);
 					});
 				}
 			},
@@ -575,7 +581,7 @@ jQuery.noConflict();
 				this._super();
 			},
 			onremove: function() {
-				this.button('destroy');
+				if(this.data('button')) this.button('destroy');
 				this._super();
 			}
 		});
@@ -918,24 +924,16 @@ jQuery.noConflict();
 			redrawTabs: function() {
 				this.rewriteHashlinks();
 
-				var id = this.attr('id'), cookieId = 'ui-tabs-' + id, 
-					selectedTab = this.find('ul:first .ui-tabs-selected');
+				var id = this.attr('id'), activeTab = this.find('ul:first .ui-tabs-active');
 
-				// Fix for wrong cookie storage of deselected tabs
-				if($.cookie && id && $.cookie(cookieId) == -1) $.cookie(cookieId, 0);
-				if(!this.data('tabs')) this.tabs({
-					cookie: ($.cookie && id) ? { expires: 30, path: '/', name: cookieId } : false,
-					ajaxOptions: {
-						// Overwrite ajax loading to use CMS logic instead
-						beforeSend: function(xhr, settings) {
-							if(!isSameUrl(document.location.href, settings.url)) {
-								$('.cms-container').loadPanel(settings.url);
-							}
-							return false;
-						}
+				if(!this.data('uiTabs')) this.tabs({
+					active: (activeTab.index() != -1) ? activeTab.index() : 0,
+					beforeLoad: function(e, ui) {
+						// Disable automatic ajax loading of tabs without matching DOM elements, 
+						// determining if the current URL differs from the tab URL is too error prone.
+						return false;
 					},
-					selected: (selectedTab.index() != -1) ? selectedTab.index() : 0,
-					show: function(e, ui) {
+					activate: function(e, ui) {
 						// Usability: Hide actions for "readonly" tabs (which don't contain any editable fields)
 						var actions = $(this).closest('form').find('.Actions');
 						if($(ui.tab).closest('li').hasClass('readonly')) {
@@ -948,15 +946,15 @@ jQuery.noConflict();
 			},
 		
 			/**
-			 * Replace prefixes for all hashlinks in tabs.
-			 * SSViewer rewrites them from "#Root_MyTab" to
-			 * e.g. "/admin/#Root_MyTab" which makes them
-			 * unusable for jQuery UI.
+			 * Ensure hash links are prefixed with the current page URL,
+			 * otherwise jQuery interprets them as being external.
 			 */
 			rewriteHashlinks: function() {
 				$(this).find('ul a').each(function() {
-					var href = $(this).attr('href');
-					if(href) $(this).attr('href', href.replace(/.*(#.*)/, '$1'));
+					if (!$(this).attr('href')) return;
+					var matches = $(this).attr('href').match(/#.*/);
+					if(!matches) return;
+					$(this).attr('href', document.location.href.replace(/#.*/, '') + matches[0]);
 				});
 			}
 		});
@@ -965,6 +963,7 @@ jQuery.noConflict();
 }(jQuery));
 
 var statusMessage = function(text, type) {
+	text = jQuery('<div/>').text(text).html(); // Escape HTML entities in text
 	jQuery.noticeAdd({text: text, type: type});
 };
 

@@ -20,12 +20,14 @@ class PhpUnitWrapper_3_5 extends PhpUnitWrapper {
 	 * Initialise the wrapper class.
 	 */
 	public function init() {
-		require_once 'PHP/CodeCoverage.php';
-		require_once 'PHP/CodeCoverage/Report/HTML.php';
+		if(!class_exists('PHPUnit_Framework_TestCase')) {
+			require_once 'PHP/CodeCoverage.php';
+			require_once 'PHP/CodeCoverage/Report/HTML.php';
 
-		require_once 'PHPUnit/Autoload.php';
+			require_once 'PHPUnit/Autoload.php';
 
-		require_once 'PHP/CodeCoverage/Filter.php';
+			require_once 'PHP/CodeCoverage/Filter.php';
+		}
 	}
 	
 	/**
@@ -35,11 +37,11 @@ class PhpUnitWrapper_3_5 extends PhpUnitWrapper {
 	protected function beforeRunTests() {
 		
 		if($this->getCoverageStatus()) {			
-            $this->coverage = new PHP_CodeCoverage();
+			$this->coverage = new PHP_CodeCoverage();
 			$coverage = $this->coverage;
 
-            $filter = $coverage->filter();
-            $modules = $this->moduleDirectories();
+			$filter = $coverage->filter();
+			$modules = $this->moduleDirectories();
 
 			foreach(TestRunner::$coverage_filter_dirs as $dir) {
 				if($dir[0] == '*') {

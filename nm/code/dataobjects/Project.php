@@ -73,13 +73,13 @@ class Project extends DataObject {
 
 	static $searchable_fields = array(
 		'Title',
-		'Date',
 		'Text',
 		'IsPortfolio',
 		'IsFeatured'
 	);
 
 	static $date_format = 'F, Y';				// Format des Datums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	static $frontend_date_format = 'M Y';
 
 	// ! Admin -----------------------------
 
@@ -99,15 +99,17 @@ class Project extends DataObject {
 		'view' => array(
 			'Title',
 			'TeaserText',
-			'FormattedDate',
+			'FrontendDate',
 			'Text',
 			'Code',
 			'IsPortfolio',
 			'IsFeatured',
 
 			'Categories.Title',
+			'Images',
 			'Images.Urls',
-			
+			'Images.Title',
+			'Images.Caption',
 			'CalendarEntries',
 			'ParentProjects',
 			'Exhibitions',
@@ -116,9 +118,19 @@ class Project extends DataObject {
 			'Persons',
 		),
 		'view.portfolio_init' => array(
-			'Title'
+			'Title',
+			'FrontendDate',
+			'TeaserText',
+			'PreviewImageID',
+			'Persons.FirstName',
+			'Persons.Surname'
 		)
 	);
+
+	// only for testing purpose
+	public function getViewContext($member = null) {
+		return 'portfolio_init';
+	}
 
 	public function canView($member = null) {
 		return true;

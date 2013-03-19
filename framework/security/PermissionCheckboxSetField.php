@@ -157,7 +157,7 @@ class PermissionCheckboxSetField extends FormField {
 				}
 			}
 		}
-		 
+		
 		$odd = 0;
 		$options = '';
 		if($this->source) {
@@ -197,6 +197,7 @@ class PermissionCheckboxSetField extends FormField {
 					if($this->readonly) $disabled = ' disabled="true"';
 					
 					$inheritMessage = '<small>' . $inheritMessage . '</small>';
+					$icon = ($checked) ? 'accept' : 'decline';
 
 					// If the field is readonly, add a span that will replace the disabled checkbox input
 					if($this->readonly) {
@@ -204,7 +205,7 @@ class PermissionCheckboxSetField extends FormField {
 							. "<input id=\"$itemID\"$disabled name=\"$this->name[$code]\" type=\"checkbox\""
 							. " value=\"$code\"$checked class=\"checkbox\" />"
 							. "<label {$title}for=\"$itemID\">"
-							. "<span class=\"ui-button-icon-primary ui-icon btn-icon-accept\"></span>"
+							. "<span class=\"ui-button-icon-primary ui-icon btn-icon-$icon\"></span>"
 							. "$value$inheritMessage</label>"
 							. "</li>\n";
 					} else {
@@ -256,7 +257,7 @@ class PermissionCheckboxSetField extends FormField {
 			
 			$idList = array();
 			if($this->value) foreach($this->value as $id => $bool) {
-			   if($bool) {
+				if($bool) {
 					$perm = new $managedClass();
 					$perm->{$this->filterField} = $record->ID;
 					$perm->Code = $id;

@@ -296,7 +296,7 @@ abstract class ModelAdmin extends LeftAndMain {
 	 *
 	 * @return array Map of model class names to importer instances
 	 */
-	 public function getModelImporters() {
+	public function getModelImporters() {
 		$importerClasses = $this->stat('model_importers');
 
 		// fallback to all defined models if not explicitly defined
@@ -357,7 +357,7 @@ abstract class ModelAdmin extends LeftAndMain {
 		
 		$fields->push(new LiteralField("SpecFor{$modelName}", $specHTML));
 		$fields->push(
-			new CheckboxField('EmptyBeforeImport', _t('ModelAdmin.EMPTYBEFOREIMPORT', 'Clear Database before import'),
+			new CheckboxField('EmptyBeforeImport', _t('ModelAdmin.EMPTYBEFOREIMPORT', 'Replace data'),
 				false)
 		); 
 		
@@ -445,8 +445,14 @@ abstract class ModelAdmin extends LeftAndMain {
 
 		// Show the class name rather than ModelAdmin title as root node
 		$models = $this->getManagedModels();
+		$params = $this->request->getVars();
+		if(isset($params['url'])) unset($params['url']);
+		
 		$items[0]->Title = $models[$this->modelClass]['title'];
-		$items[0]->Link = $this->Link($this->sanitiseClassName($this->modelClass));
+		$items[0]->Link = Controller::join_links(
+			$this->Link($this->sanitiseClassName($this->modelClass)),
+			'?' . http_build_query($params)
+		);
 		
 		return $items;
 	}

@@ -9,7 +9,7 @@ uk:
     FOLDER: Folder
     LASTEDIT: 'Востаннє змінено'
     OWNER: Власник
-    SIZE: Розмір
+    SIZE: 'Розмір'
     TITLE: Назва
     TYPE: Тип
     URL: URL
@@ -77,7 +77,7 @@ uk:
     CHANGEPASSWORDTEXT2: 'Тепер Ви можете використовувати наступні дані для входу:'
     EMAIL: Email
     HELLO: Привіт
-    PASSWORD: Password
+    PASSWORD: Пароль
   CheckboxField:
     - 'False'
     - 'True'
@@ -113,8 +113,8 @@ uk:
     DAYS: дні
     HOUR: година
     HOURS: годин
-    MIN: хв
-    MINS: хв
+    MIN: 'хв'
+    MINS: 'хв'
     MONTH: місяць
     MONTHS: місяці
     SEC: сек
@@ -240,7 +240,7 @@ uk:
     Saved: 'Saved %s %s'
   GridFieldItemEditView.ss: null
   Group:
-    AddRole: 'Add a role for this group'
+    AddRole: 'Додати роль до цієї групи'
     Code: 'Код групи'
     DefaultGroupTitleAdministrators: Адміністратори
     DefaultGroupTitleContentAuthors: 'Content Authors'
@@ -250,7 +250,7 @@ uk:
     NoRoles: 'Ролі не знайдені'
     PLURALNAME: Groups
     Parent: 'Батьківська група'
-    RolesAddEditLink: 'Manage roles'
+    RolesAddEditLink: 'Керувати ролями'
     SINGULARNAME: Group
     Sort: 'Порядок сортування'
     has_many_Permissions: Права
@@ -288,7 +288,7 @@ uk:
     IMAGEALT: 'Alternative text (alt)'
     IMAGEALTTEXT: 'Альтернативний текст (alt) - відображається якщо зображення не відображається'
     IMAGEALTTEXTDESC: 'Shown to screen readers or if image can not be displayed'
-    IMAGEDIMENSIONS: Розміри
+    IMAGEDIMENSIONS: 'Розміри'
     IMAGEHEIGHTPX: Висота
     IMAGETITLE: 'Текст заголовку (tooltip) - для додаткової інформації про зображення'
     IMAGETITLETEXT: 'Title text (tooltip)'
@@ -501,15 +501,15 @@ uk:
     EDITPERMISSIONS_HELP: 'Ability to edit Permissions and IP Addresses for a group. Requires the "Access to ''Security'' section" permission.'
     GROUPNAME: 'Назва групи'
     IMPORTGROUPS: 'Імпортувати групи'
-    IMPORTUSERS: 'Import users'
+    IMPORTUSERS: 'Імпортувати користувачів'
     MEMBERS: Члени
     MENUTITLE: Security
     MemberListCaution: 'Caution: Removing members from this list will remove them from all groups and the database'
     NEWGROUP: 'Нова Група'
     PERMISSIONS: Дозволи
-    ROLES: Ролі
+    ROLES: 'Ролі'
     ROLESDESCRIPTION: 'Roles are predefined sets of permissions, and can be assigned to groups.<br />They are inherited from parent groups if required.'
-    TABROLES: Ролі
+    TABROLES: 'Ролі'
     Users: Користувачі
   SecurityAdmin_MemberImportForm:
     BtnImport: 'Import from CSV'

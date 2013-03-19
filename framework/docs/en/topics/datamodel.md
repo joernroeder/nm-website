@@ -23,7 +23,8 @@ The SilverStripe database-schema is generated automatically by visiting the URL.
 `http://<mysite>/dev/build`
 
 <div class="notice" markdown='1'>
-Note: You need to be logged in as an administrator to perform this command.
+Note: You need to be logged in as an administrator to perform this command,
+unless your site is in "[dev mode](/topics/debugging)", or the command is run through CLI.
 </div>
 
 ## Querying Data
@@ -236,6 +237,23 @@ use case could be when you want to find all the members that does not exist in a
 	:::php
 	// ... Finding all members that does not belong to $group.
 	$otherMembers = Member::get()->subtract($group->Members());
+
+### Limit
+
+You can limit the amount of records returned in a DataList by using the `limit()` method.
+	
+	:::php
+	// Returning the first 5 members, sorted alphabetically by Surname
+	$members = Member::get()->sort('Surname')->limit(5);
+	
+`limit()` accepts two arguments, the first being the amount of results you want returned, with an optional second
+parameter to specify the offset, which allows you to tell the system where to start getting the results from. The
+offset, if not provided as an argument, will default to 0.
+
+	:::php
+	// Return 10 members with an offset of 4 (starting from the 5th result).
+	// Note that the argument order is different from a MySQL LIMIT clause
+	$members = Member::get()->sort('Surname')->limit(10, 4);
 
 ### Raw SQL options for advanced users
 

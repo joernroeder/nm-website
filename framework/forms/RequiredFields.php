@@ -35,22 +35,22 @@ class RequiredFields extends Validator {
 	 * Clears all the validation from this object.
 	 */
 	public function removeValidation(){
-		$this->required = null;
+		$this->required = array();
 	}
 
 	/**
 	 * Debug helper
 	 */
 	public function debug() {
-	 if(!is_array($this->required)) return false;
+		if(!is_array($this->required)) return false;
 
-	 $result = "<ul>";
-	 foreach( $this->required as $name ){
-	 	$result .= "<li>$name</li>";
-	 }
+		$result = "<ul>";
+		foreach( $this->required as $name ){
+			$result .= "<li>$name</li>";
+		}
 
-	 $result .= "</ul>";
-	 return $result;
+		$result .= "</ul>";
+		return $result;
 	}
 
 	/**
@@ -85,8 +85,15 @@ class RequiredFields extends Validator {
 				}
 
 				if($formField && $error) {
-					$errorMessage = sprintf(_t('Form.FIELDISREQUIRED', '%s is required'),
-						strip_tags('"' . ($formField->Title() ? $formField->Title() : $fieldName) . '"'));
+					$errorMessage = _t(
+						'Form.FIELDISREQUIRED', 
+						'{name} is required',
+						array(
+							'name' => strip_tags(
+								'"' . ($formField->Title() ? $formField->Title() : $fieldName) . '"'
+							)
+						)
+					);
 
 					if($msg = $formField->getCustomValidationMessage()) {
 						$errorMessage = $msg;
@@ -112,9 +119,9 @@ class RequiredFields extends Validator {
 	}
 
 	public function removeRequiredField($field) {
-		for($i=0; $i<count($this->required); $i++) {
-			if($field == $this->required[$i]) {
-				unset($this->required[$i]);
+		foreach ($this->required as $i => $required) {
+			if ($field == $required) {
+				array_splice($this->required, $i);
 			}
 		}
 	}

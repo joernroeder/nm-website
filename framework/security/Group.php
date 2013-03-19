@@ -154,7 +154,7 @@ class Group extends DataObject {
 						// but tabstrip.js doesn't display tabs when directly adressed through a URL pragma
 						_t('Group.RolesAddEditLink', 'Manage roles')
 					) .
-					 "</p>" 
+					"</p>" 
 				) 
 			);
 			
@@ -332,7 +332,7 @@ class Group extends DataObject {
 	}
 	
 	public function getTreeTitle() {
-	    if($this->hasMethod('alternateTreeTitle')) return $this->alternateTreeTitle();
+		if($this->hasMethod('alternateTreeTitle')) return $this->alternateTreeTitle();
 		else return htmlspecialchars($this->Title, ENT_QUOTES);
 	}
 	
@@ -384,7 +384,7 @@ class Group extends DataObject {
 		$results = $this->extend('canEdit', $member);
 		if($results && is_array($results)) if(!min($results)) return false;
 		
- 		if(
+		if(
 			// either we have an ADMIN
 			(bool)Permission::checkMember($member, "ADMIN")
 			|| (
@@ -392,7 +392,7 @@ class Group extends DataObject {
 				// without this check, a user would be able to add himself to an administrators group
 				// with just access to the "Security" admin interface
 				Permission::checkMember($member, "CMS_ACCESS_SecurityAdmin") && 
-				!DataObject::get("Permission", "GroupID = $this->ID AND Code = 'ADMIN'")
+				!Permission::get()->filter(array('GroupID' => $this->ID, 'Code' => 'ADMIN'))->exists()
 			)
 		) {
 			return true;

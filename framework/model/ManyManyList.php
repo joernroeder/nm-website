@@ -117,11 +117,11 @@ class ManyManyList extends RelationList {
 	 * @param $itemID The ID of the item to remove.
 	 */
 	public function remove($item) {
-        if(!($item instanceof $this->dataClass)) {
-        	throw new InvalidArgumentException("ManyManyList::remove() expecting a $this->dataClass object");
-        }
-        
-        return $this->removeByID($item->ID);
+		if(!($item instanceof $this->dataClass)) {
+			throw new InvalidArgumentException("ManyManyList::remove() expecting a $this->dataClass object");
+		}
+		
+		return $this->removeByID($item->ID);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class ManyManyList extends RelationList {
 	 * @param $itemID The item it
 	 */
 	public function removeByID($itemID) {
-	    if(!is_numeric($itemID)) throw new InvalidArgumentException("ManyManyList::removeById() expecting an ID");
+		if(!is_numeric($itemID)) throw new InvalidArgumentException("ManyManyList::removeById() expecting an ID");
 
 		$query = new SQLQuery("*", array("\"$this->joinTable\""));
 		$query->setDelete(true);
@@ -145,16 +145,16 @@ class ManyManyList extends RelationList {
 		$query->execute();
 	}
 
-    /**
-     * Remove all items from this many-many join.  To remove a subset of items, filter it first.
-     */
-    public function removeAll() {
+	/**
+	 * Remove all items from this many-many join.  To remove a subset of items, filter it first.
+	 */
+	public function removeAll() {
 		$query = $this->dataQuery()->query();
 		$query->setDelete(true);
 		$query->setSelect(array('*'));
 		$query->setFrom("\"$this->joinTable\"");
 		$query->execute();
-    }
+	}
 
 	/**
 	 * Find the extra field data for a single row of the relationship
@@ -189,4 +189,41 @@ class ManyManyList extends RelationList {
 		
 		return $result;
 	}
+
+	/**
+	 * Gets the join table used for the relationship.
+	 *
+	 * @return string the name of the table
+	 */
+	public function getJoinTable() {
+		return $this->joinTable;
+	}
+
+	/**
+	 * Gets the key used to store the ID of the local/parent object.
+	 *
+	 * @return string the field name
+	 */
+	public function getLocalKey() {
+		return $this->localKey;
+	}
+
+	/**
+	 * Gets the key used to store the ID of the foreign/child object.
+	 *
+	 * @return string the field name
+	 */
+	public function getForeignKey() {
+		return $this->foreignKey;
+	}
+
+	/**
+	 * Gets the extra fields included in the relationship.
+	 *
+	 * @return array a map of field names to types
+	 */
+	public function getExtraFields() {
+		return $this->extraFields;
+	}
+
 }

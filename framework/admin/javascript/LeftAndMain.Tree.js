@@ -153,8 +153,8 @@
 						"select_limit" : 1,
 						'initially_select': [this.find('.current').attr('id')]
 					},
-					 "crrm": {
-						 'move': {
+					"crrm": {
+						'move': {
 							// Check if a node is allowed to be moved.
 							// Caution: Runs on every drag over a new node
 							'check_move': function(data) {
@@ -286,10 +286,9 @@
 
 				// Copy attributes. We can't replace the node completely
 				// without removing or detaching its children nodes.
-				for(var i=0; i<newNode[0].attributes.length; i++){
-					var attr = newNode[0].attributes[i];
-					node.attr(attr.name, attr.value);
-				}
+				$.each(['id', 'style', 'class', 'data-pagetype'], function(i, attrName) {
+					node.attr(attrName, newNode.attr(attrName));
+				});
 
 				// Replace inner content
 				var origChildren = node.children('ul').detach();

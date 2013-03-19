@@ -62,7 +62,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @return EmptyJSONObject
 	 */
 	public function convertDataObjectToJSONObject(DataObjectInterface $obj, $fields = null, $relations = null, $depth = 0, $specificContext = '') {
-		
+	
 		if(!$obj->canView()) return false;
 
 		$depth++;
@@ -74,6 +74,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		$serobj = ArrayData::array_to_object();
 		
 		foreach ($obj->getApiFields($fields, $specificContext) as $fieldName => $fieldType) {
+	
 			// Field filtering by key
 			if (!$this->getBase()->fieldFilter($fieldName, $fields)) continue;
 
@@ -89,16 +90,18 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 					$serobj->$fieldName = ($rel instanceOf DataList) ? array_keys($rel->getIDList()) : (int) $rel->ID;
 
 				} else {
+
 					// check if we defined a function get$fieldName in the formatter and use it instead getting the value from the object.
 					// this hook is used for the objects href-attribute.
 					
 					//$fieldValue = $this->hasMethod("get{$fieldName}") ? $this->__call("get{$fieldName}", array($obj, $fieldName)) : $obj->$fieldName;
 					$fieldValue = 'Href' == $fieldName ? $this->getHref($obj) : $obj->obj($fieldName);
-
+					
 					// cast value
 					if (null !== $fieldValue) {
-						$val = $this->getBase()->castFieldValue($fieldValue);
 
+						$val = $this->getBase()->castFieldValue($fieldValue);
+						
 						if ($obj->stat('api_exclude_empty_fields') !== false) {
 							if ($val !== null) {
 								$serobj->$fieldName = $val;	

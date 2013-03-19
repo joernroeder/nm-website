@@ -6,13 +6,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/composer/installers",
-                "reference": "a04e254642d88a9c21e70261072ad486ac675251"
+                "url": "https://github.com/composer/installers.git",
+                "reference": "v1.0.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/composer/installers/archive/a04e254642d88a9c21e70261072ad486ac675251.zip",
-                "reference": "a04e254642d88a9c21e70261072ad486ac675251",
+                "url": "https://api.github.com/repos/composer/installers/zipball/v1.0.3",
+                "reference": "v1.0.3",
                 "shasum": ""
             },
             "replace": {
@@ -22,10 +22,12 @@
                 "composer/composer": "1.0.*@dev",
                 "phpunit/phpunit": "3.7.*"
             },
-            "time": "2013-01-14 07:14:45",
             "type": "composer-installer",
             "extra": {
-                "class": "Composer\\Installers\\Installer"
+                "class": "Composer\\Installers\\Installer",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
             },
             "autoload": {
                 "psr-0": {
@@ -40,55 +42,61 @@
                 {
                     "name": "Kyle Robinson Young",
                     "email": "kyle@dontkry.com",
-                    "homepage": "https://github.com/shama",
+                    "homepage": "http://dontkry.com",
                     "role": "Developer"
                 }
             ],
             "description": "A multi-framework Composer library installer",
             "homepage": "http://composer.github.com/installers/",
             "keywords": [
-                "symfony",
-                "installer",
-                "zend",
-                "wordpress",
+                "TYPO3 Flow",
+                "TYPO3 Neos",
+                "agl",
                 "cakephp",
                 "codeigniter",
-                "fuelphp",
                 "drupal",
-                "lithium",
-                "li3",
+                "fuelphp",
+                "installer",
                 "joomla",
+                "kohana",
                 "laravel",
+                "li3",
+                "lithium",
+                "mako",
                 "phpbb",
                 "ppi",
                 "silverstripe",
-                "kohana",
-                "mako",
-                "TYPO3 Flow",
-                "TYPO3 Neos",
-                "agl"
-            ]
+                "symfony",
+                "wordpress",
+                "yii",
+                "zend"
+            ],
+            "time": "2013-03-02 22:45:58"
         },
         {
             "name": "silverstripe/framework",
-            "version": "3.0.3",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/silverstripe/sapphire",
-                "reference": "3.0.3"
+                "url": "https://github.com/silverstripe/sapphire.git",
+                "reference": "3.0.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/silverstripe/sapphire/archive/3.0.3.zip",
-                "reference": "3.0.3",
+                "url": "https://api.github.com/repos/silverstripe/sapphire/zipball/3.0.5",
+                "reference": "3.0.5",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2",
-                "composer/installers": "*"
+                "composer/installers": "*",
+                "php": ">=5.3.2"
             },
-            "time": "2012-11-25 22:20:21",
             "type": "silverstripe-module",
+            "autoload": {
+                "classmap": [
+                    "tests/behat/features/bootstrap"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
@@ -108,7 +116,8 @@
             "keywords": [
                 "framework",
                 "silverstripe"
-            ]
+            ],
+            "time": "2013-02-19 23:39:00"
         }
     ],
     "packages-dev": [
@@ -122,14 +131,13 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/silverstripe-labs/silverstripe-compass/archive/df401ac7e503b30c6cc0828448abeb18ecf767a9.zip",
+                "url": "https://api.github.com/repos/silverstripe-labs/silverstripe-compass/zipball/df401ac7e503b30c6cc0828448abeb18ecf767a9",
                 "reference": "df401ac7e503b30c6cc0828448abeb18ecf767a9",
                 "shasum": ""
             },
             "require": {
                 "silverstripe/framework": "3.*"
             },
-            "time": "2013-01-16 09:27:25",
             "type": "silverstripe-module",
             "notification-url": "https://packagist.org/downloads/",
             "authors": [
@@ -140,11 +148,12 @@
             ],
             "description": "The Compass module for SilverStripe seamlessly integrates Sass and Compass in SilverStripe modules and themes. You write your styles in sass, and the module automatically compiles these sass files to css.",
             "keywords": [
-                "css",
                 "compass",
+                "css",
                 "sass",
                 "silverstripe"
-            ]
+            ],
+            "time": "2013-01-16 09:27:25"
         },
         {
             "name": "silverstripe/docsviewer",
@@ -152,18 +161,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silverstripe/silverstripe-docsviewer.git",
-                "reference": "73a66da658f97114b44bed4f1e73ca869328ca34"
+                "reference": "158db9d41598c7ed3fce47f665abdf689404ad32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/silverstripe/silverstripe-docsviewer/archive/73a66da658f97114b44bed4f1e73ca869328ca34.zip",
-                "reference": "73a66da658f97114b44bed4f1e73ca869328ca34",
+                "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/158db9d41598c7ed3fce47f665abdf689404ad32",
+                "reference": "158db9d41598c7ed3fce47f665abdf689404ad32",
                 "shasum": ""
             },
             "require": {
                 "silverstripe/framework": "3.*"
             },
-            "time": "2013-01-11 21:53:43",
             "type": "silverstripe-module",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -180,7 +188,8 @@
             "keywords": [
                 "documentation",
                 "silverstripe"
-            ]
+            ],
+            "time": "2013-02-19 21:22:18"
         }
     ],
     "aliases": [
@@ -189,5 +198,11 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "silverstripe/framework": 0
-    }
+    },
+    "platform": {
+        "php": ">=5.3.2"
+    },
+    "platform-dev": [
+
+    ]
 }

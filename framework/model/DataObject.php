@@ -13,46 +13,46 @@
  * 
  * <code>
  * class Article extends DataObject implements PermissionProvider {
- * 	static $api_access = true;
- * 	
- * 	function canView($member = false) {
- * 		return Permission::check('ARTICLE_VIEW');
- * 	}
- * 	function canEdit($member = false) {
- * 		return Permission::check('ARTICLE_EDIT');
- * 	}
- * 	function canDelete() {
- * 		return Permission::check('ARTICLE_DELETE');
- * 	}
- * 	function canCreate() {
- * 		return Permission::check('ARTICLE_CREATE');
- * 	}
- * 	function providePermissions() {
- * 		return array(
- * 			'ARTICLE_VIEW' => 'Read an article object',
- * 			'ARTICLE_EDIT' => 'Edit an article object',
- * 			'ARTICLE_DELETE' => 'Delete an article object',
- * 			'ARTICLE_CREATE' => 'Create an article object',
- * 		);
- * 	}
+ *  static $api_access = true;
+ *  
+ *  function canView($member = false) {
+ *    return Permission::check('ARTICLE_VIEW');
+ *  }
+ *  function canEdit($member = false) {
+ *    return Permission::check('ARTICLE_EDIT');
+ *  }
+ *  function canDelete() {
+ *    return Permission::check('ARTICLE_DELETE');
+ *  }
+ *  function canCreate() {
+ *    return Permission::check('ARTICLE_CREATE');
+ *  }
+ *  function providePermissions() {
+ *    return array(
+ *      'ARTICLE_VIEW' => 'Read an article object',
+ *      'ARTICLE_EDIT' => 'Edit an article object',
+ *      'ARTICLE_DELETE' => 'Delete an article object',
+ *      'ARTICLE_CREATE' => 'Create an article object',
+ *    );
+ *  }
  * }
  * </code> 
  *
  * Object-level access control by {@link Group} membership: 
  * <code>
  * class Article extends DataObject {
- * 	static $api_access = true;
- * 	
- * 	function canView($member = false) {
- * 		if(!$member) $member = Member::currentUser();
- *		return $member->inGroup('Subscribers');
- * 	}
- * 	function canEdit($member = false) {
- * 		if(!$member) $member = Member::currentUser();
- *		return $member->inGroup('Editors');
- * 	}
- * 	
- * 	// ...
+ *   static $api_access = true;
+ *   
+ *   function canView($member = false) {
+ *     if(!$member) $member = Member::currentUser();
+ *     return $member->inGroup('Subscribers');
+ *   }
+ *   function canEdit($member = false) {
+ *     if(!$member) $member = Member::currentUser();
+ *     return $member->inGroup('Editors');
+ *   }
+ *   
+ *   // ...
  * }
  * </code>
  * 
@@ -145,9 +145,11 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 */
 	public static $cache_has_own_table = array();
 	public static $cache_has_own_table_field = array();
+	protected static $_cache_db = array();
 	protected static $_cache_get_one;
 	protected static $_cache_get_class_ancestry;
-	protected static $_cache_composite_fields = array();	
+	protected static $_cache_composite_fields = array();
+	protected static $_cache_custom_database_fields = array();
 	protected static $_cache_field_labels = array();
 
 	/**
@@ -226,8 +228,12 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @return array Map of fieldname to specification, similiar to {@link DataObject::$db}.
 	 */
 	public static function custom_database_fields($class) {
+		if(isset(self::$_cache_custom_database_fields[$class])) {
+			return self::$_cache_custom_database_fields[$class];
+		}
+
 		$fields = Config::inst()->get($class, 'db', Config::UNINHERITED);
-		
+
 		foreach(self::composite_fields($class, false) as $fieldName => $fieldClass) {
 			// Remove the original fieldname, it's not an actual database column
 			unset($fields[$fieldName]);
@@ -244,8 +250,12 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		if($hasOne) foreach(array_keys($hasOne) as $field) {
 			$fields[$field . 'ID'] = 'ForeignKey';
 		}
-		
-		return (array)$fields;
+
+		$output = (array) $fields;
+
+		self::$_cache_custom_database_fields[$class] = $output;
+
+		return $output;
 	}
 	
 	/**
@@ -803,7 +813,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @param $priority String left|right Determines who wins in case of a conflict (optional)
 	 * @param $includeRelations Boolean Merge any existing relations (optional)
 	 * @param $overwriteWithEmpty Boolean Overwrite existing left values with empty right values.
-	 * 	Only applicable with $priority='right'. (optional)
+	 *                            Only applicable with $priority='right'. (optional)
 	 * @return Boolean
 	 */
 	public function merge($rightObj, $priority = 'right', $includeRelations = true, $overwriteWithEmpty = false) {
@@ -982,7 +992,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			
 			if($defaults && !is_array($defaults)) {
 				user_error("Bad '$this->class' defaults given: " . var_export($defaults, true),
-				 	E_USER_WARNING);
+					E_USER_WARNING);
 				$defaults = null;
 			}
 			
@@ -1228,8 +1238,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 				. " Make sure that you call parent::onBeforeDelete().", E_USER_ERROR);
 		}
 		
-        // Deleting a record without an ID shouldn't do anything
-        if(!$this->ID) throw new Exception("DataObject::delete() called on a DataObject without an ID");
+		// Deleting a record without an ID shouldn't do anything
+		if(!$this->ID) throw new LogicException("DataObject::delete() called on a DataObject without an ID");
 
 		// TODO: This is quite ugly.  To improve:
 		//  - move the details of the delete code in the DataQuery system
@@ -1569,23 +1579,28 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 				continue;
 			}
 
+			if(isset(self::$_cache_db[$class])) {
+				$dbItems = self::$_cache_db[$class];
+			} else {
+				$dbItems = (array) Config::inst()->get($class, 'db', Config::UNINHERITED);
+				self::$_cache_db[$class] = $dbItems;
+			}
+
 			if($fieldName) {
-				$db = Config::inst()->get($class, 'db', Config::UNINHERITED);
-				
-				if(isset($db[$fieldName])) {
-					return $db[$fieldName];
+				if(isset($dbItems[$fieldName])) {
+					return $dbItems[$fieldName];
 				}
 			} else {
-				$newItems = (array)Config::inst()->get($class, 'db', Config::UNINHERITED);
 				// Validate the data
-				foreach($newItems as $k => $v) {
+				foreach($dbItems as $k => $v) {
 					if(!is_string($k) || is_numeric($k) || !is_string($v)) {
 						user_error("$class::\$db has a bad entry: " 
 						. var_export($k,true). " => " . var_export($v,true) . ".  Each map key should be a"
 						. " property name, and the map value should be the property type.", E_USER_ERROR);
 					}
 				}
-				$items = isset($items) ? array_merge((array)$items, $newItems) : $newItems;
+
+				$items = isset($items) ? array_merge((array) $items, $dbItems) : $dbItems;
 			}
 		}
 
@@ -1829,8 +1844,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * Used by {@link SearchContext}.
 	 * 
 	 * @param array $_params
-	 * 	'fieldClasses': Associative array of field names as keys and FormField classes as values
-	 * 	'restrictFields': Numeric array of a field name whitelist
+	 *   'fieldClasses': Associative array of field names as keys and FormField classes as values
+	 *   'restrictFields': Numeric array of a field name whitelist
 	 * @return FieldList
 	 */
 	public function scaffoldSearchFields($_params = null) {
@@ -1921,14 +1936,14 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * or extended onto it by using {@link DataExtension->updateCMSFields()}.
 	 *
 	 * <code>
-	 * klass MyCustomClass extends DataObject {
-	 * 	static $db = array('CustomProperty'=>'Boolean');
+	 * class MyCustomClass extends DataObject {
+	 *  static $db = array('CustomProperty'=>'Boolean');
 	 *
-	 * 	function getCMSFields() {
-	 * 		$fields = parent::getCMSFields();
-	 * 		$fields->addFieldToTab('Root.Content',new CheckboxField('CustomProperty'));
-	 *		return $fields;
-	 *	}
+	 *  function getCMSFields() {
+	 *    $fields = parent::getCMSFields();
+	 *    $fields->addFieldToTab('Root.Content',new CheckboxField('CustomProperty'));
+	 *    return $fields;
+	 *  }
 	 * }
 	 * </code>
 	 *
@@ -2604,27 +2619,33 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * The path to the related field is specified with dot separated syntax (eg: Parent.Child.Child.FieldName)
 	 *
 	 * @param $fieldPath string
-	 * @return string
+	 * @return string | null - will return null on a missing value
 	 */
 	public function relField($fieldName) {
 		$component = $this;
 
+		// We're dealing with relations here so we traverse the dot syntax
 		if(strpos($fieldName, '.') !== false) {
-			$parts = explode('.', $fieldName);
-			$fieldName = array_pop($parts);
-
-			// Traverse dot syntax
-			foreach($parts as $relation) {
-				if($component instanceof SS_List) {
-					if(method_exists($component,$relation)) $component = $component->$relation();
-					else $component = $component->relation($relation);
-				} else {
+			$relations = explode('.', $fieldName);
+			$fieldName = array_pop($relations);
+			foreach($relations as $relation) {
+				// Bail if any of the below sets a $component to a null object
+				if($component instanceof SS_List && !method_exists($component, $relation)) {
+					$component = $component->relation($relation);
+				// Just call the method and hope for the best
+				} else { 
 					$component = $component->$relation();
 				}
 			}
 		}
-
-		if ($component->hasMethod($fieldName)) return $component->$fieldName();
+		
+		// Bail if the component is null
+		if(!$component) {
+			return null;
+		}
+		if($component->hasMethod($fieldName)) {
+			return $component->$fieldName();
+		}
 		return $component->$fieldName;
 	}
 
@@ -2835,12 +2856,10 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 				&& DataObject::$_cache_get_one[$callerClass][$cacheKey] instanceof DataObject 
 				&& DataObject::$_cache_get_one[$callerClass][$cacheKey]->destroyed) {
 
-			DataObject::$_cache_get_one[$callerClass][$cacheKey
-			] = false;
+			DataObject::$_cache_get_one[$callerClass][$cacheKey] = false;
 		}
 		if(!$cache || !isset(DataObject::$_cache_get_one[$callerClass][$cacheKey])) {
-			$dl = DataList::create($callerClass)->where($filter)->sort($orderby);
-			$dl->setDataModel(DataModel::inst());
+			$dl = $callerClass::get()->where($filter)->sort($orderby);
 			$item = $dl->First();
 
 			if($cache) {
@@ -2897,8 +2916,10 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	public static function reset() {
 		DataObject::$cache_has_own_table = array();
 		DataObject::$cache_has_own_table_field = array();
+		DataObject::$_cache_db = array();
 		DataObject::$_cache_get_one = array();
 		DataObject::$_cache_composite_fields = array();
+		DataObject::$_cache_custom_database_fields = array();
 		DataObject::$_cache_get_class_ancestry = array();
 		DataObject::$_cache_field_labels = array();
 	}
@@ -3210,8 +3231,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 						// var_dump("{$ancestorClass}.{$type}_{$name}");
 						$autoLabels[$name] = _t("{$ancestorClass}.{$type}_{$name}",FormField::name_to_label($name));
 					}
-	 			}
-	 		}
+				}
+			}
 
 			$labels = array_merge((array)$autoLabels, (array)$customLabels);
 			$this->extend('updateFieldLabels', $labels);	
@@ -3349,7 +3370,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * 
 	 * <code>
 	 * array(
-	 * 	'MySQLDatabase' => 'ENGINE=MyISAM'
+	 *  'MySQLDatabase' => 'ENGINE=MyISAM'
 	 * )
 	 * </code>
 	 *
@@ -3392,8 +3413,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 *
 	 * Example:
 	 * array(
-	 * 	array('Title' => "DefaultPage1", 'PageTitle' => 'page1'),
-	 * 	array('Title' => "DefaultPage2")
+	 *  array('Title' => "DefaultPage1", 'PageTitle' => 'page1'),
+	 *  array('Title' => "DefaultPage2")
 	 * ).
 	 *
 	 * @var array
@@ -3449,7 +3470,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * Example code:
 	 * <code>
 	 * public static $many_many_extraFields = array(
-	 * 	'Members' => array(
+	 *  'Members' => array(
 	 *			'Role' => 'Varchar(100)'
 	 *		)
 	 * );
@@ -3479,8 +3500,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 *
 	 * Overriding the default filter, with a custom defined filter:
 	 * <code>
-	 * 	static $searchable_fields = array(
-	 * 	   "Name" => "PartialMatchFilter"
+	 *  static $searchable_fields = array(
+	 *     "Name" => "PartialMatchFilter"
 	 *  );
 	 * </code>
 	 * 
@@ -3488,21 +3509,21 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * The 'filter' parameter will be generated from {@link DBField::$default_search_filter_class}.
 	 * The 'title' parameter will be generated from {@link DataObject->fieldLabels()}.
 	 * <code>
-	 * 	static $searchable_fields = array(
-	 * 	   "Name" => array(
-	 * 			"field" => "TextField"
-	 * 		)
+	 *  static $searchable_fields = array(
+	 *    "Name" => array(
+	 *      "field" => "TextField"
+	 *    )
 	 *  );
 	 * </code>
 	 *
 	 * Overriding the default form field, filter and title:
 	 * <code>
-	 * 	static $searchable_fields = array(
-	 * 	   "Organisation.ZipCode" => array(
-	 * 			"field" => "TextField", 
-	 * 			"filter" => "PartialMatchFilter",
-	 * 			"title" => 'Organisation ZIP'
-	 * 		)
+	 *  static $searchable_fields = array(
+	 *    "Organisation.ZipCode" => array(
+	 *      "field" => "TextField", 
+	 *      "filter" => "PartialMatchFilter",
+	 *      "title" => 'Organisation ZIP'
+	 *    )
 	 *  );
 	 * </code>
 	 */
@@ -3554,21 +3575,21 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	}
 	
 	/**
- 	 * Returns true if the given method/parameter has a value
- 	 * (Uses the DBField::hasValue if the parameter is a database field)
- 	 * 
+	 * Returns true if the given method/parameter has a value
+	 * (Uses the DBField::hasValue if the parameter is a database field)
+	 * 
 	 * @param string $field The field name
 	 * @param array $arguments
 	 * @param bool $cache
- 	 * @return boolean
- 	 */
- 	public function hasValue($field, $arguments = null, $cache = true) {
- 		$obj = $this->dbObject($field);
- 		if($obj) {
- 			return $obj->exists();
- 		} else {
- 			return parent::hasValue($field, $arguments, $cache);
- 		}
- 	}
+	 * @return boolean
+	 */
+	public function hasValue($field, $arguments = null, $cache = true) {
+		$obj = $this->dbObject($field);
+		if($obj) {
+			return $obj->exists();
+		} else {
+			return parent::hasValue($field, $arguments, $cache);
+		}
+	}
 
 }

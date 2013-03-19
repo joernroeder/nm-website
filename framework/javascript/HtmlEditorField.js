@@ -6,15 +6,15 @@
  * ajax / iframe submissions
  */
 
- var ss = ss || {};
+var ss = ss || {};
 /**
  * Wrapper for HTML WYSIWYG libraries, which abstracts library internals
  * from interface concerns like inserting and editing links.
  * Caution: Incomplete and unstable API.
  */
- ss.editorWrappers = {};
- ss.editorWrappers.initial
- ss.editorWrappers.tinyMCE = (function() {
+ss.editorWrappers = {};
+ss.editorWrappers.initial
+ss.editorWrappers.tinyMCE = (function() {
 	return {
 		init: function(config) {
 			if(!ss.editorWrappers.tinyMCE.initialized) {
@@ -105,6 +105,15 @@
 		 */
 		selectNode: function(node) {
 			this.getInstance().selection.select(node);
+		},
+		/**
+		 * Replace entire content
+		 * 
+		 * @param String HTML
+		 * @param Object opts
+		 */
+		setContent: function(html, opts) {
+			this.getInstance().execCommand('mceSetContent', false, html, opts);
 		},
 		/**
 		 * Insert content at the current caret position
@@ -789,7 +798,7 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				if(header) header[(hasItems) ? 'show' : 'hide']();
 
 				// Disable "insert" button if no files are selected
-				 this.find('.Actions :submit')
+				this.find('.Actions :submit')
 					.button(hasItems ? 'enable' : 'disable')
 					.toggleClass('ui-state-disabled', !hasItems); 
 					
@@ -805,6 +814,7 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 			resetFields: function() {				
 				this.find('.ss-htmleditorfield-file').remove(); // Remove any existing views
 				this.find('.ss-gridfield-items .ui-selected').removeClass('ui-selected'); // Unselect all items
+				this.find('li.ss-uploadfield-item').remove(); // Remove all selected items
 				this.redraw();
 
 				this._super();
@@ -864,7 +874,7 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 					//get the uploaded file ID when this event triggers, signaling the upload has compeleted successfully
 					editFieldIDs.push($(this).data('id'));
 				});
-				var uploadedFiles = $('.ss-uploadfield-files').children('.ss-uploadfield-item');
+				var uploadedFiles = form.find('.ss-uploadfield-files').children('.ss-uploadfield-item');
 				uploadedFiles.each(function(){
 					var uploadedID = $(this).data('fileid');
 					if ($.inArray(uploadedID, editFieldIDs) == -1) {

@@ -164,7 +164,7 @@ class Controller extends RequestHandler implements TemplateGlobalProvider {
 					Debug::message("Request handler $body->class object to $this->class controller;"
 						. "rendering with template returned by $body->class::getViewer()");
 				}
-			   $body = $body->getViewer($request->latestParam('Action'))->process($body);
+				$body = $body->getViewer($request->latestParam('Action'))->process($body);
 			}
 			
 			$this->response->setBody($body);
@@ -367,7 +367,7 @@ class Controller extends RequestHandler implements TemplateGlobalProvider {
 		
 		return $template->process($obj);
 	}
-  
+
 	/**
 	 * Call this to disable site-wide basic authentication for a specific contoller.
 	 * This must be called before Controller::init().  That is, you must call it in your controller's
@@ -454,7 +454,7 @@ class Controller extends RequestHandler implements TemplateGlobalProvider {
 	public function redirect($url, $code=302) {
 		if(!$this->response) $this->response = new SS_HTTPResponse();
 		
-		if($this->response->getHeader('Location')) {
+		if($this->response->getHeader('Location') && $this->response->getHeader('Location') != $url) {
 			user_error("Already directed to " . $this->response->getHeader('Location')
 				. "; now trying to direct to $url", E_USER_WARNING);
 			return;
@@ -477,6 +477,9 @@ class Controller extends RequestHandler implements TemplateGlobalProvider {
 	 * @uses redirect()
 	 */
 	public function redirectBack() {
+		// Don't cache the redirect back ever
+		HTTP::set_cache_age(0);
+
 		$url = null;
 		
 		// In edge-cases, this will be called outside of a handleRequest() context; in that case,

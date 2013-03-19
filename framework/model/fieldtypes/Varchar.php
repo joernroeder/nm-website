@@ -17,8 +17,8 @@ class Varchar extends StringField {
 	);
 	
 	protected $size;
-	 
- 	/**
+	
+	/**
  	 * Construct a new short text field
  	 * 
  	 * @param $name string The name of the field
@@ -27,12 +27,25 @@ class Varchar extends StringField {
  	 *                       See {@link StringField::setOptions()} for information on the available options
  	 * @return unknown_type
  	 */
- 	public function __construct($name = null, $size = 50, $options = array()) {
+	public function __construct($name = null, $size = 50, $options = array()) {
 		$this->size = $size ? $size : 50;
 		parent::__construct($name, $options);
 	}
 	
- 	/**
+	/**
+	 * Allow the ability to access the size of the field programatically. This
+	 * can be useful if you want to have text fields with a length limit that
+	 * is dictated by the DB field.
+	 *
+	 * TextField::create('Title')->setMaxLength(singleton('SiteTree')->dbObject('Title')->getSize())
+	 *
+	 * @return int The size of the field
+	 */
+	public function getSize() {
+		return $this->size;
+	}
+	
+	/**
  	 * (non-PHPdoc)
  	 * @see DBField::requireField()
  	 */

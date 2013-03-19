@@ -181,9 +181,9 @@ fr:
     DELETE: 'Supprimer {type}'
     DISALLOWEDFILETYPE: 'Ce type de fichier n’est pas autorisé'
     FILE: Fichier
-    FROMCOMPUTER: 'À partir de votre ordinateur'
-    FROMFILESTORE: 'Depuis le magasin de fichier'
-    NOSOURCE: 'Choisir un fichier à attacher'
+    FROMCOMPUTER: 'Depuis votre ordinateur'
+    FROMFILESTORE: 'Depuis les archives'
+    NOSOURCE: 'Choisir un fichier à joindre'
     REPLACE: 'Remplacer {type}'
   FileIFrameField_iframe.ss:
     TITLE: 'Iframe de chargement d’images'
@@ -461,7 +461,7 @@ fr:
     AssignedTo: 'assignée au groupe « {title} »'
     FromGroup: 'hérité du groupe « {title} »'
     FromRole: 'héritée du rôle « {title} »'
-    FromRoleOnGroup: 'hérité du rôle "%s" du groupe "%s"'
+    FromRoleOnGroup: 'hérité du rôle « %s » du groupe « %s »'
   PermissionRole:
     OnlyAdminCanApply: 'Limité aux administrateurs'
     PLURALNAME: Rôles
@@ -537,7 +537,7 @@ fr:
   TableListField_PageControls.ss:
     DISPLAYING: 'Affichage de'
     OF: de
-    TO: à
+    TO: 'à'
     VIEWFIRST: 'Voir premier'
     VIEWLAST: 'Voir dernier'
     VIEWNEXT: 'Voir suivant'
