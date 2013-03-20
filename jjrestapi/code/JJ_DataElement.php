@@ -169,7 +169,10 @@ class JJ_DataElement extends ViewableData {
 	 * @param array
 	 */
 	public function setContext($value) {
-		$this->context = $value;
+		$a = explode('.', $value);
+ 		$b = (count($a) > 1) ? array($a[0], $a[1]) : array('view', $a[0]);
+
+ 		$this->context = ArrayData::array_to_object(array('operation' => $b[0], 'context' => $b[1]));
 	}
 
 
@@ -181,7 +184,14 @@ class JJ_DataElement extends ViewableData {
 	public function formattedData() {
 		$data = $this->data();
 		$context = $this->context();
-		return $this->formatter()->convert($data, null, $context);
+		$fields = null;
+
+		if ($data instanceof Object) {
+			$obj = $data instanceof DataList ? singleton($data->dataClass()) : $data;
+			$fields = $obj->getApiContextFields($context->operation, $context->context);
+		}
+
+		return $this->formatter()->convert($data, $fields);
 	}
 
 
