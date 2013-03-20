@@ -59,7 +59,7 @@ class StartEndDateExtension extends Extension {
 	 *
 	 * @return string
 	 */
-	public function getFormattedDate($dateName = '', $formatName) {
+	public function getFormattedDate($dateName = '', $formatName = '') {
 		$lowerName = strtolower($dateName);
 		$formatName = $formatName ? $formatName : $lowerName;
 		$format = $lowerName ? $this->owner->stat($formatName . '_date_format') : $this->owner->stat('date_format');
