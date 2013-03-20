@@ -61,8 +61,8 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @param  $relations // it seems like we don't use this!
 	 * @return EmptyJSONObject
 	 */
-	public function convertDataObjectToJSONObject(DataObjectInterface $obj, $fields = null, $relations = null, $depth = 0, $specificContext = '') {
-	
+	public function convertDataObjectToJSONObject(DataObjectInterface $obj, $fields = null, $relations = null, $depth = 0) {
+		
 		if(!$obj->canView()) return false;
 
 		$depth++;
@@ -72,9 +72,9 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 
 		$objHref = Director::absoluteURL(self::$api_base . "$obj->class/$obj->ID");
 		$serobj = ArrayData::array_to_object();
-		
-		foreach ($obj->getApiFields($fields, $specificContext) as $fieldName => $fieldType) {
-	
+
+		foreach ($obj->getApiFields($fields) as $fieldName => $fieldType) {
+						
 			// Field filtering by key
 			if (!$this->getBase()->fieldFilter($fieldName, $fields)) continue;
 
@@ -169,12 +169,12 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 *
 	 *
 	 */
-	public function getDataList(SS_List $set, $fields = null, $specificContext = '') {
+	public function getDataList(SS_List $set, $fields = null) {
 		$items = array();
 
 		foreach ($set as $do) {
 			//print_r($do->class);
-			$obj = $this->convertDataObjectToJSONObject($do, $fields, null, 0, $specificContext);
+			$obj = $this->convertDataObjectToJSONObject($do, $fields);
 			
 			if ($obj) {
 				$items[] = $obj;
@@ -190,12 +190,12 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @param SS_List $set
 	 * @return String json
 	 */
-	public function convertDataList(SS_List $set, $fields = null, $specificContext = '') {
+	public function convertDataList(SS_List $set, $fields = null) {
 		$this->setRemoveFields(array(
 			'ClassName'
 		));
 
-		$items = $this->getDataList($set, $fields, $specificContext);
+		$items = $this->getDataList($set, $fields);
 
 		$serobj = ArrayData::array_to_object(array(
 			'Items' => $items
@@ -209,12 +209,12 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 *
 	 *
 	 */
-	public function convert($data, $fields = null, $specificContext = '') {
+	public function convert($data, $fields = null) {
 		if ($data instanceof SS_List) {
-			return $this->convertDataList($data, $fields, $specificContext);
+			return $this->convertDataList($data, $fields);
 		}
 		else if ($data instanceof DataObject) {
-			return Convert::array2json($this->convertDataObjectToJSONObject($data, $fields, null, 0, $specificContext));
+			return $this->convertDataObject($data, $fields);
 		}
 		else {
 			return $this->convertObj($data, $fields);

@@ -40,7 +40,7 @@ class RootURLController extends Controller {
 				// get featured projects
 				$featuredProjects = Project::get()->where('IsFeatured=1');
 				if ($featuredProjects->exists()) {
-					$returnVal .= $featuredProjects->toDataElement('featured-projects', 'portfolio_init')->forTemplate();
+					$returnVal .= $featuredProjects->toDataElement('featured-projects', null, 'view.portfolio_init')->forTemplate();
 				}
 				break;
 			default:
