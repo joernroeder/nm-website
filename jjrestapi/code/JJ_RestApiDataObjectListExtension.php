@@ -33,10 +33,8 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 
 	// ! Context Handler
 	
-	protected $specificContext = '';
-	
 	public function getViewContext($member = null) {
-		return $this->specificContext ? $this->specificContext : $this->getContextName($member) ;
+		return $this->getContextName($member);
 	}
 
 
@@ -45,9 +43,6 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	}
 
 
-	/*
-		rethink. there should be no deleteContext, as you can either delete or not
-	 */
 	public function getDeleteContext($member = null) {
 		return $this->getContextName($member);
 	}
@@ -151,15 +146,13 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * }
 	 *
 	 */
-	public function toDataElement($name = '', $context = '') {
-		$fields = null;
-
+	public function toDataElement($name = '', $extension = null, $context = '') {
 		if (!$name) {
 			$name = $this->owner instanceof DataList ? $this->owner->dataClass() : $this->class;
 			$name = strtolower($name);
 		}
 
-		return new JJ_DataElement($name, $this->owner, null, $context);
+		return new JJ_DataElement($name, $this->owner, $extension, $context);
 	}
 
 
@@ -175,13 +168,10 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @param FieldSet $fields
 	 * @return array
 	 */
-	public function getApiFields($fields = null, $specificContext = '') {
-		if ($specificContext) {
-			$this->specificContext = $specificContext;
-		}
-
+	public function getApiFields($fields = null) {
 		$dbFields = array();
 		$customFields = $fields ? $fields : $this->getApiContextFields();
+
 		// if custom fields are specified, only select these
 		if (is_array($customFields)) {
 			
@@ -289,10 +279,10 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		$context = ArrayData::array_to_object();
 
 		$methodName = 'get' . ucfirst($operation) . 'Context';
-		$subContext = $this->owner->hasMethod($methodName) ? $this->owner->$methodName() : false;
+		$subContext = $this->owner->hasMethod($methodName) ? $this->owner->$methodName() : '';
 
 		$context->operation = $operation;
-		$context->context = $subContext ? $operation . '.' . $subContext : false;
+		$context->context = $subContext ? $operation . '.' . $subContext : '';
 
 		return $context;
 	}
@@ -317,11 +307,11 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 *
 	 * @return array
 	 */
-	public function getApiContextFields($operation = 'view') {
+	public function getApiContextFields($operation = 'view', $subContext = '') {
 
 		$fields = JJ_RestfulServer::fields(); //$this->stat('fields');
 
-		$context = $this->getApiContext($operation);
+		$context = $subContext ? ArrayData::array_to_object(array('operation' => $operation, 'context' => $operation . '.' . $subContext)) : $this->getApiContext($operation);
 		$apiAccess = $this->owner->stat('api_access');
 		$className = $this->owner->class;
 
