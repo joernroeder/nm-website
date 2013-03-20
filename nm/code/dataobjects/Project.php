@@ -127,11 +127,6 @@ class Project extends DataObject {
 		)
 	);
 
-	// only for testing purpose
-	public function getViewContext($member = null) {
-		return 'portfolio_init';
-	}
-
 	public function canView($member = null) {
 		return true;
 	}
