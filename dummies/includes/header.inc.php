@@ -42,6 +42,7 @@ $nav = array(
 		<!-- Main container. -->
 		<div id="main">
 
+			<!--
 			<section class="badge">
 				<a href="home.php">Neue Medien Kassel</a>
 
@@ -53,3 +54,4 @@ $nav = array(
 					</ul>
 				</nav>
 			</section>
+			-->

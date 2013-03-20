@@ -241,14 +241,26 @@ aside {
 
 .home {
 
+	#main {
+		position: relative;
+	}
+
 	.gravity {
-		display: inline-block;
+		position: absolute;
+		min-height: 100%;
 		.wrapper;
-		.columnsWidth(8, 6);
+		.columnsWidth(8, 8);
 
 		img {
-			display: block;
-			float: left;
+			//display: none;
+			position: absolute;
+			display: inline-block;
+			//float: left;
+		}
+
+		.entity {
+			position: absolute;
+			display: inline-block;
 		}
 	}
 

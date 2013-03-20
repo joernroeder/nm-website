@@ -3,6 +3,7 @@ $bodyClass = 'home';
 
 include './includes/header.inc.php' ?>
 
+<!--
 <section class="calendar">
 	<h1>Kalender</h1>
 	<ul>
@@ -27,11 +28,17 @@ include './includes/header.inc.php' ?>
 	</ul>
 	<a href="#" class="btn">Foo</a>
 </section>
+-->
 
 <section class="gravity">
-	<img src="http://placekitten.com/200/320">
-	<img src="http://placekitten.com/540/360">
-	<img src="http://placekitten.com/360/240">
+	<?php
+		for ($i = 0; $i < 50; $i++) : 
+			$min = (int) rand(50, 150);
+			$x = (int) rand($min, 300);
+			$y = (int) rand($min, 300);
+			echo '<img src="http://placekitten.com/' . $x . '/' . $y . '" width="' . $x . '" height="' . $y . '">';
+		endfor;
+	?>
 </section>
 
 <?php include './includes/footer.inc.php' ?>

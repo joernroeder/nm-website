@@ -648,17 +648,25 @@ aside a {
   clear: both;
   height: 0;
 }
+.home #main {
+  position: relative;
+}
 .home .gravity {
-  display: inline-block;
+  position: absolute;
+  min-height: 100%;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  width: 75%;
+  width: 100%;
 }
 .home .gravity img {
-  display: block;
-  float: left;
+  position: absolute;
+  display: inline-block;
+}
+.home .gravity .entity {
+  position: absolute;
+  display: inline-block;
 }
 .home .calendar {
   float: right;
