@@ -9,7 +9,7 @@
 .cms .ss-gridfield > div.addNewGridFieldButton { margin-bottom: 12px; }
 .cms .ss-gridfield > div.addNewGridFieldButton:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 *:first-child .cms .ss-gridfield > div.addNewGridFieldButton { zoom: 1; }
-.cms .ss-gridfield[data-selectable] tr.ui-selected, .cms .ss-gridfield[data-selectable] tr.ui-selecting { background: #fffad6 !important; }
+.cms .ss-gridfield[data-selectable] tr.ui-selected, .cms .ss-gridfield[data-selectable] tr.ui-selecting { background: #FFFAD6 !important; }
 .cms .ss-gridfield[data-selectable] td { cursor: pointer; }
 .cms .ss-gridfield span button#action_gridfield_relationfind { display: none; }
 .cms .ss-gridfield p button#action_export { margin-top: 12px; }
@@ -40,11 +40,11 @@
 .cms table.ss-gridfield-table tbody td.col-listChildrenLink .list-children-link { background: transparent url(../images/sitetree_ss_default_icons.png) no-repeat 3px -4px; display: block; }
 .cms table.ss-gridfield-table tbody td.col-getTreeTitle span.item { color: #1556b2; }
 .cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge { clear: both; text-transform: uppercase; display: inline-block; padding: 0px 3px; font-size: 0.75em; line-height: 1em; margin-left: 10px; margin-right: 6px; margin-top: -1px; -webkit-border-radius: 2px 2px; -moz-border-radius: 2px / 2px; border-radius: 2px / 2px; }
-.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.modified { color: #7E7470; border: 1px solid #c9b800; background-color: #FFF0BC; }
-.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.addedtodraft { color: #7E7470; border: 1px solid #c9b800; background-color: #FFF0BC; }
-.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.deletedonlive { color: #636363; border: 1px solid #e49393; background-color: #F2DADB; }
-.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.removedfromdraft { color: #636363; border: 1px solid #e49393; background-color: #F2DADB; }
-.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.workflow-approval { color: #56660C; border: 1px solid #7c8816; background-color: #DAE79A; }
+.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.modified { color: #7E7470; border: 1px solid #C9B800; background-color: #FFF0BC; }
+.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.addedtodraft { color: #7E7470; border: 1px solid #C9B800; background-color: #FFF0BC; }
+.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.deletedonlive { color: #636363; border: 1px solid #E49393; background-color: #F2DADB; }
+.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.removedfromdraft { color: #636363; border: 1px solid #E49393; background-color: #F2DADB; }
+.cms table.ss-gridfield-table tbody td.col-getTreeTitle span.badge.workflow-approval { color: #56660C; border: 1px solid #7C8816; background-color: #DAE79A; }
 .cms table.ss-gridfield-table tbody td button { border: none; background: none; margin: 0 0 0 2px; padding: 1px 0; width: auto; text-shadow: none; }
 .cms table.ss-gridfield-table tbody td button.ui-state-hover { background: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
 .cms table.ss-gridfield-table tbody td button.ui-state-active { border: none; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
@@ -60,7 +60,7 @@
 .cms table.ss-gridfield-table tr.sortable-header { background: #dbe3e8; }
 .cms table.ss-gridfield-table tr.sortable-header th { padding: 0; font-weight: normal; }
 .cms table.ss-gridfield-table tr.sortable-header th .ss-ui-button { font-weight: normal; }
-.cms table.ss-gridfield-table tr:hover { background: #fffad6 !important; }
+.cms table.ss-gridfield-table tr:hover { background: #FFFAD6 !important; }
 .cms table.ss-gridfield-table tr:first-child { background: transparent; }
 .cms table.ss-gridfield-table tr.ss-gridfield-even { background: #f0f4f7; }
 .cms table.ss-gridfield-table tr.ss-gridfield-even.ss-gridfield-last { border-bottom: none; }
@@ -79,9 +79,9 @@
 .cms table.ss-gridfield-table tr th.extra button.ss-ui-button { padding: .3em; line-height: 1; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; position: relative; border-bottom-width: 0; -webkit-border-radius: 2px 2px; -moz-border-radius: 2px / 2px; border-radius: 2px / 2px; }
 .cms table.ss-gridfield-table tr th.first { -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; }
 .cms table.ss-gridfield-table tr th.last { -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px; }
-.cms table.ss-gridfield-table tr th button#action_gridfield_relationadd:hover { color: #444444 !important; /* Not sure why IE think it needs this */ }
-.cms table.ss-gridfield-table tr th button:hover { color: #cccccc !important; /* Not sure why IE think it needs this */ }
-.cms table.ss-gridfield-table tr th button.ss-gridfield-sort:hover { color: white !important; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
+.cms table.ss-gridfield-table tr th button#action_gridfield_relationadd:hover { color: #444 !important; /* Not sure why IE think it needs this */ }
+.cms table.ss-gridfield-table tr th button:hover { color: #ccc !important; /* Not sure why IE think it needs this */ }
+.cms table.ss-gridfield-table tr th button.ss-gridfield-sort:hover { color: #fff !important; -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none; }
 .cms table.ss-gridfield-table tr th button.ss-gridfield-sort { background: transparent url(../images/arrows.png) no-repeat right 6px; border: none; width: 100%; text-align: left; padding: 2px 8px 2px 0; text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2); color: #fff; -webkit-border-radius: 0; -moz-border-radius: 0; -ms-border-radius: 0; -o-border-radius: 0; border-radius: 0; }
 .cms table.ss-gridfield-table tr th button.ss-gridfield-sort:hover { background-position: right -34px; }
 .cms table.ss-gridfield-table tr th button.ss-gridfield-sort.ss-gridfield-sorted-desc { background-position: right -72px; }
