@@ -266,8 +266,10 @@ class JJ_RestfulServer extends RestfulServer {
 
 		$rawFields = $this->request->getVar('fields');
 		$fields = $rawFields ? explode(',', $rawFields) : null;
+		$context = $this->getContext();
 
 		if ($obj instanceof SS_List) {
+			$fields = singleton($obj->dataClass())->getApiContextFields($context->getOperation(), $context->getSubContext());
 			return $responseFormatter->convertDataList($obj, $fields);
 		}
 		else if (!$obj) {
@@ -299,6 +301,7 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function getObjectsQuery($className, $params, $sort, $limit) {
 		$ids = array();
 
+		// @todo check that there are no more search params
 		if (isset($params['ids']) && !empty($params['ids'])) {
 			$pIds = explode(',',$params['ids']);
 
@@ -317,6 +320,42 @@ class JJ_RestfulServer extends RestfulServer {
 		else {
 			return $this->getSearchQuery($className, $params, $sort, $limit);	
 		}
+	}
+
+	protected function getContext($operation = 'view') {
+		$context = (string) $this->request->getVar('context');
+
+		return JJ_ApiContext::create_from_string($context);
+		#return strpos($context, '.') !== false ? JJ_ApiContext::create_from_string($context) : JJ_ApiContext::create_from_string($operation, $context);
+	}
+
+	/**
+	 * Uses the default {@link SearchContext} specified through
+	 * {@link DataObject::getDefaultSearchContext()} to augument
+	 * an existing query object (mostly a component query from {@link DataObject})
+	 * with search clauses. 
+	 * 
+	 * @todo Allow specifying of different searchcontext getters on model-by-model basis
+	 *
+	 * @param string $className
+	 * @param array $params
+	 * @return SS_List
+	 */
+	protected function getSearchQuery($className, $params = null, $sort = null, $limit = null, $existingQuery = null) {
+		$context = $this->getContext();
+		$sing = singleton($className);
+
+		#$fields = $sing->getApiContextFields($context->getOperation(), $context->getSubContext());
+
+		// @todo rename method
+		if ($sing->hasMethod('getRestfulSearchContext')) {
+			$searchContext = singleton($className)->{'getRestfulSearchContext'}();
+		}
+		else {
+			$searchContext = singleton($className)->getApiSearchContext($context->getOperation(), $context->getSubContext());
+		}
+		
+		return $searchContext->getQuery($params, $sort, $limit, $existingQuery);
 	}
 
 }

@@ -169,10 +169,7 @@ class JJ_DataElement extends ViewableData {
 	 * @param array
 	 */
 	public function setContext($value) {
-		$a = explode('.', $value);
- 		$b = (count($a) > 1) ? array($a[0], $a[1]) : array('view', $a[0]);
-
- 		$this->context = ArrayData::array_to_object(array('operation' => $b[0], 'context' => $b[1]));
+		$this->context = JJ_ApiContext::create_from_string($value);
 	}
 
 

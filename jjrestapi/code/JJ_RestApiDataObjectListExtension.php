@@ -276,15 +276,10 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @return object context with operation ('view') and context ('view.logged_in')
 	 */
 	public function getApiContext($operation = 'view') {
-		$context = ArrayData::array_to_object();
-
 		$methodName = 'get' . ucfirst($operation) . 'Context';
 		$subContext = $this->owner->hasMethod($methodName) ? $this->owner->$methodName() : '';
 
-		$context->operation = $operation;
-		$context->context = $subContext ? $operation . '.' . $subContext : '';
-
-		return $context;
+		return JJ_ApiContext::create_from_string($operation, $subContext);
 	}
 
 
@@ -296,7 +291,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 */
 	public function getApiContextName($operation = 'view') {
 		$context = $this->getApiContext($operation);
-		return $context->context ? $context->context : $context->operation;
+		return $context->getContext();
 	}
 
 
@@ -310,18 +305,14 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	public function getApiContextFields($operation = 'view', $subContext = '') {
 
 		$fields = JJ_RestfulServer::fields(); //$this->stat('fields');
+		$context = JJ_ApiContext::create_from_string($operation, $subContext)->getContext();
 
-		$context = $subContext ? ArrayData::array_to_object(array('operation' => $operation, 'context' => $operation . '.' . $subContext)) : $this->getApiContext($operation);
 		$apiAccess = $this->owner->stat('api_access');
 		$className = $this->owner->class;
 
 		// try to get subcontext (view.logged_in)
-		if (isset($apiAccess[$context->context])) {
-			return $apiAccess[$context->context];
-		}
-		// fallback to (view)
-		else if (isset($apiAccess[$context->operation])) {
-			return $apiAccess[$context->operation];
+		if (isset($apiAccess[$context])) {
+			return $apiAccess[$context];
 		}
 		// throw warning
 		else {
@@ -333,6 +324,21 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		}
 		
 		return array();
+	}
+
+
+	// ! API Search
+	
+	/**
+	 * getApiSearchContext
+	 */
+	public function getApiSearchContext($operation = 'view', $subContext = '') {
+
+		$fields = $this->getApiContextFields($operation, $subContext);
+		$searchContext = $this->owner->getDefaultSearchContext();
+		$searchContext->setFields($fields);
+
+		return $searchContext;
 	}
 
 

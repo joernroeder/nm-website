@@ -120,6 +120,9 @@ class Person extends DataObject {
 			'Exhibitions',
 			'Excursions',
 			'Workshops'
+		),
+		'view.test' => array(
+			'FirstName'
 		)
 	);
 
