@@ -349,10 +349,10 @@ class JJ_RestfulServer extends RestfulServer {
 
 		// @todo rename method
 		if ($sing->hasMethod('getRestfulSearchContext')) {
-			$searchContext = singleton($className)->{'getRestfulSearchContext'}();
+			$searchContext = $sing->{'getRestfulSearchContext'}();
 		}
 		else {
-			$searchContext = singleton($className)->getApiSearchContext($context->getOperation(), $context->getSubContext());
+			$searchContext = $sing->getApiSearchContext($context->getOperation(), $context->getSubContext());
 		}
 		
 		return $searchContext->getQuery($params, $sort, $limit, $existingQuery);
