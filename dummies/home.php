@@ -1,5 +1,6 @@
 <?php 
 $bodyClass = 'home';
+$hideBadge = true;
 
 include './includes/header.inc.php' ?>
 
