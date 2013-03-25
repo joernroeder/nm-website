@@ -31,7 +31,11 @@ class Workshop extends DataObject {
 		'EndDate'			=> 'Date',								// End-Datum des Workshops
 		'Space'				=> 'Varchar(255)',						// Veranstaltungs-Ort (kunsthochschule)
 		'Location'			=> 'Varchar(255)',						// Ort des Workshops (Stadt, Land)
-		'Text'				=> 'Text'								// Beschreibungstext
+		'Text'				=> 'Text',								// Beschreibungstext
+
+		'IsPortfolio'		=> 'Boolean',							// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
+		'IsFeatured'		=> 'Boolean',							// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
+		'UglyHash'			=> 'Varchar'							// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 		
 	static $many_many = array(
@@ -51,7 +55,8 @@ class Workshop extends DataObject {
 	static $extensions = array(
 		'StartEndDateExtension',
 		'DataObjectHasSummaryExtension',
-		'TeaserCMSFieldsExtension'
+		'TeaserCMSFieldsExtension',
+		'UglyHashExtension'
 	);
 
 

@@ -36,7 +36,11 @@ class Excursion extends DataObject {
 		'EndDate'			=> 'Date',						// End-Datum
 		'Space'				=> 'Varchar(255)',				// Veranstaltungs-Ort (z.B. TOCA-ME)
 		'Location'			=> 'Varchar(255)',				// Ort (Stadt, Land)
-		'Text'				=> 'Text'						// Beschreibungstext (Markdown formatiert)
+		'Text'				=> 'Text',						// Beschreibungstext (Markdown formatiert)
+
+		'IsPortfolio'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
+		'IsFeatured'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
+		'UglyHash'			=> 'Varchar'					// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 
 	static $many_many = array(
@@ -56,7 +60,8 @@ class Excursion extends DataObject {
 	static $extensions = array(
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
-		'TeaserCMSFieldsExtension'
+		'TeaserCMSFieldsExtension',
+		'UglyHashExtension'
 	);
 
 	// ! Such-Felder -----------------------

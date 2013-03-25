@@ -36,10 +36,9 @@ class Project extends DataObject {
 		'Text'				=> 'Text',					// Text des Projekts (Markdown formatiert)
 		'Code'				=> 'Text',					// Code, der teil des Projektes ist und auf der Projektseite ausgeführt wird
 
-		'IsPortfolio'	=> 'Boolean',				// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
-		'IsFeatured'	=> 'Boolean',				// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
-
-		'UglyHash'		=> 'Varchar'				// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
+		'IsPortfolio'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
+		'IsFeatured'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
+		'UglyHash'			=> 'Varchar'				// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 
 	static $has_many = array(
@@ -66,7 +65,8 @@ class Project extends DataObject {
 	static $extensions = array(
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
-		'TeaserCMSFieldsExtension'
+		'TeaserCMSFieldsExtension',
+		'UglyHashExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -122,43 +122,19 @@ class Project extends DataObject {
 			'FrontendDate',
 			'TeaserText',
 			'PreviewImageID',
+			'Persons',
 			'Persons.FirstName',
 			'Persons.Surname'
 		)
 	);
 
+	static $searchable_api_fields = array(
+		'Title',
+		'IsFeatured'
+	);
+
 	public function canView($member = null) {
 		return true;
-	}
-
-	// ! WRITE / DATA GENERATION
-
-	public function onBeforeWrite() {
-		if (!$this->UglyHash && $this->ID) {
-			$this->generateUglyHash();
-		}
-		parent::onBeforeWrite();
-	}
-
-	public function generateUglyHash() {
-		// check if the project has Persons. If yes, take the first and his/her phone number
-		$hashToSort = null;
-		$persons = $this->Persons();
-		if ($persons->exists()) {
-			foreach ($persons as $person) {
-				if ($phone = $person->Phone) {
-					$hashToSort = (int) preg_replace("/[^0-9]/", "", $phone);
-				}
-			}
-		}
-		$hashToSort = $hashToSort ? $hashToSort : time();
-
-		// sort
-		$digits = str_split($hashToSort);
-		sort($digits, SORT_NUMERIC);
-		$key = array_rand($digits, 1);
-		$digits[$key] = $digits[$key] + $this->ID;
-		$this->UglyHash = implode('', $digits);
 	}
 
 }
