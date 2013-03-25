@@ -4,6 +4,31 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
   app.Layouts = {};
   app.PageInfos = {};
   app.Collections = {};
+  app.Config = {
+    UrlSuffixes: {
+      portfolio: '?search=IsPortfolio:1&context=view.portfolio_init',
+      featured: '?search=IsFeatured:1&context=view.portfolio_init',
+      about_persons: '?search=IsExternal:0&context=view.portfolio_init'
+    },
+    Featured: {
+      present: false
+    },
+    Project: {
+      portfolio_present: false
+    },
+    Excursion: {
+      portfolio_present: false
+    },
+    Workshop: {
+      portfolio_present: false
+    },
+    Exhibition: {
+      portfolio_present: false
+    },
+    Person: {
+      about_present: false
+    }
+  };
   $(function() {
     return JJRestApi.bootstrapWithStructure(function() {
       var buildCollections;
@@ -20,7 +45,6 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
         return _results;
       };
       buildCollections(['Project', 'Person', 'Excursion', 'Workshop', 'Exhibition', 'CalendarEntry']);
-      console.log(app);
       app.Layouts.Main = app.useLayout('main', {
         views: {
           '': []

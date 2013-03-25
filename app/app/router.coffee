@@ -14,6 +14,11 @@ define [
 
 		index: (hash) ->
 			console.log 'index'
+			# get featured projects
+			
+			# get featured exhibitions
+			# get featured workshops
+			# get featured excursions
 
 		showAboutPage: () ->
 			console.log 'show about page'

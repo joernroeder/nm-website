@@ -18,13 +18,33 @@ require [
 
 	# our objects which get populated over time
 	app.Collections = {}
+
+	# basic config with flags to check whether specific data is already present or not
+	# this will get updated over time to avoid unnecessary requests etc.
+	app.Config =
+		UrlSuffixes:
+			portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
+			featured: 	'?search=IsFeatured:1&context=view.portfolio_init'
+			about_persons: '?search=IsExternal:0&context=view.portfolio_init'
+		Featured:
+			present: false
+		Project:
+			portfolio_present: false
+		Excursion:
+			portfolio_present: false
+		Workshop:
+			portfolio_present: false
+		Exhibition:
+			portfolio_present: false
+		Person:
+			about_present: false
+
 			
 
 	# Treat the jQuery ready function as the entry point to the application.
 	# Inside this function, kick-off all initialization, everything up to this
 	# point should be definitions.
 	$ ->
-
 		# Build up our structure from Silverstripe
 		JJRestApi.bootstrapWithStructure ->
 
@@ -35,8 +55,7 @@ require [
 					app.Collections[name] = new CollClass()
 
 			buildCollections ['Project', 'Person', 'Excursion', 'Workshop', 'Exhibition', 'CalendarEntry']
-			console.log app
-			# short test
+			
 
 			app.Layouts.Main = app.useLayout 'main', 
 			views:
