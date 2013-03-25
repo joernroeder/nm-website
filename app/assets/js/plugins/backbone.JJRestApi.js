@@ -105,23 +105,32 @@ JJRestApi.setObjectUrl = function(className) {
 */
 
 
-JJRestApi.getFromDomOrApi = function(name, callback) {
-  var $obj, data,
+JJRestApi.getFromDomOrApi = function(name, options, callback) {
+  var $obj, data, nameToSearch, url,
     _this = this;
 
-  $obj = $('#api-' + name.toLowerCase());
+  if (_.isFunction(options)) {
+    callback = options;
+    options = {};
+  }
+  nameToSearch = options.name ? options.name : name.toLowerCase();
+  $obj = $('#api-' + nameToSearch);
   if ($obj.length) {
     data = $.trim($obj.html());
     if ($obj.attr('type') === 'application/json') {
       data = $.parseJSON(data);
     }
     if (callback && _.isFunction(callback)) {
-      callback(data);
+      callback(data, options);
     }
   } else {
-    $.getJSON(JJRestApi.setObjectUrl(name), function(data) {
+    url = options.url ? options.url : JJRestApi.setObjectUrl(name);
+    if (options.urlSuffix) {
+      url += options.urlSuffix;
+    }
+    $.getJSON(url, function(data) {
       if (callback && _.isFunction(callback)) {
-        return callback(data);
+        return callback(data, options);
       }
     });
   }

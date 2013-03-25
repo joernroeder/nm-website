@@ -108,7 +108,28 @@ class Exhibition extends DataObject {
 			'Persons',
 			'Workshops',
 			'Excursions'
+		),
+		'view.portfolio_init' => array(
+			'Title',
+			'StartDate',
+			'EndDate',
+			'TeaserText',
+			'IsFeatured',
+			'IsPortfolio',
+			'PreviewImageID',
+			'Persons',
+			'Persons.FirstName',
+			'Persons.Surname'
 		)
 	);
+
+	static $searchable_api_fields = array(
+		'Title',
+		'IsFeatured'
+	);
+
+	public function canView($member = null) {
+		return true;
+	}
 }
 

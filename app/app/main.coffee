@@ -11,7 +11,7 @@ require [
 
 	# Backbone specific
 	app.Router = new Router()
-	app.Layouts = {}
+	app.Layout
 
 	# for caching page infos
 	app.PageInfos = {}
@@ -20,14 +20,20 @@ require [
 	app.Collections = {}
 
 	# basic config with flags to check whether specific data is already present or not
+	# also serves as the expression interface between SilverStripe and Backbone. Put hardcoded string in there
+	# and only use references within application logic
+	# 
 	# this will get updated over time to avoid unnecessary requests etc.
 	app.Config =
+		ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition']
 		UrlSuffixes:
 			portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
-			featured: 	'?search=IsFeatured:1&context=view.portfolio_init'
-			about_persons: '?search=IsExternal:0&context=view.portfolio_init'
+			about_persons: '?search=IsExternal:0'
 		Featured:
 			present: false
+			domName: (className) ->
+				'featured-' + className.toLowerCase()
+			urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
 		Project:
 			portfolio_present: false
 		Excursion:
@@ -54,14 +60,15 @@ require [
 					CollClass = JJRestApi.Collection name
 					app.Collections[name] = new CollClass()
 
-			buildCollections ['Project', 'Person', 'Excursion', 'Workshop', 'Exhibition', 'CalendarEntry']
+			buildCollections app.Config.ProjectTypes.concat(['Person', 'CalendarEntry'])
 			
-
-			app.Layouts.Main = app.useLayout 'main', 
+			###
+			app.Layout = app.useLayout 'main', 
 			views:
 				'': [
-			#		new Project.Views.Test()
+					#new PageError.Views.FourOhFour()
 				]
+			###
 
 			Backbone.history.start pushState: true
 		

@@ -121,6 +121,8 @@ class Project extends DataObject {
 			'Title',
 			'FrontendDate',
 			'TeaserText',
+			'IsFeatured',
+			'IsPortfolio',
 			'PreviewImageID',
 			'Persons',
 			'Persons.FirstName',

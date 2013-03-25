@@ -77,8 +77,14 @@ JJRestApi.setObjectUrl = (className) ->
  #	@todo check $.getJSON with xml type
  #	@return data json/xml
 ###
-JJRestApi.getFromDomOrApi = (name, callback) ->
-	$obj = $('#api-' + name.toLowerCase())
+JJRestApi.getFromDomOrApi = (name, options, callback) ->
+	if _.isFunction(options)
+		callback = options
+		options = {}
+
+	nameToSearch = if options.name then options.name else name.toLowerCase()
+
+	$obj = $('#api-' + nameToSearch)
 
 	# found in DOM
 	if ($obj.length)
@@ -89,14 +95,15 @@ JJRestApi.getFromDomOrApi = (name, callback) ->
 			data = $.parseJSON data
 
 		if (callback and _.isFunction callback)
-			callback data
+			callback data, options
 
 	# load structure from server
 	else
-		$.getJSON JJRestApi.setObjectUrl(name), (data) =>
-
+		url = if options.url then options.url else JJRestApi.setObjectUrl(name)
+		if options.urlSuffix then url += options.urlSuffix
+		$.getJSON url, (data) =>
 			if (callback && _.isFunction callback)
-				callback data
+				callback data, options
 
 	data
 
