@@ -33,7 +33,7 @@ define [
 			console.info 'index'
 			# get featured projects
 			@.getFeaturedData () ->
-				console.log 'All data is there. Serialize data in view and render it.'
+				console.log 'All data is there. Serialize data in featured view and render it.'
 
 		showAboutPage: () ->
 			console.info 'about page'
@@ -61,6 +61,8 @@ define [
 
 		# ! DATA RETRIEVAL
 		
+		# for index page
+	
 		getFeaturedData: (callback) ->
 			feat = app.Config.Featured
 			projectTypes = app.Config.ProjectTypes
@@ -79,17 +81,19 @@ define [
 				# featured Projects/Exhibitions/Workshops/Excursions are not yet present
 				# get them either from DOM or API
 				for projectType in projectTypes
-					options = 
-						type: projectType
-						name: feat.domName(projectType)
-						urlSuffix : feat.urlSuffix
-					JJRestApi.getFromDomOrApi projectType, options, (data, _opts) ->
-						dones[_opts.type] = true
-						checkAndCallback()
+					do (projectType) ->
+						options = 
+							name: feat.domName(projectType)
+							urlSuffix : feat.urlSuffix
+						JJRestApi.getFromDomOrApi projectType, options, (data) ->
+							dones[projectType] = true
+							app.handleFetchedModels projectType, data
+							checkAndCallback()
 
-			# @todo get calendar data
 			else
 				callback()
+
+		
 			
 
 

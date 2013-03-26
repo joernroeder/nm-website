@@ -9,6 +9,13 @@ require [
 	'modules/CalendarEntry'
 ], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry) ->
 
+	# ! JJRELATIONAL CONFIG
+
+	# work with store -> avoid duplicate data
+	Backbone.JJRelational.Config.work_with_store = true
+
+	# ! APP SETUP / BASIC FUNCTIONS
+
 	# Backbone specific
 	app.Router = new Router()
 	app.Layout
@@ -26,6 +33,7 @@ require [
 	# this will get updated over time to avoid unnecessary requests etc.
 	app.Config =
 		ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition']
+		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry']
 		UrlSuffixes:
 			portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'
@@ -45,7 +53,28 @@ require [
 		Person:
 			about_present: false
 
+	
+	app.bindListeners = ->
+		# we don't want to directly mess with the store, so we simply hook into
+		# Backbone.JJStore's 'add' event, to add a reference of the model to our own collections
+		for storeHook in app.Config.StoreHooks
+			do (storeHook) ->
+				Backbone.JJStore.Events.bind 'added:' + storeHook, (model) ->
+					coll = app.Collections[storeHook]
+					if coll then coll.add model
+		true
 			
+	app.handleFetchedModels = (type, models, options) ->
+		# as we are hooked into JJStore, we simply have to create a new model and the listeners will do the rest
+		options = options || {}
+		MType = JJRestApi.Model type
+		models = if _.isArray(models) then models else [models]
+		for model in models
+			new MType model
+
+	app.bindListeners()
+
+	# ! KICK OFF
 
 	# Treat the jQuery ready function as the entry point to the application.
 	# Inside this function, kick-off all initialization, everything up to this
@@ -60,18 +89,12 @@ require [
 					CollClass = JJRestApi.Collection name
 					app.Collections[name] = new CollClass()
 
-			buildCollections app.Config.ProjectTypes.concat(['Person', 'CalendarEntry'])
-			
-			###
-			app.Layout = app.useLayout 'main', 
-			views:
-				'': [
-					#new PageError.Views.FourOhFour()
-				]
-			###
+			buildCollections app.Config.StoreHooks
 
+			# kick off
 			Backbone.history.start pushState: true
 		
+	# ! DELEGATE NAVIGATION
 
 	# All navigation that is relative should be passed through the navigate
 	# method, to be processed by the router.  If the link has a data-bypass

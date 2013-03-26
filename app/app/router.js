@@ -23,7 +23,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
     index: function(hash) {
       console.info('index');
       return this.getFeaturedData(function() {
-        return console.log('All data is there. Serialize data in view and render it.');
+        return console.log('All data is there. Serialize data in featured view and render it.');
       });
     },
     showAboutPage: function() {
@@ -56,7 +56,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       });
     },
     getFeaturedData: function(callback) {
-      var checkAndCallback, dones, feat, options, projectType, projectTypes, _i, _len, _results;
+      var checkAndCallback, dones, feat, projectType, projectTypes, _i, _len, _results;
 
       feat = app.Config.Featured;
       projectTypes = app.Config.ProjectTypes;
@@ -80,15 +80,19 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         _results = [];
         for (_i = 0, _len = projectTypes.length; _i < _len; _i++) {
           projectType = projectTypes[_i];
-          options = {
-            type: projectType,
-            name: feat.domName(projectType),
-            urlSuffix: feat.urlSuffix
-          };
-          _results.push(JJRestApi.getFromDomOrApi(projectType, options, function(data, _opts) {
-            dones[_opts.type] = true;
-            return checkAndCallback();
-          }));
+          _results.push((function(projectType) {
+            var options;
+
+            options = {
+              name: feat.domName(projectType),
+              urlSuffix: feat.urlSuffix
+            };
+            return JJRestApi.getFromDomOrApi(projectType, options, function(data) {
+              dones[projectType] = true;
+              app.handleFetchedModels(projectType, data);
+              return checkAndCallback();
+            });
+          })(projectType));
         }
         return _results;
       } else {
