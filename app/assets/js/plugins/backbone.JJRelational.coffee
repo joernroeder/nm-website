@@ -1,6 +1,6 @@
 ###*
  * Backbone JJRelational
- * v0.2.3
+ * v0.2.4
  *
  * A relational plugin for Backbone JS that provides one-to-one, one-to-many and many-to-many relations between Backbone models.
  * 
@@ -54,7 +54,9 @@ do () ->
 	###
 	Backbone.JJStore.__registerModelInStore = (storeIdentifier, model) ->
 		store = @.__registerModelType storeIdentifier
-		store.push model unless @.__modelExistsInStore store, model
+		if not @.__modelExistsInStore store, model
+			store.push model
+			Backbone.JJStore.Events.trigger('added:' + storeIdentifier, model)
 		true
 
 	###*
@@ -123,6 +125,9 @@ do () ->
 
 	Backbone.JJRelational.Config = {
 		url_id_appendix : '?ids='
+		# if this is true and you create a new model with an id that already exists in the store,
+		# the existing model will be updated and returned instead of a new one
+		work_with_store	: true
 	}
 
 	Backbone.JJRelational.CollectionTypes = {}
@@ -192,6 +197,15 @@ do () ->
 		 * @return {Backbone.JJRelationalModel}         The freshly created model.
 		###
 		constructor: (attributes, options) ->
+			# check if the model already exists in the store (by id)
+			if Backbone.JJRelational.Config.work_with_store and _.isObject(attributes) and id = attributes[@.idAttribute]
+				existModel = Backbone.JJStore._byId @.storeIdentifier, id
+
+			if existModel
+				# if the model exists, update the existing one and return it instead of a new model
+				existModel.set attributes, options
+				return existModel
+
 			# usual Backbone.Model constructor
 			Backbone.Model.apply(this, arguments)
 			# set up the relational attributes

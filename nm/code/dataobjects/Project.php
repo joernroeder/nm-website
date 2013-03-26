@@ -115,7 +115,7 @@ class Project extends DataObject {
 			'Exhibitions',
 			'Workshops',
 			'Excursions',
-			'Persons',
+			'Persons'
 		),
 		'view.portfolio_init' => array(
 			'Title',
@@ -124,7 +124,6 @@ class Project extends DataObject {
 			'IsFeatured',
 			'IsPortfolio',
 			'PreviewImageID',
-			'Persons',
 			'Persons.FirstName',
 			'Persons.Surname'
 		)

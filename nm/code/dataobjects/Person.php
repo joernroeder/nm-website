@@ -120,11 +120,12 @@ class Person extends DataObject {
 			'Exhibitions',
 			'Excursions',
 			'Workshops'
-		),
-		'view.test' => array(
-			'FirstName'
 		)
 	);
+
+	public function canView($member = null) {
+		return true;
+	}
 
 }
 
