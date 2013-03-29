@@ -452,6 +452,7 @@ class JJ_RestfulServer extends RestfulServer {
 
 		// split it up by 'and'
 		foreach (explode(self::$search_and, $searchString) as $el) {
+			if (!$el) continue;
 			// split it up again
 			$eq = explode(self::$search_equals, $el);
 			// set key
