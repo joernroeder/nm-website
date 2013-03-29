@@ -5,6 +5,8 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 	
 	public static $extension_key = 'Structure';
 
+	#public static $cache_key = 'JJ_RestApi_Structure__';
+
 	/**
 	 * holds the structured objects
 	 *
@@ -188,6 +190,26 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 		return !empty($config) ? array('Config' => $config) : array();
 	}
 
+	protected function getCacheKey($extension = 'json') {
+		$objects = self::get();
+		$ignore = self::get_ignored();
+		$config = $this->getStructureConfig();
+
+		$objectKeys = array_keys($objects);
+		sort($objectKeys);
+
+		$ignoreKeys = array_keys($ignore);
+		sort($ignoreKeys);
+
+		$configKeys = array_keys($config);
+		sort($configKeys);
+
+		$cacheKey = join($objectKeys, '_') . '__2' . join($ignoreKeys, '_') . '__' . join($config, '_') . '_3' . $extension;
+		$cacheKey = str_replace('-', '_', Convert::raw2url($cacheKey));
+
+		return md5($cacheKey);
+	}
+
 	
 	/**
 	 * returns the structure as array.
@@ -196,14 +218,25 @@ class Structure_RestApiExtension extends JJ_RestApiExtension implements Template
 	 * @return array
 	 */
 	public function getData($extension = null) {
-		return $this->_getData();
+		$extension = $extension ? $extension : 'json';
+		$cacheKey = $this->getCacheKey($extension);
+		$cache = $this->getCache();
+		
+		if ($data = $cache->load($cacheKey)) {
+			$data = unserialize($data);
+		}
+		else {
+			$data = $this->getStructureData($extension);
+			$cache->save(serialize($data));
+		}
+
+		return $data;
 	}
 
-	public function _getData($extension = null) {
-		$extension = $extension ? $extension : 'json';
+	protected function getStructureData($extension = null) {
 		$objects = self::get();
 		$ignore = self::get_ignored();
-		
+
 		if (empty($objects)) return $this->isFalse();
 
 		$config = $this->getStructureConfig();

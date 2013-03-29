@@ -195,5 +195,9 @@ class JJ_RestApiExtension extends Object {
 		return $fields;
 	}
 
+	public function getCache() {
+		return SS_Cache::factory(JJ_RestfulServer::$cache_prefix . self::extension_key() . '_');
+	}
+
 }
 

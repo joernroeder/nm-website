@@ -16,6 +16,11 @@ class JJ_ApiContext {
 
 			$subContext = join($contextData, '.');
 		}
+		// use $operation as subContext and view as default operation
+		/*else if (!$subContext) {
+			$subContext = $operation;
+			$operation = 'view';
+		}*/
 
 		$context->setOperation($operation);
 		$context->setSubContext($subContext);
@@ -53,7 +58,14 @@ class JJ_ApiContext {
 	}
 
 	public function setSubContext($value) {
-		$this->subContext = (string) $value;
+		$value = (string) $value;
+
+		if (strpos($value, '.') !== false) {
+			user_error("Use underscores instead of points to refine the context. '{$value}'", E_USER_WARNING);
+			$value = str_replace('.', '_', $value);
+		}
+
+		$this->subContext = $value;
 	}
 
 	public function getSubContext() {
