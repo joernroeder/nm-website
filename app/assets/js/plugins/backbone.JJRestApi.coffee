@@ -107,6 +107,31 @@ JJRestApi.getFromDomOrApi = (name, options, callback) ->
 
 	data
 
+###*
+ *
+ * Converts an object with search and context to URL String, e.g. 's=Foo:bar&context=view.foobar'
+ * 
+###
+JJRestApi.objToUrlString = (obj) ->
+	returnString = ''
+	for key, value of obj
+		if key is ('search' or 's')
+			searchString = 's='
+			for k, v of value
+				searchString += encodeURIComponent(k) + ':'
+				searchString += if _.isArray(v) then encodeURIComponent(v.join('|')) else encodeURIComponent(v)
+				searchString += ';'
+			returnString += searchString
+		else
+			returnString += encodeURIComponent(key) + '=' + encodeURIComponent(value)
+		returnString += '&'
+	l = returnString.length
+	if returnString.lastIndexOf('&') is (l-1) then returnString = returnString.substr(0, l-1)
+	returnString
+
+
+
+
 ###
  #	The Bootstrapper rebuilds the JJ_RestfulServer/Structure response as backbone-relational structure
  #

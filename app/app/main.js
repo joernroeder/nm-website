@@ -19,7 +19,12 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
       domName: function(className) {
         return 'featured-' + className.toLowerCase();
       },
-      urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
+      urlSuffix: '?' + JJRestApi.objToUrlString({
+        search: {
+          IsFeatured: 1
+        },
+        context: 'view.portfolio_init'
+      })
     },
     Portfolio: {
       present: {
@@ -29,7 +34,12 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
       domName: function(className) {
         return 'portfolio-' + className.toLowerCase();
       },
-      urlSuffix: '?search=IsPortfolio:1&context=view.portfolio_init'
+      urlSuffix: '?' + JJRestApi.objToUrlString({
+        search: {
+          IsPortfolio: 1
+        },
+        context: 'view.portfolio_init'
+      })
     },
     Calendar: {
       upcoming: false,

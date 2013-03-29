@@ -43,14 +43,20 @@ require [
 				types: []
 			domName: (className) ->
 				'featured-' + className.toLowerCase()
-			urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
+			urlSuffix: '?' + JJRestApi.objToUrlString
+				search:
+					IsFeatured: 1
+				context: 'view.portfolio_init'
 		Portfolio:
 			present:
 				flag: false
 				types: []
 			domName: (className) ->
 				'portfolio-' + className.toLowerCase()
-			urlSuffix: '?search=IsPortfolio:1&context=view.portfolio_init'
+			urlSuffix: '?' + JJRestApi.objToUrlString
+				search:
+					IsPortfolio: 1
+				context: 'view.portfolio_init'
 		Calendar:
 			upcoming: false
 			whole: false
