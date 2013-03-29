@@ -19,6 +19,10 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
       },
       urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
     },
+    Calendar: {
+      upcoming: false,
+      whole: false
+    },
     Project: {
       portfolio_present: false
     },

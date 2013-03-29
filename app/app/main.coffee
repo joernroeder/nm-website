@@ -42,6 +42,9 @@ require [
 			domName: (className) ->
 				'featured-' + className.toLowerCase()
 			urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
+		Calendar:
+			upcoming: false
+			whole: false
 		Project:
 			portfolio_present: false
 		Excursion:
