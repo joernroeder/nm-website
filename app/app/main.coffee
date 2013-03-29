@@ -35,24 +35,25 @@ require [
 		ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition']
 		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry']
 		UrlSuffixes:
-			portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
+			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'
 		Featured:
-			present: false
+			present: 
+				flag: false
+				types: []
 			domName: (className) ->
 				'featured-' + className.toLowerCase()
 			urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
+		Portfolio:
+			present:
+				flag: false
+				types: []
+			domName: (className) ->
+				'portfolio-' + className.toLowerCase()
+			urlSuffix: '?search=IsPortfolio:1&context=view.portfolio_init'
 		Calendar:
 			upcoming: false
 			whole: false
-		Project:
-			portfolio_present: false
-		Excursion:
-			portfolio_present: false
-		Workshop:
-			portfolio_present: false
-		Exhibition:
-			portfolio_present: false
 		Person:
 			about_present: false
 

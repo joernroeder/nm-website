@@ -8,7 +8,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
   	 *
   */
 
-  var Router;
+  var DataRetrieval, Router;
 
   Router = Backbone.Router.extend({
     routes: {
@@ -22,8 +22,9 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
     },
     index: function(hash) {
       console.info('index');
-      return this.getFeaturedData(function() {
-        return console.log('All data is there. Serialize data in featured view and render it.');
+      return DataRetrieval.forProjectsOverview(app.Config.Featured, function() {
+        console.log(app);
+        return console.log('All featured data is there. Serialize data in featured view and render it.');
       });
     },
     showAboutPage: function() {
@@ -38,7 +39,11 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       return console.info('check if student has custom template for details');
     },
     showPortfolio: function() {
-      return console.info('show portfolio');
+      console.info('show portfolio');
+      return DataRetrieval.forProjectsOverview(app.Config.Portfolio, function() {
+        console.log(app);
+        return console.log('All portfolio data is there. Serialize shit in portfolio view and render it');
+      });
     },
     showPortfolioDetailed: function(slug) {
       console.info('portfolio with uglyHash/Filter %s', slug);
@@ -54,44 +59,47 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
           })
         }
       });
-    },
-    getFeaturedData: function(callback) {
-      var checkAndCallback, dones, feat, projectType, projectTypes, _i, _len, _results;
+    }
+  });
+  DataRetrieval = {
+    forProjectsOverview: function(configObj, callback) {
+      var checkAndCallback, present, projectType, projectTypes, _i, _len, _results;
 
-      feat = app.Config.Featured;
+      present = configObj.present;
       projectTypes = app.Config.ProjectTypes;
-      dones = {};
       checkAndCallback = function() {
         var done, projectType, _i, _len;
 
         done = true;
         for (_i = 0, _len = projectTypes.length; _i < _len; _i++) {
           projectType = projectTypes[_i];
-          if (!dones[projectType]) {
+          if (_.indexOf(present.types, projectType) < 0) {
             done = false;
           }
         }
         if (done) {
-          feat.present = true;
+          present.flag = true;
           return callback();
         }
       };
-      if (!feat.present) {
+      if (!present.flag) {
         _results = [];
         for (_i = 0, _len = projectTypes.length; _i < _len; _i++) {
           projectType = projectTypes[_i];
           _results.push((function(projectType) {
             var options;
 
-            options = {
-              name: feat.domName(projectType),
-              urlSuffix: feat.urlSuffix
-            };
-            return JJRestApi.getFromDomOrApi(projectType, options, function(data) {
-              dones[projectType] = true;
-              app.handleFetchedModels(projectType, data);
-              return checkAndCallback();
-            });
+            if (_.indexOf(present.types, projectType) < 0) {
+              options = {
+                name: configObj.domName(projectType),
+                urlSuffix: configObj.urlSuffix
+              };
+              return JJRestApi.getFromDomOrApi(projectType, options, function(data) {
+                present.types.push(projectType);
+                app.handleFetchedModels(projectType, data);
+                return checkAndCallback();
+              });
+            }
           })(projectType));
         }
         return _results;
@@ -99,6 +107,6 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         return callback();
       }
     }
-  });
+  };
   return Router;
 });
