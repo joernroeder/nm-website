@@ -75,21 +75,31 @@ JJRestApi.Modules.extend = function(module, extension) {
   return true;
 };
 
-JJRestApi.extendModel = function(className, extension) {
+JJRestApi.extendModel = function(className, modelToExtendFrom, extension) {
   var model;
 
+  model = this.Model(className);
+  if (modelToExtendFrom.prototype instanceof Backbone.Model === false) {
+    extension = modelToExtendFrom;
+    modelToExtendFrom = model;
+  }
   extension || (extension = {});
-  if (model = this.Model(className)) {
-    return this.Models[className] = model.extend(extension);
+  if (model) {
+    return this.Models[className] = modelToExtendFrom.extend(extension);
   }
 };
 
-JJRestApi.extendCollection = function(className, extension) {
+JJRestApi.extendCollection = function(className, collTypeToExtendFrom, extension) {
   var collType;
 
+  collType = this.Collection(className);
+  if (collTypeToExtendFrom instanceof Backbone.Collection === false) {
+    extension = collTypeToExtendFrom;
+    collTypeToExtendFrom = collType;
+  }
   extension || (extension = {});
-  if (collType = this.Collection(className)) {
-    return this.Collections[className] = collType.extend(extension);
+  if (collType) {
+    return this.Collections[className] = collTypeToExtendFrom.extend(extension);
   }
 };
 
@@ -268,6 +278,8 @@ JJRestApi.Bootstrap = function(response) {
         return this.urlRoot;
       }
     };
+    modelOptions.urlRoot = _this.setObjectUrl(className);
+    modelOptions.idAttribute = 'ID';
     if (config && config.DefaultFields) {
       _ref = config.DefaultFields;
       for (index in _ref) {
@@ -285,10 +297,7 @@ JJRestApi.Bootstrap = function(response) {
   }
   for (className in data) {
     relations = data[className];
-    this.Models[className] = Backbone.JJRelationalModel.extend({
-      urlRoot: this.setObjectUrl(className),
-      idAttribute: 'ID'
-    });
+    this.Models[className] = Backbone.JJRelationalModel.extend({});
     this.Collections[className] = Backbone.Collection.extend({
       url: this.setObjectUrl(className),
       comparator: function(model) {

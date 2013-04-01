@@ -57,15 +57,23 @@ JJRestApi.Modules.extend = (module, extension) ->
 
 	true
 
-JJRestApi.extendModel = (className, extension) ->
+JJRestApi.extendModel = (className, modelToExtendFrom, extension) ->
+	model = @.Model className
+	if modelToExtendFrom.prototype instanceof Backbone.Model is false
+		extension = modelToExtendFrom
+		modelToExtendFrom = model
 	extension || (extension = {})
-	if model = @.Model(className)
-		@.Models[className] = model.extend extension
+	if model
+		@.Models[className] = modelToExtendFrom.extend extension
 
-JJRestApi.extendCollection = (className, extension) ->
+JJRestApi.extendCollection = (className, collTypeToExtendFrom, extension) ->
+	collType = @.Collection className
+	if collTypeToExtendFrom instanceof Backbone.Collection is false
+		extension = collTypeToExtendFrom
+		collTypeToExtendFrom = collType
 	extension || (extension = {})
-	if collType = @.Collection(className)
-		@.Collections[className] = collType.extend extension
+	if collType
+		@.Collections[className] = collTypeToExtendFrom.extend extension
 
 
 JJRestApi.setObjectUrl = (className) ->
@@ -206,6 +214,9 @@ JJRestApi.Bootstrap  = (response) ->
 		modelOptions.url = ->
 			if @.id then return JJRestApi.url + @.storeIdentifier + '/' + @.id + '.' + JJRestApi.extension else return @.urlRoot
 
+		modelOptions.urlRoot = @.setObjectUrl className
+		modelOptions.idAttribute = 'ID'
+
 
 		## add Config.DefaultFields
 		if config and config.DefaultFields
@@ -232,9 +243,7 @@ JJRestApi.Bootstrap  = (response) ->
 	# Step I: Build up general Models and Collections
 	#
 	for className, relations of data
-		@.Models[className] = Backbone.JJRelationalModel.extend
-			urlRoot			: @.setObjectUrl className
-			idAttribute		: 'ID'
+		@.Models[className] = Backbone.JJRelationalModel.extend {}
 				
 
 		@.Collections[className] = Backbone.Collection.extend

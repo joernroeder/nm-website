@@ -1,14 +1,15 @@
 define [
 		'app'
+		'modules/SuperProject'
 	],
 
-	(app) ->
+	(app, SuperProject) ->
 
 		Project = app.module()
 
 		JJRestApi.Modules.extend Project, (Project) ->
 
-			JJRestApi.extendModel 'Project',
+			JJRestApi.extendModel 'Project', SuperProject.Model,
 				foo: 'bar'
 			JJRestApi.extendCollection 'Project',
 				foo: 'bar'
