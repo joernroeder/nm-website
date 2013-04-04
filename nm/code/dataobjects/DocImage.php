@@ -37,10 +37,21 @@ class DocImage extends ResponsiveImage {
 		)
 	);
 
-	public function getUrls() {
+	/*public function getUrls() {
 		//print_r($this->getLinksBySize());
 		$urlNames = array();
 		$urls = $this->getLinksBySize();
+		foreach ($urls[0] as $size => $url) {
+			$urlNames['_' . $size] = $url;
+		}
+
+		return $urlNames;
+	}*/
+
+	public function getUrls() {
+		$urlNames = array();
+		$urls = $this->getImageDataBySize();
+		
 		foreach ($urls[0] as $size => $url) {
 			$urlNames['_' . $size] = $url;
 		}

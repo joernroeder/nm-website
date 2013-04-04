@@ -133,6 +133,31 @@ class ResponsiveImageObject extends Image {
 		return $urls;
 	}
 
+	function getImageDataBySize() {
+		$sizes = array_keys(ResponsiveImage::$responsive_breakpoints);
+		$data = array();
+
+		foreach ($sizes as $size) {
+			$str_size = (string) $size;
+
+			$data[$str_size] = array(
+				'Width' => $size
+			);
+
+			if ($this->getWidth() > $size) {
+				$resized = $this->getImageByWidth($size);
+				$data[$str_size]['Height'] = $resized->getHeight();
+				$data[$str_size]['Url'] = $resized->Link();
+			}
+			else {
+				$data[$str_size]['Height'] = $this->getHeight();
+				$data[$str_size]['Url'] = $this->Link();
+			}
+			
+		}
+		return $data;
+	}
+
 	/**
 	 * returns the link for the formatted image
 	 *
