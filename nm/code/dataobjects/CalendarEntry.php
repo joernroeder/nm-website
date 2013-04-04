@@ -61,8 +61,8 @@ class CalendarEntry extends DataObject {
 		'Text'
 	);
 
-	static $start_date_format = 'd.m.Y H:i';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
-	static $end_date_format = 'd.m.Y H:i';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	static $start_date_format = 'd.m.Y H:i';			// Format des Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	static $end_date_format = 'd.m.Y H:i';				// Format des Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
 
 	
 	// ! Admin -----------------------------
@@ -79,16 +79,32 @@ class CalendarEntry extends DataObject {
 	
 	static $api_access = array(
 		'view' => array(
+			'DateRangeNice',
 			'Title',
 			'Text',
-			'Date',
 			'Websites',
 			'Exhibitions',
 			'Workshops',
 			'Projects',
 			'Excursions'
+		),
+		'view.upcoming_init' => array(
+			'DateRangeNice',
+			'Title',
+			'Text'
 		)
 	);
+
+	public function canView($member = null) {
+		return true;
+	}
+
+	public function onBeforeWrite() {
+		if (!$this->EndDate && $this->StartDate) {
+			$this->EndDate = $this->StartDate;
+		}
+		parent::onBeforeWrite();
+	}
 
 }
 

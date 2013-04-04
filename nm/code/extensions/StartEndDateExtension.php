@@ -43,6 +43,22 @@ class StartEndDateExtension extends Extension {
 		return $this->getFormattedDate('', 'frontend');
 	}
 
+	public function getDateRangeNice() {
+		$vals = array();
+		$start = $this->owner->dbObject('StartDate');
+		$end = $this->owner->dbObject('EndDate');
+
+		if ($start) {
+			$vals[] = ($start->format('H:i') == '00:00') ? $start->format('d.m.Y') : $start->format('d.m.Y H:i');
+		} else return '';
+
+		if ($end && $start != $end) {
+			$vals [] = ($end->format('H:i') == '00:00') ? $end->format('d.m.Y') : $end->format('d.m.Y H:i');
+		}
+
+		return implode(' - ', $vals);
+	}
+
 	/**
 	 * Gibt das formatierte End-Datum zurück
 	 * 

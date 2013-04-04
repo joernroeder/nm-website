@@ -42,8 +42,13 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
       })
     },
     Calendar: {
-      upcoming: false,
-      whole: false
+      upcoming: {
+        flag: false,
+        url: 'api/v2/UpcomingEvents.json'
+      },
+      whole: {
+        flag: false
+      }
     },
     Person: {
       about_present: false

@@ -35,15 +35,16 @@ class RootURLController extends Controller {
 
 			// index page
 			case null:
-				/* @todo handle index page */
-
 				// get featured projects/workshops/exhibtions/excursions
 				$types = array('Project', 'Workshop', 'Excursion', 'Exhibition');
 				foreach ($types as $type) {
 					$featured = $type::get()->where('IsFeatured=1');
 					$returnVal .= $featured->toDataElement('featured-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
 				}
-				
+
+				// get upcoming calendar data
+				$returnVal .= singleton('UpcomingEvents_RestApiExtension')->getData()->toDataElement('upcoming-calendar', null, 'view.upcoming_init')->forTemplate();
+
 				break;
 			default:
 				break;

@@ -67,7 +67,7 @@ define [
 				# Render the layout.
 				layout.render()
 
-				# Cache the refererence.
+				# Cache the reference.
 				@.layout = layout
 
 				# Return the reference, for chainability.

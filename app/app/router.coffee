@@ -6,8 +6,11 @@ define [
 	'modules/Workshop',
 	'modules/Exhibition',
 	'modules/CalendarEntry',
-	'modules/PageError'
-], (app, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError) ->
+	# view stuff
+	'modules/PageError',
+	'modules/Portfolio',
+	'modules/Calendar'
+], (app, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar) ->
 
 	###*
 	 *
@@ -25,17 +28,30 @@ define [
 			'about/student/:nameSlug/:uglyHash/'	: 'showStudentDetailed' # Project with normal or custom template
 			'portfolio/'							: 'showPortfolio'		# All projects
 			'portfolio/:slug/'						: 'showPortfolioDetailed' # can be filter or detail of project
+			'calendar/'								: 'showCalendar'		# whole calendar
+			'calendar/:slug/'						: 'showCalendarDetailed' # show a detailed calendar event
 			'*url/'									: 'catchAllRoute'		# for example: "Impressum", else 404 error page
 
 		# ! ROUTE CATCHING
 		
 		index: (hash) ->
-			console.info 'index'
+			config = app.Config
+			layout = app.useLayout 'index'
+
 			# get featured projects
-			DataRetrieval.forProjectsOverview app.Config.Featured, () ->
-				console.log app
+			DataRetrieval.forProjectsOverview config.Featured, () ->
 				console.log 'All featured data is there. Serialize data in featured view and render it.'
-			# @todo: get calendar data
+				featured = []
+				for projectType in config.ProjectTypes
+					featured = featured.concat app.Collections[projectType].where({ IsFeatured: true })
+				# this isn't really a collection, but we assign it to it anyway ;)
+				gravityContainer = new Portfolio.Views.GravityContainer({ collection: featured })
+				layout.setView '#gravity', gravityContainer
+
+			# get upcoming calendar data
+			DataRetrieval.forCalendar 'upcoming', () ->
+				calendarContainer = new Calendar.Views.UpcomingContainer({ collection: app.Collections.CalendarEntry })
+				layout.setView '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
 			console.info 'about page'
@@ -58,6 +74,13 @@ define [
 		showPortfolioDetailed: (slug) ->
 			console.info 'portfolio with uglyHash/Filter %s', slug
 			console.info 'check if slug is filter or uglyHash and handle page accordingly'
+
+		showCalendar: () ->
+			console.info 'show whole calendar'
+
+		showCalendarDetailed: (slug) ->
+			console.info 'calendar event with slug %s', slug
+			console.info 'get calendar detailed data with slug and show'
 
 		catchAllRoute: (url) ->
 			app.Layout = app.useLayout 'main',
@@ -85,7 +108,7 @@ define [
 					present.flag = true
 					callback()
 
-			if not present.flag
+			unless present.flag
 				# featured Projects/Exhibitions/Workshops/Excursions are not yet present
 				# get them either from DOM or API
 				for projectType in projectTypes
@@ -101,6 +124,24 @@ define [
 
 			else
 				callback()
+
+		# abstract function to get data for the Calendar (either the whole calendar, or merely the upcoming events)
+		forCalendar: (type, callback) ->
+			config = app.Config.Calendar[type]
+
+			unless config.flag
+				options = _.clone config
+				options.name = type + '-calendar'
+
+				JJRestApi.getFromDomOrApi 'CalendarEntry', options, (data) ->
+					# set an internal "IsUpcoming" flag for faster accessing
+					if type is 'upcoming'
+						for item in data
+							item.IsUpcoming = true
+					app.handleFetchedModels 'CalendarEntry', data
+					config.flag = true
+					if type is 'whole' then app.Config.Calendar.upcoming.flag = true
+					callback()
 
 
 	Router
