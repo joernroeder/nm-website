@@ -648,27 +648,29 @@ aside a {
   clear: both;
   height: 0;
 }
-.home #main {
-  position: relative;
-}
-.home .gravity {
+.gravity {
   position: absolute;
   min-height: 100%;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.gravity img {
+  position: absolute;
+  display: inline-block;
+}
+.gravity .gravity-item {
+  position: absolute;
+  display: inline-block;
+}
+.index #main {
+  position: relative;
+}
+.index .gravity {
   width: 100%;
 }
-.home .gravity img {
-  position: absolute;
-  display: inline-block;
-}
-.home .gravity .entity {
-  position: absolute;
-  display: inline-block;
-}
-.home .calendar {
+.index .calendar {
   float: right;
   position: relative;
   top: 0;

@@ -236,32 +236,36 @@ aside {
 		height: 0;
 	}
 }
+
+.gravity {
+	position: absolute;
+	min-height: 100%;
+	.wrapper;
+
+	img {
+		//display: none;
+		position: absolute;
+		display: inline-block;
+		//float: left;
+	}
+
+	.gravity-item {
+		position: absolute;
+		display: inline-block;
+	}
+}
+
 // ! --- Home ----------------------------------------------
 
 
-.home {
+.index {
 
 	#main {
 		position: relative;
 	}
 
 	.gravity {
-		position: absolute;
-		min-height: 100%;
-		.wrapper;
 		.columnsWidth(8, 8);
-
-		img {
-			//display: none;
-			position: absolute;
-			display: inline-block;
-			//float: left;
-		}
-
-		.entity {
-			position: absolute;
-			display: inline-block;
-		}
 	}
 
 	.calendar {
