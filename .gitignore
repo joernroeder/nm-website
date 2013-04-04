@@ -6,7 +6,7 @@ _ss_environment.php
 *.sublime-workspace
 *.sublime-project
 compass
-
+vendor/*
 docsviewer
 
 docsviewer
