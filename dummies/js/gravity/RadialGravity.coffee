@@ -11,6 +11,7 @@ b2World			= Box2D.Dynamics.b2World
 
 #b2MassData		= Box2D.Collision.Shapes.b2MassData
 b2PolygonShape	= Box2D.Collision.Shapes.b2PolygonShape
+b2EdgeShape		= Box2D.Collision.Shapes.b2EdgeShape
 b2CircleShape	= Box2D.Collision.Shapes.b2CircleShape
 
 b2DebugDraw		= Box2D.Dynamics.b2DebugDraw
@@ -30,6 +31,9 @@ class RadialGravity
 	intervalRate	: 0
 	adaptive		: false
 
+	# world borders
+	borders: {}
+
 	###
 	 #
 	 # @param int intervalRate
@@ -40,7 +44,7 @@ class RadialGravity
 		@init = ->
 			@setBox2DSettings()
 			@world = new b2World(
-				new b2Vec(0, 5),
+				new b2Vec(0, 0),
 				true
 			)
 
@@ -61,7 +65,7 @@ class RadialGravity
 			fix.restitution	= 0
 
 			fix.shape = new b2PolygonShape
-			fix.shape.SetAsBox @width / @scale() / 2, 10 / @scale() / 2
+			fix.shape.SetAsBox @width / @scale() / 2, @height / @scale() / 2
 
 			@fixDef = fix
 
@@ -70,12 +74,13 @@ class RadialGravity
 			body.type = b2Body.b2_staticBody
 			body.position.x = @width / 2 / @scale()
 			body.position.y = @height / @scale()
+			body.fixedRotation = true
 
 			@bodyDef = body
 
 		@setBox2DSettings = ->
-			#b2Settings.b2_linearSleepTolerance = 10
-			#b2Settings.b2_angularSleepTolerance = 10
+			#b2Settings.b2_linearSleepTolerance = 5
+			#b2Settings.b2_angularSleepTolerance = 5
 			b2Settings.b2_timeToSleep = .5
 
 
@@ -89,8 +94,55 @@ class RadialGravity
 	 # @param int height
 	 #
 	###
+	@hasBorders: false
 	setDimensions: (@width, @height) ->
 
+		#@width = @width / 2
+		#@height = @height / 2
+
+		borderWidth = 2
+		borders = 
+			#top
+			{
+				x: 0
+				y: 0
+				width: @width
+				height: borderWidth
+			}
+
+		createBorder = (border) =>
+			bodyDef = new b2BodyDef
+			bodyDef.type = b2Body.b2_staticBody;
+			#bodyDef.userData = border.id
+
+			bodyDef.position.x = border.x
+			bodyDef.position.y = border.y
+
+			fixDef = new b2FixtureDef
+			fixDef.density = 1.0
+			fixDef.friction = .2
+			fixDef.restitution = 1
+
+			fixDef.shape = new b2PolygonShape
+			fidDef.shape.SetAsBox border.width / 2, border.height / 2
+
+			@world.CreateBody(bodyDef).CreateFixture(fixDef)
+
+		createBorders = =>
+			for border in borders
+				createBorder border
+			
+			#@world.CreateBody(body).CreateFixture fix
+			@hasBorders = true
+
+		updateBorders = ->
+
+
+		#if Object.keys(@borders).length or @hasBorders
+		if @hasBorders
+			updateBorders()
+		else
+			createBorders()
 	###
 	 # returns the box2D scale
 	 #
@@ -161,7 +213,6 @@ class RadialGravity
 				state[id] = 
 					x: pos.x
 					y: pos.y
-					a: b.GetAngle()
 
 			# get next
 			b = b.m_next
@@ -201,7 +252,8 @@ class RadialGravity
 		p
 	## #
 	setGravity: (gravity) ->
-		@gravityPosition = new b2Vec 3, 3
+		#@gravityPosition = new b2Vec gravity.x, gravity.y
+		@gravityPosition = new b2Vec 1,1
 		@hasGravity = true
 	###
 	setGravity: (gravity) ->
@@ -272,7 +324,7 @@ class RadialGravity
 		else
 			@fixDef.restitution = 0
 			@fixDef.density = 1
-			@fixDef.friction = 20
+			@fixDef.friction = 1
 			@fixDef.shape = new b2PolygonShape
 			@fixDef.shape.SetAsBox entity.width / 2 , entity.height / 2
 

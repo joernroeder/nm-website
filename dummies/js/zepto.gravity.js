@@ -134,6 +134,8 @@ var __hasProp = {}.hasOwnProperty,
 
     Box2DHolder.prototype.world = {};
 
+    Box2DHolder.prototype.border = {};
+
     Box2DHolder.prototype.box = null;
 
     Box2DHolder.prototype.msgID = 0;
@@ -193,11 +195,13 @@ var __hasProp = {}.hasOwnProperty,
         return window.onresize = function(event) {
           clearTimeout(_this.resizeTimeoutId);
           return _this.resizeTimeoutId = window.setTimeout(function() {
+            _this.width = window.innerWidth || document.documentElement.clientWidth;
+            _this.height = window.innerHeight || document.documentElement.clientHeight;
             if (_this.worker) {
               _this.worker.postMessage({
                 key: 'dimensions',
-                width: window.innerWidth || document.documentElement.clientWidth,
-                height: window.innerHeight || document.documentElement.clientHeight
+                width: _this.n(_this.width),
+                height: _this.n(_this.height)
               });
               return _this.needToDraw = true;
             }
@@ -240,24 +244,32 @@ var __hasProp = {}.hasOwnProperty,
           _results = [];
           for (id in _this.bodiesState) {
             newBody = newBodies[id];
-            if (newBody) {
-              _this.world[id].setAwake(true);
-              _this.bodiesState[id] = newBody;
-              _results.push(_this.needToDraw = true);
-            } else if (_this.world[id].isAwake) {
-              _this.needToDraw = true;
-              _results.push(_this.world[id].setAwake(false));
+            if (_this.world[id]) {
+              if (newBody) {
+                _this.world[id].setAwake(true);
+                _this.bodiesState[id] = newBody;
+                _results.push(_this.needToDraw = true);
+              } else if (_this.world[id].isAwake) {
+                _this.needToDraw = true;
+                _results.push(_this.world[id].setAwake(fals));
+              } else {
+                _results.push(void 0);
+              }
             } else {
               _results.push(void 0);
             }
           }
           return _results;
         };
-        return this.worker.postMessage({
+        this.worker.postMessage({
           key: 'dimensions',
-          width: this.width,
-          height: this.height
+          width: this.n(this.width),
+          height: this.n(this.height)
         });
+        console.log('sent dimensions %i, %i');
+        console.log(this.n(this.width));
+        console.log(this.height);
+        return console.log(this.n(this.height));
       };
       /*
       			 # creates the worker fallback
@@ -493,6 +505,9 @@ var __hasProp = {}.hasOwnProperty,
               storage().$container = $(el).data(dataIdName, storageId);
               storage().width = storage().$container.width();
               storage().height = storage().$container.height();
+              if (storage().height <= 0) {
+                storage().height = $(window).height();
+              }
               console.log(storage().width);
               console.log(storage().height);
               storage().box2DHolder = new Box2DHolder(storage().width, storage().height, opts.box2dZoom, opts.worker);

@@ -104,6 +104,8 @@
 		# world entities
 		world		: {}
 
+		border		: {}
+
 		# box2D pointer as a fallback for no webworker support
 		box			: null
 
@@ -174,12 +176,15 @@
 				window.onresize = (event) =>
 					clearTimeout @resizeTimeoutId
 					@resizeTimeoutId = window.setTimeout () =>
+						@width	= window.innerWidth or document.documentElement.clientWidth # w3c or IE
+						@height	= window.innerHeight or document.documentElement.clientHeight # w3c or IE
+
 						# @todo: check'n add non worker
 						if @worker
 							@worker.postMessage
 								key		: 'dimensions'
-								width	: window.innerWidth or document.documentElement.clientWidth # w3c or IE
-								height	: window.innerHeight or document.documentElement.clientHeight # w3c or IE
+								width	: @n(@width)
+								height	: @n(@height)
 
 							@needToDraw = true
 					, 10
@@ -228,21 +233,27 @@
 						newBody = newBodies[id]
 
 						# body will be updated and is still awake
-						if newBody
-							@world[id].setAwake true
-							@bodiesState[id] = newBody
-							@needToDraw = true
+						if @world[id]
+							if newBody
+								@world[id].setAwake true
+								@bodiesState[id] = newBody
+								@needToDraw = true
 
-						# body was awake and went to sleep. sleep well ;)
-						else if @world[id].isAwake
-							@needToDraw = true
-							@world[id].setAwake false
+							# body was awake and went to sleep. sleep well ;)
+							else if @world[id].isAwake
+								@needToDraw = true
+								@world[id].setAwake fals
 
 				# pushes the dimensions down to the worker
 				@worker.postMessage
 					key		: 'dimensions'
-					width	: @width
-					height	: @height
+					width	: @n(@width)
+					height	: @n(@height)
+
+				console.log 'sent dimensions %i, %i'
+				console.log @n(@width)
+				console.log @height
+				console.log @n(@height)
 
 				# pushes the entities to the worker
 				#@worker.postMessage
@@ -446,6 +457,10 @@
 
 						storage().width = storage().$container.width()
 						storage().height = storage().$container.height()
+
+						# @todo fix it
+						if storage().height <= 0
+							storage().height = $(window).height()
 						
 						console.log storage().width
 						console.log storage().height
