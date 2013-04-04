@@ -67,6 +67,7 @@ define [
 
 				# Insert into the DOM.
 				$('#main').empty().append layout.el
+				$(layout.el).css 'height', '100%'
 
 				# Set body class to current layout
 				currentLayout = @.currentLayoutName

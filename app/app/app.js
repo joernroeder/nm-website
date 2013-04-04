@@ -52,6 +52,7 @@ define(['plugins/zepto.installer', 'underscore', 'backbone', 'handlebars', 'plug
         id: 'layout'
       }, options));
       $('#main').empty().append(layout.el);
+      $(layout.el).css('height', '100%');
       currentLayout = this.currentLayoutName;
       $body = $('body');
       if (currentLayout) {
