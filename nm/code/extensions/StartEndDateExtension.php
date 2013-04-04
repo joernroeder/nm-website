@@ -52,7 +52,7 @@ class StartEndDateExtension extends Extension {
 			$vals[] = ($start->format('H:i') == '00:00') ? $start->format('d.m.Y') : $start->format('d.m.Y H:i');
 		} else return '';
 
-		if ($end && $start != $end) {
+		if ($end && ($start->format('Y-m-d H:i:s') !== $end->format('Y-m-d H:i:s'))) {
 			$vals [] = ($end->format('H:i') == '00:00') ? $end->format('d.m.Y') : $end->format('d.m.Y H:i');
 		}
 
