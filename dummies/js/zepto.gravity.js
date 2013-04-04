@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 (function($, window) {
-  var Box2DHolder, Entity, GravityCenter, RadialGravityStorage, RectangleEntity, _ref;
+  var Border, Box2DHolder, Entity, GravityCenter, RadialGravityStorage, RectangleEntity, _ref;
 
   window.requestAnimFrame = (function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback, element) {
@@ -25,11 +25,11 @@ var __hasProp = {}.hasOwnProperty,
   */
 
   Entity = (function() {
-    function Entity(id, x, y, angle) {
+    function Entity(id, x, y, scaleFactor) {
       this.id = id;
       this.x = x;
       this.y = y;
-      this.angle = angle != null ? angle : 0;
+      this.scaleFactor = scaleFactor != null ? scaleFactor : 30;
     }
 
     Entity.prototype.update = function(x, y, angle) {
@@ -43,7 +43,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     Entity.prototype.scale = function() {
-      return window.BOX2D_SCALE || 30;
+      return this.scaleFactor;
     };
 
     Entity.prototype.draw = function() {};
@@ -69,13 +69,13 @@ var __hasProp = {}.hasOwnProperty,
 
     RectangleEntity.prototype.sleepColor = 'gray';
 
-    function RectangleEntity(id, x, y, width, height, angle) {
+    function RectangleEntity(id, x, y, width, height, scaleFactor) {
       this.id = id;
       this.x = x;
       this.y = y;
       this.width = width != null ? width : 0;
       this.height = height != null ? height : 0;
-      this.angle = angle != null ? angle : 0;
+      this.scaleFactor = scaleFactor != null ? scaleFactor : 30;
       /*
       			$item = $("[data-gravity-item=#{@id}]")
       
@@ -84,7 +84,7 @@ var __hasProp = {}.hasOwnProperty,
       					.appendTo('.gravity')
       */
 
-      RectangleEntity.__super__.constructor.call(this, this.id, this.x, this.y, this.angle);
+      RectangleEntity.__super__.constructor.call(this, this.id, this.x, this.y, this.scaleFactor);
     }
 
     RectangleEntity.prototype.halfWidth = function() {
@@ -110,6 +110,28 @@ var __hasProp = {}.hasOwnProperty,
     return RectangleEntity;
 
   })(Entity);
+  Border = (function(_super) {
+    __extends(Border, _super);
+
+    function Border(id, x, y, width, height, scaleFactor) {
+      var $item;
+
+      this.id = id;
+      this.x = x;
+      this.y = y;
+      this.width = width != null ? width : 0;
+      this.height = height != null ? height : 0;
+      this.scaleFactor = scaleFactor != null ? scaleFactor : 30;
+      $item = $("[data-gravity-item=" + this.id + "]");
+      if (!$item.length) {
+        $('<div class="entity" data-gravity-item="' + this.id + '">' + this.id + '</div>').appendTo('.gravity');
+      }
+      Border.__super__.constructor.call(this, this.id, this.x, this.y, this.scaleFactor);
+    }
+
+    return Border;
+
+  })(RectangleEntity);
   GravityCenter = (function(_super) {
     __extends(GravityCenter, _super);
 
@@ -145,12 +167,27 @@ var __hasProp = {}.hasOwnProperty,
     Box2DHolder.prototype.scaleFactor = 30;
 
     Box2DHolder.prototype.setScale = function(val) {
+      console.log("box2DHolder set scale to " + val);
       this.scaleFactor = val;
       if (this.worker) {
         return this.worker.postMessage({
           key: 'setscale',
           value: val
         });
+      }
+    };
+
+    Box2DHolder.prototype.setDimensions = function(width, height) {
+      this.width = width;
+      this.height = height;
+      if (this.worker) {
+        this.worker.postMessage({
+          key: 'dimensions',
+          width: this.n(this.width),
+          height: this.n(this.height)
+        });
+        console.log("set dimensions: " + (this.n(this.width)) + " - " + (this.n(this.height)));
+        return this.needToDraw = true;
       }
     };
 
@@ -162,16 +199,16 @@ var __hasProp = {}.hasOwnProperty,
     */
 
 
-    function Box2DHolder(width, height, zoom, workerOpts) {
+    function Box2DHolder(width, height, scale, workerOpts) {
       this.width = width;
       this.height = height;
-      this.zoom = zoom;
       this.workerOpts = workerOpts;
       this.loop = __bind(this.loop, this);
       this.init = function() {
         var _this = this;
 
         console.log('Box2DHolder init');
+        this.setScale(scale);
         this.useWorker = this.hasWebWorker();
         document.addEventListener('webkitvisibilitychange', (function() {
           if (document.webkitHidden) {
@@ -180,33 +217,13 @@ var __hasProp = {}.hasOwnProperty,
             return _this.start();
           }
         }), false);
-        this.initResize();
         if (this.useWorker) {
           this.initWorker();
         } else {
           this.initNonWorker();
         }
+        this.setDimensions(this.width, this.height);
         return this.loop();
-      };
-      this.initResize = function() {
-        var _this = this;
-
-        this.resizeTimeoutId;
-        return window.onresize = function(event) {
-          clearTimeout(_this.resizeTimeoutId);
-          return _this.resizeTimeoutId = window.setTimeout(function() {
-            _this.width = window.innerWidth || document.documentElement.clientWidth;
-            _this.height = window.innerHeight || document.documentElement.clientHeight;
-            if (_this.worker) {
-              _this.worker.postMessage({
-                key: 'dimensions',
-                width: _this.n(_this.width),
-                height: _this.n(_this.height)
-              });
-              return _this.needToDraw = true;
-            }
-          }, 10);
-        };
       };
       /*
       			 # Returns whether the page supports web workers
@@ -223,17 +240,15 @@ var __hasProp = {}.hasOwnProperty,
         var _this = this;
 
         this.worker = new Worker(this.workerOpts.physics);
-        this.worker.onmessage = function(e) {
+        return this.worker.onmessage = function(e) {
           var id, newBodies, newBody, _results;
 
           if ('log' === e.data.key) {
-            console.info('physics log:');
             console.log(e.data.log);
             return;
           }
           newBodies = e.data.bodiesState;
           _this.bodiesState = $.extend({}, _this.bodiesState, newBodies);
-          console.log(Object.keys(_this.bodiesState).length);
           /*
           					if not @bodiesState
           						@bodiesState = newBodies
@@ -251,25 +266,18 @@ var __hasProp = {}.hasOwnProperty,
                 _results.push(_this.needToDraw = true);
               } else if (_this.world[id].isAwake) {
                 _this.needToDraw = true;
-                _results.push(_this.world[id].setAwake(fals));
+                _results.push(_this.world[id].setAwake(false));
               } else {
                 _results.push(void 0);
               }
+            } else if (id && id.indexOf('border') !== -1) {
+              _results.push(_this.border[id] = false);
             } else {
-              _results.push(void 0);
+
             }
           }
           return _results;
         };
-        this.worker.postMessage({
-          key: 'dimensions',
-          width: this.n(this.width),
-          height: this.n(this.height)
-        });
-        console.log('sent dimensions %i, %i');
-        console.log(this.n(this.width));
-        console.log(this.height);
-        return console.log(this.n(this.height));
       };
       /*
       			 # creates the worker fallback
@@ -278,27 +286,6 @@ var __hasProp = {}.hasOwnProperty,
       this.initNonWorker = function() {
         alert('no webworker support :(');
         return console.log('init non worker');
-      };
-      /*
-      			 # creates dummy entities
-      */
-
-      this.createDummies = function(amount) {
-        var entity, i, x, y, _results;
-
-        if (amount == null) {
-          amount = 20;
-        }
-        i = 0;
-        _results = [];
-        while (i < amount) {
-          x = Math.random() * 50;
-          y = Math.random() * 20;
-          entity = new RectangleEntity("entity_" + i, x, y, Math.random() + 0.4, Math.random() + 0.4);
-          this.addEntity(entity);
-          _results.push(i++);
-        }
-        return _results;
       };
       this.init();
     }
@@ -312,10 +299,10 @@ var __hasProp = {}.hasOwnProperty,
       var entity, gravity;
 
       if (obj.id === 'gravity') {
-        gravity = new GravityCenter(obj.id, this.n(obj.left), this.n(obj.top));
+        gravity = new GravityCenter(obj.id, this.n(obj.left), this.n(obj.top), this.scaleFactor);
         return this.addGravity(gravity);
       } else if (obj.width && obj.height) {
-        entity = new RectangleEntity(obj.id, this.n(obj.left), this.n(obj.top), this.n(obj.width), this.n(obj.height));
+        entity = new RectangleEntity(obj.id, this.n(obj.left), this.n(obj.top), this.n(obj.width), this.n(obj.height), this.scaleFactor);
         return this.addEntity(entity);
       }
     };
@@ -369,6 +356,7 @@ var __hasProp = {}.hasOwnProperty,
 
 
     Box2DHolder.prototype.addGravity = function(gravity) {
+      console.log('add Gravity');
       return this.worker.postMessage({
         key: 'addEntity',
         entity: gravity
@@ -382,11 +370,11 @@ var __hasProp = {}.hasOwnProperty,
     Box2DHolder.prototype.addEntity = function(entity) {
       console.log("added entity '" + entity.id + "'");
       this.world[entity.id] = entity;
-      console.log(this.world);
-      return this.worker.postMessage({
+      this.worker.postMessage({
         key: 'addEntity',
         entity: this.world[entity.id]
       });
+      return this.needToDraw = true;
     };
 
     /*
@@ -461,7 +449,6 @@ var __hasProp = {}.hasOwnProperty,
       var dataIdName, methods, self, storage;
 
       this.defaultOptions = {
-        box2dZoom: 5,
         elementSelector: null,
         itemIdPrefix: 'gravity-item-',
         box2d: {
@@ -487,7 +474,7 @@ var __hasProp = {}.hasOwnProperty,
             return RadialGravityStorage.itemIdCount;
           };
           return this.each(function(i, el) {
-            var addGravity, findItems, getItemId, getStorageId, init, initResize, layoutItems, resizeTimeoutId, storageId;
+            var addGravity, findItems, getItemId, getStorageId, init, initResize, layoutItems, resizeTimeoutId, setDimensions, storageId;
 
             storageId = RadialGravityStorage.implementationCount;
             RadialGravityStorage.implementationCount++;
@@ -501,18 +488,17 @@ var __hasProp = {}.hasOwnProperty,
             storage = function() {
               return RadialGravityStorage.implementations[storageId];
             };
-            init = function() {
-              storage().$container = $(el).data(dataIdName, storageId);
+            setDimensions = function() {
               storage().width = storage().$container.width();
               storage().height = storage().$container.height();
               if (storage().height <= 0) {
-                storage().height = $(window).height();
+                return storage().height = $(window).height();
               }
-              console.log(storage().width);
-              console.log(storage().height);
-              storage().box2DHolder = new Box2DHolder(storage().width, storage().height, opts.box2dZoom, opts.worker);
-              storage().box2DHolder.setScale(opts.box2d.scale);
-              window.BOX2D_SCALE = opts.box2d.scale;
+            };
+            init = function() {
+              storage().$container = $(el).data(dataIdName, storageId);
+              setDimensions();
+              storage().box2DHolder = new Box2DHolder(storage().width, storage().height, opts.box2d.scale, opts.worker);
               initResize();
               addGravity();
               return findItems();
@@ -524,6 +510,7 @@ var __hasProp = {}.hasOwnProperty,
               return window.onresize = function(event) {
                 clearTimeout(resizeTimeoutId);
                 return resizeTimeoutId = setTimeout(function() {
+                  setDimensions();
                   console.log('on resize');
                   return addGravity();
                 }, 10);
@@ -572,14 +559,15 @@ var __hasProp = {}.hasOwnProperty,
                 $item = $(item);
                 pos = $item.position();
                 itemId = getItemId();
+                console.log(pos);
                 itemData = {
                   id: itemId,
                   width: $item.width(),
                   height: $item.height(),
-                  top: pos.top,
-                  left: pos.left
+                  top: 100,
+                  left: 100
                 };
-                console.log($item);
+                console.log(itemData);
                 $item.data('gravity-item', itemId);
                 return methods.add(itemData, storageId);
               });

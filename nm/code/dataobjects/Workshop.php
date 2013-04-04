@@ -25,7 +25,6 @@ class Workshop extends DataObject {
 
 	static $db = array(
 		'Title'				=> 'Varchar(255)',						// Workshop Titel
-		'PreviewImageID'	=> 'Int',								// ID des Vorschaubildes
 		'TeaserText'		=> 'Varchar(156)',						// Teaser Text
 		'StartDate'			=> 'Date',								// Start-Datum des Workshops
 		'EndDate'			=> 'Date',								// End-Datum des Workshops
@@ -36,6 +35,10 @@ class Workshop extends DataObject {
 		'IsPortfolio'		=> 'Boolean',							// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
 		'IsFeatured'		=> 'Boolean',							// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
 		'UglyHash'			=> 'Varchar'							// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
+	);
+
+	static $has_one = array(
+		'PreviewImage'	=> 'DocImage'
 	);
 		
 	static $many_many = array(

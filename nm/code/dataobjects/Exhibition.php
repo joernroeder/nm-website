@@ -30,7 +30,6 @@ class Exhibition extends DataObject {
 
 	static $db = array(
 		'Title'				=> 'Varchar(255)',				// Ausstellungs-Titel
-		'PreviewImageID'	=> 'Int',						// ID des Vorschaubildes
 		'TeaserText'		=> 'Varchar(156)',				// Teaser Text
 		'StartDate'			=> 'Date',						// Start-Datum
 		'EndDate'			=> 'Date',						// End-Datum
@@ -41,6 +40,10 @@ class Exhibition extends DataObject {
 		'IsPortfolio'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
 		'IsFeatured'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
 		'UglyHash'			=> 'Varchar'					// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
+	);
+
+	static $has_one = array(
+		'PreviewImage'	=> 'DocImage'
 	);
 
 	static $many_many = array(

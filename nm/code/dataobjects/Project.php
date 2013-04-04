@@ -30,7 +30,6 @@ class Project extends DataObject {
 
 	static $db = array(
 		'Title'				=> 'Varchar(255)',			// Projekt Titel
-		'PreviewImageID'	=> 'Int',					// ID des Vorschaubildes
 		'TeaserText'		=> 'Varchar(156)',			// Teaser Text
 		'Date'				=> 'Date',					// Projekt-Datum: Hierbei werden nur Monat und Jahr berücksichtigt.
 		'Text'				=> 'Text',					// Text des Projekts (Markdown formatiert)
@@ -39,6 +38,10 @@ class Project extends DataObject {
 		'IsPortfolio'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
 		'IsFeatured'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
 		'UglyHash'			=> 'Varchar'				// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
+	);
+
+	static $has_one = array(
+		'PreviewImage'	=> 'DocImage'
 	);
 
 	static $has_many = array(
@@ -123,13 +126,15 @@ class Project extends DataObject {
 			'TeaserText',
 			'IsFeatured',
 			'IsPortfolio',
-			'PreviewImageID',
+			'PreviewImage.Title',
+			'PreviewImage.Caption',
+			'PreviewImage.Urls',
 			'Persons.FirstName',
 			'Persons.Surname'
 		)
 	);
 
-	static $searchable_api_fields = array(
+	static $api_searchable_fields = array(
 		'Title',
 		'IsFeatured'
 	);
