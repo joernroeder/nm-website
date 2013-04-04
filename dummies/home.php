@@ -1,5 +1,5 @@
 <?php 
-$bodyClass = 'home';
+$bodyClass = 'index';
 $hideBadge = true;
 
 include './includes/header.inc.php' ?>
@@ -33,7 +33,7 @@ include './includes/header.inc.php' ?>
 
 <section class="gravity">
 	<?php
-		for ($i = 0; $i < 50; $i++) : 
+		for ($i = 0; $i < 3; $i++) : 
 			$min = (int) rand(50, 150);
 			$x = (int) rand($min, 300);
 			$y = (int) rand($min, 300);

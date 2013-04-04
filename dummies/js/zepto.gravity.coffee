@@ -431,6 +431,7 @@
 						storage().width = storage().$container.width()
 						storage().height = storage().$container.height()
 
+						# @todo trigger resize on box2DHolder
 						# @todo fix it
 						if storage().height <= 0
 							storage().height = $(window).height()
