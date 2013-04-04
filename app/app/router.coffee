@@ -32,8 +32,10 @@ define [
 		index: (hash) ->
 			console.info 'index'
 			# get featured projects
-			@.getFeaturedData () ->
-				console.log 'All data is there. Serialize data in featured view and render it.'
+			DataRetrieval.forProjectsOverview app.Config.Featured, () ->
+				console.log app
+				console.log 'All featured data is there. Serialize data in featured view and render it.'
+			# @todo: get calendar data
 
 		showAboutPage: () ->
 			console.info 'about page'
@@ -48,6 +50,10 @@ define [
 
 		showPortfolio: () ->
 			console.info 'show portfolio'
+			# get portfolio projects
+			DataRetrieval.forProjectsOverview app.Config.Portfolio, () ->
+				console.log app
+				console.log 'All portfolio data is there. Serialize shit in portfolio view and render it'
 
 		showPortfolioDetailed: (slug) ->
 			console.info 'portfolio with uglyHash/Filter %s', slug
@@ -59,43 +65,42 @@ define [
 					'': new PageError.Views.FourOhFour({attributes: {'data-url': url}})
 
 
-		# ! DATA RETRIEVAL
-		
-		# for index page
+	# ! DATA RETRIEVAL HELPER OBJECT
 	
-		getFeaturedData: (callback) ->
-			feat = app.Config.Featured
+	DataRetrieval =
+
+		# abstract function to get data for Projects/Exhibitions/Workshops/Excursions for either 'featured page'
+		# or 'portfolio page'
+	
+		forProjectsOverview: (configObj, callback) ->
+			present = configObj.present
 			projectTypes = app.Config.ProjectTypes
-			dones = {}
 
 			# check if all data has been fetched. if yes, set flag and callback
 			checkAndCallback = ->
 				done = true
 				for projectType in projectTypes
-					if not dones[projectType] then done = false
+					if _.indexOf(present.types, projectType) < 0 then done = false
 				if done
-					feat.present = true
+					present.flag = true
 					callback()
 
-			if not feat.present
+			if not present.flag
 				# featured Projects/Exhibitions/Workshops/Excursions are not yet present
 				# get them either from DOM or API
 				for projectType in projectTypes
 					do (projectType) ->
-						options = 
-							name: feat.domName(projectType)
-							urlSuffix : feat.urlSuffix
-						JJRestApi.getFromDomOrApi projectType, options, (data) ->
-							dones[projectType] = true
-							app.handleFetchedModels projectType, data
-							checkAndCallback()
+						if _.indexOf(present.types, projectType) < 0
+							options = 
+								name: configObj.domName(projectType)
+								urlSuffix : configObj.urlSuffix
+							JJRestApi.getFromDomOrApi projectType, options, (data) ->
+								present.types.push projectType
+								app.handleFetchedModels projectType, data
+								checkAndCallback()
 
 			else
 				callback()
-
-		
-			
-
 
 
 	Router

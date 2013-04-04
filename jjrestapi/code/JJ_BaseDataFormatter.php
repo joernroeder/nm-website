@@ -87,16 +87,18 @@ class JJ_BaseDataFormatter {
 	 * @return boolean exists in fields
 	 */
 	public function fieldFilter($fieldName, $fields) {
-		if ($fields) {
+		Deprecation::notice('0.3.2', 'removed fieldFilter');
+		/*if ($fields) {
 			$filterFields = array();
 			foreach ($fields as $field) {
+				print_r($field);
 				$f = explode('.', $field);
 				$filterFields[] = $f[0];
 			}
 			if (!in_array($fieldName, $filterFields)) return false;
 		}
 
-		return true;
+		return true;*/
 	}
 
 

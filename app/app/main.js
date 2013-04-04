@@ -9,27 +9,41 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
     StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry'],
     UrlSuffixes: {
-      portfolio: '?search=IsPortfolio:1&context=view.portfolio_init',
       about_persons: '?search=IsExternal:0'
     },
     Featured: {
-      present: false,
+      present: {
+        flag: false,
+        types: []
+      },
       domName: function(className) {
         return 'featured-' + className.toLowerCase();
       },
-      urlSuffix: '?search=IsFeatured:1&context=view.portfolio_init'
+      urlSuffix: '?' + JJRestApi.objToUrlString({
+        search: {
+          IsFeatured: 1
+        },
+        context: 'view.portfolio_init'
+      })
     },
-    Project: {
-      portfolio_present: false
+    Portfolio: {
+      present: {
+        flag: false,
+        types: []
+      },
+      domName: function(className) {
+        return 'portfolio-' + className.toLowerCase();
+      },
+      urlSuffix: '?' + JJRestApi.objToUrlString({
+        search: {
+          IsPortfolio: 1
+        },
+        context: 'view.portfolio_init'
+      })
     },
-    Excursion: {
-      portfolio_present: false
-    },
-    Workshop: {
-      portfolio_present: false
-    },
-    Exhibition: {
-      portfolio_present: false
+    Calendar: {
+      upcoming: false,
+      whole: false
     },
     Person: {
       about_present: false

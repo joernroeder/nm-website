@@ -15,6 +15,12 @@ class JJ_RestfulServer extends RestfulServer {
 
 	public static $default_extension = 'json';
 
+	public static $cache_prefix = 'JJ_RestApi_';
+
+	public static $search_and		= ';';
+	public static $search_or		= '|';
+	public static $search_equals	= ':'; 
+
 	/**
 	 * Populates fields for "non-model" requests such as Security, User, Base etc.
 	 * Can be used by adding the following code to your _config.php
@@ -232,6 +238,11 @@ class JJ_RestfulServer extends RestfulServer {
 		);
 		
 		$params = $this->request->getVars();
+		$urlSearchString = $this->getSearchString($params);
+
+		if ($urlSearchString) {
+			$params = $this->urlSearchStringToArray($urlSearchString);
+		}
 
 		//$extension = $this->request->getExtension();
 		//$extension = $extension ? $extension : $this->stat('default_extension');
@@ -269,7 +280,7 @@ class JJ_RestfulServer extends RestfulServer {
 		$context = $this->getContext();
 
 		if ($obj instanceof SS_List) {
-			$fields = singleton($obj->dataClass())->getApiContextFields($context->getOperation(), $context->getSubContext());
+			$fields = singleton($obj->dataClass())->getApiContextFields($context);
 			return $responseFormatter->convertDataList($obj, $fields);
 		}
 		else if (!$obj) {
@@ -301,7 +312,7 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function getObjectsQuery($className, $params, $sort, $limit) {
 		$ids = array();
 
-		// @todo check that there are no more search params
+		// @todo: check that there are no more search params
 		if (isset($params['ids']) && !empty($params['ids'])) {
 			$pIds = explode(',',$params['ids']);
 
@@ -322,11 +333,24 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 	}
 
-	protected function getContext($operation = 'view') {
+	protected function getContext() {
 		$context = (string) $this->request->getVar('context');
 
-		return JJ_ApiContext::create_from_string($context);
-		#return strpos($context, '.') !== false ? JJ_ApiContext::create_from_string($context) : JJ_ApiContext::create_from_string($operation, $context);
+		return $context ? JJ_ApiContext::create_from_string($context) : JJ_ApiContext::create_from_string();
+	}
+
+	protected function getSearchString($params = null) {
+		$params = $params ? $params : $this->request->getVars();
+		$searchString = '';
+
+		if (isset($params['s'])) {
+			$searchString = $params['s'];
+		}
+		else if (isset($params['search'])) {
+			$searchString = $params['search'];
+		}
+		
+		return $searchString;
 	}
 
 	/**
@@ -345,17 +369,118 @@ class JJ_RestfulServer extends RestfulServer {
 		$context = $this->getContext();
 		$sing = singleton($className);
 
-		#$fields = $sing->getApiContextFields($context->getOperation(), $context->getSubContext());
+
+		//$searchString = isset($params['search']) ? (String) $params['search'] : '';
+		//$searchArray = $this->urlSearchStringToArray($searchString);
+		//$result = $searchContext->getQuery($searchArray, $sort, $limit, $existingQuery);
+
+
+
 
 		// @todo rename method
-		if ($sing->hasMethod('getRestfulSearchContext')) {
-			$searchContext = $sing->{'getRestfulSearchContext'}();
+		if ($sing->hasMethod('getApiCustomSearchContext')) {
+			$searchContext = $sing->getApiCustomSearchContext($context);
 		}
 		else {
-			$searchContext = $sing->getApiSearchContext($context->getOperation(), $context->getSubContext());
+			$searchContext = $sing->getApiSearchContext($context);
 		}
-		
-		return $searchContext->getQuery($params, $sort, $limit, $existingQuery);
+
+		$cacheKey = $this->getSearchQueryCacheKey($searchContext, $context, $params, $sort, $limit, $existingQuery);
+
+		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
+		$result = $cache->load($cacheKey);
+
+		if ($result) {
+			$result = unserialize($result);
+		}
+		else {
+			$result = $searchContext->getQuery($params, $sort, $limit, $existingQuery);
+			$cache->save(serialize($result));
+		}
+
+		return $result;
+	}
+
+	// this could be an extension for SearchContext
+	/*protected function getCachedSearchQuery($className, $params = null, $sort = null, $limit = null, $existingQuery = null) {
+
+	}*/
+
+
+	/**
+	 * calculates a unique cache key for the given params
+	 * 
+	 * @todo implement $existingQuery
+	 * 
+	 * @param  SearchContext 	$searchContext
+	 * @param  array			$searchParams 
+	 * @param  boolean			$sort
+	 * @param  boolean			$limit
+	 * @param  [type]			$existingQuery
+	 * 
+	 * @return string	generated cache key
+	 */
+	protected function getSearchQueryCacheKey($searchContext, $context, $searchParams, $sort = false, $limit = false, $existingQuery = null) {
+		$cacheKey = $searchContext->class . '_' . $context->getContext() . '_' . Member::currentUserID() . '_';
+
+		if (isset($searchParams['url'])) {
+			unset($searchParams['url']);
+		}
+
+		$paramsLimit = array_merge($searchParams, $limit);
+
+		foreach ($paramsLimit as $key => $value) {
+			$cacheKey .= '-' . $key .'_' . $value;
+		}
+
+		$strSort = (string) $sort;
+		if ($strSort) {
+			$cacheKey .= $strSort;
+		}
+
+		// @todo replace . and - via regular expression
+		return md5($cacheKey);
+	}
+
+	/**
+	 * transforms a search string in JJ_Fashion (i.e. "Title=foo|bar+Content=foobar") to an associative array
+	 * @param  String $s
+	 * @return array	transformed array (default empty)
+	 */
+	protected function urlSearchStringToArray($searchString) {
+		$result	= array();
+
+		// split it up by 'and'
+		foreach (explode(self::$search_and, $searchString) as $el) {
+			if (!$el) continue;
+			// split it up again
+			$eq = explode(self::$search_equals, $el);
+			// set key
+			$key = Convert::raw2sql($eq[0]);
+
+			if (count($eq) < 2) {
+				// throw warning
+				user_error("No value specified for search key {$key}", E_USER_WARNING);
+			}
+			else {
+				$va = explode(self::$search_or, $eq[1]);
+				
+				if (count($va) == 1) {
+					$value = Convert::raw2sql($va[0]);
+				}
+				else {
+					$value = array();
+					foreach ($va as $v) {
+						$value[] = Convert::raw2sql($v);
+					}
+				}
+			}
+
+			$result[$key] = $value;
+		}
+	
+		return $result;
 	}
 
 }
+

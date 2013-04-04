@@ -146,7 +146,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * }
 	 *
 	 */
-	public function toDataElement($name = '', $extension = null, $context = '') {
+	public function toDataElement($name = '', $extension = null, $context = null) {
 		if (!$name) {
 			$name = $this->owner instanceof DataList ? $this->owner->dataClass() : $this->class;
 			$name = strtolower($name);
@@ -177,7 +177,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 			
 			// update Relation names
 			$preparedCustomFields = $this->convertRelationsNames($customFields);
-			
+
 			$relationKeys = $this->getRelationKeys();
 
 			foreach ($preparedCustomFields as $key => $fieldNameArray) {
@@ -213,7 +213,6 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 								$this->getAdditionalApiFields()
 							))
 						));
-
 
 						if (is_array($this->ApiFormatter()->getRemoveFields())) {
 							$relFields = array_diff(
@@ -302,17 +301,18 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 *
 	 * @return array
 	 */
-	public function getApiContextFields($operation = 'view', $subContext = '') {
+	public function getApiContextFields(JJ_ApiContext $context = null) {
 
-		$fields = JJ_RestfulServer::fields(); //$this->stat('fields');
-		$context = JJ_ApiContext::create_from_string($operation, $subContext)->getContext();
+		$fields = JJ_RestfulServer::fields();
+		$context = $context ? $context : JJ_ApiContext::create_from_string();
 
 		$apiAccess = $this->owner->stat('api_access');
 		$className = $this->owner->class;
+		$con = $context->getContext();
 
 		// try to get subcontext (view.logged_in)
-		if (isset($apiAccess[$context])) {
-			return $apiAccess[$context];
+		if (isset($apiAccess[$con])) {
+			return $apiAccess[$con];
 		}
 		// throw warning
 		else {
@@ -332,13 +332,101 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	/**
 	 * getApiSearchContext
 	 */
-	public function getApiSearchContext($operation = 'view', $subContext = '') {
+	public function getApiSearchContext(JJ_ApiContext $context = null) {		
+		return new SearchContext(
+			$this->owner->class,
+			null,
+			$this->getApiSearchFilters($context)
+		);
+	}
 
-		$fields = $this->getApiContextFields($operation, $subContext);
-		$searchContext = $this->owner->getDefaultSearchContext();
-		$searchContext->setFields($fields);
+	public function getApiSearchableFields(JJ_ApiContext $context = null) {
+		$searchableFields = $this->owner->stat('api_searchable_fields');
+		//$searchableFields = $searchableFields ? $searchableFields : $this->owner->searchableFields();
+		$searchLabels = $this->owner->fieldLabels();
+		$context = $context ? $context : JJ_ApiContext::create_from_string();
+		$contextFields = $this->getApiContextFields($context);
+		$searchableFields = $searchableFields ? $searchableFields : $contextFields;
 
-		return $searchContext;
+		$restrictToContextFields = true;
+		$fields = array();
+
+		// find searchable fields scope
+		if (isset($searchableFields[$context->getContext()])) {
+			$searchableFields = $searchableFields[$context->getContext()];
+			$restrictToContextFields = false;
+		}
+		// try to fall back to operation context fields
+		else if (isset($searchableFields[$context->getOperation()])) {
+			$searchableFields = $searchableFields[$context->getOperation()];
+			$restrictToContextFields = false;
+		}
+
+		foreach($searchableFields as $name => $specOrName) {
+			$identifer = (is_int($name)) ? $specOrName : $name;
+
+			// restrict searchable fields to context definitions
+			if ($restrictToContextFields && !in_array($identifer, $contextFields)) {
+				continue;
+			}
+			
+			// Format: array('MyFieldName')
+			if (is_int($name)) {
+				$field = array();
+			}
+			// Format: array('MyFieldName' => array('filter' => 'ExactMatchFilter'))
+			else if (is_array($specOrName)) {
+				$field = array_merge(
+					array('filter' => $this->owner->relObject($identifer)->stat('default_search_filter_class')),
+					(array)$specOrName
+				);
+			}
+			// Format: array('MyFieldName' => 'ExactMatchFilter')
+			else {
+				$field = array(
+					'filter' => $specOrName
+				);
+			}
+
+			if (!isset($field['title'])) {
+				$field['title'] = isset($labels[$identifer]) ? $labels[$identifer] : FormField::name_to_label($identifer);
+			}
+
+			if (!isset($field['filter'])) {
+				$field['filter'] = 'PartialMatchFilter';
+			}
+
+			$fields[$identifer] = $field;
+		}
+
+		$this->owner->extend('updateApiSearchableFields', $fields);
+
+		return $fields;
+	}
+
+
+	/**
+	 * returns an associative array filled with {@see SearchFilter} from the given JJ_ApiContext 
+	 * 
+	 * @param JJ_ApiContext $context
+	 * 
+	 * @return array
+	 */
+	public function getApiSearchFilters(JJ_ApiContext $context = null) {
+		$filters = array();
+
+		foreach ($this->getApiSearchableFields($context) as $name => $filter) {
+			$class = $filter['filter'];
+
+			// if $filterClass is not set a name of any subclass of SearchFilter than assing 'PartialMatchFilter' to it
+			if (!is_subclass_of($class, 'SearchFilter')) {
+				$class = 'PartialMatchFilter';
+			}
+
+			$filters[$name] = new $class($name);
+		}
+		
+		return $filters;
 	}
 
 

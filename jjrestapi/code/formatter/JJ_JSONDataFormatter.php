@@ -76,7 +76,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		foreach ($obj->getApiFields($fields) as $fieldName => $fieldType) {
 						
 			// Field filtering by key
-			if (!$this->getBase()->fieldFilter($fieldName, $fields)) continue;
+			//if (!$this->getBase()->fieldFilter($fieldName, $apiFields)) continue;
 
 			// it's an object field
 			if (is_string($fieldType)) {
@@ -173,7 +173,6 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		$items = array();
 
 		foreach ($set as $do) {
-			//print_r($do->class);
 			$obj = $this->convertDataObjectToJSONObject($do, $fields);
 			
 			if ($obj) {

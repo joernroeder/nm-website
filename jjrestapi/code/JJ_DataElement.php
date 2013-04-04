@@ -63,13 +63,15 @@ class JJ_DataElement extends ViewableData {
 	 * @param string $extension (optional)
 	 * @param string $context (optional)
 	 */
-	public function __construct($name, $data = array(), $extension = null, $context = '') {
+	public function __construct($name, $data = array(), $extension = null, $context = null) {
 		$this->setName($name);
 		$this->setData($data);
+
+		$extension = $extension ? $extension : self::$default_extension;
+		$context = $context ? $context : JJ_ApiContext::create_from_string();
+		
+		$this->setExtension($extension);
 		$this->setContext($context);
-		if ($extension) {
-			$this->setExtension($extension);
-		}
 	}
 
 
@@ -79,7 +81,7 @@ class JJ_DataElement extends ViewableData {
 	 * @return string extension
 	 */
 	public function extension() {
-		return $this->extension ? $this->extension : self::$default_extension;
+		return $this->extension;
 	}
 
 	/**
@@ -169,7 +171,15 @@ class JJ_DataElement extends ViewableData {
 	 * @param array
 	 */
 	public function setContext($value) {
-		$this->context = JJ_ApiContext::create_from_string($value);
+		if (is_string($value)) {
+			$this->context = JJ_ApiContext::create_from_string($value);
+		}
+		else if (is_array($value)) {
+			$this->context = JJ_ApiContext::create_from_string($value);
+		}
+		else if (!$value instanceof JJ_ApiContext) {
+			// throw error
+		}
 	}
 
 
@@ -185,7 +195,7 @@ class JJ_DataElement extends ViewableData {
 
 		if ($data instanceof Object) {
 			$obj = $data instanceof DataList ? singleton($data->dataClass()) : $data;
-			$fields = $obj->getApiContextFields($context->operation, $context->context);
+			$fields = $obj->getApiContextFields($context);
 		}
 
 		return $this->formatter()->convert($data, $fields);
@@ -205,7 +215,7 @@ class JJ_DataElement extends ViewableData {
 	public function forTemplate() {
 		$output = '<script type="application/' . $this->extension() . '" id="' . $this->fullName() . '">' . "\n";
 		$output .= "\t\t" . $this->formattedData() . "\n";
-		$output .= "\t</script>";
+		$output .= "\t</script>\n";
 
 		return $output;
 	}

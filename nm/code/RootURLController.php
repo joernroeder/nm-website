@@ -37,11 +37,13 @@ class RootURLController extends Controller {
 			case null:
 				/* @todo handle index page */
 
-				// get featured projects
-				$featuredProjects = Project::get()->where('IsFeatured=1');
-				if ($featuredProjects->exists()) {
-					$returnVal .= $featuredProjects->toDataElement('featured-project', null, 'view.portfolio_init')->forTemplate();
+				// get featured projects/workshops/exhibtions/excursions
+				$types = array('Project', 'Workshop', 'Excursion', 'Exhibition');
+				foreach ($types as $type) {
+					$featured = $type::get()->where('IsFeatured=1');
+					$returnVal .= $featured->toDataElement('featured-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
 				}
+				
 				break;
 			default:
 				break;

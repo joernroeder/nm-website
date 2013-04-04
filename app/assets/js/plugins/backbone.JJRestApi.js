@@ -75,21 +75,31 @@ JJRestApi.Modules.extend = function(module, extension) {
   return true;
 };
 
-JJRestApi.extendModel = function(className, extension) {
+JJRestApi.extendModel = function(className, modelToExtendFrom, extension) {
   var model;
 
+  model = this.Model(className);
+  if (modelToExtendFrom.prototype instanceof Backbone.Model === false) {
+    extension = modelToExtendFrom;
+    modelToExtendFrom = model;
+  }
   extension || (extension = {});
-  if (model = this.Model(className)) {
-    return this.Models[className] = model.extend(extension);
+  if (model) {
+    return this.Models[className] = modelToExtendFrom.extend(extension);
   }
 };
 
-JJRestApi.extendCollection = function(className, extension) {
+JJRestApi.extendCollection = function(className, collTypeToExtendFrom, extension) {
   var collType;
 
+  collType = this.Collection(className);
+  if (collTypeToExtendFrom instanceof Backbone.Collection === false) {
+    extension = collTypeToExtendFrom;
+    collTypeToExtendFrom = collType;
+  }
   extension || (extension = {});
-  if (collType = this.Collection(className)) {
-    return this.Collections[className] = collType.extend(extension);
+  if (collType) {
+    return this.Collections[className] = collTypeToExtendFrom.extend(extension);
   }
 };
 
@@ -135,6 +145,40 @@ JJRestApi.getFromDomOrApi = function(name, options, callback) {
     });
   }
   return data;
+};
+
+/**
+ *
+ * Converts an object with search and context to URL String, e.g. 's=Foo:bar&context=view.foobar'
+ *
+*/
+
+
+JJRestApi.objToUrlString = function(obj) {
+  var k, key, l, returnString, searchString, v, value;
+
+  returnString = '';
+  for (key in obj) {
+    value = obj[key];
+    if (key === ('search' || 's')) {
+      searchString = 's=';
+      for (k in value) {
+        v = value[k];
+        searchString += encodeURIComponent(k) + ':';
+        searchString += _.isArray(v) ? encodeURIComponent(v.join('|')) : encodeURIComponent(v);
+        searchString += ';';
+      }
+      returnString += searchString;
+    } else {
+      returnString += encodeURIComponent(key) + '=' + encodeURIComponent(value);
+    }
+    returnString += '&';
+  }
+  l = returnString.length;
+  if (returnString.lastIndexOf('&') === (l - 1)) {
+    returnString = returnString.substr(0, l - 1);
+  }
+  return returnString;
 };
 
 /*
@@ -234,6 +278,8 @@ JJRestApi.Bootstrap = function(response) {
         return this.urlRoot;
       }
     };
+    modelOptions.urlRoot = _this.setObjectUrl(className);
+    modelOptions.idAttribute = 'ID';
     if (config && config.DefaultFields) {
       _ref = config.DefaultFields;
       for (index in _ref) {
@@ -251,10 +297,7 @@ JJRestApi.Bootstrap = function(response) {
   }
   for (className in data) {
     relations = data[className];
-    this.Models[className] = Backbone.JJRelationalModel.extend({
-      urlRoot: this.setObjectUrl(className),
-      idAttribute: 'ID'
-    });
+    this.Models[className] = Backbone.JJRelationalModel.extend({});
     this.Collections[className] = Backbone.Collection.extend({
       url: this.setObjectUrl(className),
       comparator: function(model) {
