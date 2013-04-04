@@ -1,7 +1,9 @@
 <!-- li class="gravity-item" -->
 <div>
 	<p>{{ Title }}</p>
-	<div><img src="{{PreviewImage.Urls._320}}" /></div>
+	{{#with PreviewImage.Urls._320}}
+	<div><img src="{{Url}}" width="{{Width}}" height="{{Height}}"/></div>
+	{{/with}}
 </div>
 
 <!-- /li -->

@@ -18,7 +18,7 @@ define [
 					for model in modelArray
 						@.insertView '', new Portfolio.Views.ListItem({ model: model })
 			afterRender: ->
-				$(@.el).RadialGravity 
+				$(@.el).height($(window).height()).RadialGravity 
 					worker:
 						physics: '/app/assets/js/plugins/gravity/physics.js'
 

@@ -23,7 +23,7 @@ define(['app', 'plugins/zepto.gravity'], function(app) {
       }
     },
     afterRender: function() {
-      return $(this.el).RadialGravity({
+      return $(this.el).height($(window).height()).RadialGravity({
         worker: {
           physics: '/app/assets/js/plugins/gravity/physics.js'
         }

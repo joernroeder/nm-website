@@ -656,7 +656,7 @@ aside a {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.gravity img {
+.gravity > img {
   position: absolute;
   display: inline-block;
 }
