@@ -4,14 +4,17 @@ require.config({
   paths: {
     libs: '../assets/js/libs',
     plugins: '../assets/js/plugins',
-    jquery: '../assets/js/libs/jquery',
+    zepto: '../assets/js/libs/zepto.min',
     underscore: '../assets/js/libs/underscore',
     backbone: '../assets/js/libs/backbone',
     handlebars: '../assets/js/libs/handlebars'
   },
   shim: {
+    zepto: {
+      exports: '$'
+    },
     backbone: {
-      deps: ['underscore', 'jquery'],
+      deps: ['underscore', 'zepto'],
       exports: 'Backbone'
     },
     underscore: {
@@ -20,6 +23,9 @@ require.config({
     handlebars: {
       exports: 'Handlebars'
     },
+    'plugins/zepto.deferred.min': ['zepto'],
+    'plugins/zepto.installer': ['plugins/zepto.deferred.min'],
+    'plugins/zepto.gravity': ['plugins/zepto.installer'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone']

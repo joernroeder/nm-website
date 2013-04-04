@@ -1,6 +1,7 @@
 define [
 		# Libs
-		'jquery'
+		'plugins/zepto.installer'
+		#'plugins/zepto.deferred.min'
 		'underscore'
 		'backbone'
 		'handlebars'
@@ -9,7 +10,10 @@ define [
 		'plugins/backbone.JJRestApi'
 	],
 
-	($, _, Backbone, Handlebars) ->
+	(_Zepto, _, Backbone, Handlebars) ->	
+
+
+
 		app =
 			root: '/'
 		JST = window.JST = window.JST || {}
@@ -63,6 +67,14 @@ define [
 
 				# Insert into the DOM.
 				$('#main').empty().append layout.el
+
+				# Set body class to current layout
+				currentLayout = @.currentLayoutName
+				$body = $ 'body'
+				if currentLayout then $body.removeClass(currentLayout)
+				$body.addClass(name)
+
+				@.currentLayoutName = name
 
 				# Render the layout.
 				layout.render()

@@ -119,7 +119,9 @@ class Exhibition extends DataObject {
 			'TeaserText',
 			'IsFeatured',
 			'IsPortfolio',
-			'PreviewImageID',
+			'PreviewImage.Title',
+			'PreviewImage.Caption',
+			'PreviewImage.Urls',
 			'Persons',
 			'Persons.FirstName',
 			'Persons.Surname'
