@@ -11,11 +11,10 @@ b2World			= Box2D.Dynamics.b2World
 
 #b2MassData		= Box2D.Collision.Shapes.b2MassData
 b2PolygonShape	= Box2D.Collision.Shapes.b2PolygonShape
-b2EdgeShape		= Box2D.Collision.Shapes.b2EdgeShape
-b2CircleShape	= Box2D.Collision.Shapes.b2CircleShape
+#b2CircleShape	= Box2D.Collision.Shapes.b2CircleShape
 
-b2DebugDraw		= Box2D.Dynamics.b2DebugDraw
-
+#b2DebugDraw		= Box2D.Dynamics.b2DebugDraw
+b2AABB			= Box2D.Collision.b2AABB
 b2Settings		= Box2D.Common.b2Settings
 
 # =============================================
@@ -31,8 +30,10 @@ class RadialGravity
 	intervalRate	: 0
 	adaptive		: false
 
-	# world borders
-	borders: {}
+	log: (value) ->
+		self.postMessage
+			key: 'log'
+			log: value
 
 	###
 	 #
@@ -42,45 +43,47 @@ class RadialGravity
 	constructor: (@intervalRate, @adaptive) ->
 		# ! init
 		@init = ->
+			@world = new b2World new b2Vec(0, 0), true
 			@setBox2DSettings()
-			@world = new b2World(
-				new b2Vec(0, 0),
-				true
-			)
 
 			# wait for bodies @setBodies
 			@hasGravity = false
 			@bodyCount = 0
 
-			@bodyDef()
-			@fixDef()
-
-			@world.CreateBody(@bodyDef).CreateFixture @fixDef
-
-		# ! private methods
+		# ! private constructors
 		@fixDef = ->
 			fix = new b2FixtureDef
-			fix.density		= 1.0
-			fix.friction	= 0
-			fix.restitution	= 0
+			fix.density		= 0.0
+			fix.friction	= 1.0
+			fix.restitution	= 0.0
+
+			#fixDef.restitution = 0
+			#fixDef.density = 1
+			#fixDef.friction = 1
 
 			fix.shape = new b2PolygonShape
-			fix.shape.SetAsBox @width / @scale() / 2, @height / @scale() / 2
 
-			@fixDef = fix
+			fix # return
 
-		@bodyDef = ->
+		@bodyDef = (staticBody) ->
 			body = new b2BodyDef
-			body.type = b2Body.b2_staticBody
-			body.position.x = @width / 2 / @scale()
-			body.position.y = @height / @scale()
-			body.fixedRotation = true
 
-			@bodyDef = body
+			if staticBody
+				body.type = b2Body.b2_staticBody
+			else
+				body.type = b2Body.b2_dynamicBody
+				body.allowSleep = true
+
+			body.fixedRotation = true
+			body.linearDamping = .5
+			body.angularDamping = .5
+			body.gravityScale = 0.0
+
+			body # return
 
 		@setBox2DSettings = ->
-			#b2Settings.b2_linearSleepTolerance = 5
-			#b2Settings.b2_angularSleepTolerance = 5
+			b2Settings.b2_linearSleepTolerance = .5
+			b2Settings.b2_angularSleepTolerance = .5
 			b2Settings.b2_timeToSleep = .5
 
 
@@ -94,42 +97,95 @@ class RadialGravity
 	 # @param int height
 	 #
 	###
-	@hasBorders: false
+	# world borders
+	borders: {}
+	borderWidth: 1
+	hasBorders: false
 	setDimensions: (@width, @height) ->
 
 		#@width = @width / 2
 		#@height = @height / 2
-
-		borderWidth = 2
-		borders = 
-			#top
+		
+		borderDefs = [
+			# top
 			{
-				x: 0
-				y: 0
+				id: 'border-top'
+				x: @width / 2
+				y: @borderWidth / -2
 				width: @width
-				height: borderWidth
+				height: @borderWidth
+			},
+
+			# right
+			{
+				id: 'border-right'
+				x: @width + (@borderWidth / 2)
+				y: @height / 2
+				width: @borderWidth
+				height: @height
+			},
+
+			# bottom
+			{
+				id: 'border-bottom'
+				x: @width / 2
+				y: @height + (@borderWidth / 2)
+				width: @width
+				height: @borderWidth
+			},
+
+			# left
+			{
+				id: 'border-left'
+				x: @borderWidth / -2
+				y: @height / 2
+				width: @borderWidth
+				height: @height
 			}
 
+		]
+		
 		createBorder = (border) =>
-			bodyDef = new b2BodyDef
-			bodyDef.type = b2Body.b2_staticBody;
-			#bodyDef.userData = border.id
+			body = @bodyDef true
+			#bodyDef = new b2BodyDef
+			#bodyDef.type = b2Body.b2_staticBody
+			body.userData = border.id
 
-			bodyDef.position.x = border.x
-			bodyDef.position.y = border.y
+			body.position.Set border.x, border.y
 
-			fixDef = new b2FixtureDef
-			fixDef.density = 1.0
-			fixDef.friction = .2
-			fixDef.restitution = 1
+			fix = @fixDef()
+			#fixDef = new b2FixtureDef
+			#fixDef.density = 1.0
+			#fixDef.friction = 0
+			#fixDef.restitution = 1
 
-			fixDef.shape = new b2PolygonShape
-			fidDef.shape.SetAsBox border.width / 2, border.height / 2
+			#fixDef.shape = new b2PolygonShape
+			fix.shape.SetAsBox border.width / 2, border.height / 2
 
-			@world.CreateBody(bodyDef).CreateFixture(fixDef)
+			@world.CreateBody(body).CreateFixture fix
+			@borders[border.id] = 
+				body: body
+				fixture: fix
+
+			true
+
+			#create ground
+         #bodyDef.type = b2Body.b2_staticBody;
+         #fixDef.shape = new b2PolygonShape;
+         #fixDef.shape.SetAsBox(20, 2);
+         #bodyDef.position.Set(10, 400 / 30 + 1.8);
+         #world.CreateBody(bodyDef).CreateFixture(fixDef);
+         #bodyDef.position.Set(10, -1.8);
+         #world.CreateBody(bodyDef).CreateFixture(fixDef);
+         #fixDef.shape.SetAsBox(2, 14);
+         #bodyDef.position.Set(-1.8, 13);
+         #world.CreateBody(bodyDef).CreateFixture(fixDef);
+         #bodyDef.position.Set(21.8, 13);
+         #world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 		createBorders = =>
-			for border in borders
+			for border in borderDefs
+				log border
 				createBorder border
 			
 			#@world.CreateBody(body).CreateFixture fix
@@ -139,10 +195,13 @@ class RadialGravity
 
 
 		#if Object.keys(@borders).length or @hasBorders
-		if @hasBorders
-			updateBorders()
-		else
-			createBorders()
+		#if @hasBorders
+		#	updateBorders()
+		#else
+		log 'create borders'
+		createBorders()
+
+		true
 	###
 	 # returns the box2D scale
 	 #
@@ -162,30 +221,10 @@ class RadialGravity
 	getState: ->
 		state = {}
 
-		# get gravity
-		# @todo put body somewhere so we dont't have to get it every update!
-		#b = @world.GetBodyList()
-		###
-		gravity = null
-		while b
-			id = b.GetUserData()
-			if id is 'gravity'
-				gravity = b
-			b = b.m_next
-		return false if not gravity
-		###
-
 		# get gravity position
 		gravityPosition = @getGravityPosition()
 
 		return false if not gravityPosition
-
-		###
-		state['gravity'] = 
-			x: gravityPosition.x
-			y: gravityPosition.y
-			#a: gravity.GetAngle()
-		###
 
 		# get entities
 		b = @world.GetBodyList()
@@ -194,7 +233,7 @@ class RadialGravity
 		while b
 			id = b.GetUserData()
 			# if has id
-			if b.IsAwake() and b.IsActive() and typeof id isnt 'undefined' and id? and id isnt 'gravity'
+			if b.IsAwake() and b.IsActive() and id and id isnt 'gravity'
 				pos = b.GetPosition()
 				
 				# calc gravity
@@ -205,10 +244,32 @@ class RadialGravity
 				distance = gravityDistance.Length()
 				gravityDistance.NegativeSelf()
 				vecSum = Math.abs pos.x + Math.abs pos.y
-				gravityDistance.Multiply ( 1000 / vecSum) * 10 / distance
+				gravityDistance.Multiply (1000 / vecSum) * 10 / distance
 				#postMessage gravityDistance
 				d = new b2Vec gravityDistance.x, gravityDistance.y
 				b.ApplyForce d, b.GetPosition()
+
+				state[id] = 
+					x: pos.x
+					y: pos.y
+
+			else if id and id.indexOf('border') isnt -1
+				###
+				fixture = b.GetFixtureList()
+
+				aabb = new b2AABB
+				aabb.lowerBound = new b2Vec 0, 0
+				aabb.upperBound = new b2Vec 0, 0
+
+				while fixture
+					aabb.Combine aabb, fixture.GetAABB()
+					fixture = fixture.m_next
+
+				log aabb
+
+				if not state[id] then state[id] is {}
+				###
+				border = @borders[id]
 
 				state[id] = 
 					x: pos.x
@@ -226,6 +287,7 @@ class RadialGravity
 		stepRate = if @adaptive then (now - @timestamp / 1000) else (1 / @intervalRate)
 
 		@world.Step stepRate, 10, 10
+		#@world.Step stepRate, 10, 100, 50
 		@world.ClearForces()
 
 		# return timing
@@ -250,45 +312,14 @@ class RadialGravity
 			p = @gravityPosition
 
 		p
-	## #
+
 	setGravity: (gravity) ->
-		#@gravityPosition = new b2Vec gravity.x, gravity.y
-		@gravityPosition = new b2Vec 1,1
+		@gravityPosition = new b2Vec gravity.x, gravity.y
+		log 'gravity position:'
+		log @gravityPosition
+		#@gravityPosition = new b2Vec @width / 2, @height / 2
 		@hasGravity = true
-	###
-	setGravity: (gravity) ->
-		if @gravity
-			@updateGravity gravity
-			return
-
-		#postMessage gravity
-		@bodyDef.type = b2Body.b2_staticBody
-
-		@fixDef.restitution = 0
-		@fixDef.density = 500
-		@fixDef.friction = 1
-		@fixDef.shape = new b2PolygonShape
-		@fixDef.shape.SetAsBox gravity.width / 2 , gravity.height / 2
-
-		@bodyDef.position.x = gravity.x
-		@bodyDef.position.y = gravity.y
-		@bodyDef.userData = 'gravity'
-
-		@world.CreateBody(@bodyDef).CreateFixture @fixDef
-
-		@gravity = @getGravity()
-
-		@hasGravity = true
-	###
-
-	updateGravity: (gravity) ->
-		if @gravity
-			pos = new b2Vec gravity.x, gravity.y
-			@gravity.position.x = gravity.x
-			@gravity.position.y = gravity.y
-
-		#@bodyDef.position.x = gravity.x
-		#@bodyDef.position.y = gravity.y
+		@forceRecalc()
 
 
 	getGravity: ->
@@ -300,6 +331,14 @@ class RadialGravity
 			b = b.m_next
 
 		false
+
+	forceRecalc: ->
+		# get entities
+		b = @world.GetBodyList()
+
+		while b
+			b.SetAwake true
+			b = b.m_next
 
 
 	###
@@ -317,24 +356,19 @@ class RadialGravity
 	 # creates a body
 	###
 	setBody: (id, entity) ->
-		@bodyDef.type = b2Body.b2_dynamicBody
+		bodyDef = @bodyDef()
 
 		if id is 'gravity'
 			@setGravity entity
 		else
-			@fixDef.restitution = 0
-			@fixDef.density = 1
-			@fixDef.friction = 1
-			@fixDef.shape = new b2PolygonShape
-			@fixDef.shape.SetAsBox entity.width / 2 , entity.height / 2
+			fixDef = @fixDef()
+			fixDef.shape.SetAsBox entity.width / 2 , entity.height / 2
 
-			@bodyDef.position.x = entity.x
-			@bodyDef.position.y = entity.y
-			@bodyDef.userData = entity.id
-			@bodyDef.allowSleep = true
-			@bodyDef.fixedRotation = true
+			bodyDef.position.x = entity.x
+			bodyDef.position.y = entity.y
+			bodyDef.userData = entity.id
 
-			@world.CreateBody(@bodyDef).CreateFixture @fixDef
+			@world.CreateBody(bodyDef).CreateFixture fixDef
 
 			@bodyCount++
 

@@ -24,11 +24,13 @@
 	 # @param float angle (optional)
 	###
 	class Entity
-		constructor: (@id, @x, @y, @angle = 0) ->
+		constructor: (@id, @x, @y, @scaleFactor = 30) ->
+
 		update: (@x, @y, @angle) ->
 		setAwake: (@isAwake) ->
 		scale: ->
-			window.BOX2D_SCALE or 30
+			@scaleFactor
+
 		draw: ->
 
 	# ---------------------------------------------
@@ -48,7 +50,7 @@
 		color: 'red'
 		sleepColor: 'gray'
 
-		constructor: (@id, @x, @y, @width = 0, @height = 0, @angle = 0) ->
+		constructor: (@id, @x, @y, @width = 0, @height = 0, @scaleFactor = 30) ->
 			###
 			$item = $("[data-gravity-item=#{@id}]")
 
@@ -56,7 +58,7 @@
 				$('<div class="entity" data-gravity-item="' + @id + '">' + @id + '</div>')
 					.appendTo('.gravity')
 			###
-			super @id, @x, @y, @angle
+			super @id, @x, @y, @scaleFactor
 
 		halfWidth: ->
 			@width / 2
@@ -79,7 +81,21 @@
 				'width'			: @width * @scale()
 				'background'	: if @isAwake then @color else @sleepColor
 
-			#super ctx
+	# ---------------------------------------------
+	
+	class Border extends RectangleEntity
+
+		constructor: (@id, @x, @y, @width = 0, @height = 0, @scaleFactor = 30) ->
+			
+			$item = $("[data-gravity-item=#{@id}]")
+
+			if not $item.length
+				$('<div class="entity" data-gravity-item="' + @id + '">' + @id + '</div>')
+					.appendTo('.gravity')
+
+			super @id, @x, @y, @scaleFactor
+	
+
 
 	# ---------------------------------------------
 
@@ -119,11 +135,24 @@
 		scaleFactor	: 30
 
 		setScale: (val) ->
+			console.log "box2DHolder set scale to #{val}"
 			@scaleFactor = val
 			if @worker
 				@worker.postMessage
 					key: 'setscale'
 					value: val
+
+		setDimensions: (@width, @height) ->
+			# @todo: check'n add non worker
+			if @worker
+				@worker.postMessage
+					key		: 'dimensions'
+					width	: @n(@width)
+					height	: @n(@height)
+
+				console.log "set dimensions: #{@n(@width)} - #{@n(@height)}"
+
+				@needToDraw = true
 
 		###
 		 # constructs the Box2DHolder
@@ -131,11 +160,14 @@
 		 # @param int width
 		 # @param int height
 		###
-		constructor: (@width, @height, @zoom, @workerOpts) ->
+		constructor: (@width, @height, scale, @workerOpts) ->
 
 			# init
 			@init = ->
 				console.log 'Box2DHolder init'
+
+				# set scale
+				@setScale scale
 
 				# check webworker
 				@useWorker = @hasWebWorker()
@@ -148,48 +180,15 @@
 						@start()
 					), false
 
-				@initResize()
-
-				# DOM loaded (wi don't need this anymore (everything is wrapped in Zeptos DOM ready))
-				#document.addEventListener 'DOMContentLoaded', =>
-				# create dummy entities
-				#@createDummies dummies
-
 				# init physics
 				if @useWorker then @initWorker() else @initNonWorker()
 
-				@loop()
+				@setDimensions @width, @height
 
-				# create gravity center
-				#gravity = new GravityCenter 'gravity', 0.5 * 50, 0.5 * 20, 0, 0
-				#@addEntity gravity
+				@loop()
 
 			# ! Private methods
 
-			# window resize with timeout to fix an internet explorer bug
-			# @link http://mbccs.blogspot.de/2007/11/fixing-window-resize-event-in-ie.html
-			@initResize = ->
-				# resize timeout
-				@resizeTimeoutId
-
-				# listener
-				window.onresize = (event) =>
-					clearTimeout @resizeTimeoutId
-					@resizeTimeoutId = window.setTimeout () =>
-						@width	= window.innerWidth or document.documentElement.clientWidth # w3c or IE
-						@height	= window.innerHeight or document.documentElement.clientHeight # w3c or IE
-
-						# @todo: check'n add non worker
-						if @worker
-							@worker.postMessage
-								key		: 'dimensions'
-								width	: @n(@width)
-								height	: @n(@height)
-
-							@needToDraw = true
-					, 10
-
-				#window.resize()
 			###
 			 # Returns whether the page supports web workers
 			###
@@ -210,7 +209,7 @@
 				@worker.onmessage = (e) =>
 					# logging hack
 					if 'log' is e.data.key
-						console.info 'physics log:'
+						#console.info 'physics log:'
 						console.log e.data.log
 						return
 
@@ -218,7 +217,7 @@
 					newBodies = e.data.bodiesState
 
 					@bodiesState = $.extend {}, @bodiesState, newBodies
-					console.log Object.keys(@bodiesState).length
+					#console.log Object.keys(@bodiesState).length
 					#console.log @bodiesState
 
 					# first run, reset our bodiesState
@@ -242,23 +241,15 @@
 							# body was awake and went to sleep. sleep well ;)
 							else if @world[id].isAwake
 								@needToDraw = true
-								@world[id].setAwake fals
+								@world[id].setAwake false
 
-				# pushes the dimensions down to the worker
-				@worker.postMessage
-					key		: 'dimensions'
-					width	: @n(@width)
-					height	: @n(@height)
-
-				console.log 'sent dimensions %i, %i'
-				console.log @n(@width)
-				console.log @height
-				console.log @n(@height)
-
-				# pushes the entities to the worker
-				#@worker.postMessage
-				#	key: 'bodies'
-				#	value: @world
+						else if id and id.indexOf('border') isnt -1
+							@border[id] = false
+							#@border[id] = new RectangleEntity obj.id, @n(obj.left), @n(obj.top), @n(obj.width), @n(obj.height), @scaleFactor
+							#console.log "couldn't find border #{id}"
+							#console.log newBody
+						else
+							#console.log "couldn't find #{id}"
 
 			###
 			 # creates the worker fallback
@@ -267,21 +258,6 @@
 				alert 'no webworker support :('
 				console.log 'init non worker'
 
-			###
-			 # creates dummy entities
-			###
-			@createDummies = (amount = 20) ->
-				i = 0
-
-				while i < amount
-					x = Math.random() * 50
-					y = Math.random() * 20
-
-					entity = new RectangleEntity "entity_#{i}", x, y, Math.random() + 0.4, Math.random() + 0.4
-
-					@addEntity entity
-					i++
-
 			# start
 			@init()
 
@@ -289,11 +265,12 @@
 		 # public add
 		###
 		add: (obj) ->
+			#console.log obj
 			if obj.id is 'gravity'
-				gravity = new GravityCenter obj.id, @n(obj.left), @n(obj.top)
+				gravity = new GravityCenter obj.id, @n(obj.left), @n(obj.top), @scaleFactor
 				@addGravity gravity
 			else if obj.width and obj.height
-				entity = new RectangleEntity obj.id, @n(obj.left), @n(obj.top), @n(obj.width), @n(obj.height)
+				entity = new RectangleEntity obj.id, @n(obj.left), @n(obj.top), @n(obj.width), @n(obj.height), @scaleFactor
 				@addEntity entity
 
 		###
@@ -331,6 +308,7 @@
 		###
 		###
 		addGravity: (gravity) ->
+			console.log 'add Gravity'
 			@worker.postMessage
 				key: 'addEntity'
 				entity: gravity
@@ -338,16 +316,15 @@
 		###
 		###
 		addEntity: (entity) ->
-			#console.log entity
 			console.log "added entity '#{entity.id}'"
 			@world[entity.id] = entity
-
-			console.log @world
 
 			# send notification to the worker
 			@worker.postMessage
 				key: 'addEntity'
 				entity: @world[entity.id]
+
+			@needToDraw = true
 
 		###
 		 # triggers the update
@@ -373,7 +350,7 @@
 			for id of @bodiesState
 				entity = @world[id]
 				state = @bodiesState[id]
-				#console.log state.linearVelocity
+				
 				if entity 
 					#entity.setAwake state.awake
 					entity.update state.x, state.y, state.a
@@ -408,7 +385,6 @@
 	$.extend $.fn, RadialGravity: (methodOrOptions) ->
 
 		@defaultOptions = 
-			box2dZoom: 5
 			elementSelector: null #going to use children
 			itemIdPrefix: 'gravity-item-'
 			box2d:
@@ -451,26 +427,22 @@
 					storage = ->
 						RadialGravityStorage.implementations[storageId]
 
-					init = ->
-						# init worker
-						storage().$container = $(el).data dataIdName, storageId
-
+					setDimensions = ->
 						storage().width = storage().$container.width()
 						storage().height = storage().$container.height()
 
 						# @todo fix it
 						if storage().height <= 0
 							storage().height = $(window).height()
-						
-						console.log storage().width
-						console.log storage().height
 
-						storage().box2DHolder = new Box2DHolder storage().width, storage().height, opts.box2dZoom, opts.worker
-						
-						# @todo make setScale accessable via public method
-						storage().box2DHolder.setScale opts.box2d.scale
-						window.BOX2D_SCALE = opts.box2d.scale
+					init = ->
+						# init worker
+						storage().$container = $(el).data dataIdName, storageId
 
+						setDimensions()
+						
+						storage().box2DHolder = new Box2DHolder storage().width, storage().height, opts.box2d.scale, opts.worker
+						
 						initResize()
 
 						# add gravity and items
@@ -485,6 +457,9 @@
 							clearTimeout resizeTimeoutId
 							resizeTimeoutId = setTimeout =>
 								# @todo: check'n add non worker
+								
+								setDimensions()
+
 								console.log 'on resize'
 								addGravity()
 							, 10
@@ -528,14 +503,18 @@
 							pos = $item.position()
 							itemId = getItemId()
 
+							console.log pos
+
 							itemData =
 								id		: itemId
 								width	: $item.width()
 								height	: $item.height()
-								top		: pos.top,
-								left	: pos.left
+								top		: 100
+								left	: 100
+								#top		: pos.top
+								#left	: pos.left
 
-							console.log $item
+							console.log itemData
 							$item.data 'gravity-item', itemId
 
 							# add item to the box
