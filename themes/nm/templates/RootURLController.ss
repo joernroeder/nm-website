@@ -29,9 +29,7 @@
 	$JJRestApi.Structure
 
 	<!-- InitialData -->
-	<% if InitialData %>
-		$InitialData
-	<% end_if %>
+	$InitialData
 
 	<!-- Main container. Everything gets injected here. -->
 	<div id="wrapper">
