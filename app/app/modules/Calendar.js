@@ -36,5 +36,17 @@ define(['app'], function(app) {
       }
     }
   });
+  Calendar.Views.Detail = Backbone.View.extend({
+    tagName: 'article',
+    className: 'calendar-detail',
+    template: 'calendar-detail',
+    serialize: function() {
+      if (this.model) {
+        return this.model.toJSON();
+      } else {
+        return {};
+      }
+    }
+  });
   return Calendar;
 });

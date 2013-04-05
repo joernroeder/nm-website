@@ -32,7 +32,8 @@ class CalendarEntry extends DataObject {
 		'Title'		=> 'Varchar(255)',				// Titel der News
 		'StartDate'	=> 'SS_DateTime',				// Start-Datum
 		'EndDate'	=> 'SS_DateTime',				// End-Datum
-		'Text'		=> 'Text'						// News-Text (Markdown formatiert)
+		'Text'		=> 'Text',						// News-Text (Markdown formatiert)
+		'UrlHash'	=> 'Varchar'					// URLHash, der automatisch generiert wird in der URL einzigartig auf einen Kalendereintrag verweist
 	);
 
 	static $many_many = array(
@@ -82,6 +83,7 @@ class CalendarEntry extends DataObject {
 			'DateRangeNice',
 			'Title',
 			'Text',
+			'UrlHash',
 			'Websites',
 			'Exhibitions',
 			'Workshops',
@@ -91,8 +93,13 @@ class CalendarEntry extends DataObject {
 		'view.upcoming_init' => array(
 			'DateRangeNice',
 			'Title',
-			'Text'
+			'UrlHash'
 		)
+	);
+
+	static $api_searchable_fields = array(
+		'UrlHash',
+		'Title'
 	);
 
 	public function canView($member = null) {
@@ -102,6 +109,10 @@ class CalendarEntry extends DataObject {
 	public function onBeforeWrite() {
 		if (!$this->EndDate && $this->StartDate) {
 			$this->EndDate = $this->StartDate;
+		}
+
+		if (!$this->UrlHash) {
+			$this->UrlHash = md5(time());
 		}
 		parent::onBeforeWrite();
 	}

@@ -6,6 +6,14 @@ define(['plugins/zepto.installer', 'underscore', 'backbone', 'handlebars', 'plug
     root: '/'
   };
   JST = window.JST = window.JST || {};
+  Backbone.NMLayout = Backbone.Layout.extend({
+    setViewAndRenderMaybe: function(selector, view) {
+      this.setView(selector, view);
+      if (this.__manager__.hasRendered) {
+        return view.render();
+      }
+    }
+  });
   Backbone.Layout.configure({
     manage: true,
     prefix: 'app/app/templates/',
@@ -40,13 +48,13 @@ define(['plugins/zepto.installer', 'underscore', 'backbone', 'handlebars', 'plug
     useLayout: function(name, options) {
       var $body, currentLayout, layout;
 
-      if (this.layout && this.layout.options.template === 'layouts/' + name) {
+      if (this.layout && this.layout.getAllOptions().template === 'layouts/' + name) {
         return this.layout;
       }
       if (this.layout) {
         this.layout.remove();
       }
-      layout = new Backbone.Layout(_.extend({
+      layout = new Backbone.NMLayout(_.extend({
         template: 'layouts/' + name,
         className: 'layout ' + name,
         id: 'layout'

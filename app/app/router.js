@@ -8,8 +8,9 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
   	 *
   */
 
-  var DataRetrieval, Router;
+  var DataRetrieval, Router, called_twice;
 
+  called_twice = false;
   Router = Backbone.Router.extend({
     routes: {
       '': 'index',
@@ -19,7 +20,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       'portfolio/': 'showPortfolio',
       'portfolio/:slug/': 'showPortfolioDetailed',
       'calendar/': 'showCalendar',
-      'calendar/:slug/': 'showCalendarDetailed',
+      'calendar/:urlHash/': 'showCalendarDetailed',
       '*url/': 'catchAllRoute'
     },
     index: function(hash) {
@@ -30,7 +31,6 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       DataRetrieval.forProjectsOverview(config.Featured, function() {
         var featured, gravityContainer, projectType, _i, _len, _ref;
 
-        console.log('All featured data is there. Serialize data in featured view and render it.');
         featured = [];
         _ref = config.ProjectTypes;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -42,7 +42,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         gravityContainer = new Portfolio.Views.GravityContainer({
           collection: featured
         });
-        return layout.setView('#gravity', gravityContainer);
+        return layout.setViewAndRenderMaybe('#gravity', gravityContainer);
       });
       return DataRetrieval.forCalendar('upcoming', function() {
         var calendarContainer;
@@ -50,7 +50,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         calendarContainer = new Calendar.Views.UpcomingContainer({
           collection: app.Collections.CalendarEntry
         });
-        return layout.setView('#upcoming-calendar', calendarContainer);
+        return layout.setViewAndRenderMaybe('#upcoming-calendar', calendarContainer);
       });
     },
     showAboutPage: function() {
@@ -78,20 +78,37 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
     showCalendar: function() {
       return console.info('show whole calendar');
     },
-    showCalendarDetailed: function(slug) {
-      console.info('calendar event with slug %s', slug);
-      return console.info('get calendar detailed data with slug and show');
+    showCalendarDetailed: function(urlHash) {
+      var _this = this;
+
+      app.useLayout('main');
+      console.info('get calendar detailed data with slug and show');
+      return DataRetrieval.forDetailedObject('CalendarEntry', urlHash, function(model) {
+        var detailView, layout;
+
+        if (!model) {
+          return _this.fourOhFour();
+        }
+        layout = app.useLayout('main');
+        detailView = new Calendar.Views.Detail({
+          model: model
+        });
+        return layout.setViewAndRenderMaybe('', detailView);
+      });
     },
     catchAllRoute: function(url) {
-      return app.Layout = app.useLayout('main', {
-        views: {
-          '': new PageError.Views.FourOhFour({
-            attributes: {
-              'data-url': url
-            }
-          })
+      return console.log('catch all route');
+    },
+    fourOhFour: function() {
+      var errorView, layout;
+
+      layout = app.useLayout('main');
+      errorView = new PageError.Views.FourOhFour({
+        attributes: {
+          'data-url': window.location.href
         }
       });
+      return layout.setViewAndRenderMaybe('', errorView);
     }
   });
   DataRetrieval = {
@@ -162,6 +179,44 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
             app.Config.Calendar.upcoming.flag = true;
           }
           return callback();
+        });
+      } else {
+        return callback();
+      }
+    },
+    forDetailedObject: function(classType, slug, callback) {
+      var callbackWithModel, coll, configObj, existModel, options, whereStatement;
+
+      configObj = app.Config.Detail[classType];
+      coll = app.Collections[classType];
+      whereStatement = configObj.where(slug);
+      callbackWithModel = function(model) {
+        callback(model);
+        return model._isCompletelyFetched = true;
+      };
+      existModel = coll.findWhere(whereStatement);
+      if (existModel) {
+        if (existModel._isCompletelyFetched) {
+          return callback(existModel);
+        }
+        return existModel.fetch({
+          success: function(model) {
+            callback(model);
+            return model._isCompletelyFetched = true;
+          }
+        });
+      } else {
+        options = {
+          name: configObj.domName,
+          urlSuffix: configObj.urlSuffix(slug)
+        };
+        return JJRestApi.getFromDomOrApi('CalendarEntry', options, function(data) {
+          var model;
+
+          if (data.length === 1) {
+            model = app.handleFetchedModel(classType, data[0]);
+            return callbackWithModel(model);
+          }
         });
       }
     }

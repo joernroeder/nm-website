@@ -52,6 +52,23 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     },
     Person: {
       about_present: false
+    },
+    Detail: {
+      CalendarEntry: {
+        where: function(slug) {
+          return {
+            UrlHash: slug
+          };
+        },
+        domName: 'detailed-calendar-item',
+        urlSuffix: function(slug) {
+          return '?' + JJRestApi.objToUrlString({
+            search: {
+              UrlHash: slug
+            }
+          });
+        }
+      }
     }
   };
   app.bindListeners = function() {
@@ -74,18 +91,25 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     }
     return true;
   };
-  app.handleFetchedModels = function(type, models, options) {
-    var MType, model, _i, _len, _results;
+  app.handleFetchedModels = function(type, data, options) {
+    var MType, d, _i, _len, _results;
 
     options = options || {};
     MType = JJRestApi.Model(type);
-    models = _.isArray(models) ? models : [models];
+    data = _.isArray(data) ? data : [data];
     _results = [];
-    for (_i = 0, _len = models.length; _i < _len; _i++) {
-      model = models[_i];
-      _results.push(new MType(model));
+    for (_i = 0, _len = data.length; _i < _len; _i++) {
+      d = data[_i];
+      _results.push(new MType(d));
     }
     return _results;
+  };
+  app.handleFetchedModel = function(type, data, options) {
+    var MType;
+
+    options = options || {};
+    MType = JJRestApi.Model(type);
+    return new MType(data);
   };
   app.bindListeners();
   $(function() {

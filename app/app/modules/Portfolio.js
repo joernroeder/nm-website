@@ -10,6 +10,7 @@ define(['app', 'plugins/zepto.gravity'], function(app) {
     beforeRender: function() {
       var model, modelArray, _i, _len, _results;
 
+      console.log('portfolio before render');
       modelArray = this.collection;
       if (modelArray) {
         _results = [];
@@ -23,11 +24,12 @@ define(['app', 'plugins/zepto.gravity'], function(app) {
       }
     },
     afterRender: function() {
-      return $(this.el).height($(window).height()).RadialGravity({
-        worker: {
-          physics: '/app/assets/js/plugins/gravity/physics.js'
-        }
-      });
+      /*
+      				$(@.el).height($(window).height()).RadialGravity 
+      					worker:
+      						physics: '/app/assets/js/plugins/gravity/physics.js'
+      */
+
     }
   });
   Portfolio.Views.ListItem = Backbone.View.extend({

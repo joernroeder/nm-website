@@ -22,4 +22,12 @@ define [
 				if @.model then @.model.toJSON() else {}
 
 
+		Calendar.Views.Detail = Backbone.View.extend
+			tagName: 'article'
+			className: 'calendar-detail'
+			template: 'calendar-detail'
+			serialize: () ->
+				if @.model then @.model.toJSON() else {}
+
+
 		Calendar

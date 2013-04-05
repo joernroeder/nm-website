@@ -18,6 +18,14 @@ define [
 			root: '/'
 		JST = window.JST = window.JST || {}
 
+		Backbone.NMLayout = Backbone.Layout.extend
+			# this function checks if the layout has initially been rendered. This is useful for setting views in a layout later,
+			# especially when there's still some XHR stuff going on and you don't really know if the layout has been rendered yet
+			# or not
+			setViewAndRenderMaybe: (selector, view) ->
+				@.setView selector, view
+				if @.__manager__.hasRendered then view.render()
+
 		Backbone.Layout.configure
 			manage: true
 
@@ -52,14 +60,14 @@ define [
 			# Helper for using layouts.
 			useLayout: (name, options) ->
 				# If already using this Layout, then don't re-inject into the DOM.
-				if @.layout and @.layout.options.template is 'layouts/' + name
+				if @.layout and @.layout.getAllOptions().template is 'layouts/' + name
 					return @.layout
 
 				# If a layout already exists, remove it from the DOM.
 				if @.layout then @.layout.remove()
 
 				# Create a new Layout with options.
-				layout = new Backbone.Layout _.extend({
+				layout = new Backbone.NMLayout _.extend({
 					template: 'layouts/' + name
 					className: 'layout ' + name
 					id: 'layout'

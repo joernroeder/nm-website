@@ -10,7 +10,7 @@ class UpcomingEvents_RestApiExtension extends JJ_RestApiExtension {
 		'view' => array(
 			'DateRangeNice',
 			'Title',
-			'Text'
+			'UrlHash'
 		)
 	);
 

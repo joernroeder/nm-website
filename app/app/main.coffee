@@ -65,6 +65,15 @@ require [
 				flag: false
 		Person:
 			about_present: false
+		Detail:
+			CalendarEntry:
+				where: (slug) ->
+					{ UrlHash: slug }
+				domName: 'detailed-calendar-item'
+				urlSuffix: (slug) ->
+					return '?' + JJRestApi.objToUrlString
+						search:
+							UrlHash: slug
 
 	
 	app.bindListeners = ->
@@ -77,13 +86,19 @@ require [
 					if coll then coll.add model
 		true
 			
-	app.handleFetchedModels = (type, models, options) ->
+	app.handleFetchedModels = (type, data, options) ->
 		# as we are hooked into JJStore, we simply have to create a new model and the listeners will do the rest
 		options = options || {}
 		MType = JJRestApi.Model type
-		models = if _.isArray(models) then models else [models]
-		for model in models
-			new MType model
+		data = if _.isArray(data) then data else [data]
+		for d in data
+			new MType d
+
+	app.handleFetchedModel = (type, data, options) ->
+		# same as `handleFetchedModels`, but actually returns the model
+		options = options || {}
+		MType = JJRestApi.Model type
+		return new MType(data)
 
 	app.bindListeners()
 

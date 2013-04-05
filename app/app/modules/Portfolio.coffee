@@ -13,14 +13,17 @@ define [
 			id: 'gravity-container'
 			className: 'gravity'
 			beforeRender: ->
+				console.log 'portfolio before render'
 				modelArray = @.collection
 				if modelArray
 					for model in modelArray
 						@.insertView '', new Portfolio.Views.ListItem({ model: model })
 			afterRender: ->
+				###
 				$(@.el).height($(window).height()).RadialGravity 
 					worker:
 						physics: '/app/assets/js/plugins/gravity/physics.js'
+				###
 
 		Portfolio.Views.ListItem = Backbone.View.extend
 			tagName: 'li'

@@ -19,7 +19,7 @@ define [
 	 *	handled here. 
 	 * 
 	###
-
+	called_twice = false
 	Router = Backbone.Router.extend
 		routes:
 			''										: 'index'				# Calendar and featured projects
@@ -29,7 +29,7 @@ define [
 			'portfolio/'							: 'showPortfolio'		# All projects
 			'portfolio/:slug/'						: 'showPortfolioDetailed' # can be filter or detail of project
 			'calendar/'								: 'showCalendar'		# whole calendar
-			'calendar/:slug/'						: 'showCalendarDetailed' # show a detailed calendar event
+			'calendar/:urlHash/'					: 'showCalendarDetailed' # show a detailed calendar event
 			'*url/'									: 'catchAllRoute'		# for example: "Impressum", else 404 error page
 
 		# ! ROUTE CATCHING
@@ -40,18 +40,18 @@ define [
 
 			# get featured projects
 			DataRetrieval.forProjectsOverview config.Featured, () ->
-				console.log 'All featured data is there. Serialize data in featured view and render it.'
 				featured = []
 				for projectType in config.ProjectTypes
 					featured = featured.concat app.Collections[projectType].where({ IsFeatured: true })
 				# this isn't really a collection, but we assign it to it anyway ;)
 				gravityContainer = new Portfolio.Views.GravityContainer({ collection: featured })
-				layout.setView '#gravity', gravityContainer
+				layout.setViewAndRenderMaybe '#gravity', gravityContainer
+				
 
 			# get upcoming calendar data
 			DataRetrieval.forCalendar 'upcoming', () ->
 				calendarContainer = new Calendar.Views.UpcomingContainer({ collection: app.Collections.CalendarEntry })
-				layout.setView '#upcoming-calendar', calendarContainer
+				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
 			console.info 'about page'
@@ -78,14 +78,23 @@ define [
 		showCalendar: () ->
 			console.info 'show whole calendar'
 
-		showCalendarDetailed: (slug) ->
-			console.info 'calendar event with slug %s', slug
+		showCalendarDetailed: (urlHash) ->
+			app.useLayout 'main'
 			console.info 'get calendar detailed data with slug and show'
+			DataRetrieval.forDetailedObject 'CalendarEntry', urlHash, (model) =>
+				return @.fourOhFour() unless model
+				layout = app.useLayout 'main'
+
+				detailView = new Calendar.Views.Detail({ model: model })
+				layout.setViewAndRenderMaybe '', detailView
 
 		catchAllRoute: (url) ->
-			app.Layout = app.useLayout 'main',
-				views:
-					'': new PageError.Views.FourOhFour({attributes: {'data-url': url}})
+			console.log 'catch all route'
+
+		fourOhFour: () ->
+			layout = app.useLayout 'main'
+			errorView = new PageError.Views.FourOhFour({attributes: {'data-url': window.location.href}})
+			layout.setViewAndRenderMaybe '', errorView
 
 
 	# ! DATA RETRIEVAL HELPER OBJECT
@@ -142,6 +151,38 @@ define [
 					config.flag = true
 					if type is 'whole' then app.Config.Calendar.upcoming.flag = true
 					callback()
+			else
+				callback()
+
+		# abstract function to get the detailed data of a calendar item by its ugly Hash
+		forDetailedObject: (classType, slug, callback) ->
+			configObj = app.Config.Detail[classType]
+
+			# check if there is already a Calendar Entry with the urlHash
+			coll = app.Collections[classType]
+			whereStatement = configObj.where(slug)
+
+			callbackWithModel = (model) ->
+				callback model
+				model._isCompletelyFetched = true
+
+			existModel = coll.findWhere whereStatement
+			if existModel
+				if existModel._isCompletelyFetched then return callback existModel
+				existModel.fetch
+					success: (model) ->
+						callback model
+						model._isCompletelyFetched = true
+			else
+				options =
+					name: configObj.domName
+					urlSuffix: configObj.urlSuffix(slug)
+				JJRestApi.getFromDomOrApi 'CalendarEntry', options, (data) ->
+					if data.length is 1
+						model = app.handleFetchedModel classType, data[0]
+						callbackWithModel model
+			
+
 
 
 	Router
