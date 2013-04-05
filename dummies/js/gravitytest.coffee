@@ -2,7 +2,6 @@
 #Framework = if '__proto__' of {} then Zepto else jQuery
 
 do ($ = Zepto) ->
-
 	$('.gravity').RadialGravity
 		worker:
 			physics: './js/gravity/physics.js'

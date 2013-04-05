@@ -252,19 +252,39 @@ aside {
 .gravity {
 	position: absolute;
 	min-height: 100%;
+	//background: darken(@bgColor, 5%);
 	.wrapper;
-	border: 1px solid;
 
-	&> img {
-		//display: none;
-		position: absolute;
-		display: inline-block;
-		//float: left;
-	}
-
+	&> img,
 	.gravity-item {
 		position: absolute;
 		display: inline-block;
+		opacity: 1;
+		.transition(~"opacity .2s ease-in-out");
+		cursor: pointer;
+
+		&[data-gravity-item].loaded {
+			opacity: 1;
+		}
+
+		&:hover {
+			z-index: 100;
+
+			&> * {
+				background: @bgColor;
+				padding: @gravityItemBorder / @em;
+				margin: -@gravityItemBorder / @em;
+			}
+
+			img {
+				opacity: 1
+			}
+		}
+
+		img {
+			display: block;
+			opacity: .5
+		}
 	}
 }
 

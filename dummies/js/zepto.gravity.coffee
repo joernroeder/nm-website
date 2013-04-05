@@ -160,7 +160,7 @@
 		 # @param int width
 		 # @param int height
 		###
-		constructor: (@width, @height, scale, @workerOpts) ->
+		constructor: (@width, @height, @padding, scale, @workerOpts) ->
 
 			# init
 			@init = ->
@@ -213,20 +213,9 @@
 						console.log e.data.log
 						return
 
-					#console.log e.data.bodiesState
 					newBodies = e.data.bodiesState
-
 					@bodiesState = $.extend {}, @bodiesState, newBodies
-					#console.log Object.keys(@bodiesState).length
-					#console.log @bodiesState
-
-					# first run, reset our bodiesState
-					###
-					if not @bodiesState
-						@bodiesState = newBodies
-						@needToDraw = true
-					else
-					###
+					
 					# iterate over all bodies
 					for id of @bodiesState
 						newBody = newBodies[id]
@@ -242,14 +231,6 @@
 							else if @world[id].isAwake
 								@needToDraw = true
 								@world[id].setAwake false
-
-						else if id and id.indexOf('border') isnt -1
-							@border[id] = false
-							#@border[id] = new RectangleEntity obj.id, @n(obj.left), @n(obj.top), @n(obj.width), @n(obj.height), @scaleFactor
-							#console.log "couldn't find border #{id}"
-							#console.log newBody
-						else
-							#console.log "couldn't find #{id}"
 
 			###
 			 # creates the worker fallback
@@ -278,6 +259,12 @@
 		###
 		n: (num) ->
 			num / @scaleFactor
+
+		w: (num) ->
+			num += @n(@padding * @width)
+
+		h: (num) ->
+			num += @n(@padding * @height)
 
 		###
 		 # running thread
@@ -353,7 +340,7 @@
 				
 				if entity 
 					#entity.setAwake state.awake
-					entity.update state.x, state.y, state.a
+					entity.update @w(state.x), @h(state.y), state.a
 
 		###
 		 # redraws the world entities if nessessary
@@ -387,6 +374,7 @@
 		@defaultOptions = 
 			elementSelector: null #going to use children
 			itemIdPrefix: 'gravity-item-'
+			padding: 0
 			box2d:
 				scale: 100
 			worker:
@@ -409,7 +397,7 @@
 				getCountId = ->
 					RadialGravityStorage.itemIdCount++
 					return RadialGravityStorage.itemIdCount;
-				
+
 				# Code here will run each time your plugin is invoked
 				@each (i, el) =>
 
@@ -428,22 +416,30 @@
 						RadialGravityStorage.implementations[storageId]
 
 					setDimensions = ->
-						storage().width = storage().$container.width()
-						storage().height = storage().$container.height()
+						width = storage().$container.width()
+						height = storage().$container.height()
+
+						width = width - (opts.padding * width)
+						height = height - (opts.padding * height)
+
+						storage().width = width
+						storage().height = height
 
 						# @todo trigger resize on box2DHolder
 						# @todo fix it
 						if storage().height <= 0
 							storage().height = $(window).height()
 
+					setAndUpdateDimensions = ->
+						setDimensions()
+						store = storage()
+						store.box2DHolder.setDimensions store.width, store.height
+
 					init = ->
 						# init worker
 						storage().$container = $(el).data dataIdName, storageId
-
-						setDimensions()
-						
-						storage().box2DHolder = new Box2DHolder storage().width, storage().height, opts.box2d.scale, opts.worker
-						
+						setDimensions()						
+						storage().box2DHolder = new Box2DHolder storage().width, storage().height, opts.padding, opts.box2d.scale, opts.worker
 						initResize()
 
 						# add gravity and items
@@ -459,7 +455,8 @@
 							resizeTimeoutId = setTimeout =>
 								# @todo: check'n add non worker
 								
-								setDimensions()
+								#setDimensions()
+								setAndUpdateDimensions()
 
 								console.log 'on resize'
 								addGravity()
@@ -479,61 +476,78 @@
 						, storageId
 
 					layoutItems = ($items) ->
-						###
-						elems = document.getElementsByTagName('div');
-						increase = Math.PI * 2 / elems.length;
+						inc = Math.PI * 2 / $items.length
+						x = y = angle = 0
 
-						var x = 0, y = 0, angle = 0, elem;
+						$items.each (i, el) ->
+							d = Math.min(storage().width, storage().height) / 2
+							x = d * Math.cos(angle) + d
+							y = d * Math.sin(angle) + d
 
-						for (var i = 0; i < elems.length; i++) {
-							elem = elems[i];
-							x = 100 * Math.cos(angle) + 200;
-							y = 100 * Math.sin(angle) + 200;
-							elem.style.position = 'absolute';
-							elem.style.left = x + 'px';
-							elem.style.top = y + 'px';
-							angle += increase;
-						}
-						###
+							el.style.position = 'absolute'
+							el.style.left = x + 'px'
+							el.style.top = y + 'px'
+							angle += inc
+
+					addItemEvents = ($item) ->
+						$images = $('img', $item)
+						loaded = 0
+
+						$images.on 'load', ->
+							loaded++
+
+							if loaded is $images.length
+								$item.addClass 'loaded'
+
 
 					findItems = ->
 						$items = if opts.elementSelector then storage().$container.find(opts.elementSelector) else storage().$container.children()
+
+						layoutItems $items
 
 						$.each $items, (index, item) =>
 							$item = $(item)
 							pos = $item.position()
 							itemId = getItemId()
 
-							console.log pos
+							addItemEvents $item
 
 							itemData =
 								id		: itemId
 								width	: $item.width()
 								height	: $item.height()
-								top		: 100
-								left	: 100
-								#top		: pos.top
-								#left	: pos.left
+								#top		: 100
+								#left	: 100
+								top		: pos.top
+								left	: pos.left
 
-							console.log itemData
-							$item.data 'gravity-item', itemId
+							console.log itemData.top
+							console.log itemData.left
 
 							# add item to the box
 							methods.add itemData, storageId
+
+							#console.log itemData
+							$item.data 'gravity-item', itemId
 
 					init();
 
 					return true;
 		
-			show : ->
+			show: ->
 				# IS
 
-			hide : -> 
+			hide: -> 
 				# GOOD
 
-			update : (content) ->
+			update: (content) ->
 				# !!!
 			
+			###
+			setPadding: (p) ->
+				@
+			###
+
 			###
 			 # adds an item to the gravity world
 			 #

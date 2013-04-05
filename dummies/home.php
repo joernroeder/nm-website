@@ -1,6 +1,6 @@
 <?php 
 $bodyClass = 'index';
-$hideBadge = true;
+$hideBadge = false;
 
 include './includes/header.inc.php' ?>
 
@@ -35,7 +35,7 @@ include './includes/header.inc.php' ?>
 			$min = (int) rand(50, 150);
 			$x = (int) rand($min, 300);
 			$y = (int) rand($min, 300);
-			echo '<img src="http://placekitten.com/' . $x . '/' . $y . '" width="' . $x . '" height="' . $y . '">' . "\n";
+			echo '<div class="gravity-item"><div><img src="http://placekitten.com/g/' . $x . '/' . $y . '" width="' . $x . '" height="' . $y . '"></div></div>' . "\n";
 		endfor;
 	?>
 </section>

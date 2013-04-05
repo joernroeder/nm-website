@@ -73,95 +73,98 @@ RadialGravity = (function() {
         body.allowSleep = true;
       }
       body.fixedRotation = true;
-      body.linearDamping = .5;
+      body.linearDamping = 1.5;
       body.angularDamping = .5;
       body.gravityScale = 0.0;
       return body;
     };
     this.setBox2DSettings = function() {
-      b2Settings.b2_linearSleepTolerance = .5;
-      b2Settings.b2_angularSleepTolerance = .5;
+      b2Settings.b2_linearSleepTolerance = .1;
+      b2Settings.b2_angularSleepTolerance = .1;
       return b2Settings.b2_timeToSleep = .5;
     };
     this.init();
   }
 
-  /*
-  	 # set canvas dimensions
-  	 #
-  	 # @param int width
-  	 # @param int height
-  	 #
-  */
-
-
   RadialGravity.prototype.borders = {};
 
   RadialGravity.prototype.borderWidth = 1;
 
-  RadialGravity.prototype.hasBorders = false;
+  /*
+  	 # set canvas dimensions
+  	 #
+  	 # @param float width
+  	 # @param float height
+  */
+
 
   RadialGravity.prototype.setDimensions = function(width, height) {
-    var borderDefs, createBorder, createBorders, updateBorders,
+    var border, borderDefs, createBorder, id, updateBorder,
       _this = this;
 
     this.width = width;
     this.height = height;
-    borderDefs = [
-      {
-        id: 'border-top',
+    borderDefs = {
+      'border-top': {
         x: this.width / 2,
         y: this.borderWidth / -2,
         width: this.width,
         height: this.borderWidth
-      }, {
-        id: 'border-right',
+      },
+      'border-right': {
         x: this.width + (this.borderWidth / 2),
         y: this.height / 2,
         width: this.borderWidth,
         height: this.height
-      }, {
-        id: 'border-bottom',
+      },
+      'border-bottom': {
         x: this.width / 2,
         y: this.height + (this.borderWidth / 2),
         width: this.width,
         height: this.borderWidth
-      }, {
-        id: 'border-left',
+      },
+      'border-left': {
         x: this.borderWidth / -2,
         y: this.height / 2,
         width: this.borderWidth,
         height: this.height
       }
-    ];
-    createBorder = function(border) {
+    };
+    createBorder = function(id, border) {
       var body, fix;
 
       body = _this.bodyDef(true);
-      body.userData = border.id;
+      body.userData = id;
       body.position.Set(border.x, border.y);
       fix = _this.fixDef();
       fix.shape.SetAsBox(border.width / 2, border.height / 2);
       _this.world.CreateBody(body).CreateFixture(fix);
-      _this.borders[border.id] = {
+      _this.borders[id] = {
         body: body,
         fixture: fix
       };
       return true;
     };
-    createBorders = function() {
-      var border, _i, _len;
+    updateBorder = function(id) {
+      var border, data;
 
-      for (_i = 0, _len = borderDefs.length; _i < _len; _i++) {
-        border = borderDefs[_i];
-        log(border);
-        createBorder(border);
-      }
-      return _this.hasBorders = true;
+      data = _this.borders[id];
+      border = borderDefs[id];
+      log("update border " + id);
+      log(border);
+      data.body.position.Set(border.x, border.y);
+      return data.fixture.shape.SetAsBox(border.width / 2, border.height / 2);
     };
-    updateBorders = function() {};
     log('create borders');
-    createBorders();
+    for (id in borderDefs) {
+      border = borderDefs[id];
+      if (this.borders[id]) {
+        updateBorder(id);
+      } else {
+        createBorder(id, border);
+      }
+    }
+    this.forceRecalc();
     return true;
   };
 
@@ -187,7 +190,7 @@ RadialGravity = (function() {
   };
 
   RadialGravity.prototype.getState = function() {
-    var b, border, d, distance, gravityDistance, gravityPosition, id, pos, state, vecSum;
+    var b, d, distance, gravityDistance, gravityPosition, id, pos, state, vecSum;
 
     state = {};
     gravityPosition = this.getGravityPosition();
@@ -213,23 +216,7 @@ RadialGravity = (function() {
           y: pos.y
         };
       } else if (id && id.indexOf('border') !== -1) {
-        /*
-        				fixture = b.GetFixtureList()
-        
-        				aabb = new b2AABB
-        				aabb.lowerBound = new b2Vec 0, 0
-        				aabb.upperBound = new b2Vec 0, 0
-        
-        				while fixture
-        					aabb.Combine aabb, fixture.GetAABB()
-        					fixture = fixture.m_next
-        
-        				log aabb
-        
-        				if not state[id] then state[id] is {}
-        */
-
-        border = this.borders[id];
+        pos = b.GetPosition();
         state[id] = {
           x: pos.x,
           y: pos.y

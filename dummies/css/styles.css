@@ -662,15 +662,41 @@ aside a {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border: 1px solid;
 }
-.gravity > img {
-  position: absolute;
-  display: inline-block;
-}
+.gravity > img,
 .gravity .gravity-item {
   position: absolute;
   display: inline-block;
+  opacity: 1;
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
+  cursor: pointer;
+}
+.gravity > img[data-gravity-item].loaded,
+.gravity .gravity-item[data-gravity-item].loaded {
+  opacity: 1;
+}
+.gravity > img:hover,
+.gravity .gravity-item:hover {
+  z-index: 100;
+}
+.gravity > img:hover > *,
+.gravity .gravity-item:hover > * {
+  background: #e6e6e6;
+  padding: 0.625em;
+  margin: -0.625em;
+}
+.gravity > img:hover img,
+.gravity .gravity-item:hover img {
+  opacity: 1;
+}
+.gravity > img img,
+.gravity .gravity-item img {
+  display: block;
+  opacity: 0.5;
 }
 .index .gravity {
   width: 75%;
