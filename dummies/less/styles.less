@@ -219,13 +219,18 @@ aside {
 	}
 }
 
+
 // ! - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+// ! --- Global Page Construction --------------------------
 
 #wrapper {
 	margin: 0 @column;
 	overflow: hidden;
 	//height: 100%;
 	min-height: 100%;
+	position: relative;
 
 	&:after {
 		visibility: hidden;
@@ -237,10 +242,18 @@ aside {
 	}
 }
 
+#main,
+#layout {
+	position: absolute;
+	min-height: 100%;
+	width: 100%;
+}
+
 .gravity {
 	position: absolute;
 	min-height: 100%;
 	.wrapper;
+	border: 1px solid;
 
 	&> img {
 		//display: none;
@@ -255,27 +268,23 @@ aside {
 	}
 }
 
+
 // ! --- Home ----------------------------------------------
 
-
 .index {
-
-	#main {
-		position: relative;
-	}
 
 	.gravity {
 		.columnsWidth(8, 6);
 	}
 
 	.calendar {
-		float: right;
-		position: relative;
-		top: 0;
-		right: 0;	
-		bottom: 0;
-		display: inline-block;
-		vertical-align: middle;
+		//float: right;
+		position: absolute;
+		top: 50%;
+		right: 0;
+		margin-top: @line * -7 / @em;
+		//display: inline-block;
+		//vertical-align: middle;
 		.wrapper;
 		.columnsWidth(8, 2);
 	}

@@ -639,6 +639,7 @@ aside a {
   margin: 0 5.555555555555555%;
   overflow: hidden;
   min-height: 100%;
+  position: relative;
 }
 #wrapper:after {
   visibility: hidden;
@@ -648,6 +649,12 @@ aside a {
   clear: both;
   height: 0;
 }
+#main,
+#layout {
+  position: absolute;
+  min-height: 100%;
+  width: 100%;
+}
 .gravity {
   position: absolute;
   min-height: 100%;
@@ -655,6 +662,7 @@ aside a {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  border: 1px solid;
 }
 .gravity > img {
   position: absolute;
@@ -664,20 +672,14 @@ aside a {
   position: absolute;
   display: inline-block;
 }
-.index #main {
-  position: relative;
-}
 .index .gravity {
   width: 75%;
 }
 .index .calendar {
-  float: right;
-  position: relative;
-  top: 0;
+  position: absolute;
+  top: 50%;
   right: 0;
-  bottom: 0;
-  display: inline-block;
-  vertical-align: middle;
+  margin-top: -10.5em;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

@@ -39,20 +39,24 @@ $nav = array(
 	
 	<body lang="en" class="<?php echo $bodyClass; ?>">
 		
-		<!-- Main container. -->
-		<div id="main">
+		<!-- Wrapper -->
+		<div id="wrapper">
 
 			<?php if (!$hideBadge) : ?>
-			<section class="badge">
-				<a href="home.php">Neue Medien Kassel</a>
+				<section class="badge">
+					<a href="home.php">Neue Medien Kassel</a>
 
-				<nav>
-					<ul>
-						<?php foreach($nav as $page => $title) : ?>
-							<li><a href="<?php echo $page; ?>"><?php echo $title; ?></a></li>
-						<?php endforeach; ?>
-					</ul>
-				</nav>
-			</section>
+					<nav>
+						<ul>
+							<?php foreach($nav as $page => $title) : ?>
+								<li><a href="<?php echo $page; ?>"><?php echo $title; ?></a></li>
+							<?php endforeach; ?>
+						</ul>
+					</nav>
+				</section>
 			<?php endif; ?>
+
+			<!-- Main container. -->
+			<div id="main">
+				<div id="layout" class="layout index">
 			

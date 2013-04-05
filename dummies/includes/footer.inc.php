@@ -1,3 +1,5 @@
+				</div>
+			</div>
 		</div>
 	<!-- Demo code ends -->
 

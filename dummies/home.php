@@ -4,7 +4,6 @@ $hideBadge = true;
 
 include './includes/header.inc.php' ?>
 
-<!--
 <section class="calendar">
 	<h1>Kalender</h1>
 	<ul>
@@ -29,15 +28,14 @@ include './includes/header.inc.php' ?>
 	</ul>
 	<a href="#" class="btn">Foo</a>
 </section>
--->
 
 <section class="gravity">
 	<?php
-		for ($i = 0; $i < 3; $i++) : 
+		for ($i = 0; $i < 10; $i++) : 
 			$min = (int) rand(50, 150);
 			$x = (int) rand($min, 300);
 			$y = (int) rand($min, 300);
-			echo '<img src="http://placekitten.com/' . $x . '/' . $y . '" width="' . $x . '" height="' . $y . '">';
+			echo '<img src="http://placekitten.com/' . $x . '/' . $y . '" width="' . $x . '" height="' . $y . '">' . "\n";
 		endfor;
 	?>
 </section>
