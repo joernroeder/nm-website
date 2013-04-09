@@ -1,0 +1,12 @@
+<!-- div class="employee gravity-item" -->
+<a href="/about/{{UrlSlug}}/">
+	<div>
+		{{#if Image}}
+			{{#with Image.Urls._320}}
+				<img src="{{Url}}" />
+			{{/with}}
+		{{/if}}
+	</div>
+	<p>{{FirstName}}&nbsp;{{Surname}}</p>
+</a>
+<!-- /div -->
