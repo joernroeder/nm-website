@@ -16,7 +16,13 @@
 
 class GroupImage extends ResponsiveImage {
 	
-	
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'Caption',
+			'Urls'
+		)
+	);
 
 }
 

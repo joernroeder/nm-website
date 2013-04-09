@@ -91,6 +91,7 @@ class Workshop extends DataObject {
 
 	static $api_access = array(
 		'view' => array(
+			'UglyHash',
 			'Title',
 			'PreviewImageID',
 			'TeaserText',
@@ -106,6 +107,7 @@ class Workshop extends DataObject {
 			'Excursions'
 		),
 		'view.portfolio_init' => array(
+			'UglyHash',
 			'Title',
 			'StartDate',
 			'EndDate',
@@ -121,7 +123,8 @@ class Workshop extends DataObject {
 
 	static $searchable_api_fields = array(
 		'Title',
-		'IsFeatured'
+		'IsFeatured',
+		'UglyHash'	=> 'ExactMatchFilter'
 	);
 
 	public function canView($member = null) {

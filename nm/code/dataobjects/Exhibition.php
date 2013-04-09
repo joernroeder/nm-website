@@ -97,6 +97,7 @@ class Exhibition extends DataObject {
 
 	static $api_access = array(
 		'view' => array(
+			'UglyHash',
 			'Title',
 			'PreviewImageID',
 			'TeaserText',
@@ -113,6 +114,7 @@ class Exhibition extends DataObject {
 			'Excursions'
 		),
 		'view.portfolio_init' => array(
+			'UglyHash',
 			'Title',
 			'StartDate',
 			'EndDate',
@@ -130,7 +132,8 @@ class Exhibition extends DataObject {
 
 	static $searchable_api_fields = array(
 		'Title',
-		'IsFeatured'
+		'IsFeatured',
+		'UglyHash'	=> 'ExactMatchFilter'
 	);
 
 	public function canView($member = null) {

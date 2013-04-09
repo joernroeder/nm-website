@@ -100,6 +100,7 @@ class Project extends DataObject {
 
 	static $api_access = array(
 		'view' => array(
+			'UglyHash',
 			'Title',
 			'TeaserText',
 			'FrontendDate',
@@ -121,6 +122,7 @@ class Project extends DataObject {
 			'Persons'
 		),
 		'view.portfolio_init' => array(
+			'UglyHash',
 			'Title',
 			'FrontendDate',
 			'TeaserText',
@@ -136,7 +138,8 @@ class Project extends DataObject {
 
 	static $api_searchable_fields = array(
 		'Title',
-		'IsFeatured'
+		'IsFeatured',
+		'UglyHash'	=> 'ExactMatchFilter'
 	);
 
 	public function canView($member = null) {

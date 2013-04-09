@@ -20,5 +20,16 @@ class PersonImage extends ResponsiveImage {
 		'Person'	=> 'Person'
 	);
 
+	static $api_access = array(
+		'view' => array(
+			'Title',
+			'Caption',
+			'Urls'
+		)
+	);
+
+	public function canView($member=null) {
+		return true;
+	}
 }
 

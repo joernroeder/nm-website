@@ -33,10 +33,11 @@ class Person extends DataObject {
 		'Email'				=> 'Varchar(55)',		// Email
 		'Phone'				=> 'Varchar(55)',		// Telefonnummer
 		'Bio'				=> 'Text',				// Biografie
+		'JobTitle'			=> 'Varchar(55)',		// Titel des Jobs, der angezeigt wird (z.B. 'Professor' oder 'Research Assistant')
+		'UrlSlug'			=> 'Varchar(55)',		// Unique URL-Slug, der auf die Person verweist, z.B. joel-baumann
 		'GraduationYear'	=> 'Int',				// Abschlussjahr
 		'MasterYear'		=> 'Int',				// Meisterschülerjahr
 		'IsStudent'			=> 'Boolean',			// Flagge: Ist ein Student ?
-		'IsProfessor'		=> 'Boolean',			// Flagge: Ist der Professor ?
 		'IsAlumni'			=> 'Boolean',			// Flagge: Ist Alumni ?
 		'IsEmployee'		=> 'Boolean',			// Flagge: Ist ein Mitarbeiter ?
 		'IsExternal'		=> 'Boolean',			// Flagge: Ist eine externe Person ?
@@ -73,7 +74,6 @@ class Person extends DataObject {
 		'GraduationYear',
 		'MasterYear',
 		'IsStudent',
-		'IsProfessor',
 		'IsAlumni',
 		'IsEmployee',
 		'IsExternal'
@@ -104,22 +104,36 @@ class Person extends DataObject {
 
 	static $api_access = array(
 		'view' => array(
-			'FullName',
+			'FirstName',
+			'Surname',
+			'UrlSlug',
+			'JobTitle',
+			'Image.Urls',
+			'IsExternal',
+			'IsEmployee',
+			'IsStudent',
+			'IsAlumni',
 			'Email',
 			'Bio',
 			'GraduationYear',
 			'MasterYear',
-			'IsStudent',
-			'IsProfessor',
-			'IsAlumni',
-			'IsEmployee',
-			'IsExternal',
 			'Projects',
 			'Websites.Title',
 			'Websites.Link',
 			'Exhibitions',
 			'Excursions',
 			'Workshops'
+		),
+		'view.about_init'	=> array(
+			'FirstName',
+			'Surname',
+			'UrlSlug',
+			'JobTitle',
+			'Image.Urls',
+			'IsExternal',
+			'IsEmployee',
+			'IsStudent',
+			'IsAlumni'
 		)
 	);
 

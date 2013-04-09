@@ -21,6 +21,13 @@
  */
 class UglyHashExtension extends DataExtension {
 
+	public static $class_enc = array(
+		'Project'		=> '0',
+		'Excursion'		=> '1',
+		'Exhibition'	=> '2',
+		'Workshop'		=> '3'
+	);
+
 	public function onBeforeWrite() {
 		if (!$this->owner->UglyHash && $this->owner->ID) {
 			$this->generateUglyHash();
@@ -46,7 +53,10 @@ class UglyHashExtension extends DataExtension {
 		sort($digits, SORT_NUMERIC);
 		$key = array_rand($digits, 1);
 		$digits[$key] = $digits[$key] + $this->owner->ID;
-		$this->owner->UglyHash = implode('', $digits);
+		$classEnc = self::$class_enc[$this->owner->class];
+		$md5 = md5(implode('', $digits));
+		$hash = $classEnc . $md5;
+		$this->owner->UglyHash = $hash;
 	}
 
 }
