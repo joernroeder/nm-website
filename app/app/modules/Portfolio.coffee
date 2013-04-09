@@ -19,16 +19,22 @@ define [
 					for model in modelArray
 						@.insertView '', new Portfolio.Views.ListItem({ model: model })
 			afterRender: ->
-				###
 				$(@.el).height($(window).height()).RadialGravity 
 					worker:
 						physics: '/app/assets/js/plugins/gravity/physics.js'
-				###
+				
 
 		Portfolio.Views.ListItem = Backbone.View.extend
 			tagName: 'li'
 			className: 'gravity-item'
 			template: 'gravity-list-item'
+			serialize: () ->
+				if @.model then @.model.toJSON() else {}
+
+		Portfolio.Views.Detail = Backbone.View.extend
+			tagName: 'section'
+			className: 'portfolio-detail'
+			template: 'portfolio-detail'
 			serialize: () ->
 				if @.model then @.model.toJSON() else {}
 

@@ -24,18 +24,29 @@ define(['app', 'plugins/zepto.gravity'], function(app) {
       }
     },
     afterRender: function() {
-      /*
-      				$(@.el).height($(window).height()).RadialGravity 
-      					worker:
-      						physics: '/app/assets/js/plugins/gravity/physics.js'
-      */
-
+      return $(this.el).height($(window).height()).RadialGravity({
+        worker: {
+          physics: '/app/assets/js/plugins/gravity/physics.js'
+        }
+      });
     }
   });
   Portfolio.Views.ListItem = Backbone.View.extend({
     tagName: 'li',
     className: 'gravity-item',
     template: 'gravity-list-item',
+    serialize: function() {
+      if (this.model) {
+        return this.model.toJSON();
+      } else {
+        return {};
+      }
+    }
+  });
+  Portfolio.Views.Detail = Backbone.View.extend({
+    tagName: 'section',
+    className: 'portfolio-detail',
+    template: 'portfolio-detail',
     serialize: function() {
       if (this.model) {
         return this.model.toJSON();
