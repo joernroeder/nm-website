@@ -25,6 +25,7 @@ if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
 
 DataObject::add_extension('Member', 'MemberPersonExtension');
 DataObject::add_extension('ResponsiveImage', 'ResponsiveImageCaptionExtension');
+DataObject::add_extension('ResponsiveImage', 'ResponsiveImageUrlExtension');
 
 
 // ! Admin-Config ---------------------------------
@@ -64,6 +65,13 @@ Structure_RestApiExtension::ignore(array(
 	'ResponsiveImage',
 	'ResponsiveImageObject',
 	'File'
+));
+
+CSRFProtection_RestApiExtension::enable_for(array(
+	'POST',
+	'PUT',
+	'DELETE',
+	'PATCH'
 ));
 
 
