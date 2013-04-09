@@ -171,6 +171,9 @@ class JJ_RestfulServer extends RestfulServer {
 	// ! HTTP Handling
 
 	public function index($request = null) {
+		# check Security token
+		if (!CSRFProtection_RestApiExtension::compare_request($request)) return $this->httpError(400, "Security token doesn't match.");
+
 		$extensions = $this->getExtensions();
 
 		$className = $request->param('ClassName');
@@ -389,7 +392,9 @@ class JJ_RestfulServer extends RestfulServer {
 
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
-		
+		if (Director::isDev()) {
+			$result = false;
+		}
 		if ($result) {
 			$result = unserialize($result);
 		}
