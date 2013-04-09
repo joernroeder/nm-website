@@ -107,6 +107,25 @@ JJRestApi.setObjectUrl = function(className) {
   return this.url + className + '.' + this.extension;
 };
 
+/**
+ *
+ * Gets the security token passed by SilverStripe and adds it to every ajax request
+ *
+*/
+
+
+JJRestApi.hookSecurityToken = function() {
+  return JJRestApi.getFromDomOrApi('SecurityID', {
+    noAjax: true
+  }, function(data) {
+    if (data.SecurityID) {
+      return $(document).bind('ajaxSend', function(event, xhr, settings) {
+        return xhr.setRequestHeader(data.RequestHeader, data.SecurityID);
+      });
+    }
+  });
+};
+
 /*
  #	Loads a Object from the DOM via #api-object or /api/v2/Object.extension
  #
@@ -133,7 +152,7 @@ JJRestApi.getFromDomOrApi = function(name, options, callback) {
     if (callback && _.isFunction(callback)) {
       callback(data, options);
     }
-  } else {
+  } else if (!options.noAjax) {
     url = options.url ? options.url : JJRestApi.setObjectUrl(name);
     if (options.urlSuffix) {
       url += options.urlSuffix;

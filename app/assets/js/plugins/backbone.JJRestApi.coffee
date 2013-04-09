@@ -79,6 +79,17 @@ JJRestApi.extendCollection = (className, collTypeToExtendFrom, extension) ->
 JJRestApi.setObjectUrl = (className) ->
 	@.url + className + '.' + @.extension
 
+###*
+ *
+ * Gets the security token passed by SilverStripe and adds it to every ajax request
+ * 
+###
+JJRestApi.hookSecurityToken = () ->
+	JJRestApi.getFromDomOrApi 'SecurityID', { noAjax: true }, (data) ->
+		if data.SecurityID
+			$(document).bind 'ajaxSend', (event, xhr, settings) ->
+				xhr.setRequestHeader data.RequestHeader, data.SecurityID
+
 ###
  #	Loads a Object from the DOM via #api-object or /api/v2/Object.extension
  #
@@ -106,7 +117,7 @@ JJRestApi.getFromDomOrApi = (name, options, callback) ->
 			callback data, options
 
 	# load structure from server
-	else
+	else unless options.noAjax
 		url = if options.url then options.url else JJRestApi.setObjectUrl(name)
 		if options.urlSuffix then url += options.urlSuffix
 		$.getJSON url, (data) =>
