@@ -8,7 +8,7 @@ require [
 	'modules/Exhibition',
 	'modules/CalendarEntry'
 ], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry) ->
-
+	
 	# ! JJRELATIONAL CONFIG
 
 	# work with store -> avoid duplicate data
@@ -34,6 +34,11 @@ require [
 	app.Config =
 		ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition']
 		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry']
+		ClassEnc:
+			'0': 'Project',
+			'1': 'Excursion'
+			'2': 'Exhibition'
+			'3': 'Workshop'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'
@@ -65,6 +70,12 @@ require [
 				flag: false
 		Person:
 			about_present: false
+			name: 'about-persons'
+			urlSuffix: '?' + JJRestApi.objToUrlString
+				search:
+					IsExternal: 0
+				context: 'view.about_init'
+				sort: 'Surname'
 		Detail:
 			CalendarEntry:
 				where: (slug) ->
@@ -74,7 +85,53 @@ require [
 					return '?' + JJRestApi.objToUrlString
 						search:
 							UrlHash: slug
-
+						limit: 1
+			Person:
+				where: (slug) ->
+					{ UrlSlug: slug }
+				domName: 'detailed-person'
+				urlSuffix: (slug) ->
+					return '?' + JJRestApi.objToUrlString
+						search:
+							UrlSlug: slug
+						limit: 1
+			# basically all the same here, but need differenciation because of class separation
+			Project:
+				where: (slug) ->
+					{ UglyHash: slug }
+				domName: 'detailed-project-item'
+				urlSuffix: (slug) ->
+					return '?' + JJRestApi.objToUrlString
+						search:
+							UglyHash: slug
+						limit: 1
+			Excursion:
+				where: (slug) ->
+					{ UglyHash: slug }
+				domName: 'detailed-excursion-item'
+				urlSuffix: (slug) ->
+					return '?' + JJRestApi.objToUrlString
+						search:
+							UglyHash: slug
+						limit: 1
+			Workshop:
+				where: (slug) ->
+					{ UglyHash: slug }
+				domName: 'detailed-workshop-item'
+				urlSuffix: (slug) ->
+					return '?' + JJRestApi.objToUrlString
+						search:
+							UglyHash: slug
+						limit: 1
+			Exhibition:
+				where: (slug) ->
+					{ UglyHash: slug }
+				domName: 'detailed-exhibition-item'
+				urlSuffix: (slug) ->
+					return '?' + JJRestApi.objToUrlString
+						search:
+							UglyHash: slug
+						limit: 1
 	
 	app.bindListeners = ->
 		# we don't want to directly mess with the store, so we simply hook into
@@ -108,6 +165,9 @@ require [
 	# Inside this function, kick-off all initialization, everything up to this
 	# point should be definitions.
 	$ ->
+		# Hook CSRF ajax token
+		JJRestApi.hookSecurityToken()
+
 		# Build up our structure from Silverstripe
 		JJRestApi.bootstrapWithStructure ->
 

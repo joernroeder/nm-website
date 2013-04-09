@@ -8,6 +8,12 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
   app.Config = {
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
     StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry'],
+    ClassEnc: {
+      '0': 'Project',
+      '1': 'Excursion',
+      '2': 'Exhibition',
+      '3': 'Workshop'
+    },
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
     },
@@ -51,7 +57,15 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
       }
     },
     Person: {
-      about_present: false
+      about_present: false,
+      name: 'about-persons',
+      urlSuffix: '?' + JJRestApi.objToUrlString({
+        search: {
+          IsExternal: 0
+        },
+        context: 'view.about_init',
+        sort: 'Surname'
+      })
     },
     Detail: {
       CalendarEntry: {
@@ -65,7 +79,88 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
           return '?' + JJRestApi.objToUrlString({
             search: {
               UrlHash: slug
-            }
+            },
+            limit: 1
+          });
+        }
+      },
+      Person: {
+        where: function(slug) {
+          return {
+            UrlSlug: slug
+          };
+        },
+        domName: 'detailed-person',
+        urlSuffix: function(slug) {
+          return '?' + JJRestApi.objToUrlString({
+            search: {
+              UrlSlug: slug
+            },
+            limit: 1
+          });
+        }
+      },
+      Project: {
+        where: function(slug) {
+          return {
+            UglyHash: slug
+          };
+        },
+        domName: 'detailed-project-item',
+        urlSuffix: function(slug) {
+          return '?' + JJRestApi.objToUrlString({
+            search: {
+              UglyHash: slug
+            },
+            limit: 1
+          });
+        }
+      },
+      Excursion: {
+        where: function(slug) {
+          return {
+            UglyHash: slug
+          };
+        },
+        domName: 'detailed-excursion-item',
+        urlSuffix: function(slug) {
+          return '?' + JJRestApi.objToUrlString({
+            search: {
+              UglyHash: slug
+            },
+            limit: 1
+          });
+        }
+      },
+      Workshop: {
+        where: function(slug) {
+          return {
+            UglyHash: slug
+          };
+        },
+        domName: 'detailed-workshop-item',
+        urlSuffix: function(slug) {
+          return '?' + JJRestApi.objToUrlString({
+            search: {
+              UglyHash: slug
+            },
+            limit: 1
+          });
+        }
+      },
+      Exhibition: {
+        where: function(slug) {
+          return {
+            UglyHash: slug
+          };
+        },
+        domName: 'detailed-exhibition-item',
+        urlSuffix: function(slug) {
+          return '?' + JJRestApi.objToUrlString({
+            search: {
+              UglyHash: slug
+            },
+            limit: 1
           });
         }
       }
@@ -113,6 +208,7 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
   };
   app.bindListeners();
   $(function() {
+    JJRestApi.hookSecurityToken();
     return JJRestApi.bootstrapWithStructure(function() {
       var buildCollections;
 
