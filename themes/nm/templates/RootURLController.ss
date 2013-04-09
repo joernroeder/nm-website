@@ -28,6 +28,9 @@
 	<!-- JJRestApi.Structure -->
 	$JJRestApi.Structure
 
+	<!-- JJRestApi.SecurityID -->
+	$JJRestApi.SecurityID
+
 	<!-- InitialData -->
 	$InitialData
 
