@@ -2,6 +2,13 @@
 
 class RootURLController extends Controller {
 
+	static $project_types = array(
+		'Project',
+		'Workshop',
+		'Excursion',
+		'Exhibition'
+	);
+
 	static $url_handlers = array(
 		'$Action/$OtherAction/$ID/$OtherID'	=> 'index'
 	);
@@ -25,19 +32,58 @@ class RootURLController extends Controller {
 		switch ($params['Action']) {
 			// about pages
 			case 'about':
-				/* @todo handle about pages */
+				if (isset($params['OtherAction']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
+				} else {
+					// simple about page with statement, groupimage and people, yo!
+					// group image
+					$returnVal .= GroupImage::get()->toDataElement('groupimage', null)->forTemplate();
+					// get the persons
+					$persons = Person::get()->where("IsExternal=0")->sort('Surname', 'ASC');
+					$returnVal .= $persons->toDataElement('about-persons', null, 'view.about_init')->forTemplate();
+				}
+
+
 				break;
 
 			// portfolio pages
 			case 'portfolio':
-				/* @todo handle portfolio pages */
+				// check if detailed
+				if (isset($params['OtherAction']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
+					// get the class
+					$flipped = array_flip(UglyHashExtension::$class_enc);
+					$className = $flipped[substr($uglyHash, 0, 1)];
+					if ($className) {
+						$detailed = DataObject::get_one($className, "UglyHash='$uglyHash'");
+						if ($detailed) {
+							$returnVal .= $detailed->toDataElement('detailed-' . strtolower($detailed->class) . '-item', null)->forTemplate();
+						}
+					}
+				} else {
+					// whole portfolio
+					foreach (self::$project_types as $type) {
+						$portfolio = $type::get()->where('IsPortfolio=1');
+						$returnVal .= $portfolio->toDataElement('portfolio-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
+					}
+				}
+				break;
+
+			// calendar pages
+			case 'calendar':
+				// check if detailed
+				if (isset($params['OtherAction']) && $slug = Convert::raw2sql($params['OtherAction'])) {
+					$detailedCalendarItem = DataObject::get_one('CalendarEntry', "UrlHash='$slug'");
+					if ($detailedCalendarItem) {
+						$returnVal .= $detailedCalendarItem->toDataElement('detailed-calendar-item', null)->forTemplate();
+					}
+				} else {
+					// @todo: whole calendar
+				}
 				break;
 
 			// index page
 			case null:
 				// get featured projects/workshops/exhibtions/excursions
-				$types = array('Project', 'Workshop', 'Excursion', 'Exhibition');
-				foreach ($types as $type) {
+				foreach (self::$project_types as $type) {
 					$featured = $type::get()->where('IsFeatured=1');
 					$returnVal .= $featured->toDataElement('featured-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
 				}
