@@ -18,10 +18,14 @@ define(['plugins/zepto.installer', 'underscore', 'backbone', 'handlebars', 'plug
     manage: true,
     prefix: 'app/app/templates/',
     fetch: function(path) {
-      var done;
+      var done, replacedPath;
 
       done = void 0;
       path = path + '.html';
+      replacedPath = path.replace(Backbone.Layout.prototype.options.prefix, '');
+      if (replacedPath.indexOf('/') === 0) {
+        path = replacedPath.substring(1);
+      }
       if (!JST[path]) {
         done = this.async();
         return $.ajax({

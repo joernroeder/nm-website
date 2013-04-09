@@ -35,6 +35,10 @@ define [
 				done = undefined
 				path = path + '.html'
 
+				# check if path is starting with '/' (use absolute)
+				replacedPath = path.replace(Backbone.Layout.prototype.options.prefix, '')
+				if replacedPath.indexOf('/') == 0 then path = replacedPath.substring(1)
+
 				# If the template has not been loaded yet, then load.
 				unless JST[path]
 					done = @.async()
