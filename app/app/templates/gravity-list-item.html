@@ -1,9 +1,12 @@
 <!-- li class="gravity-item" -->
-<div>
-	<p>{{ Title }}</p>
-	{{#with PreviewImage.Urls._320}}
-	<div><img src="{{Url}}" width="{{Width}}" height="{{Height}}"/></div>
-	{{/with}}
-</div>
-
+<a href="/portfolio/{{UglyHash}}/">
+	<div>
+		<p>{{ Title }}</p>
+		{{#if PreviewImage}}
+			{{#with PreviewImage.Urls._320}}
+				<div><img src="{{Url}}" width="{{Width}}" height="{{Height}}"/></div>
+			{{/with}}
+		{{/if}}
+	</div>
+</a>
 <!-- /li -->
