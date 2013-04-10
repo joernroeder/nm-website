@@ -23,8 +23,8 @@ require.config({
     handlebars: {
       exports: 'Handlebars'
     },
-    'plugins/zepto.deferred.min': ['zepto'],
-    'plugins/zepto.installer': ['plugins/zepto.deferred.min'],
+    'plugins/zepto.deferred': ['zepto'],
+    'plugins/zepto.installer': ['plugins/zepto.deferred'],
     'plugins/zepto.gravity': ['plugins/zepto.installer'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],

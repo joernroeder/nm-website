@@ -42,20 +42,17 @@ define [
 			layout = app.useLayout 'index'
 
 			# get featured projects
-			DataRetrieval.forProjectsOverview config.Featured, () =>
+			DataRetrieval.forProjectsOverview(config.Featured).done =>
 				modelsArray = @.getProjectTypeModels { IsFeatured: true }
 				@.showGravityViewForModels modelsArray, layout
 
 			# get upcoming calendar data
-			DataRetrieval.forCalendar 'upcoming', () ->
+			DataRetrieval.forCalendar('upcoming').done =>
 				calendarContainer = new Calendar.Views.UpcomingContainer({ collection: app.Collections.CalendarEntry })
 				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
 			layout = app.useLayout 'main'
-			# internal flags to check if all data's present
-			groupImage = null
-			persons = null
 
 			checkAndRender = ->
 				if groupImage and persons
@@ -65,18 +62,23 @@ define [
 			# @todo: data we need: Statement, a random group image, all the persons (with their images, excluding externals) 
 			
 			# First, let's get the group image. We'll store it in app.PageInfos, as that's super basic funky info
-			DataRetrieval.forRandomGroupImage (image) ->
-				groupImage = image
-				checkAndRender()
+			groupImageDfd = DataRetrieval.forRandomGroupImage()
+				
 			# Let's get the motrfukig persons
-			DataRetrieval.forPersonsOverview () ->
+			personsDfd = DataRetrieval.forPersonsOverview()
+			
+			$.when(groupImageDfd, personsDfd).done (image) ->
+				image = if image.length then image[0] else null
 				coll = app.Collections['Person']
 				persons =
 					students : coll.where { IsStudent: true }
 					alumnis : coll.where { IsAlumni: true }
 					employees : coll.where { IsEmployee: true }
-				checkAndRender()
+				view = new About.Views.Gravity { groupImage: image, persons: persons }
+				layout.setViewAndRenderMaybe '', view
+			
 
+			false
 
 
 		showPersonPage: (nameSlug) ->
@@ -155,45 +157,42 @@ define [
 		# abstract function to get data for Projects/Exhibitions/Workshops/Excursions for either 'featured page'
 		# or 'portfolio page'
 	
-		forProjectsOverview: (configObj, callback) ->
+		forProjectsOverview: (configObj) ->
 			present = configObj.present
 			projectTypes = app.Config.ProjectTypes
 
-			# check if all data has been fetched. if yes, set flag and callback
-			checkAndCallback = ->
-				done = true
-				for projectType in projectTypes
-					if _.indexOf(present.types, projectType) < 0 then done = false
-				if done
-					present.flag = true
-					callback()
+			returnDfd = new $.Deferred()
 
 			unless present.flag
 				# featured Projects/Exhibitions/Workshops/Excursions are not yet present
 				# get them either from DOM or API
+				dfds = []
 				for projectType in projectTypes
 					do (projectType) ->
-						if _.indexOf(present.types, projectType) < 0
-							options = 
-								name: configObj.domName(projectType)
-								urlSuffix : configObj.urlSuffix
-							JJRestApi.getFromDomOrApi projectType, options, (data) ->
-								present.types.push projectType
-								app.handleFetchedModels projectType, data
-								checkAndCallback()
+						options = 
+							name: configObj.domName(projectType)
+							urlSuffix : configObj.urlSuffix
+						dfds.push JJRestApi.getFromDomOrApi(projectType, options).done((data) ->
+							app.handleFetchedModels projectType, data
+						)
+				$.when.apply(@, dfds).done ->
+					present.flag = true
+					returnDfd.resolve()
 
 			else
-				callback()
+				returnDfd.resolve()
+			returnDfd.promise()
 
 		# abstract function to get data for the Calendar (either the whole calendar, or merely the upcoming events)
-		forCalendar: (type, callback) ->
+		forCalendar: (type) ->
 			config = app.Config.Calendar[type]
+			dfd = new $.Deferred()
 
 			unless config.flag
 				options = _.clone config
 				options.name = type + '-calendar'
 
-				JJRestApi.getFromDomOrApi 'CalendarEntry', options, (data) ->
+				JJRestApi.getFromDomOrApi('CalendarEntry', options).done (data) ->
 					# set an internal "IsUpcoming" flag for faster accessing
 					if type is 'upcoming'
 						for item in data
@@ -201,23 +200,27 @@ define [
 					app.handleFetchedModels 'CalendarEntry', data
 					config.flag = true
 					if type is 'whole' then app.Config.Calendar.upcoming.flag = true
-					callback()
+					dfd.resolve()
 			else
-				callback()
+				dfd.resolve()
+
+			dfd.promise()
 
 		# function to get persons' data for the "About"-page
 		# namely all persons except externals
-		forPersonsOverview: (callback) ->
+		forPersonsOverview: ->
 			config = app.Config.Person
+			dfd = new $.Deferred()
 
 			unless config.about_present
 				options = _.clone config
-				JJRestApi.getFromDomOrApi 'Person', options, (data) ->
+				JJRestApi.getFromDomOrApi('Person', options).done (data) ->
 					config.about_present = true
 					app.handleFetchedModels 'Person', data
-					callback()
+					dfd.resolve()
 			else
-				callback()
+				dfd.resolve()
+			dfd
 
 		# abstract function to get the detailed data of a calendar item by its ugly Hash
 		forDetailedObject: (classType, slug, callback) ->
@@ -249,18 +252,21 @@ define [
 						callback null
 
 		# title says it all
-		forRandomGroupImage: (callback) ->
+		forRandomGroupImage: ->
 			pageInfos = app.PageInfos
-			getRandomAndCallback = ->
+			dfd = new $.Deferred()
+			getRandom = ->
 				groupImages = pageInfos.GroupImages
 				if groupImages.length > 0
-					callback groupImages[Math.floor(Math.random() * groupImages.length)]
+					return groupImages[Math.floor(Math.random() * groupImages.length)]
+				null
 			unless pageInfos.GroupImages
-				JJRestApi.getFromDomOrApi 'GroupImage', (data) ->
+				JJRestApi.getFromDomOrApi('GroupImage').done (data) ->
 					pageInfos.GroupImages = data
-					getRandomAndCallback()		
+					dfd.resolve getRandom()
 			else
-				getRandomAndCallback()
+				dfd.resolve getRandom()
+			dfd.promise()
 
 		# abstract function that calls `fetch` on a model and then calls back
 		fetchExistingModelCompletely : (existModel, callback) ->

@@ -169,8 +169,7 @@ require [
 		JJRestApi.hookSecurityToken()
 
 		# Build up our structure from Silverstripe
-		JJRestApi.bootstrapWithStructure ->
-
+		JJRestApi.bootstrapWithStructure().done ->
 			buildCollections = (names) ->
 				for name in names
 					# make class accessible

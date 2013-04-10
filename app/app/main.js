@@ -209,7 +209,7 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
   app.bindListeners();
   $(function() {
     JJRestApi.hookSecurityToken();
-    return JJRestApi.bootstrapWithStructure(function() {
+    return JJRestApi.bootstrapWithStructure().done(function() {
       var buildCollections;
 
       buildCollections = function(names) {
