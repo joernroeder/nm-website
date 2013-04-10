@@ -24,6 +24,7 @@ $nav = array(
 		
 		<!-- Feel free to split the CSS into separate files, if you like. -->
 		<link rel="stylesheet" href="/dummies/css/styles.css"/> 
+		<link rel="stylesheet" href="/dummies/css/tooltip.css"/> 
 		
 		<!-- Here's Golden Gridlet, the grid overlay script. -->
 		<script src="/dummies/js/ggs.js"></script>
