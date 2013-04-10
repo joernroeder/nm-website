@@ -24,5 +24,8 @@ class GroupImage extends ResponsiveImage {
 		)
 	);
 
+	public function canView($member = null) {
+		return true;
+	}
 }
 
