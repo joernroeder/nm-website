@@ -126,22 +126,18 @@ JJRestApi.hookSecurityToken = function() {
   });
 };
 
-/*
- #	Loads a Object from the DOM via #api-object or /api/v2/Object.extension
- #
- #	@todo check $.getJSON with xml type
- #	@return data json/xml
+/**
+ * Loads an Object from the DOM via #api-object or /api/v2/Object.extension
+ * @param  {String} name    name to get/fetch (e.g. ClassName)
+ * @param  {Object} options 
+ * @return deferred promise object
 */
 
 
-JJRestApi.getFromDomOrApi = function(name, options, callback) {
-  var $obj, data, nameToSearch, url,
-    _this = this;
+JJRestApi.getFromDomOrApi = function(name, options) {
+  var $obj, data, dfd, nameToSearch, url;
 
-  if (_.isFunction(options)) {
-    callback = options;
-    options = {};
-  }
+  options = options || {};
   nameToSearch = options.name ? options.name : name.toLowerCase();
   $obj = $('#api-' + nameToSearch);
   if ($obj.length) {
@@ -149,21 +145,16 @@ JJRestApi.getFromDomOrApi = function(name, options, callback) {
     if ($obj.attr('type') === 'application/json') {
       data = $.parseJSON(data);
     }
-    if (callback && _.isFunction(callback)) {
-      callback(data, options);
-    }
+    dfd = new $.Deferred();
+    dfd.resolve(data);
+    return dfd.promise();
   } else if (!options.noAjax) {
     url = options.url ? options.url : JJRestApi.setObjectUrl(name);
     if (options.urlSuffix) {
       url += options.urlSuffix;
     }
-    $.getJSON(url, function(data) {
-      if (callback && _.isFunction(callback)) {
-        return callback(data, options);
-      }
-    });
+    return $.getJSON(url);
   }
-  return data;
 };
 
 /**
@@ -209,13 +200,16 @@ JJRestApi.objToUrlString = function(obj) {
 
 
 JJRestApi.bootstrapWithStructure = function(callback) {
-  JJRestApi.getFromDomOrApi('Structure', function(data) {
-    JJRestApi.Bootstrap(data);
-    if (callback && _.isFunction(callback)) {
-      return callback(data);
-    }
+  var dfd;
+
+  dfd = JJRestApi.getFromDomOrApi('Structure');
+  dfd.done(function(data) {
+    return JJRestApi.Bootstrap(data);
   });
-  return false;
+  dfd.fail(function() {
+    throw new Error('Structure could not be loaded.');
+  });
+  return dfd;
 };
 
 JJRestApi.Bootstrap = function(response) {

@@ -90,19 +90,16 @@ JJRestApi.hookSecurityToken = () ->
 			$(document).bind 'ajaxSend', (event, xhr, settings) ->
 				xhr.setRequestHeader data.RequestHeader, data.SecurityID
 
+###*
+ * Loads an Object from the DOM via #api-object or /api/v2/Object.extension
+ * @param  {String} name    name to get/fetch (e.g. ClassName)
+ * @param  {Object} options 
+ * @return deferred promise object
 ###
- #	Loads a Object from the DOM via #api-object or /api/v2/Object.extension
- #
- #	@todo check $.getJSON with xml type
- #	@return data json/xml
-###
-JJRestApi.getFromDomOrApi = (name, options, callback) ->
-	if _.isFunction(options)
-		callback = options
-		options = {}
+JJRestApi.getFromDomOrApi = (name, options) ->
+	options = options || {}
 
 	nameToSearch = if options.name then options.name else name.toLowerCase()
-
 	$obj = $('#api-' + nameToSearch)
 
 	# found in DOM
@@ -113,18 +110,15 @@ JJRestApi.getFromDomOrApi = (name, options, callback) ->
 		if ($obj.attr('type') == 'application/json')
 			data = $.parseJSON data
 
-		if (callback and _.isFunction callback)
-			callback data, options
+		dfd = new $.Deferred()
+		dfd.resolve(data)
+		return dfd.promise()
 
-	# load structure from server
 	else unless options.noAjax
 		url = if options.url then options.url else JJRestApi.setObjectUrl(name)
 		if options.urlSuffix then url += options.urlSuffix
-		$.getJSON url, (data) =>
-			if (callback && _.isFunction callback)
-				callback data, options
+		return $.getJSON url
 
-	data
 
 ###*
  *
@@ -158,14 +152,12 @@ JJRestApi.objToUrlString = (obj) ->
  #	@return false
 ###
 JJRestApi.bootstrapWithStructure = (callback) ->
-
-	JJRestApi.getFromDomOrApi 'Structure', (data) ->
+	dfd = JJRestApi.getFromDomOrApi 'Structure'
+	dfd.done (data) ->
 		JJRestApi.Bootstrap data
-
-		if (callback && _.isFunction callback)
-				callback data
-
-	false
+	dfd.fail ->
+		throw new Error 'Structure could not be loaded.'
+	dfd
 
 JJRestApi.Bootstrap  = (response) ->
 	data
