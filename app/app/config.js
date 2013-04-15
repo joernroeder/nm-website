@@ -25,7 +25,9 @@ require.config({
     },
     'plugins/zepto.deferred.min': ['zepto'],
     'plugins/zepto.installer': ['plugins/zepto.deferred.min'],
-    'plugins/zepto.gravity': ['plugins/zepto.installer'],
+    'plugins/zepto.modifications': ['plugins/zepto.installer'],
+    'plugins/tooltip/zepto.tooltip': ['plugins/zepto.modifications'],
+    'plugins/gravity/zepto.gravity': ['plugins/tooltip/zepto.tooltip'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone']

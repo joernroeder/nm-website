@@ -75,131 +75,90 @@ class RadialGravity
 				body.allowSleep = true
 
 			body.fixedRotation = true
-			body.linearDamping = .5
+			body.linearDamping = 1.5
 			body.angularDamping = .5
 			body.gravityScale = 0.0
 
 			body # return
 
 		@setBox2DSettings = ->
-			b2Settings.b2_linearSleepTolerance = .5
-			b2Settings.b2_angularSleepTolerance = .5
+			b2Settings.b2_linearSleepTolerance = .1
+			b2Settings.b2_angularSleepTolerance = .1
 			b2Settings.b2_timeToSleep = .5
 
 
 		# run
 		@init()
 		
-	###
-	 # set canvas dimensions
-	 #
-	 # @param int width
-	 # @param int height
-	 #
-	###
 	# world borders
 	borders: {}
 	borderWidth: 1
-	hasBorders: false
-	setDimensions: (@width, @height) ->
 
-		#@width = @width / 2
-		#@height = @height / 2
-		
-		borderDefs = [
-			# top
-			{
-				id: 'border-top'
+	###
+	 # set canvas dimensions
+	 #
+	 # @param float width
+	 # @param float height
+	###
+	setDimensions: (@width, @height) ->		
+		borderDefs =
+			'border-top':
 				x: @width / 2
 				y: @borderWidth / -2
 				width: @width
 				height: @borderWidth
-			},
 
-			# right
-			{
-				id: 'border-right'
+			'border-right':
 				x: @width + (@borderWidth / 2)
 				y: @height / 2
 				width: @borderWidth
 				height: @height
-			},
 
-			# bottom
-			{
-				id: 'border-bottom'
+			'border-bottom': 
 				x: @width / 2
 				y: @height + (@borderWidth / 2)
 				width: @width
 				height: @borderWidth
-			},
-
-			# left
-			{
-				id: 'border-left'
+			
+			'border-left':
 				x: @borderWidth / -2
 				y: @height / 2
 				width: @borderWidth
 				height: @height
-			}
-
-		]
 		
-		createBorder = (border) =>
+		createBorder = (id, border) =>
 			body = @bodyDef true
-			#bodyDef = new b2BodyDef
-			#bodyDef.type = b2Body.b2_staticBody
-			body.userData = border.id
-
+			body.userData = id
 			body.position.Set border.x, border.y
 
 			fix = @fixDef()
-			#fixDef = new b2FixtureDef
-			#fixDef.density = 1.0
-			#fixDef.friction = 0
-			#fixDef.restitution = 1
-
-			#fixDef.shape = new b2PolygonShape
 			fix.shape.SetAsBox border.width / 2, border.height / 2
 
+			# create border and store in @borders
 			@world.CreateBody(body).CreateFixture fix
-			@borders[border.id] = 
+			@borders[id] = 
 				body: body
 				fixture: fix
 
 			true
 
-			#create ground
-         #bodyDef.type = b2Body.b2_staticBody;
-         #fixDef.shape = new b2PolygonShape;
-         #fixDef.shape.SetAsBox(20, 2);
-         #bodyDef.position.Set(10, 400 / 30 + 1.8);
-         #world.CreateBody(bodyDef).CreateFixture(fixDef);
-         #bodyDef.position.Set(10, -1.8);
-         #world.CreateBody(bodyDef).CreateFixture(fixDef);
-         #fixDef.shape.SetAsBox(2, 14);
-         #bodyDef.position.Set(-1.8, 13);
-         #world.CreateBody(bodyDef).CreateFixture(fixDef);
-         #bodyDef.position.Set(21.8, 13);
-         #world.CreateBody(bodyDef).CreateFixture(fixDef);
+		updateBorder = (id) =>
+			data = @borders[id]
+			border = borderDefs[id]
 
-		createBorders = =>
-			for border in borderDefs
-				log border
-				createBorder border
-			
-			#@world.CreateBody(body).CreateFixture fix
-			@hasBorders = true
+			log "update border #{id}"
+			log border
+			data.body.position.Set border.x, border.y
+			data.fixture.shape.SetAsBox border.width / 2, border.height / 2
 
-		updateBorders = ->
-
-
-		#if Object.keys(@borders).length or @hasBorders
-		#if @hasBorders
-		#	updateBorders()
-		#else
 		log 'create borders'
-		createBorders()
+		for id, border of borderDefs
+			if @borders[id]
+				updateBorder id
+			else
+				createBorder id, border
+
+		@forceRecalc()
 
 		true
 	###
@@ -254,22 +213,7 @@ class RadialGravity
 					y: pos.y
 
 			else if id and id.indexOf('border') isnt -1
-				###
-				fixture = b.GetFixtureList()
-
-				aabb = new b2AABB
-				aabb.lowerBound = new b2Vec 0, 0
-				aabb.upperBound = new b2Vec 0, 0
-
-				while fixture
-					aabb.Combine aabb, fixture.GetAABB()
-					fixture = fixture.m_next
-
-				log aabb
-
-				if not state[id] then state[id] is {}
-				###
-				border = @borders[id]
+				pos = b.GetPosition()
 
 				state[id] = 
 					x: pos.x

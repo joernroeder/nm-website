@@ -1,6 +1,6 @@
 define [
 		'app'
-		'plugins/zepto.gravity'
+		'plugins/gravity/zepto.gravity'
 	],
 	(app) ->
 
@@ -13,7 +13,7 @@ define [
 			afterRender: ->
 				$(@.el).height($(window).height()).RadialGravity 
 					worker:
-						physics: '/app/assets/js/plugins/gravity/physics.js'
+						physics: '/app/assets/js/plugins/gravity/backend/physics.js'
 		
 
 		Gravity

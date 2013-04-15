@@ -25,9 +25,6 @@ var __hasProp = {}.hasOwnProperty,
       return window.setTimeout(callback, 1000 / 60);
     };
   })();
-  if (Deferred) {
-    Deferred.installInto(Zepto);
-  }
   /*
   	 # Creates a basic Entity with the given parameters
   	 # this should be just the base class to extend.
