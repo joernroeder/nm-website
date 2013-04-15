@@ -425,6 +425,41 @@ h2 {
     max-width: 160em;
   }
 }
+.tooltip {
+  background: #111;
+  color: #fff;
+  padding: 15px;
+  position: absolute;
+  text-align: center;
+  z-index: 100;
+}
+.tooltip:after {
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #111;
+  bottom: -10px;
+  content: '';
+  height: 0;
+  left: 50%;
+  margin-left: -10px;
+  position: absolute;
+  width: 0;
+}
+.tooltip.top:after {
+  border-bottom: 10px solid #111;
+  border-top-color: transparent;
+  bottom: auto;
+  top: -20px;
+}
+.tooltip.left:after {
+  left: 10px;
+  margin: 0;
+}
+.tooltip.right:after {
+  left: auto;
+  margin: 0;
+  right: 10px;
+}
 body {
   background: #e6e6e6;
   font-family: 'AllerLight', 'Helvetica', sans-serif;
@@ -667,7 +702,7 @@ aside a {
 .gravity .gravity-item {
   position: absolute;
   display: inline-block;
-  opacity: 1;
+  opacity: 0;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -o-transition: opacity .2s ease-in-out;
