@@ -1,27 +1,22 @@
 define [
 		'app'
-		'plugins/zepto.gravity'
+		'modules/Gravity'
 	],
-	(app) ->
+	(app, Gravity) ->
 
 		Portfolio = app.module()
 
 
 		# this is the main gravity container which has a list with all project overview items in it
-		Portfolio.Views.GravityContainer = Backbone.View.extend
+		Portfolio.Views.GravityContainer = Gravity.Views.Container.extend
 			tagName: 'ul'
-			id: 'gravity-container'
 			className: 'gravity'
 			beforeRender: ->
 				console.log 'portfolio before render'
 				modelArray = @.collection
 				if modelArray
 					for model in modelArray
-						@.insertView '', new Portfolio.Views.ListItem({ model: model })
-			afterRender: ->
-				$(@.el).height($(window).height()).RadialGravity 
-					worker:
-						physics: '/app/assets/js/plugins/gravity/physics.js'
+						@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: @.options.linkTo })
 				
 
 		Portfolio.Views.ListItem = Backbone.View.extend
@@ -29,7 +24,9 @@ define [
 			className: 'gravity-item'
 			template: 'gravity-list-item'
 			serialize: () ->
-				if @.model then @.model.toJSON() else {}
+				data = if @.model then @.model.toJSON() else {}
+				data.LinkTo = @.options.linkTo
+				data
 
 		Portfolio.Views.Detail = Backbone.View.extend
 			tagName: 'section'

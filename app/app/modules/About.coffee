@@ -1,14 +1,13 @@
 define [
 		'app'
-		'plugins/zepto.gravity'
+		'modules/Gravity'
 	],
-	(app) ->
+	(app, Gravity) ->
 
-		About = app.module()				
+		About = app.module()
 
-		About.Views.Gravity = Backbone.View.extend
+		About.Views.GravityContainer = Gravity.Views.Container.extend
 			tagName: 'section'
-			id: 'gravity-container'
 			className: 'gravity'
 			template: 'about-gravity'
 
@@ -24,12 +23,6 @@ define [
 						@.insertView '#alumni-list', new About.Views.PersonListItem {model: alumni}
 					for employee in @.persons.employees
 						@.insertView '', new About.Views.EmployeeItem {model: employee}
-					
-
-			afterRender: ->
-				$(@.el).height($(window).height()).RadialGravity 
-					worker:
-						physics: '/app/assets/js/plugins/gravity/physics.js'
 
 			serialize: ->
 				{ GroupImage: @.groupImage }
