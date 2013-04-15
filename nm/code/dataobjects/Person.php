@@ -44,11 +44,12 @@ class Person extends DataObject {
 	);
 
 	static $has_one = array(
-		'Image'				=> 'PersonImage'		// Foto der Person
+		'Image'				=> 'PersonImage',		// Foto der Person
 	);
 
 	static $has_many = array(
-		'Rankings'			=> 'Ranking'			// Sortierungssystem eigener Arbeiten
+		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
+		'Templates'			=> 'TemplateFile'		// Eigenes Template
 	);
 
 	static $many_many = array(
@@ -154,7 +155,9 @@ class Person extends DataObject {
 			'Excursions.IsPortfolio',
 			'Excursions.PreviewImage.Title',
 			'Excursions.PreviewImage.Caption',
-			'Excursions.PreviewImage.Urls'
+			'Excursions.PreviewImage.Urls',
+			'Templates.IsDetail',
+			'Templates.Url'
 		),
 		'view.about_init'	=> array(
 			'FirstName',

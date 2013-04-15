@@ -34,9 +34,32 @@ define [
 					for rel in rels
 						if rel.collectionType is projectType
 							modelArray = modelArray.concat @.model.get(rel.key).models
+				# insert the list items
 				for model in modelArray
-					@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: 'about' })
+					@.insertView '', new Portfolio.Views.ListItem({ model: model, LinkTo: 'about' })
+				# insert the person item
+				@.insertView '', new Person.Views.InfoItem({ model: model })
 
-		Person.Views.CustomView = Backbone.View.extend {}
+		# this view displays basic pieces of information (bio, pic etc.) within the gravity view
+		Person.Views.InfoItem = Backbone.View.extend
+			tagName: 'li'
+			className: 'gravity-item'
+			template: 'person-info-item'
+			serialize: ->
+				if @.model then @.model.toJSON()
+
+
+		Person.Views.Custom = Backbone.View.extend
+			tagName: 'div'
+			className: 'custom-templ'
+			initialize: (options) ->
+				if options.template then @.template = options.template
+			serialize: ->
+				if @.model then @.model.toJSON() else {}
+			beforeRender: ->
+				@._ev = $.Event 'template:ready', { bubbles: false }
+			afterRender: ->
+				$(document).trigger(@._ev)
+
 
 		Person

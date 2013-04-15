@@ -33,11 +33,13 @@ define [
 
 			fetch: (path) ->
 				done = undefined
-				path = path + '.html'
 
 				# check if path is starting with '/' (use absolute)
 				replacedPath = path.replace(Backbone.Layout.prototype.options.prefix, '')
-				if replacedPath.indexOf('/') == 0 then path = replacedPath.substring(1)
+				if replacedPath.indexOf('/') == 0 
+					path = replacedPath.substring(1)
+				else
+					path = path + '.html'
 
 				# If the template has not been loaded yet, then load.
 				unless JST[path]

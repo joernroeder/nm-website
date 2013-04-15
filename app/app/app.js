@@ -21,10 +21,11 @@ define(['plugins/zepto.installer', 'underscore', 'backbone', 'handlebars', 'plug
       var done, replacedPath;
 
       done = void 0;
-      path = path + '.html';
       replacedPath = path.replace(Backbone.Layout.prototype.options.prefix, '');
       if (replacedPath.indexOf('/') === 0) {
         path = replacedPath.substring(1);
+      } else {
+        path = path + '.html';
       }
       if (!JST[path]) {
         done = this.async();

@@ -57,7 +57,6 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       $.when(groupImageDfd, personsDfd).done(function(image) {
         var coll, persons, view;
 
-        console.log(arguments);
         image = image.length ? image[0] : null;
         coll = app.Collections['Person'];
         persons = {
@@ -80,21 +79,30 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       return false;
     },
     showPersonPage: function(nameSlug) {
-      var layout;
-
-      layout = app.useLayout('main');
       return DataRetrieval.forDetailedObject('Person', nameSlug).done(function(model) {
-        var view;
+        var layout, template, view;
 
-        view = new Person.Views.GravityContainer({
+        if (!model) {
+          return this.fourOhFour();
+        }
+        layout = app.useLayout('main');
+        template = '';
+        model.get('Templates').each(function(templ) {
+          if (!templ.get('IsDetail')) {
+            return template = templ.get('Url');
+          }
+        });
+        view = !template ? new Person.Views.GravityContainer({
           model: model
+        }) : new Person.Views.Custom({
+          model: model,
+          template: template
         });
         return layout.setViewAndRenderMaybe('', view);
       });
     },
     showPersonDetailed: function(nameSlug, uglyHash) {
-      console.info('show project %s of %s', nameSlug);
-      return console.info('check if student has custom template for details');
+      return this.showPortfolioDetailed(uglyHash, nameSlug);
     },
     showPortfolio: function() {
       var layout,
@@ -110,21 +118,36 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
       });
     },
-    showPortfolioDetailed: function(uglyHash) {
-      var classType, config;
+    showPortfolioDetailed: function(uglyHash, nameSlug) {
+      var classType;
 
-      config = app.Config;
-      classType = config.ClassEnc[uglyHash.substr(0, 1)];
+      classType = app.Config.ClassEnc[uglyHash.substr(0, 1)];
       if (classType) {
         return DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
-          var detailView, layout;
+          var detailView, layout, person, template;
 
-          if (!model) {
+          if (!model || (!nameSlug && !model.get('IsFeatured') && !model.get('IsPortfolio'))) {
             return this.fourOhFour();
           }
           layout = app.useLayout('main');
-          detailView = new Portfolio.Views.Detail({
+          template = '';
+          if (nameSlug) {
+            person = model.get('Persons').where({
+              UrlSlug: nameSlug
+            });
+            if (person.length) {
+              person[0].get('Templates').each(function(templ) {
+                if (templ.get('IsDetail')) {
+                  return template = templ.get('Url');
+                }
+              });
+            }
+          }
+          detailView = !template ? new Portfolio.Views.Detail({
             model: model
+          }) : new Person.Views.Custom({
+            model: model,
+            template: template
           });
           return layout.setViewAndRenderMaybe('', detailView);
         });

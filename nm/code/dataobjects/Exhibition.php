@@ -111,7 +111,12 @@ class Exhibition extends DataObject {
 			'CalendarEntries',
 			'Persons',
 			'Workshops',
-			'Excursions'
+			'Excursions',
+			'Persons.FirstName',
+			'Persons.Surname',
+			'Persons.UrlSlug',
+			'Persons.Templates.Url',
+			'Persons.Templates.IsDetail'
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',

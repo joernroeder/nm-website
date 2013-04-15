@@ -104,7 +104,12 @@ class Workshop extends DataObject {
 			'Images',
 			'CalendarEntries',
 			'Persons',
-			'Excursions'
+			'Excursions',
+			'Persons.FirstName',
+			'Persons.Surname',
+			'Persons.UrlSlug',
+			'Persons.Templates.Url',
+			'Persons.Templates.IsDetail'
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',

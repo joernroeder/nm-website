@@ -6,11 +6,12 @@ define(['app', 'plugins/gravity/zepto.gravity'], function(app) {
   Gravity.Views.Container = Backbone.View.extend({
     id: 'gravity-container',
     afterRender: function() {
-      return $(this.el).height($(window).height()).RadialGravity({
-        worker: {
-          physics: '/app/assets/js/plugins/gravity/backend/physics.js'
-        }
-      });
+      /*
+      				$(@.el).height($(window).height()).RadialGravity 
+      					worker:
+      						physics: '/app/assets/js/plugins/gravity/backend/physics.js'
+      */
+
     }
   });
   return Gravity;

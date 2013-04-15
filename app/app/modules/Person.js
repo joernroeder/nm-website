@@ -30,7 +30,7 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
     tagName: 'ul',
     className: 'gravity',
     beforeRender: function() {
-      var model, modelArray, projectType, rel, rels, _i, _j, _k, _len, _len1, _len2, _ref, _results;
+      var model, modelArray, projectType, rel, rels, _i, _j, _k, _len, _len1, _len2, _ref;
 
       console.log('render person page with normal view');
       modelArray = [];
@@ -45,17 +45,51 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
           }
         }
       }
-      _results = [];
       for (_k = 0, _len2 = modelArray.length; _k < _len2; _k++) {
         model = modelArray[_k];
-        _results.push(this.insertView('', new Portfolio.Views.ListItem({
+        this.insertView('', new Portfolio.Views.ListItem({
           model: model,
-          linkTo: 'about'
-        })));
+          LinkTo: 'about'
+        }));
       }
-      return _results;
+      return this.insertView('', new Person.Views.InfoItem({
+        model: model
+      }));
     }
   });
-  Person.Views.CustomView = Backbone.View.extend({});
+  Person.Views.InfoItem = Backbone.View.extend({
+    tagName: 'li',
+    className: 'gravity-item',
+    template: 'person-info-item',
+    serialize: function() {
+      if (this.model) {
+        return this.model.toJSON();
+      }
+    }
+  });
+  Person.Views.Custom = Backbone.View.extend({
+    tagName: 'div',
+    className: 'custom-templ',
+    initialize: function(options) {
+      if (options.template) {
+        return this.template = options.template;
+      }
+    },
+    serialize: function() {
+      if (this.model) {
+        return this.model.toJSON();
+      } else {
+        return {};
+      }
+    },
+    beforeRender: function() {
+      return this._ev = $.Event('template:ready', {
+        bubbles: false
+      });
+    },
+    afterRender: function() {
+      return $(document).trigger(this._ev);
+    }
+  });
   return Person;
 });

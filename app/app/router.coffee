@@ -63,7 +63,6 @@ define [
 			personsDfd = DataRetrieval.forPersonsOverview()
 			
 			$.when(groupImageDfd, personsDfd).done (image) ->
-				console.log arguments
 				image = if image.length then image[0] else null
 				coll = app.Collections['Person']
 				persons =
@@ -78,17 +77,21 @@ define [
 
 
 		showPersonPage: (nameSlug) ->
-			layout = app.useLayout 'main'
 			# get the detailed person object
 			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
-				# @todo: check if Person has a custom template, else do following:
-				view = new Person.Views.GravityContainer { model: model }
+				return @.fourOhFour() unless model
+				layout = app.useLayout 'main'
+				template = ''
+				model.get('Templates').each (templ) ->
+					if not templ.get('IsDetail') then template = templ.get('Url')
+				
+				view = if not template then new Person.Views.GravityContainer({ model: model }) else new Person.Views.Custom({ model: model, template: template })
+
 				layout.setViewAndRenderMaybe '', view
 
 		showPersonDetailed: (nameSlug, uglyHash) ->
-			# personType can be alumni or student
-			console.info 'show project %s of %s', nameSlug
-			console.info 'check if student has custom template for details'
+			@.showPortfolioDetailed uglyHash, nameSlug
+					
 
 
 		showPortfolio: () ->
@@ -102,15 +105,22 @@ define [
 				
 				
 
-		showPortfolioDetailed: (uglyHash) ->
+		showPortfolioDetailed: (uglyHash, nameSlug) ->
+			# if `isPersonPage`, there's a check for a custom template'
 			# the first digit of uglyHash points to its class -> get it!
-			config = app.Config
-			classType = config.ClassEnc[uglyHash.substr(0,1)]
+			classType = app.Config.ClassEnc[uglyHash.substr(0,1)]
 			if classType
 				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) ->
-					return @.fourOhFour() unless model
+					if not model or (not nameSlug and not model.get('IsFeatured') and not model.get('IsPortfolio')) then return @.fourOhFour()
 					layout = app.useLayout 'main'
-					detailView = new Portfolio.Views.Detail({ model: model })
+					template = ''
+					if nameSlug
+						person = model.get('Persons').where({ UrlSlug: nameSlug })
+						if person.length
+							person[0].get('Templates').each (templ) ->
+								if templ.get('IsDetail') then template = templ.get('Url')
+
+					detailView = if not template then new Portfolio.Views.Detail({ model: model }) else new Person.Views.Custom({ model: model, template: template })
 					layout.setViewAndRenderMaybe '', detailView
 			else
 				@.fourOhFour()

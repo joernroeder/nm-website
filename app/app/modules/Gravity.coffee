@@ -11,9 +11,11 @@ define [
 		Gravity.Views.Container = Backbone.View.extend
 			id: 'gravity-container'
 			afterRender: ->
+				###
 				$(@.el).height($(window).height()).RadialGravity 
 					worker:
 						physics: '/app/assets/js/plugins/gravity/backend/physics.js'
+				###
 		
 
 		Gravity

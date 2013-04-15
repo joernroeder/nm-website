@@ -121,7 +121,9 @@ class Project extends DataObject {
 			'Excursions',
 			'Persons.FirstName',
 			'Persons.Surname',
-
+			'Persons.UrlSlug',
+			'Persons.Templates.Url',
+			'Persons.Templates.IsDetail'
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',
