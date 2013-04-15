@@ -89,7 +89,7 @@ require [
 			Person:
 				where: (slug) ->
 					{ UrlSlug: slug }
-				domName: 'detailed-person'
+				domName: 'detailed-person-item'
 				urlSuffix: (slug) ->
 					return '?' + JJRestApi.objToUrlString
 						search:

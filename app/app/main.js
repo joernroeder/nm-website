@@ -90,7 +90,7 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
             UrlSlug: slug
           };
         },
-        domName: 'detailed-person',
+        domName: 'detailed-person-item',
         urlSuffix: function(slug) {
           return '?' + JJRestApi.objToUrlString({
             search: {

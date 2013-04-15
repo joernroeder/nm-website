@@ -32,7 +32,13 @@ class RootURLController extends Controller {
 		switch ($params['Action']) {
 			// about pages
 			case 'about':
-				if (isset($params['OtherAction']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
+				if (isset($params['OtherAction']) && $urlSlug = Convert::raw2sql($params['OtherAction'])) {
+					if (isset($params['ID']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
+						// detailed project
+					} else {
+						// person page
+						$returnVal .= DataObject::get_one('Person', "UrlSlug='$urlSlug'")->toDataElement('detailed-person-item', null)->forTemplate();
+					}
 				} else {
 					// simple about page with statement, groupimage and people, yo!
 					// group image
@@ -72,9 +78,7 @@ class RootURLController extends Controller {
 				// check if detailed
 				if (isset($params['OtherAction']) && $slug = Convert::raw2sql($params['OtherAction'])) {
 					$detailedCalendarItem = DataObject::get_one('CalendarEntry', "UrlHash='$slug'");
-					if ($detailedCalendarItem) {
-						$returnVal .= $detailedCalendarItem->toDataElement('detailed-calendar-item', null)->forTemplate();
-					}
+					$returnVal .= $detailedCalendarItem->toDataElement('detailed-calendar-item', null)->forTemplate();
 				} else {
 					// @todo: whole calendar
 				}

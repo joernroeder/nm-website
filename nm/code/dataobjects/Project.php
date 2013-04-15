@@ -119,7 +119,9 @@ class Project extends DataObject {
 			'Exhibitions',
 			'Workshops',
 			'Excursions',
-			'Persons'
+			'Persons.FirstName',
+			'Persons.Surname',
+
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',
