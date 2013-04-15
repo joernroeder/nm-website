@@ -44,7 +44,7 @@ define [
 			# get featured projects
 			DataRetrieval.forProjectsOverview(config.Featured).done =>
 				modelsArray = @.getProjectTypeModels { IsFeatured: true }
-				@.showGravityViewForModels modelsArray, layout
+				@.showGravityViewForModels modelsArray, 'portfolio', layout
 
 			# get upcoming calendar data
 			DataRetrieval.forCalendar('upcoming').done =>
@@ -53,11 +53,6 @@ define [
 
 		showAboutPage: () ->
 			layout = app.useLayout 'main'
-
-			checkAndRender = ->
-				if groupImage and persons
-					view = new About.Views.Gravity { groupImage: groupImage, persons: persons }
-					layout.setViewAndRenderMaybe '', view
 
 			# @todo: data we need: Statement, a random group image, all the persons (with their images, excluding externals) 
 			
@@ -68,13 +63,14 @@ define [
 			personsDfd = DataRetrieval.forPersonsOverview()
 			
 			$.when(groupImageDfd, personsDfd).done (image) ->
+				console.log arguments
 				image = if image.length then image[0] else null
 				coll = app.Collections['Person']
 				persons =
 					students : coll.where { IsStudent: true }
 					alumnis : coll.where { IsAlumni: true }
 					employees : coll.where { IsEmployee: true }
-				view = new About.Views.Gravity { groupImage: image, persons: persons }
+				view = new About.Views.GravityContainer { groupImage: image, persons: persons }
 				layout.setViewAndRenderMaybe '', view
 			
 
@@ -82,9 +78,12 @@ define [
 
 
 		showPersonPage: (nameSlug) ->
+			layout = app.useLayout 'main'
 			# get the detailed person object
-			DataRetrieval.forDetailedObject 'Person', nameSlug, (model) ->
-				console.log model
+			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
+				# @todo: check if Person has a custom template, else do following:
+				view = new Person.Views.GravityContainer { model: model }
+				layout.setViewAndRenderMaybe '', view
 
 		showPersonDetailed: (nameSlug, uglyHash) ->
 			# personType can be alumni or student
@@ -97,9 +96,9 @@ define [
 
 			layout = app.useLayout 'portfolio'
 			# get portfolio projects
-			DataRetrieval.forProjectsOverview app.Config.Portfolio, () =>
+			DataRetrieval.forProjectsOverview(app.Config.Portfolio).done =>
 				modelsArray = @.getProjectTypeModels { IsPortfolio: true }
-				@.showGravityViewForModels modelsArray, layout
+				@.showGravityViewForModels modelsArray, 'portfolio', layout
 				
 				
 
@@ -108,7 +107,7 @@ define [
 			config = app.Config
 			classType = config.ClassEnc[uglyHash.substr(0,1)]
 			if classType
-				DataRetrieval.forDetailedObject classType, uglyHash, (model) ->
+				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) ->
 					return @.fourOhFour() unless model
 					layout = app.useLayout 'main'
 					detailView = new Portfolio.Views.Detail({ model: model })
@@ -121,7 +120,7 @@ define [
 
 		showCalendarDetailed: (urlHash) ->
 			console.info 'get calendar detailed data with slug and show'
-			DataRetrieval.forDetailedObject 'CalendarEntry', urlHash, (model) =>
+			DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done (model) =>
 				return @.fourOhFour() unless model
 				layout = app.useLayout 'main'
 
@@ -138,9 +137,9 @@ define [
 
 		# !- Repeating helper abstraction
 		
-		showGravityViewForModels: (modelsArray, layout) ->
+		showGravityViewForModels: (modelsArray, linkTo, layout) ->
 			# this isn't really a collection, but we assign it to it anyway ;)
-			gravityContainer = new Portfolio.Views.GravityContainer({ collection: modelsArray })
+			gravityContainer = new Portfolio.Views.GravityContainer({ collection: modelsArray, linkTo: linkTo })
 			layout.setViewAndRenderMaybe '#gravity', gravityContainer
 
 		getProjectTypeModels: (where) ->
@@ -225,31 +224,29 @@ define [
 		# abstract function to get the detailed data of a calendar item by its ugly Hash
 		forDetailedObject: (classType, slug, callback) ->
 			configObj = app.Config.Detail[classType]
+			dfd = new $.Deferred()
 
 			# check if there is already a Calendar Entry with the urlHash
 			coll = app.Collections[classType]
 			whereStatement = configObj.where(slug)
 
-			callbackWithModel = (model) ->
-				callback model
-				model._isCompletelyFetched = true
-
 			existModel = coll.findWhere whereStatement
 			if existModel
-				if existModel._isCompletelyFetched then return callback existModel
-				@.fetchExistingModelCompletely existModel, callback
+				if existModel._isCompletelyFetched
+					dfd.resolve existModel
+				else
+					return @.fetchExistingModelCompletely(existModel)
 			else
 				options =
 					name: configObj.domName
 					urlSuffix: configObj.urlSuffix(slug)
-				JJRestApi.getFromDomOrApi classType, options, (data) ->
+				JJRestApi.getFromDomOrApi(classType, options).done (data) ->
 					data = if _.isArray(data) then data else [data]
-					
-					if data.length is 1
-						model = app.handleFetchedModel classType, data[0]
-						callbackWithModel model
-					else
-						callback null
+					model = if data.length is 1 then app.handleFetchedModel(classType, data[0]) else null
+					model._isCompletelyFetched = true
+					dfd.resolve model	
+
+			dfd.promise()
 
 		# title says it all
 		forRandomGroupImage: ->
@@ -270,9 +267,11 @@ define [
 
 		# abstract function that calls `fetch` on a model and then calls back
 		fetchExistingModelCompletely : (existModel, callback) ->
+			dfd = new $.Deferred()
 			existModel.fetch
 				success: (model) ->
-					callback model
+					dfd.resolve model
 					model._isCompletelyFetched = true
+			dfd.promise()
 
 	Router

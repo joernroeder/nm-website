@@ -37,7 +37,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         modelsArray = _this.getProjectTypeModels({
           IsFeatured: true
         });
-        return _this.showGravityViewForModels(modelsArray, layout);
+        return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
       });
       return DataRetrieval.forCalendar('upcoming').done(function() {
         var calendarContainer;
@@ -49,25 +49,15 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       });
     },
     showAboutPage: function() {
-      var checkAndRender, groupImageDfd, layout, personsDfd;
+      var groupImageDfd, layout, personsDfd;
 
       layout = app.useLayout('main');
-      checkAndRender = function() {
-        var view;
-
-        if (groupImage && persons) {
-          view = new About.Views.Gravity({
-            groupImage: groupImage,
-            persons: persons
-          });
-          return layout.setViewAndRenderMaybe('', view);
-        }
-      };
       groupImageDfd = DataRetrieval.forRandomGroupImage();
       personsDfd = DataRetrieval.forPersonsOverview();
       $.when(groupImageDfd, personsDfd).done(function(image) {
         var coll, persons, view;
 
+        console.log(arguments);
         image = image.length ? image[0] : null;
         coll = app.Collections['Person'];
         persons = {
@@ -81,7 +71,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
             IsEmployee: true
           })
         };
-        view = new About.Views.Gravity({
+        view = new About.Views.GravityContainer({
           groupImage: image,
           persons: persons
         });
@@ -90,8 +80,16 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       return false;
     },
     showPersonPage: function(nameSlug) {
-      return DataRetrieval.forDetailedObject('Person', nameSlug, function(model) {
-        return console.log(model);
+      var layout;
+
+      layout = app.useLayout('main');
+      return DataRetrieval.forDetailedObject('Person', nameSlug).done(function(model) {
+        var view;
+
+        view = new Person.Views.GravityContainer({
+          model: model
+        });
+        return layout.setViewAndRenderMaybe('', view);
       });
     },
     showPersonDetailed: function(nameSlug, uglyHash) {
@@ -103,13 +101,13 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         _this = this;
 
       layout = app.useLayout('portfolio');
-      return DataRetrieval.forProjectsOverview(app.Config.Portfolio, function() {
+      return DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
         var modelsArray;
 
         modelsArray = _this.getProjectTypeModels({
           IsPortfolio: true
         });
-        return _this.showGravityViewForModels(modelsArray, layout);
+        return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
       });
     },
     showPortfolioDetailed: function(uglyHash) {
@@ -118,7 +116,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       config = app.Config;
       classType = config.ClassEnc[uglyHash.substr(0, 1)];
       if (classType) {
-        return DataRetrieval.forDetailedObject(classType, uglyHash, function(model) {
+        return DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
           var detailView, layout;
 
           if (!model) {
@@ -141,7 +139,7 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       var _this = this;
 
       console.info('get calendar detailed data with slug and show');
-      return DataRetrieval.forDetailedObject('CalendarEntry', urlHash, function(model) {
+      return DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done(function(model) {
         var detailView, layout;
 
         if (!model) {
@@ -168,11 +166,12 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       });
       return layout.setViewAndRenderMaybe('', errorView);
     },
-    showGravityViewForModels: function(modelsArray, layout) {
+    showGravityViewForModels: function(modelsArray, linkTo, layout) {
       var gravityContainer;
 
       gravityContainer = new Portfolio.Views.GravityContainer({
-        collection: modelsArray
+        collection: modelsArray,
+        linkTo: linkTo
       });
       return layout.setViewAndRenderMaybe('#gravity', gravityContainer);
     },
@@ -268,38 +267,34 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       return dfd;
     },
     forDetailedObject: function(classType, slug, callback) {
-      var callbackWithModel, coll, configObj, existModel, options, whereStatement;
+      var coll, configObj, dfd, existModel, options, whereStatement;
 
       configObj = app.Config.Detail[classType];
+      dfd = new $.Deferred();
       coll = app.Collections[classType];
       whereStatement = configObj.where(slug);
-      callbackWithModel = function(model) {
-        callback(model);
-        return model._isCompletelyFetched = true;
-      };
       existModel = coll.findWhere(whereStatement);
       if (existModel) {
         if (existModel._isCompletelyFetched) {
-          return callback(existModel);
+          dfd.resolve(existModel);
+        } else {
+          return this.fetchExistingModelCompletely(existModel);
         }
-        return this.fetchExistingModelCompletely(existModel, callback);
       } else {
         options = {
           name: configObj.domName,
           urlSuffix: configObj.urlSuffix(slug)
         };
-        return JJRestApi.getFromDomOrApi(classType, options, function(data) {
+        JJRestApi.getFromDomOrApi(classType, options).done(function(data) {
           var model;
 
           data = _.isArray(data) ? data : [data];
-          if (data.length === 1) {
-            model = app.handleFetchedModel(classType, data[0]);
-            return callbackWithModel(model);
-          } else {
-            return callback(null);
-          }
+          model = data.length === 1 ? app.handleFetchedModel(classType, data[0]) : null;
+          model._isCompletelyFetched = true;
+          return dfd.resolve(model);
         });
       }
+      return dfd.promise();
     },
     forRandomGroupImage: function() {
       var dfd, getRandom, pageInfos;
@@ -326,12 +321,16 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       return dfd.promise();
     },
     fetchExistingModelCompletely: function(existModel, callback) {
-      return existModel.fetch({
+      var dfd;
+
+      dfd = new $.Deferred();
+      existModel.fetch({
         success: function(model) {
-          callback(model);
+          dfd.resolve(model);
           return model._isCompletelyFetched = true;
         }
       });
+      return dfd.promise();
     }
   };
   return Router;
