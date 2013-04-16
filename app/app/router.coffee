@@ -63,7 +63,6 @@ define [
 			personsDfd = DataRetrieval.forPersonsOverview()
 			
 			$.when(groupImageDfd, personsDfd).done (image) ->
-				image = if image.length then image[0] else null
 				coll = app.Collections['Person']
 				persons =
 					students : coll.where { IsStudent: true }

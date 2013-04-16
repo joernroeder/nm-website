@@ -57,7 +57,6 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
       $.when(groupImageDfd, personsDfd).done(function(image) {
         var coll, persons, view;
 
-        image = image.length ? image[0] : null;
         coll = app.Collections['Person'];
         persons = {
           students: coll.where({
