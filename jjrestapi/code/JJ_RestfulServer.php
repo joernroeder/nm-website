@@ -228,7 +228,7 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @return String The serialized representation of the requested object(s) - usually XML or JSON.
 	 */
 	protected function getHandler($className, $id, $relationName) {
-		$sort = '';
+		$sort = array();
 		
 		if ($this->request->getVar('sort')) {
 			$dir = $this->request->getVar('dir');
@@ -425,7 +425,7 @@ class JJ_RestfulServer extends RestfulServer {
 	 * 
 	 * @return string	generated cache key
 	 */
-	protected function getSearchQueryCacheKey($searchContext, $context, $searchParams, $sort = false, $limit = false, $existingQuery = null) {
+	protected function getSearchQueryCacheKey($searchContext, $context, $searchParams, $sort = array(), $limit = false, $existingQuery = null) {
 		$cacheKey = $searchContext->class . '_' . $context->getContext() . '_' . Member::currentUserID() . '_';
 
 		if (isset($searchParams['url'])) {
