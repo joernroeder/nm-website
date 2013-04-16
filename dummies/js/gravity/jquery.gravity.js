@@ -20,6 +20,7 @@ var __hasProp = {}.hasOwnProperty,
 (function($, window) {
   var Border, Box2DHolder, Entity, GravityCenter, RadialGravityStorage, RectangleEntity, _ref;
 
+  console.log($);
   window.requestAnimFrame = (function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback, element) {
       return window.setTimeout(callback, 1000 / 60);
@@ -580,7 +581,30 @@ var __hasProp = {}.hasOwnProperty,
                 loaded++;
                 if (loaded === $images.length) {
                   $item.addClass('loaded');
-                  return $item.RadialGravityTooltip();
+                  return $item.qtip({
+                    content: {
+                      text: 'Loading...',
+                      title: 'Wikipedia - Tawny Owl'
+                    },
+                    /*
+                    									show:
+                    										event: false
+                    										ready: true
+                    
+                    									hide: false
+                    */
+
+                    position: {
+                      at: "right bottom",
+                      my: "left bottom",
+                      viewport: $(window),
+                      adjust: {
+                        method: 'flip',
+                        x: 0,
+                        y: 0
+                      }
+                    }
+                  });
                 }
               });
             };
@@ -607,7 +631,7 @@ var __hasProp = {}.hasOwnProperty,
                 console.log(itemData.top);
                 console.log(itemData.left);
                 methods.add(itemData, storageId);
-                return $item.data('gravity-item', itemId);
+                return $item.attr('data-gravity-item', itemId);
               });
             };
             init();

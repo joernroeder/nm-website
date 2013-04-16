@@ -28,4 +28,4 @@
   		left: 0
   */
 
-})(Zepto);
+})(jQuery);

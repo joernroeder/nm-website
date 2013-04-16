@@ -702,7 +702,6 @@ aside a {
 .gravity .gravity-item {
   position: absolute;
   display: inline-block;
-  opacity: 0;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -o-transition: opacity .2s ease-in-out;
@@ -718,6 +717,8 @@ aside a {
 .gravity .gravity-item > a {
   display: block;
   border: none;
+  padding: 0;
+  margin: 0;
 }
 .gravity > img > a img,
 .gravity .gravity-item > a img {
@@ -737,6 +738,11 @@ aside a {
   background: #e6e6e6;
   padding: 0.625em;
   margin: -0.625em;
+  -webkit-transition: padding margin .2s ease-in-out;
+  -moz-transition: padding margin .2s ease-in-out;
+  -o-transition: padding margin .2s ease-in-out;
+  -ms-transition: padding margin .2s ease-in-out;
+  transition: padding margin .2s ease-in-out;
 }
 .gravity > img:hover img,
 .gravity .gravity-item:hover img {

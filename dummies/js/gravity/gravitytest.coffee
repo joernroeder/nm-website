@@ -16,7 +16,7 @@
 "use strict"
 #Framework = if '__proto__' of {} then Zepto else jQuery
 
-do ($ = Zepto) ->
+do ($ = jQuery) ->
 	$('.gravity').RadialGravity
 		worker:
 			physics: './js/gravity/backend/physics.js'
