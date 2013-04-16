@@ -432,15 +432,10 @@ class JJ_RestfulServer extends RestfulServer {
 			unset($searchParams['url']);
 		}
 
-		$paramsLimit = array_merge($searchParams, $limit);
+		$paramsLimit = array_merge($searchParams, $sort, $limit);
 
 		foreach ($paramsLimit as $key => $value) {
 			$cacheKey .= '-' . $key .'_' . $value;
-		}
-
-		$strSort = (string) $sort;
-		if ($strSort) {
-			$cacheKey .= $strSort;
 		}
 
 		// @todo replace . and - via regular expression
