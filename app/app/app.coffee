@@ -1,6 +1,6 @@
 define [
 		# Libs
-		'plugins/zepto.installer'
+		'jquery'
 		#'plugins/zepto.deferred.min'
 		'underscore'
 		'backbone'
@@ -10,7 +10,7 @@ define [
 		'plugins/backbone.JJRestApi'
 	],
 
-	(_Zepto, _, Backbone, Handlebars) ->	
+	($, _, Backbone, Handlebars) ->	
 
 
 

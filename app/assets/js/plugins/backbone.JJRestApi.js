@@ -117,7 +117,7 @@ JJRestApi.setObjectUrl = function(className) {
 JJRestApi.hookSecurityToken = function() {
   return JJRestApi.getFromDomOrApi('SecurityID', {
     noAjax: true
-  }, function(data) {
+  }).done(function(data) {
     if (data.SecurityID) {
       return $(document).bind('ajaxSend', function(event, xhr, settings) {
         return xhr.setRequestHeader(data.RequestHeader, data.SecurityID);
@@ -139,6 +139,10 @@ JJRestApi.getFromDomOrApi = function(name, options) {
 
   options = options || {};
   nameToSearch = options.name ? options.name : name.toLowerCase();
+  /**
+  	 * @todo get the API-prefix from DOM and pass it on from SilverStripe
+  */
+
   $obj = $('#api-' + nameToSearch);
   if ($obj.length) {
     data = $.trim($obj.html());

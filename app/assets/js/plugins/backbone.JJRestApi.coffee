@@ -85,7 +85,7 @@ JJRestApi.setObjectUrl = (className) ->
  * 
 ###
 JJRestApi.hookSecurityToken = () ->
-	JJRestApi.getFromDomOrApi 'SecurityID', { noAjax: true }, (data) ->
+	JJRestApi.getFromDomOrApi('SecurityID', { noAjax: true }).done (data) ->
 		if data.SecurityID
 			$(document).bind 'ajaxSend', (event, xhr, settings) ->
 				xhr.setRequestHeader data.RequestHeader, data.SecurityID
@@ -100,6 +100,9 @@ JJRestApi.getFromDomOrApi = (name, options) ->
 	options = options || {}
 
 	nameToSearch = if options.name then options.name else name.toLowerCase()
+	###*
+	 * @todo get the API-prefix from DOM and pass it on from SilverStripe
+	###
 	$obj = $('#api-' + nameToSearch)
 
 	# found in DOM

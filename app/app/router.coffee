@@ -91,8 +91,6 @@ define [
 
 		showPersonDetailed: (nameSlug, uglyHash) ->
 			@.showPortfolioDetailed uglyHash, nameSlug
-					
-
 
 		showPortfolio: () ->
 			# @todo: filter/search bar
@@ -136,6 +134,10 @@ define [
 
 				detailView = new Calendar.Views.Detail({ model: model })
 				layout.setViewAndRenderMaybe '', detailView
+
+		# ! Security stuff
+		showLoginForm: () ->
+			console.info 'login form. if logged in, redirect to dashboard'
 
 		catchAllRoute: (url) ->
 			console.log 'catch all route'

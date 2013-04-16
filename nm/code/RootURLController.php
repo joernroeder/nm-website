@@ -33,8 +33,11 @@ class RootURLController extends Controller {
 			// about pages
 			case 'about':
 				if (isset($params['OtherAction']) && $urlSlug = Convert::raw2sql($params['OtherAction'])) {
-					if (isset($params['ID']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
+					if (isset($params['ID']) && $uglyHash = Convert::raw2sql($params['ID'])) {
 						// detailed project
+						if ($detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash)) {
+							$returnVal .= $detailed->toDataElement('detailed-' . strtolower($detailed->class) . '-item', null)->forTemplate();
+						}
 					} else {
 						// person page
 						$returnVal .= DataObject::get_one('Person', "UrlSlug='$urlSlug'")->toDataElement('detailed-person-item', null)->forTemplate();
@@ -55,14 +58,8 @@ class RootURLController extends Controller {
 			case 'portfolio':
 				// check if detailed
 				if (isset($params['OtherAction']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
-					// get the class
-					$flipped = array_flip(UglyHashExtension::$class_enc);
-					$className = $flipped[substr($uglyHash, 0, 1)];
-					if ($className) {
-						$detailed = DataObject::get_one($className, "UglyHash='$uglyHash'");
-						if ($detailed) {
-							$returnVal .= $detailed->toDataElement('detailed-' . strtolower($detailed->class) . '-item', null)->forTemplate();
-						}
+					if ($detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash)) {
+						$returnVal .= $detailed->toDataElement('detailed-' . strtolower($detailed->class) . '-item', null)->forTemplate();
 					}
 				} else {
 					// whole portfolio
@@ -101,6 +98,16 @@ class RootURLController extends Controller {
 		}
 
 		return $returnVal;
+	}
+
+	public function getDetailedProjectTypeByUglyHash(string $uglyHash) {
+		$detailed = null;
+		$flipped = array_flip(UglyHashExtension::$class_enc);
+		$className = $flipped[substr($uglyHash, 0, 1)];
+		if ($className) {
+			$detailed = DataObject::get_one($className, "UglyHash='$uglyHash'");
+		}
+		return $detailed;
 	}
 
 }

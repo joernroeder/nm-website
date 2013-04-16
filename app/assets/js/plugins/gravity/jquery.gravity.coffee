@@ -13,6 +13,7 @@
 
 ###
 (($, window) ->
+	console.log $
 
 	# http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 	window.requestAnimFrame = (->
@@ -511,7 +512,28 @@
 
 							if loaded is $images.length
 								$item.addClass 'loaded'
-								$item.RadialGravityTooltip()
+								
+								$item.qtip
+									content:
+										text: 'Loading...'
+										title: 'Wikipedia - Tawny Owl'
+
+									###
+									show:
+										event: false
+										ready: true
+
+									hide: false
+									###
+
+									position:
+										at: "right bottom"
+										my: "left bottom"
+										viewport: $ window
+										adjust:
+											method: 'flip'
+											x: 0
+											y: 0
 
 
 					findItems = ->
@@ -542,7 +564,7 @@
 							methods.add itemData, storageId
 
 							#console.log itemData
-							$item.data 'gravity-item', itemId
+							$item.attr 'data-gravity-item', itemId
 
 					init();
 

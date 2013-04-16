@@ -175,6 +175,9 @@ define(['app', 'modules/Project', 'modules/Person', 'modules/Excursion', 'module
         return layout.setViewAndRenderMaybe('', detailView);
       });
     },
+    showLoginForm: function() {
+      return console.info('login form. if logged in, redirect to dashboard');
+    },
     catchAllRoute: function(url) {
       return console.log('catch all route');
     },
