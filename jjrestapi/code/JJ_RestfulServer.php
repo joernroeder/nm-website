@@ -194,7 +194,7 @@ class JJ_RestfulServer extends RestfulServer {
 			$keys[$extension] = $key;
 
 			if (ClassInfo::exists($key)) {
-				$class = new $key();
+				$class = $key::create($this);
 				$api_access = $class->stat('api_access');
 
 				// check api_access of DataObject and throw error if nessessary

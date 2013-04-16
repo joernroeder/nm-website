@@ -738,11 +738,11 @@ aside a {
   background: #e6e6e6;
   padding: 0.625em;
   margin: -0.625em;
-  -webkit-transition: padding margin .2s ease-in-out;
-  -moz-transition: padding margin .2s ease-in-out;
-  -o-transition: padding margin .2s ease-in-out;
-  -ms-transition: padding margin .2s ease-in-out;
-  transition: padding margin .2s ease-in-out;
+  -webkit-transition: padding .1s ease-out, margin .1s ease-out;
+  -moz-transition: padding .1s ease-out, margin .1s ease-out;
+  -o-transition: padding .1s ease-out, margin .1s ease-out;
+  -ms-transition: padding .1s ease-out, margin .1s ease-out;
+  transition: padding .1s ease-out, margin .1s ease-out;
 }
 .gravity > img:hover img,
 .gravity .gravity-item:hover img {

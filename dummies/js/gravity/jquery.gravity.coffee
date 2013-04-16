@@ -529,11 +529,11 @@
 									position:
 										at: "right bottom"
 										my: "left bottom"
-										viewport: $ window
+										viewport: storage().$container
 										adjust:
 											method: 'flip'
 											x: 0
-											y: 0
+											y: 10
 
 
 					findItems = ->
