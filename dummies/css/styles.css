@@ -702,7 +702,7 @@ aside a {
 .gravity .gravity-item {
   position: absolute;
   display: inline-block;
-  opacity: 1;
+  opacity: 0;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -o-transition: opacity .2s ease-in-out;
@@ -714,12 +714,26 @@ aside a {
 .gravity .gravity-item[data-gravity-item].loaded {
   opacity: 1;
 }
+.gravity > img > a,
+.gravity .gravity-item > a {
+  display: block;
+  border: none;
+}
+.gravity > img > a img,
+.gravity .gravity-item > a img {
+  display: block;
+  opacity: 0.5;
+}
+.gravity > img > section,
+.gravity .gravity-item > section {
+  display: none;
+}
 .gravity > img:hover,
 .gravity .gravity-item:hover {
   z-index: 100;
 }
-.gravity > img:hover > *,
-.gravity .gravity-item:hover > * {
+.gravity > img:hover > a,
+.gravity .gravity-item:hover > a {
   background: #e6e6e6;
   padding: 0.625em;
   margin: -0.625em;
@@ -727,11 +741,6 @@ aside a {
 .gravity > img:hover img,
 .gravity .gravity-item:hover img {
   opacity: 1;
-}
-.gravity > img img,
-.gravity .gravity-item img {
-  display: block;
-  opacity: 0.5;
 }
 .index .gravity {
   width: 75%;

@@ -68,7 +68,7 @@
 			
 			actualWidth = $tooltip[0].offsetWidth
 			actualHeight = $tooltip[0].offsetHeight
-			gravity = autoBounds 10, 'wn'
+			gravity = autoBounds 10, 'we'
 			console.log gravity
 
 			#gravity = maybeCall(this.options.gravity, this.$element[0]);

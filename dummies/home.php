@@ -35,9 +35,18 @@ include './includes/header.inc.php' ?>
 			$min = (int) rand(50, 150);
 			$x = (int) rand($min, 300);
 			$y = (int) rand($min, 300);
-			echo '<div class="gravity-item"><div><img src="http://placekitten.com/g/' . $x . '/' . $y . '" width="' . $x . '" height="' . $y . '"></div></div>' . "\n";
-		endfor;
-	?>
+			?>
+			<article class="gravity-item">
+				<a href="">
+					<img src="http://placekitten.com/g/<?php echo $x; ?>/<?php echo $y; ?>" width="<?php echo $x; ?>" height="<?php echo $y; ?>">
+				</a>
+				<section>
+					<header>
+						<h1>Test</h1>
+					</header>
+				</section>
+			</article>
+		<?php endfor; ?>
 </section>
 
 <?php include './includes/footer.inc.php' ?>

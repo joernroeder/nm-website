@@ -69,7 +69,7 @@
         });
         actualWidth = $tooltip[0].offsetWidth;
         actualHeight = $tooltip[0].offsetHeight;
-        gravity = autoBounds(10, 'wn');
+        gravity = autoBounds(10, 'we');
         console.log(gravity);
         switch (gravity.charAt(0)) {
           case 'n':

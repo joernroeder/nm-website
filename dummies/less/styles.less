@@ -264,14 +264,29 @@ aside {
 		.transition(~"opacity .2s ease-in-out");
 		cursor: pointer;
 
+		// on item loaded
 		&[data-gravity-item].loaded {
 			opacity: 1;
+		}
+
+		&> a {
+			display: block;
+			border: none;
+
+			img {
+				display: block;
+				opacity: .5
+			}
+		}
+
+		&> section {
+			display: none;
 		}
 
 		&:hover {
 			z-index: 100;
 
-			&> * {
+			&> a {
 				background: @bgColor;
 				padding: @gravityItemBorder / @em;
 				margin: -@gravityItemBorder / @em;
@@ -280,11 +295,6 @@ aside {
 			img {
 				opacity: 1
 			}
-		}
-
-		img {
-			display: block;
-			opacity: .5
 		}
 	}
 }
