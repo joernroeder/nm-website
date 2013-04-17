@@ -78,6 +78,9 @@
  * {@link .small-caps}
  */
 /**
+ * Überschrift mit grauen Kapitälchen (detail/portfolio)
+ */
+/**
  * Link & Button
  *
  */
@@ -86,6 +89,7 @@
   font-weight: normal;
   font-variant: small-caps;
   color: #525252;
+  display: inline-block;
 }
 .btn:after {
   display: inline-block;
@@ -690,6 +694,64 @@ aside a {
   min-height: 100%;
   width: 100%;
 }
+.qtip {
+  position: absolute;
+  left: -28000em;
+  top: -28000em;
+  display: none;
+  max-width: 400px;
+  min-width: 50px;
+  direction: ltr;
+  box-shadow: none;
+  padding: 0;
+  opacity: 0;
+}
+.qtip-default {
+  background-color: #e6e6e6;
+}
+.qtip-content {
+  position: relative;
+  padding: 1.5em;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+.qtip-content header {
+  margin-bottom: 0.75em;
+}
+.qtip-content header h1 {
+  margin-bottom: -0.08333333333333333em;
+}
+.qtip-content header p {
+  font-variant: small-caps;
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  color: #919191;
+  padding-bottom: 0.0625em;
+}
+.qtip-content a.btn {
+  margin-top: 0.75em;
+}
+/*
+.qtip[aria-hidden="true"] {
+
+	&.qtip-pos-lb {
+		margin-left: -@qtipAniOffset / @em;
+	}
+	&.qtip-pos-rb {
+		margin-left: @qtipAniOffset / @em;
+	}
+}
+
+.qtip[aria-hidden="false"] {
+
+	&.qtip-pos-lb {
+		margin-left: 0;
+	}
+	&.qtip-pos-rb {
+		margin-left: 0;
+	}
+}
+*/
 .gravity {
   position: absolute;
   min-height: 100%;
@@ -700,7 +762,7 @@ aside a {
 }
 .gravity > img,
 .gravity .gravity-item {
-  position: absolute;
+  position: relative;
   display: inline-block;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
@@ -708,6 +770,23 @@ aside a {
   -ms-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
   cursor: pointer;
+  z-index: 14000;
+  /*
+		&:hover {
+			z-index: 16000;
+			&> a {
+				background: @bgColor;
+				padding: @gravityItemBorder / @em;
+				margin: -@gravityItemBorder / @em;
+				.transition(~"padding .1s ease-out, margin .1s ease-out");
+			}
+
+			img {
+				opacity: 1
+			}
+		}
+		*/
+
 }
 .gravity > img[data-gravity-item].loaded,
 .gravity .gravity-item[data-gravity-item].loaded {
@@ -715,38 +794,38 @@ aside a {
 }
 .gravity > img > a,
 .gravity .gravity-item > a {
+  position: relative;
   display: block;
   border: none;
+  background: #e6e6e6;
+  -webkit-transition: padding .2s ease-out, margin .2s ease-out;
+  -moz-transition: padding .2s ease-out, margin .2s ease-out;
+  -o-transition: padding .2s ease-out, margin .2s ease-out;
+  -ms-transition: padding .2s ease-out, margin .2s ease-out;
+  transition: padding .2s ease-out, margin .2s ease-out;
   padding: 0;
   margin: 0;
 }
 .gravity > img > a img,
 .gravity .gravity-item > a img {
   display: block;
-  opacity: 0.5;
+}
+.gravity > img.has-tooltip,
+.gravity .gravity-item.has-tooltip {
+  z-index: 16000;
+  /*img {
+				opacity: 1;
+			}*/
+
+}
+.gravity > img.has-tooltip > a,
+.gravity .gravity-item.has-tooltip > a {
+  padding: 0.625em;
+  margin: -0.625em;
 }
 .gravity > img > section,
 .gravity .gravity-item > section {
   display: none;
-}
-.gravity > img:hover,
-.gravity .gravity-item:hover {
-  z-index: 100;
-}
-.gravity > img:hover > a,
-.gravity .gravity-item:hover > a {
-  background: #e6e6e6;
-  padding: 0.625em;
-  margin: -0.625em;
-  -webkit-transition: padding .1s ease-out, margin .1s ease-out;
-  -moz-transition: padding .1s ease-out, margin .1s ease-out;
-  -o-transition: padding .1s ease-out, margin .1s ease-out;
-  -ms-transition: padding .1s ease-out, margin .1s ease-out;
-  transition: padding .1s ease-out, margin .1s ease-out;
-}
-.gravity > img:hover img,
-.gravity .gravity-item:hover img {
-  opacity: 1;
 }
 .index .gravity {
   width: 75%;

@@ -20,7 +20,6 @@ var __hasProp = {}.hasOwnProperty,
 (function($, window) {
   var Border, Box2DHolder, Entity, GravityCenter, RadialGravityStorage, RectangleEntity, _ref;
 
-  console.log($);
   window.requestAnimFrame = (function() {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback, element) {
       return window.setTimeout(callback, 1000 / 60);
@@ -108,15 +107,28 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     RectangleEntity.prototype.draw = function() {
-      return $("[data-gravity-item=" + this.id + "]").css({
-        'top': this.y * this.scale(),
-        'left': this.x * this.scale(),
-        'margin-top': -this.height * this.scale() / 2,
-        'margin-left': -this.width * this.scale() / 2,
-        'height': this.height * this.scale(),
-        'width': this.width * this.scale(),
-        'background': this.isAwake ? this.color : this.sleepColor
-      });
+      var $item;
+
+      $item = $("[data-gravity-item=" + this.id + "]");
+      if ($item.length) {
+        /*
+        				tooltip = window.currentTooltip
+        				if tooltip.targetId and tooltip.targetId is @id
+        					$item.qtip 'reposition'
+        
+        					console.log 'update tooltip'
+        */
+
+        return $("[data-gravity-item=" + this.id + "]").css({
+          'top': this.y * this.scale(),
+          'left': this.x * this.scale(),
+          'margin-top': -this.height * this.scale() / 2,
+          'margin-left': -this.width * this.scale() / 2,
+          'height': this.height * this.scale(),
+          'width': this.width * this.scale(),
+          'background': this.isAwake ? this.color : this.sleepColor
+        });
+      }
     };
 
     return RectangleEntity;
@@ -456,6 +468,7 @@ var __hasProp = {}.hasOwnProperty,
     implementations: {}
   };
   window.Storage = RadialGravityStorage;
+  window.currentTooltip = {};
   return $.extend($.fn, {
     RadialGravity: function(methodOrOptions) {
       var dataIdName, methods, self, storage;
@@ -487,7 +500,7 @@ var __hasProp = {}.hasOwnProperty,
             return RadialGravityStorage.itemIdCount;
           };
           return this.each(function(i, el) {
-            var addGravity, addItemEvents, findItems, getItemId, getStorageId, init, initResize, layoutItems, resizeTimeoutId, setAndUpdateDimensions, setDimensions, storageId;
+            var addGravity, addItemEvents, findItems, getItemId, getStorageId, init, initResize, initTooltip, layoutItems, resizeTimeoutId, setAndUpdateDimensions, setDimensions, storageId;
 
             storageId = RadialGravityStorage.implementationCount;
             RadialGravityStorage.implementationCount++;
@@ -572,41 +585,101 @@ var __hasProp = {}.hasOwnProperty,
                 return angle += inc;
               });
             };
+            initTooltip = function($item) {
+              var $metaSection, getMargin, marginOffset;
+
+              $metaSection = $('section', $item);
+              marginOffset = -20;
+              getMargin = function(api) {
+                var $tooltip, margin;
+
+                margin = marginOffset;
+                $tooltip = $(api.tooltip);
+                if ($tooltip.hasClass('qtip-pos-rb')) {
+                  console.log('inverse margin');
+                  margin *= -1;
+                }
+                return margin;
+              };
+              if ($metaSection.length) {
+                $item.qtip({
+                  content: {
+                    text: $metaSection.html()
+                  },
+                  events: {
+                    render: function(event, api) {
+                      return console.log('on render');
+                    }
+                  },
+                  show: {
+                    event: 'mouseenter',
+                    effect: function(api) {
+                      console.log('on show');
+                      $item.addClass('has-tooltip');
+                      return $(this).stop(true, true).css({
+                        'margin-left': getMargin(api)
+                      }).show().animate({
+                        'margin-left': 0,
+                        'opacity': 1
+                      }, 200);
+                    }
+                  },
+                  hide: {
+                    event: 'mouseleave',
+                    effect: function(api) {
+                      console.log('on hide');
+                      return $(this).stop(true, true).animate({
+                        'margin-left': getMargin(api),
+                        'opacity': 0
+                      }, 200, function() {
+                        $item.removeClass('has-tooltip');
+                        return $(this).hide();
+                      });
+                    }
+                  },
+                  /*
+                  								events:
+                  									show: (e, api) ->
+                  										window.currentTooltip = 
+                  											tip			: @
+                  											target		: api.target
+                  											targetId	: $(api.target).attr 'data-gravity-item'
+                  											api			: api
+                  
+                  									hide: (e, api) ->
+                  										window.currentTooltip = {}
+                  */
+
+                  position: {
+                    at: "right bottom",
+                    my: "left bottom",
+                    viewport: storage().$container,
+                    adjust: {
+                      method: 'flip shift',
+                      x: 0,
+                      y: 10
+                    }
+                  }
+                });
+                return console.log($item.qtip('api').tooltip);
+              }
+            };
             addItemEvents = function($item) {
               var $images, loaded;
 
               $images = $('img', $item);
               loaded = 0;
-              return $images.on('load', function() {
-                loaded++;
-                if (loaded === $images.length) {
-                  $item.addClass('loaded');
-                  return $item.qtip({
-                    content: {
-                      text: 'Loading...',
-                      title: 'Wikipedia - Tawny Owl'
-                    },
-                    /*
-                    									show:
-                    										event: false
-                    										ready: true
-                    
-                    									hide: false
-                    */
-
-                    position: {
-                      at: "right bottom",
-                      my: "left bottom",
-                      viewport: storage().$container,
-                      adjust: {
-                        method: 'flip',
-                        x: 0,
-                        y: 10
-                      }
-                    }
-                  });
-                }
-              });
+              if ($images.length) {
+                return $images.on('load', function() {
+                  loaded++;
+                  if (loaded === $images.length) {
+                    $item.addClass('loaded');
+                    return initTooltip($item);
+                  }
+                });
+              } else {
+                return initTooltip($item);
+              }
             };
             findItems = function() {
               var $items,

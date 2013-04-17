@@ -43,7 +43,13 @@ include './includes/header.inc.php' ?>
 				<section>
 					<header>
 						<h1>Test</h1>
+						<p>Jörn Röder &amp; Jonathan Pirnay // Sept 2011</p>
 					</header>
+					<p>
+						Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sedconsectetur. Vivamus sagittis lacus.<br>
+						These special contracts are so called ‚EULA‘s (end-user license agreements) Highly controvervt liabilities based on a „take it or leave it“ mentality.In most cases the user has to agree to those EULAs after purchasing thesoftware.
+					</p>
+					<a href="#" class="btn">Read More</a>
 				</section>
 			</article>
 		<?php endfor; ?>

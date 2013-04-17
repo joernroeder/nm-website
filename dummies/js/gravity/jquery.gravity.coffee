@@ -13,7 +13,6 @@
 
 ###
 (($, window) ->
-	console.log $
 
 	# http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 	window.requestAnimFrame = (->
@@ -78,19 +77,26 @@
 			@height / 2
 
 		draw: ->
-			#.add($("##{@id}"))
-			#$("##{@id}").css
-			#console.log @id
-			#console.log "draw entity #{@id}"
-			#console.log $("[data-gravity-item=#{@id}]")
-			$("[data-gravity-item=#{@id}]").css
-				'top'			: @y * @scale()
-				'left'			: @x * @scale()
-				'margin-top'	: -@height * @scale() / 2
-				'margin-left'	: -@width * @scale() / 2
-				'height'		: @height * @scale()
-				'width'			: @width * @scale()
-				'background'	: if @isAwake then @color else @sleepColor
+			# @todo cache variable in global storage
+			$item = $("[data-gravity-item=#{@id}]")
+
+			if $item.length
+				###
+				tooltip = window.currentTooltip
+				if tooltip.targetId and tooltip.targetId is @id
+					$item.qtip 'reposition'
+
+					console.log 'update tooltip'
+				###
+
+				$("[data-gravity-item=#{@id}]").css
+					'top'			: @y * @scale()
+					'left'			: @x * @scale()
+					'margin-top'	: -@height * @scale() / 2
+					'margin-left'	: -@width * @scale() / 2
+					'height'		: @height * @scale()
+					'width'			: @width * @scale()
+					'background'	: if @isAwake then @color else @sleepColor
 
 	# ---------------------------------------------
 	
@@ -382,6 +388,7 @@
 		implementations: {}
 
 	window.Storage = RadialGravityStorage
+	window.currentTooltip = {}
 
 	$.extend $.fn, RadialGravity: (methodOrOptions) ->
 
@@ -503,37 +510,107 @@
 							el.style.top = y + 'px'
 							angle += inc
 
+					initTooltip = ($item) ->
+						$metaSection = $ 'section', $item
+						marginOffset = -20
+
+						getMargin = (api) ->
+							margin = marginOffset
+							$tooltip = $ api.tooltip
+
+							if $tooltip.hasClass('qtip-pos-rb')
+								console.log 'inverse margin'
+								margin *= -1
+
+							margin
+
+
+						if $metaSection.length
+							$item
+							.qtip
+								content:
+									text: $metaSection.html()
+
+								events:
+									render: (event, api) ->
+										# Grab the tooltip element from the API elements object
+										console.log 'on render'
+
+										#updateMargin api
+
+
+								show:
+									event: 'mouseenter'
+									
+									effect: (api) ->
+										console.log 'on show'
+										
+										$item.addClass 'has-tooltip'
+										$(@)
+											.stop(true, true)
+											.css
+												'margin-left': getMargin api
+											.show()
+											.animate
+												'margin-left': 0
+												'opacity': 1
+											, 200
+									
+									#effect: false
+									#ready: true
+
+								hide: 
+									event: 'mouseleave'
+									effect: (api) ->
+										console.log 'on hide'
+										$(@)
+											.stop(true, true)
+											.animate
+												'margin-left': getMargin api
+												'opacity': 0
+											, 200, () ->
+												$item.removeClass 'has-tooltip'
+												$(@).hide()
+
+								###
+								events:
+									show: (e, api) ->
+										window.currentTooltip = 
+											tip			: @
+											target		: api.target
+											targetId	: $(api.target).attr 'data-gravity-item'
+											api			: api
+
+									hide: (e, api) ->
+										window.currentTooltip = {}
+								###
+
+								position:
+									at: "right bottom"
+									my: "left bottom"
+									viewport: storage().$container
+									#viewport: $ window
+									adjust:
+										method: 'flip shift'
+										x: 0
+										y: 10
+
+							console.log $item.qtip('api').tooltip
+
 					addItemEvents = ($item) ->
 						$images = $('img', $item)
 						loaded = 0
 
-						$images.on 'load', ->
-							loaded++
+						if $images.length
+							$images.on 'load', ->
+								loaded++
 
-							if loaded is $images.length
-								$item.addClass 'loaded'
-								
-								$item.qtip
-									content:
-										text: 'Loading...'
-										title: 'Wikipedia - Tawny Owl'
+								if loaded is $images.length
+									$item.addClass 'loaded'
 
-									###
-									show:
-										event: false
-										ready: true
-
-									hide: false
-									###
-
-									position:
-										at: "right bottom"
-										my: "left bottom"
-										viewport: storage().$container
-										adjust:
-											method: 'flip'
-											x: 0
-											y: 10
+									initTooltip $item
+						else
+							initTooltip $item
 
 
 					findItems = ->
@@ -566,7 +643,7 @@
 							#console.log itemData
 							$item.attr 'data-gravity-item', itemId
 
-					init();
+					init()
 
 					return true;
 		
@@ -600,7 +677,7 @@
 			###
 			add: (data, implementationCount) ->
 				if implementationCount is undefined
-					implementationCount = $(@).data(dataIdName);
+					implementationCount = $(@).data dataIdName
 
 				else if typeof implementationCount isnt 'number'
 					console.error 'Couldn\'t add items to gravity container.'

@@ -99,14 +99,7 @@ article {
 	header { 
 		margin-bottom: @line / @em;
 
-		h1 {
-		margin-bottom: -2 / @h1Size * 1em;
-		}
-
-		p {
-			.big-caps;
-			padding-bottom: 1 / @em;
-		}
+		.detailTooltipHeader();
 	}
 
 	// Links im Text
@@ -250,6 +243,75 @@ aside {
 	width: 100%;
 }
 
+
+// ! --- Tooltip -------------------------------------------
+
+@qtipAniOffset: 10;
+
+.qtip {
+	position: absolute;
+	left: -28000em;
+	top: -28000em;
+	display: none;
+	max-width: 400px;
+	min-width: 50px;
+	direction: ltr;
+	box-shadow: none;
+	padding: 0;
+	opacity: 0;
+}
+
+// Theme
+.qtip-default {
+	background-color: @bgColor;
+}
+
+.qtip-content {
+	position: relative;
+	padding: @line / @em;
+	overflow: hidden;
+	word-wrap: break-word;
+
+	header {
+		margin-bottom: @line * .5 / @em;
+
+		.detailTooltipHeader();
+	}
+
+	a.btn {
+		margin-top: @line * .5 / @em;
+	}
+}
+
+.qtip-focus {
+	//display: block;
+}
+
+/*
+.qtip[aria-hidden="true"] {
+
+	&.qtip-pos-lb {
+		margin-left: -@qtipAniOffset / @em;
+	}
+	&.qtip-pos-rb {
+		margin-left: @qtipAniOffset / @em;
+	}
+}
+
+.qtip[aria-hidden="false"] {
+
+	&.qtip-pos-lb {
+		margin-left: 0;
+	}
+	&.qtip-pos-rb {
+		margin-left: 0;
+	}
+}
+*/
+
+
+// ! --- Gravity -------------------------------------------
+
 .gravity {
 	position: absolute;
 	min-height: 100%;
@@ -258,11 +320,12 @@ aside {
 
 	&> img,
 	.gravity-item {
-		position: absolute;
+		position: relative;
 		display: inline-block;
 		//opacity: 0;
 		.transition(~"opacity .2s ease-in-out");
 		cursor: pointer;
+		z-index: 14000;
 
 		// on item loaded
 		&[data-gravity-item].loaded {
@@ -270,24 +333,42 @@ aside {
 		}
 
 		&> a {
+			position: relative;
 			display: block;
 			border: none;
+			background: @bgColor;
+
+			.transition(~"padding .2s ease-out, margin .2s ease-out"); 
+
 			padding: 0;
 			margin: 0;
 
 			img {
 				display: block;
-				opacity: .5
+				//opacity: .5;
 			}
+		}
+
+		&.has-tooltip {
+			z-index: 16000;
+
+			&> a {
+				padding: @gravityItemBorder / @em;
+				margin: -@gravityItemBorder / @em;
+			}
+
+			/*img {
+				opacity: 1;
+			}*/
 		}
 
 		&> section {
 			display: none;
 		}
 
+		/*
 		&:hover {
-			z-index: 100;
-
+			z-index: 16000;
 			&> a {
 				background: @bgColor;
 				padding: @gravityItemBorder / @em;
@@ -299,6 +380,7 @@ aside {
 				opacity: 1
 			}
 		}
+		*/
 	}
 }
 
