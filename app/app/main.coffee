@@ -26,6 +26,9 @@ require [
 	# our objects which get populated over time
 	app.Collections = {}
 
+	# auth
+	app.CurrentMember = {}
+
 	# basic config with flags to check whether specific data is already present or not
 	# also serves as the expression interface between SilverStripe and Backbone. Put hardcoded string in there
 	# and only use references within application logic

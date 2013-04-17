@@ -1,6 +1,6 @@
 <?php
 
-class Structure_RestApiExtension extends JJ_RestApiExtension implements TemplateGlobalProvider {
+class Structure_RestApiExtension extends JJ_RestApiDataExtension implements TemplateGlobalProvider {
 
 	
 	public static $extension_key = 'Structure';

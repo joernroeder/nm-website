@@ -1,6 +1,6 @@
 <?php
 
-class JJ_RestApiExtension extends Object {
+class JJ_RestApiDataExtension extends Object {
 
 	/**
 	 * is readonly through api calls
@@ -174,7 +174,7 @@ class JJ_RestApiExtension extends Object {
 
 
 	public function getContext() {
-		return Member::CurrentUserID() ? 'view.logged_in' : 'view';
+		return 'view';
 	}
 
 

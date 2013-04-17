@@ -1,6 +1,6 @@
 <?php
 
-class CSRFProtection_RestApiExtension extends JJ_RestApiExtension implements TemplateGlobalProvider {
+class CSRFProtection_RestApiExtension extends JJ_RestApiDataExtension implements TemplateGlobalProvider {
 
 	public static $extension_key = 'SecurityID';
 

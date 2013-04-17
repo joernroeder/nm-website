@@ -77,12 +77,14 @@ class JJ_RestfulServer extends RestfulServer {
 	 *
 	 */
 	function init() {
+		parent::init();
+		// check Security token
+		if (!CSRFProtection_RestApiExtension::compare_request($this->getRequest())) return $this->httpError(400, "Security token doesn't match.");
+
 		$url_handlers = $this->stat('url_handlers');
 		krsort($url_handlers);
 
 		$this->set_stat('url_handlers', $url_handlers);
-
-		return parent::init();
 	}
 
 	// ! ResponseFormatter
@@ -156,11 +158,12 @@ class JJ_RestfulServer extends RestfulServer {
 	}
 
 	// ! Extensions handling
-	public function getExtensions() {
-		$subClasses = ClassInfo::subclassesFor('JJ_RestApiExtension');
+	public function getSubclasses($className) {
+		if (!$className) return false;
+		$subClasses = ClassInfo::subclassesFor($className);
 		$result = array();
 		foreach (array_keys($subClasses) as $class) {
-			if ('JJ_RestApiExtension' != $class) {
+			if ($className != $class) {
 				$result[] = $class;
 			}
 		}
@@ -170,12 +173,10 @@ class JJ_RestfulServer extends RestfulServer {
 
 	// ! HTTP Handling
 
-	public function index($request = null) {
-		# check Security token
-		if (!CSRFProtection_RestApiExtension::compare_request($request)) return $this->httpError(400, "Security token doesn't match.");
+	public function index(SS_HTTPRequest $request = null) {
 
-		$extensions = $this->getExtensions();
-
+		// check if the ClassName points to a DataExtension
+		$extensions = $this->getSubclasses('JJ_RestApiDataExtension');
 		$className = $request->param('ClassName');
 		$keys = array();
 

@@ -1,5 +1,6 @@
 define [
 	'app'
+	'modules/Auth'
 	'modules/Project',
 	'modules/Person',
 	'modules/Excursion',
@@ -11,7 +12,7 @@ define [
 	'modules/Portfolio',
 	'modules/Calendar',
 	'modules/About'
-], (app, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About) ->
+], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About) ->
 
 	###*
 	 *
@@ -136,7 +137,20 @@ define [
 
 		# ! Security stuff
 		showLoginForm: () ->
+			layout = app.useLayout 'main'
 			console.info 'login form. if logged in, redirect to dashboard'
+			Auth.performLoginCheck().done ->
+				layout.setViewAndRenderMaybe '', new Auth.Views.Login()
+
+		doLogout: ->
+			layout = app.useLayout 'main'
+			dfd = $.Deferred()
+			if app.CurrentMember
+				layout.setViewAndRenderMaybe '', new Auth.Views.Logout()
+				dfd = Auth.logout()
+			else dfd.resolve()
+			dfd.done ->
+				Backbone.history.navigate '/login/', true
 
 		catchAllRoute: (url) ->
 			console.log 'catch all route'

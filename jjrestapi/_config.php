@@ -31,7 +31,7 @@ Deprecation::notification_version('0.3.2', 'jjrestapi');
  *
  */
 Director::addRules(20, array(
-	'api/v2' => 'JJ_RestfulServer'
+	'api/v2' 		=> 'JJ_RestfulServer'
 ));
 
 // add extension to DataObject and DataList

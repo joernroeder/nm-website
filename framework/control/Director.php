@@ -289,6 +289,7 @@ class Director implements TemplateGlobalProvider {
 
 				} else {
 					Director::$urlParams = $arguments;
+					
 					$controllerObj = Injector::inst()->create($controller);
 					$controllerObj->setSession($session);
 

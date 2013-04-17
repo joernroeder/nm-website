@@ -5,6 +5,7 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
   app.Layout;
   app.PageInfos = {};
   app.Collections = {};
+  app.CurrentMember = {};
   app.Config = {
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
     StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry'],

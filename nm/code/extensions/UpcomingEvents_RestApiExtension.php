@@ -1,6 +1,6 @@
 <?php
 
-class UpcomingEvents_RestApiExtension extends JJ_RestApiExtension {
+class UpcomingEvents_RestApiExtension extends JJ_RestApiDataExtension {
 
 	public static $extension_key = 'UpcomingEvents';
 
@@ -29,10 +29,6 @@ class UpcomingEvents_RestApiExtension extends JJ_RestApiExtension {
 		}
 		$events->sort('StartDate', 'ASC');
 		return $events;
-	}
-
-	public function getContext() {
-		return 'view';
 	}
 
 }

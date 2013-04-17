@@ -1,0 +1,11 @@
+<form style="margin-top:400px;">
+	<div><input type="text" name="email" placeholder="Email" /></div>
+	<div><input type="password" name="password" placeholder="Password" /></div>
+	<div><input type="checkbox" name="remember" /> Remember me next time</div>
+	<button class="doLogin" type="submit">Log in</button>
+	{{#if Email}}
+		<p>You are logged in as <strong>{{Email}}</strong>. <a href="/logout/">Logout?</a></p>
+	{{else}}
+		<p>You are not logged in.</p>
+	{{/if}}
+</form>

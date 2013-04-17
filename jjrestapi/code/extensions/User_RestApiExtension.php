@@ -1,18 +1,15 @@
 <?php
 
-class User_RestApiExtension extends JJ_RestApiExtension implements TemplateGlobalProvider {
+class User_RestApiExtension extends JJ_RestApiDataExtension implements TemplateGlobalProvider {
 
 	public static $extension_key = 'User';
 
 	public static $api_access = array(
 		'view'	=> array(
+			'logged_in',
 			'FirstName',
 			'Surname',
-		),
-		'view.logged_in' => array(
-			'FirstName',
-			'Surname',
-			'ID'
+			'Email'
 		)
 	);
 
@@ -23,10 +20,19 @@ class User_RestApiExtension extends JJ_RestApiExtension implements TemplateGloba
 	 * @return array
 	 */
 	public function getData($extension = null) {
-		$user = Member::CurrentUserID() ? Member::CurrentUser() : false;
-
-		return $user ? $user->toMap() : array();
+		$member = Member::CurrentUserID() ? Member::CurrentUser() : false;
+		$res = array();
+		if ($member) {
+			$res = array(
+				'FirstName'	=> $member->FirstName,
+				'Surname'	=> $member->Surname ? $member->Surname : false,
+				'Email'		=> $member->Email ? $member->Email : false
+			);
+		}
+		return $res;
 	}
+
+
 
 }
 

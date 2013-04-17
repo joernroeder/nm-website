@@ -75,6 +75,10 @@ CSRFProtection_RestApiExtension::enable_for(array(
 	'PATCH'
 ));
 
+Director::addRules(20, array(
+	'api/v2/Auth'	=> 'Authentication_RestApiController'
+));
+
 
 // include environment config 
 require_once('conf/ConfigureFromEnv.php');
