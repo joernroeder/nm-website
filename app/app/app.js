@@ -53,6 +53,7 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
     useLayout: function(name, options) {
       var $body, currentLayout, customClass, layout;
 
+      options = options || {};
       if (this.layout && this.layout.getAllOptions().template === 'layouts/' + name) {
         return this.layout;
       }

@@ -65,6 +65,7 @@ define [
 
 			# Helper for using layouts.
 			useLayout: (name, options) ->
+				options = options || {}
 				# If already using this Layout, then don't re-inject into the DOM.
 				if @.layout and @.layout.getAllOptions().template is 'layouts/' + name
 					return @.layout
