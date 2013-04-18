@@ -47,7 +47,6 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
   });
   About.Views.PersonListItem = Backbone.View.extend({
     tagName: 'li',
-    className: 'person-list-item',
     template: 'person-list-item',
     serialize: function() {
       return this.model.toJSON();

@@ -28,7 +28,6 @@ define [
 
 		About.Views.PersonListItem = Backbone.View.extend
 			tagName: 'li'
-			className: 'person-list-item'
 			template: 'person-list-item'
 			serialize: ->
 				@.model.toJSON()
