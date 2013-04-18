@@ -606,15 +606,17 @@ var __hasProp = {}.hasOwnProperty,
                   content: {
                     text: $metaSection.html()
                   },
-                  events: {
-                    render: function(event, api) {
-                      return console.log('on render');
-                    }
-                  },
+                  /*
+                  								events:
+                  									render: (event, api) ->
+                  										# Grab the tooltip element from the API elements object
+                  
+                  										#updateMargin api
+                  */
+
                   show: {
                     event: 'mouseenter',
                     effect: function(api) {
-                      console.log('on show');
                       $item.addClass('has-tooltip');
                       return $(this).stop(true, true).css({
                         'margin-left': getMargin(api)
@@ -627,7 +629,6 @@ var __hasProp = {}.hasOwnProperty,
                   hide: {
                     event: 'mouseleave',
                     effect: function(api) {
-                      console.log('on hide');
                       return $(this).stop(true, true).animate({
                         'margin-left': getMargin(api),
                         'opacity': 0
