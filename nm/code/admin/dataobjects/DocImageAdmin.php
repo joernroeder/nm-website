@@ -13,10 +13,10 @@
  *    http://neuemedienkassel.de
  *
  */
-class ResponsiveImageAdmin extends ModelAdmin {
+class DocImageAdmin extends ModelAdmin {
 
 	public static $managed_models = array(
-		'ResponsiveImage'
+		'DocImage'
 	);
 
 	public static $menu_priority = 30;
