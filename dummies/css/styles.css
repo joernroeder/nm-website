@@ -664,6 +664,9 @@ aside a {
   float: left;
   margin-right: 1.25em;
 }
+.person .img img {
+  max-width: 100%;
+}
 .person h1 {
   margin-top: 1.3125em;
   font-size: 1em;
