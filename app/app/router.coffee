@@ -165,7 +165,7 @@ define [
 		showGravityViewForModels: (modelsArray, linkTo, layout) ->
 			# this isn't really a collection, but we assign it to it anyway ;)
 			gravityContainer = new Portfolio.Views.GravityContainer({ collection: modelsArray, linkTo: linkTo })
-			layout.setViewAndRenderMaybe '#gravity', gravityContainer
+			layout.setViewAndRenderMaybe '#gravity-container', gravityContainer
 
 		getProjectTypeModels: (where) ->
 			returnArray = []

@@ -9,7 +9,7 @@ define [
 
 		# this is the main gravity container which has a list with all project overview items in it
 		Gravity.Views.Container = Backbone.View.extend
-			id: 'gravity-container'
+			className: 'gravity'
 			afterRender: ->
 				
 				$(@.el).height($(window).height()).RadialGravity 

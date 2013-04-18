@@ -136,7 +136,10 @@ class Project extends DataObject {
 			'PreviewImage.Caption',
 			'PreviewImage.Urls',
 			'Persons.FirstName',
-			'Persons.Surname'
+			'Persons.Surname',
+			'Persons.UrlSlug',
+			'Persons.Templates.Url',
+			'Persons.Templates.IsDetail'
 		)
 	);
 

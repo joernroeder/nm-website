@@ -78,7 +78,7 @@ class StartEndDateExtension extends Extension {
 	public function getFormattedDate($dateName = '', $formatName = '') {
 		$lowerName = strtolower($dateName);
 		$formatName = $formatName ? $formatName : $lowerName;
-		$format = $lowerName ? $this->owner->stat($formatName . '_date_format') : $this->owner->stat('date_format');
+		$format = $formatName ? $this->owner->stat($formatName . '_date_format') : $this->owner->stat('date_format');
 
 		if (!$format) {
 			user_error("you have to set the {$dateName}Date formatter (static \${$lowerName}_date_format) in {$this->owner->class}", E_USER_ERROR);

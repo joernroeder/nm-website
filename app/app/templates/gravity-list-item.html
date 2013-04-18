@@ -1,5 +1,5 @@
-<!-- li class="gravity-item" -->
-<a href="/{{LinkTo}}/{{UglyHash}}/">
+<!-- article class="gravity-item" -->
+<!--<a href="/{{LinkTo}}/{{UglyHash}}/">
 	<div>
 		<p>{{ Title }}</p>
 		{{#if PreviewImage}}
@@ -8,5 +8,22 @@
 			{{/with}}
 		{{/if}}
 	</div>
+</a>-->
+<a href="/{{LinkTo}}/{{UglyHash}}/">
+	{{#if PreviewImage}}
+		{{#with PreviewImage.Urls._320}}
+			<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>
+		{{/with}}
+	{{/if}}
+	<section>
+		<header>
+			<h1>{{Title}}</h1>
+			<p>{{nameSummary Persons}} {{niceDate this}}</p>
+		</header>
+		<p>
+			{{TeaserText}}
+		</p>
+		<a href="/{{LinkTo}}/{{UglyHash}}/" class="btn">Read More</a>
+	</section>
 </a>
-<!-- /li -->
+<!-- /article -->

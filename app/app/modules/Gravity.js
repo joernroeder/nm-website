@@ -4,7 +4,7 @@ define(['app', 'plugins/gravity/jquery.gravity'], function(app) {
 
   Gravity = app.module();
   Gravity.Views.Container = Backbone.View.extend({
-    id: 'gravity-container',
+    className: 'gravity',
     afterRender: function() {
       return $(this.el).height($(window).height()).RadialGravity({
         worker: {

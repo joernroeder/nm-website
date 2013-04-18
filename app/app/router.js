@@ -219,7 +219,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         collection: modelsArray,
         linkTo: linkTo
       });
-      return layout.setViewAndRenderMaybe('#gravity', gravityContainer);
+      return layout.setViewAndRenderMaybe('#gravity-container', gravityContainer);
     },
     getProjectTypeModels: function(where) {
       var projectType, returnArray, _i, _len, _ref;

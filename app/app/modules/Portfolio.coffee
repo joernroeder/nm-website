@@ -9,8 +9,7 @@ define [
 
 		# this is the main gravity container which has a list with all project overview items in it
 		Portfolio.Views.GravityContainer = Gravity.Views.Container.extend
-			tagName: 'ul'
-			className: 'gravity'
+			tagName: 'section'
 			beforeRender: ->
 				console.log 'portfolio before render'
 				modelArray = @.collection
@@ -20,7 +19,7 @@ define [
 				
 
 		Portfolio.Views.ListItem = Backbone.View.extend
-			tagName: 'li'
+			tagName: 'article'
 			className: 'gravity-item'
 			template: 'gravity-list-item'
 			serialize: () ->
@@ -34,6 +33,29 @@ define [
 			template: 'portfolio-detail'
 			serialize: () ->
 				if @.model then @.model.toJSON() else {}
+
+
+		#! Handlebar helpers
+		
+		Handlebars.registerHelper 'nameSummary', (persons) ->
+			out = ''
+			length = persons.length
+			if length > 3 then return 'Group project'
+			for person, i in persons
+				out += person.FirstName + ' ' + person.Surname
+				if i < (length - 1)
+					out += ' &amp; '
+			out
+
+		Handlebars.registerHelper 'niceDate', (model) ->
+			return '' unless model.DateRangeNice or model.FrontendDate
+			out = '// '
+			if model.DateRangeNice
+				out += model.DateRangeNice
+			else if model.FrontendDate
+				out += model.FrontendDate
+			out
+
 
 
 		Portfolio

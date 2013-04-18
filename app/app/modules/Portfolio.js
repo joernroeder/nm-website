@@ -4,8 +4,7 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
 
   Portfolio = app.module();
   Portfolio.Views.GravityContainer = Gravity.Views.Container.extend({
-    tagName: 'ul',
-    className: 'gravity',
+    tagName: 'section',
     beforeRender: function() {
       var model, modelArray, _i, _len, _results;
 
@@ -25,7 +24,7 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     }
   });
   Portfolio.Views.ListItem = Backbone.View.extend({
-    tagName: 'li',
+    tagName: 'article',
     className: 'gravity-item',
     template: 'gravity-list-item',
     serialize: function() {
@@ -47,6 +46,37 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
         return {};
       }
     }
+  });
+  Handlebars.registerHelper('nameSummary', function(persons) {
+    var i, length, out, person, _i, _len;
+
+    out = '';
+    length = persons.length;
+    if (length > 3) {
+      return 'Group project';
+    }
+    for (i = _i = 0, _len = persons.length; _i < _len; i = ++_i) {
+      person = persons[i];
+      out += person.FirstName + ' ' + person.Surname;
+      if (i < (length - 1)) {
+        out += ' &amp; ';
+      }
+    }
+    return out;
+  });
+  Handlebars.registerHelper('niceDate', function(model) {
+    var out;
+
+    if (!(model.DateRangeNice || model.FrontendDate)) {
+      return '';
+    }
+    out = '// ';
+    if (model.DateRangeNice) {
+      out += model.DateRangeNice;
+    } else if (model.FrontendDate) {
+      out += model.FrontendDate;
+    }
+    return out;
   });
   return Portfolio;
 });
