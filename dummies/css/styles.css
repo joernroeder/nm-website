@@ -847,11 +847,14 @@ aside a {
 .portfolio .gravity {
   width: 100%;
 }
+.about .gravity {
+  width: 100%;
+}
 .about article {
   margin: 6.4375em 0;
   overflow: hidden;
 }
-.about .text {
+.about .statement {
   float: right;
   width: 50%;
   padding: 0 0.75em;

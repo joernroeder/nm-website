@@ -5,7 +5,7 @@ $hideBadge = false;
 include './includes/header.inc.php' ?>
 
 <article>
-	<section class="text">
+	<section class="statement">
 		<p>The class <cite>New Media</cite> within the course <cite>Visual Communication</cite> at the <cite>School of Art and Design Kassel</cite> walks a fine line between art, design, provocation and study. The main focus lies on the media consumption of society and its perpetual obsession with technological progress, change and transformation; established processes and methods are permanently questioned and modified.</p>
 		<p>The students in the class <cite>New Media</cite> see themselves as researchers, artists, designers and developers at the same time.</p>
 		<p>Realising and publicly defending a deeply personal idea means also being able to realise the ideas of others. An outstanding developer of own concepts and ideas will have the ability to implement external ideas and concepts as well.</p>
