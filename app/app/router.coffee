@@ -53,7 +53,7 @@ define [
 				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
-			layout = app.useLayout 'main'
+			layout = app.useLayout 'main', {customClass: 'about'}
 
 			# @todo: data we need: Statement, a random group image, all the persons (with their images, excluding externals) 
 			
@@ -80,7 +80,7 @@ define [
 			# get the detailed person object
 			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
 				return @.fourOhFour() unless model
-				layout = app.useLayout 'main', {customClass: 'about'}
+				layout = app.useLayout 'main'
 				template = ''
 				model.get('Templates').each (templ) ->
 					if not templ.get('IsDetail') then template = templ.get('Url')

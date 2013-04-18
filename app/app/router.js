@@ -51,7 +51,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     showAboutPage: function() {
       var groupImageDfd, layout, personsDfd;
 
-      layout = app.useLayout('main');
+      layout = app.useLayout('main', {
+        customClass: 'about'
+      });
       groupImageDfd = DataRetrieval.forRandomGroupImage();
       personsDfd = DataRetrieval.forPersonsOverview();
       $.when(groupImageDfd, personsDfd).done(function(image) {
@@ -84,9 +86,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         if (!model) {
           return this.fourOhFour();
         }
-        layout = app.useLayout('main', {
-          customClass: 'about'
-        });
+        layout = app.useLayout('main');
         template = '';
         model.get('Templates').each(function(templ) {
           if (!templ.get('IsDetail')) {
