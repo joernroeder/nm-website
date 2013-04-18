@@ -22,6 +22,7 @@ define [
 						@.insertView '#alumni-list', new About.Views.PersonListItem {model: alumni}
 					for employee in @.persons.employees
 						@.insertView '', new About.Views.EmployeeItem {model: employee}
+			
 
 			serialize: ->
 				{ GroupImage: @.groupImage }
