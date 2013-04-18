@@ -29,7 +29,8 @@ include './includes/header.inc.php' ?>
 	<a href="#" class="btn">Foo</a>
 </section>
 
-<section class="gravity">
+<div>
+	<section class="gravity">
 	<?php
 		for ($i = 0; $i < 10; $i++) : 
 			$min = (int) rand(50, 150);
@@ -53,6 +54,7 @@ include './includes/header.inc.php' ?>
 				</section>
 			</article>
 		<?php endfor; ?>
-</section>
+	</section>
+</div>
 
 <?php include './includes/footer.inc.php' ?>
