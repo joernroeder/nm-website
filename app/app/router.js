@@ -84,7 +84,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         if (!model) {
           return this.fourOhFour();
         }
-        layout = app.useLayout('main');
+        layout = app.useLayout('main', {
+          customClass: 'about'
+        });
         template = '';
         model.get('Templates').each(function(templ) {
           if (!templ.get('IsDetail')) {

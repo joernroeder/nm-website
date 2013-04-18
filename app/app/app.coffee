@@ -72,10 +72,12 @@ define [
 				# If a layout already exists, remove it from the DOM.
 				if @.layout then @.layout.remove()
 
+				customClass = if options.customClass then options.customClass else name
+
 				# Create a new Layout with options.
 				layout = new Backbone.NMLayout _.extend({
 					template: 'layouts/' + name
-					className: 'layout ' + name
+					className: 'layout ' + customClass
 					id: 'layout'
 				}, options)
 

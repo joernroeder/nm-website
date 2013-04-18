@@ -27,8 +27,7 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
     });
   });
   Person.Views.GravityContainer = Gravity.Views.Container.extend({
-    tagName: 'ul',
-    className: 'gravity',
+    tagName: 'section',
     beforeRender: function() {
       var model, modelArray, projectType, rel, rels, _i, _j, _k, _len, _len1, _len2, _ref;
 
@@ -53,12 +52,12 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
         }));
       }
       return this.insertView('', new Person.Views.InfoItem({
-        model: model
+        model: this.model
       }));
     }
   });
   Person.Views.InfoItem = Backbone.View.extend({
-    tagName: 'li',
+    tagName: 'article',
     className: 'gravity-item',
     template: 'person-info-item',
     serialize: function() {

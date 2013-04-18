@@ -80,7 +80,7 @@ define [
 			# get the detailed person object
 			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
 				return @.fourOhFour() unless model
-				layout = app.useLayout 'main'
+				layout = app.useLayout 'main', {customClass: 'about'}
 				template = ''
 				model.get('Templates').each (templ) ->
 					if not templ.get('IsDetail') then template = templ.get('Url')

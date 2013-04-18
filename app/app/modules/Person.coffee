@@ -24,8 +24,7 @@ define [
 			#Person.Views.Test = Backbone.View.extend({})
 		
 		Person.Views.GravityContainer = Gravity.Views.Container.extend
-			tagName: 'ul'
-			className: 'gravity'
+			tagName: 'section'
 			beforeRender: ->
 				console.log 'render person page with normal view'
 				modelArray = []
@@ -38,11 +37,11 @@ define [
 				for model in modelArray
 					@.insertView '', new Portfolio.Views.ListItem({ model: model, LinkTo: 'about' })
 				# insert the person item
-				@.insertView '', new Person.Views.InfoItem({ model: model })
+				@.insertView '', new Person.Views.InfoItem({ model: @.model })
 
 		# this view displays basic pieces of information (bio, pic etc.) within the gravity view
 		Person.Views.InfoItem = Backbone.View.extend
-			tagName: 'li'
+			tagName: 'article'
 			className: 'gravity-item'
 			template: 'person-info-item'
 			serialize: ->
