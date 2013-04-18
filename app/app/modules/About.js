@@ -5,7 +5,6 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
   About = app.module();
   About.Views.GravityContainer = Gravity.Views.Container.extend({
     tagName: 'section',
-    className: 'gravity',
     template: 'about-gravity',
     initialize: function(options) {
       this.groupImage = options.groupImage;
@@ -55,8 +54,8 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     }
   });
   About.Views.EmployeeItem = Backbone.View.extend({
-    tagName: 'div',
-    className: 'employee gravity-item',
+    tagName: 'section',
+    className: 'person gravity-item',
     template: 'employee-item',
     serialize: function() {
       return this.model.toJSON();

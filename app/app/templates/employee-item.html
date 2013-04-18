@@ -1,12 +1,12 @@
-<!-- div class="employee gravity-item" -->
-<a href="/about/{{UrlSlug}}/">
-	<div>
+<!-- section class="person gravity-item" -->
+	<div class="img">
 		{{#if Image}}
 			{{#with Image.Urls._320}}
-				<img src="{{Url}}" />
+				<a href="/about/{{../UrlSlug}}/"><img src="{{Url}}" /></a>
 			{{/with}}
 		{{/if}}
 	</div>
-	<p>{{FirstName}}&nbsp;{{Surname}}</p>
-</a>
-<!-- /div -->
+	<h1><a href="/about/{{UrlSlug}}/">{{FirstName}} {{Surname}}</a></h1>
+	<p>{{JobTitle}}</p>
+
+<!-- /section -->
