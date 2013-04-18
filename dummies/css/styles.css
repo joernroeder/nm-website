@@ -844,6 +844,9 @@ aside a {
   box-sizing: border-box;
   width: 25%;
 }
+.portfolio .gravity {
+  width: 100%;
+}
 .about article {
   margin: 6.4375em 0;
   overflow: hidden;
