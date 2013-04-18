@@ -48,7 +48,7 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
         model = modelArray[_k];
         this.insertView('', new Portfolio.Views.ListItem({
           model: model,
-          LinkTo: 'about'
+          linkTo: 'about/' + this.model.get('UrlSlug')
         }));
       }
       return this.insertView('', new Person.Views.InfoItem({

@@ -35,7 +35,7 @@ define [
 							modelArray = modelArray.concat @.model.get(rel.key).models
 				# insert the list items
 				for model in modelArray
-					@.insertView '', new Portfolio.Views.ListItem({ model: model, LinkTo: 'about' })
+					@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: 'about/' + @.model.get('UrlSlug') })
 				# insert the person item
 				@.insertView '', new Person.Views.InfoItem({ model: @.model })
 
