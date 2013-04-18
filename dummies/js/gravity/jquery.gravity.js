@@ -125,8 +125,7 @@ var __hasProp = {}.hasOwnProperty,
           'margin-top': -this.height * this.scale() / 2,
           'margin-left': -this.width * this.scale() / 2,
           'height': this.height * this.scale(),
-          'width': this.width * this.scale(),
-          'background': this.isAwake ? this.color : this.sleepColor
+          'width': this.width * this.scale()
         });
       }
     };

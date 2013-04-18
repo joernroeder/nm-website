@@ -96,7 +96,7 @@
 					'margin-left'	: -@width * @scale() / 2
 					'height'		: @height * @scale()
 					'width'			: @width * @scale()
-					'background'	: if @isAwake then @color else @sleepColor
+					#'background'	: if @isAwake then @color else @sleepColor
 
 	# ---------------------------------------------
 	
@@ -531,20 +531,18 @@
 								content:
 									text: $metaSection.html()
 
+								###
 								events:
 									render: (event, api) ->
 										# Grab the tooltip element from the API elements object
-										console.log 'on render'
 
 										#updateMargin api
-
+								###
 
 								show:
 									event: 'mouseenter'
 									
-									effect: (api) ->
-										console.log 'on show'
-										
+									effect: (api) ->										
 										$item.addClass 'has-tooltip'
 										$(@)
 											.stop(true, true)
@@ -562,7 +560,6 @@
 								hide: 
 									event: 'mouseleave'
 									effect: (api) ->
-										console.log 'on hide'
 										$(@)
 											.stop(true, true)
 											.animate

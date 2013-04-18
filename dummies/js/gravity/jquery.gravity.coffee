@@ -96,7 +96,7 @@
 					'margin-left'	: -@width * @scale() / 2
 					'height'		: @height * @scale()
 					'width'			: @width * @scale()
-					'background'	: if @isAwake then @color else @sleepColor
+					#'background'	: if @isAwake then @color else @sleepColor
 
 	# ---------------------------------------------
 	
