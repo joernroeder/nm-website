@@ -121,17 +121,16 @@ class Exhibition extends DataObject {
 		'view.portfolio_init' => array(
 			'UglyHash',
 			'Title',
-			'StartDate',
-			'EndDate',
+			'DateRangeNice',
 			'TeaserText',
 			'IsFeatured',
 			'IsPortfolio',
-			'PreviewImage.Title',
-			'PreviewImage.Caption',
 			'PreviewImage.Urls',
-			'Persons',
 			'Persons.FirstName',
-			'Persons.Surname'
+			'Persons.Surname',
+			'Persons.UrlSlug',
+			'Persons.Templates.Url',
+			'Persons.Templates.IsDetail'
 		)
 	);
 

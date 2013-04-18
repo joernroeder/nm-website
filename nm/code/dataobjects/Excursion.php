@@ -118,15 +118,16 @@ class Excursion extends DataObject {
 		'view.portfolio_init' => array(
 			'UglyHash',
 			'Title',
-			'StartDate',
-			'EndDate',
+			'DateRangeNice',
 			'TeaserText',
 			'IsFeatured',
 			'IsPortfolio',
-			'PreviewImageID',
-			'Persons',
+			'PreviewImage.Urls',
 			'Persons.FirstName',
-			'Persons.Surname'
+			'Persons.Surname',
+			'Persons.UrlSlug',
+			'Persons.Templates.Url',
+			'Persons.Templates.IsDetail'
 		)
 	);
 
