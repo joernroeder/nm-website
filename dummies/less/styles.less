@@ -330,13 +330,16 @@ aside {
 		// on item loaded
 		&[data-gravity-item].loaded {
 			opacity: 1;
+
+			a {
+				background: @bgColor;
+			}
 		}
 
 		&> a {
 			position: relative;
 			display: block;
 			border: none;
-			background: @bgColor;
 
 			.transition(~"padding .2s ease-out, margin .2s ease-out"); 
 

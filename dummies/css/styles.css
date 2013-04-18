@@ -792,12 +792,15 @@ aside a {
 .gravity .gravity-item[data-gravity-item].loaded {
   opacity: 1;
 }
+.gravity > img[data-gravity-item].loaded a,
+.gravity .gravity-item[data-gravity-item].loaded a {
+  background: #e6e6e6;
+}
 .gravity > img > a,
 .gravity .gravity-item > a {
   position: relative;
   display: block;
   border: none;
-  background: #e6e6e6;
   -webkit-transition: padding .2s ease-out, margin .2s ease-out;
   -moz-transition: padding .2s ease-out, margin .2s ease-out;
   -o-transition: padding .2s ease-out, margin .2s ease-out;
