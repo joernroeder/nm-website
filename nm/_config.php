@@ -31,8 +31,6 @@ DataObject::add_extension('ResponsiveImage', 'ResponsiveImageUrlExtension');
 // ! Admin-Config ---------------------------------
 
 DateField::set_default_config('showcalendar', true);
-SecurityAdmin::$menu_icon = '/nm/images/admin/login16.png'; // Überschreiben des Security-Admin icons
-SecurityAdmin::$menu_priority = 39;
 Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 
 //CMSMenu::remove_menu_item('Help');

@@ -281,7 +281,7 @@ class SSTemplateParser extends Parser {
 	# character which, in some context, would indicate the end of a free string, regardless of if we're actually in
 	# that context or not 
 	 
-	FreeString: /[^,)%!=|&]+/
+	FreeString: /[^,)%!=><|&]+/
 	
 	# An argument - either a marked value, or a bare value, prefering lookup matching on the bare value over
 	# freestring matching as long as that would give a successful parse 
@@ -338,7 +338,7 @@ class SSTemplateParser extends Parser {
 	 
 	# if and else_if blocks allow basic comparisons between arguments
 	 
-	ComparisonOperator: "==" | "!=" | "="
+	ComparisonOperator: "!=" | "==" | ">=" | ">" | "<=" | "<" | "="
 
 	Comparison: Argument < ComparisonOperator > Argument
 	*/
@@ -417,8 +417,8 @@ class SSTemplateParser extends Parser {
 	# argument structure to every other block 
 	 
 	IfPart: '<%' < 'if' [ :IfArgument > '%>' Template:$TemplateMatcher?
-	ElseIfPart: '<%' < 'else_if' [ :IfArgument > '%>' Template:$TemplateMatcher
-	ElsePart: '<%' < 'else' > '%>' Template:$TemplateMatcher
+	ElseIfPart: '<%' < 'else_if' [ :IfArgument > '%>' Template:$TemplateMatcher?
+	ElsePart: '<%' < 'else' > '%>' Template:$TemplateMatcher?
 
 	If: IfPart ElseIfPart* ElsePart? '<%' < 'end_if' > '%>'
 	*/
@@ -432,14 +432,14 @@ class SSTemplateParser extends Parser {
 	function If_ElseIfPart(&$res, $sub) {
 		$res['php'] .= 
 			'else if (' . $sub['IfArgument']['php'] . ') { ' . PHP_EOL .
-				$sub['Template']['php'] . PHP_EOL . 
+				(isset($sub['Template']) ? $sub['Template']['php'] : '') . PHP_EOL .
 			'}';
 	}
 
 	function If_ElsePart(&$res, $sub) {
 		$res['php'] .= 
 			'else { ' . PHP_EOL . 
-				$sub['Template']['php'] . PHP_EOL . 
+				(isset($sub['Template']) ? $sub['Template']['php'] : '') . PHP_EOL .
 			'}';
 	}
 
@@ -662,8 +662,19 @@ class SSTemplateParser extends Parser {
 	}
 
 	function NamedArgument_Value(&$res, $sub) {
-		$res['php'] .= ($sub['ArgumentMode'] == 'default') ? $sub['string_php'] 
-			: str_replace('$$FINAL', 'XML_val', $sub['php']);
+		switch($sub['ArgumentMode']) {
+			case 'string':
+				$res['php'] .= $sub['php'];
+				break;
+
+			case 'default':
+				$res['php'] .= $sub['string_php'];
+				break;
+
+			default:
+				$res['php'] .= str_replace('$$FINAL', 'obj', $sub['php']) . '->self()';
+				break;
+		}
 	}
 
 	/*!*
@@ -793,7 +804,7 @@ class SSTemplateParser extends Parser {
 	 * @deprecated
 	 */
 	function ClosedBlock_Handle_Control(&$res) {
-		Deprecation::notice('3.1', 'Use <% with %> or <% loop %> instead.');
+		Deprecation::notice('3.1', '<% control %> is deprecated. Use <% with %> or <% loop %> instead.');
 		return $this->ClosedBlock_Handle_Loop($res);
 	}
 	
@@ -936,7 +947,7 @@ class SSTemplateParser extends Parser {
 	 
 	# This is used to remove template comments
 	 
-	Comment: "<%--" (!"--%>" /./)+ "--%>"
+	Comment: "<%--" (!"--%>" /(?s)./)+ "--%>"
 	*/
 	function Comment__construct(&$res) {
 		$res['php'] = '';
@@ -991,7 +1002,7 @@ class SSTemplateParser extends Parser {
 		// non-dynamically calculated
 		$text = preg_replace(
 			'/href\s*\=\s*\"\#/', 
-			'href="\' . (SSViewer::$options[\'rewriteHashlinks\'] ? strip_tags( $_SERVER[\'REQUEST_URI\'] ) : "") . 
+			'href="\' . (Config::inst()->get(\'SSViewer\', \'rewrite_hash_links\') ? strip_tags( $_SERVER[\'REQUEST_URI\'] ) : "") . 
 				\'#',
 			$text
 		);
@@ -1036,11 +1047,11 @@ class SSTemplateParser extends Parser {
 		
 		// Include top level debugging comments if desired
 		if($includeDebuggingComments && $templateName && stripos($code, "<?xml") === false) {
-			// If this template is a full HTML page, then put the comments just inside the HTML tag to prevent any IE 
-			// glitches
+			// If this template is a full HTML page, then put the comments just outside the HTML tag, 
+			// this is still no problem for IE as long as the DOCTYPE-declaration is done before this comment
 			if(stripos($code, "<html") !== false) {
-				$code = preg_replace('/(<html[^>]*>)/i', "\\1<!-- template $templateName -->", $code);
-				$code = preg_replace('/(<\/html[^>]*>)/i', "<!-- end template $templateName -->\\1", $code);
+				$code = preg_replace('/(<html[^>]*>)/i', "<!-- template $templateName -->\\1", $code);
+				$code = preg_replace('/(<\/html[^>]*>)/i', "\\1<!-- end template $templateName -->", $code);
 			} else {
 				$code = str_replace('<?php' . PHP_EOL, '<?php' . PHP_EOL . '$val .= \'<!-- template ' . $templateName .
 					' -->\';' . "\n", $code);

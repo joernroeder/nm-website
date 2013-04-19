@@ -20,11 +20,13 @@
  */
 class IconizedModelAdminExtension extends DataExtension {
 
-	function extraStatics($class = NULL, $extension = NULL) {
+	static function get_extra_config($class, $extension, $args) {
 		$className = str_replace('admin', '', strtolower($class));
 
 		return array(
 			'menu_icon'	=> 'nm/images/admin/' . $className . '16.png'
 		);
 	}
+
 }
+

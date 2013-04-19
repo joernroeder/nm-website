@@ -1,0 +1,3 @@
+SecurityAdmin:
+  menu_icon: 'foo'
+  menu_priority: 39
