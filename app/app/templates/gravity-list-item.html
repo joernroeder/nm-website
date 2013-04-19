@@ -9,15 +9,18 @@
 		{{/if}}
 	</div>
 </a>-->
-<a href="/{{LinkTo}}/{{UglyHash}}/">
 	{{#if PreviewImage}}
-		{{#with PreviewImage.Urls._320}}
-			<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>
-		{{/with}}
+		<a href="/{{LinkTo}}/{{UglyHash}}/">
+			{{#with PreviewImage.Urls._320}}
+				<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>
+			{{/with}}
+		</a>
 	{{/if}}
 	<section>
 		<header>
-			<h1>{{Title}}</h1>
+			<h1>
+				<a href="/{{LinkTo}}/{{UglyHash}}/">{{Title}}</a>
+			</h1>
 			<p>{{nameSummary Persons}} {{niceDate this}}</p>
 		</header>
 		<p>
@@ -25,5 +28,4 @@
 		</p>
 		<a href="/{{LinkTo}}/{{UglyHash}}/" class="btn">Read More</a>
 	</section>
-</a>
 <!-- /article -->
