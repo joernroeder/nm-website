@@ -50,7 +50,7 @@ class ResponsiveImage extends DataObject {
 	 *
 	 * @static
 	 */
-	public static $default_elements = array(
+	private static $default_elements = array(
 		'wrapper'	=> 'div',
 		'image'		=> 'div'
 	);
@@ -98,6 +98,14 @@ class ResponsiveImage extends DataObject {
 	public static function get_breakpoint_name($size) {
 		$size = (string) $size;
 		return isset(self::$responsive_breakpoints[$size]) ? self::$responsive_breakpoints[$size] : '';
+	}
+
+	public static function setWrapperTag($value) {
+		self::$default_elements['wrapper'] = $value;
+	}
+
+	public static function setImageTag($value) {
+		self::$default_elements['image'] = $value;
 	}
 
 	/**
