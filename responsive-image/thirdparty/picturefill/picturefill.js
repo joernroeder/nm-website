@@ -66,6 +66,7 @@
 	
 	// Run on resize and domready (w.load as a fallback)
 	if( w.addEventListener ){
+		w.addEventListener( "rendered", w.picturefill, false );
 		w.addEventListener( "resize", w.picturefill, false );
 		w.addEventListener( "DOMContentLoaded", function(){
 			w.picturefill();
