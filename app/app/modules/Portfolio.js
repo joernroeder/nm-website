@@ -36,7 +36,7 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     }
   });
   Portfolio.Views.Detail = Backbone.View.extend({
-    tagName: 'section',
+    tagName: 'article',
     className: 'portfolio-detail',
     template: 'portfolio-detail',
     serialize: function() {

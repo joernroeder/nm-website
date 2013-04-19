@@ -132,7 +132,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           if (!model || (!nameSlug && !model.get('IsFeatured') && !model.get('IsPortfolio'))) {
             return _this.fourOhFour();
           }
-          layout = app.useLayout('main');
+          layout = app.useLayout('main', {
+            customClass: 'detail'
+          });
           template = '';
           if (nameSlug) {
             person = model.get('Persons').where({

@@ -69,7 +69,10 @@ class Project extends DataObject {
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
 		'TeaserCMSFieldsExtension',
-		'UglyHashExtension'
+		'UglyHashExtension',
+		'HyphenatedTextExtension',
+		'MarkdownDataExtension',
+		'MarkdownedTextExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -105,6 +108,8 @@ class Project extends DataObject {
 			'TeaserText',
 			'FrontendDate',
 			'Text',
+			'MarkdownedText',
+			'MarkdownedTeaser',
 			'Code',
 			'IsPortfolio',
 			'IsFeatured',

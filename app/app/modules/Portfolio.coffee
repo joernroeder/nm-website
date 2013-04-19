@@ -28,7 +28,7 @@ define [
 				data
 
 		Portfolio.Views.Detail = Backbone.View.extend
-			tagName: 'section'
+			tagName: 'article'
 			className: 'portfolio-detail'
 			template: 'portfolio-detail'
 			serialize: () ->

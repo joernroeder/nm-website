@@ -59,7 +59,10 @@ class Workshop extends DataObject {
 		'StartEndDateExtension',
 		'DataObjectHasSummaryExtension',
 		'TeaserCMSFieldsExtension',
-		'UglyHashExtension'
+		'UglyHashExtension',
+		'HyphenatedTextExtension',
+		'MarkdownDataExtension',
+		'MarkdownedTextExtension'
 	);
 
 
@@ -99,6 +102,8 @@ class Workshop extends DataObject {
 			'Space',
 			'Location',
 			'Text',
+			'MarkdownedText',
+			'MarkdownedTeaser',
 			'Exhibitions',
 			'Projects',
 			'Images',

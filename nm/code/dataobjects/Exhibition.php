@@ -65,7 +65,10 @@ class Exhibition extends DataObject {
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
 		'TeaserCMSFieldsExtension',
-		'UglyHashExtension'
+		'UglyHashExtension',
+		'HyphenatedTextExtension',
+		'MarkdownDataExtension',
+		'MarkdownedTextExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -109,6 +112,8 @@ class Exhibition extends DataObject {
 			'Space',
 			'Location',
 			'Text',
+			'MarkdownedText',
+			'MarkdownedTeaser',
 			'Websites',
 			'Projects',
 			'Images',

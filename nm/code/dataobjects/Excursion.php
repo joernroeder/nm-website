@@ -64,7 +64,10 @@ class Excursion extends DataObject {
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
 		'TeaserCMSFieldsExtension',
-		'UglyHashExtension'
+		'UglyHashExtension',
+		'HyphenatedTextExtension',
+		'MarkdownDataExtension',
+		'MarkdownedTextExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -104,6 +107,8 @@ class Excursion extends DataObject {
 			'Date',
 			'TeaserText',
 			'Text',
+			'MarkdownedText',
+			'MarkdownedTeaser',
 			'Projects',
 			'CalendarEnties',
 			'Workshops',
