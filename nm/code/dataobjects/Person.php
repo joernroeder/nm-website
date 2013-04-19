@@ -84,13 +84,14 @@ class Person extends DataObject {
 
 	// Felder für die Listen/Übersichten im Admin
 	static $summary_fields = array(
-		'FullName',
+		'Title',
 		'Email',
 		'Phone',
 		'GraduationYear'
 	);
 
-	public function getFullName() {
+	// admin helper
+	public function getTitle() {
 		return $this->FirstName . ' ' . $this->Surname;
 	}
 
