@@ -697,6 +697,12 @@ aside a {
   min-height: 100%;
   width: 100%;
 }
+span[data-picture] {
+  display: block;
+}
+span[data-picture] span {
+  display: block;
+}
 .qtip {
   position: absolute;
   left: -28000em;
