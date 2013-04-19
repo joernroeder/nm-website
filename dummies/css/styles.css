@@ -702,6 +702,7 @@ span[data-picture] {
 }
 span[data-picture] span {
   display: block;
+  height: auto;
 }
 .qtip {
   position: absolute;
