@@ -120,15 +120,17 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showPortfolioDetailed: function(uglyHash, nameSlug) {
-      var classType;
+      var classType,
+        _this = this;
 
       classType = app.Config.ClassEnc[uglyHash.substr(0, 1)];
       if (classType) {
         return DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
           var detailView, layout, person, template;
 
+          console.log(model);
           if (!model || (!nameSlug && !model.get('IsFeatured') && !model.get('IsPortfolio'))) {
-            return this.fourOhFour();
+            return _this.fourOhFour();
           }
           layout = app.useLayout('main');
           template = '';

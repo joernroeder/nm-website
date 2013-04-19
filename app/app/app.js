@@ -51,16 +51,24 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
       }, additionalProps);
     },
     useLayout: function(name, options) {
-      var $body, currentLayout, customClass, layout;
+      var $body, currentLayout, customClass, l, layout;
 
       options = options || {};
+      customClass = options.customClass ? options.customClass : name;
       if (this.layout && this.layout.getAllOptions().template === 'layouts/' + name) {
+        l = this.layout;
+        if (l.customClass) {
+          l.$el.removeClass(l.customClass);
+        }
+        if (customClass) {
+          l.customClass = customClass;
+          l.$el.addClass(customClass);
+        }
         return this.layout;
       }
       if (this.layout) {
         this.layout.remove();
       }
-      customClass = options.customClass ? options.customClass : name;
       layout = new Backbone.NMLayout(_.extend({
         template: 'layouts/' + name,
         className: 'layout ' + customClass,

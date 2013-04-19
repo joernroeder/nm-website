@@ -66,14 +66,21 @@ define [
 			# Helper for using layouts.
 			useLayout: (name, options) ->
 				options = options || {}
+				customClass = if options.customClass then options.customClass else name
+
 				# If already using this Layout, then don't re-inject into the DOM.
 				if @.layout and @.layout.getAllOptions().template is 'layouts/' + name
+					l = @.layout
+					if l.customClass then l.$el.removeClass(l.customClass)
+					if customClass
+						l.customClass = customClass
+						l.$el.addClass customClass
+
 					return @.layout
 
 				# If a layout already exists, remove it from the DOM.
 				if @.layout then @.layout.remove()
-
-				customClass = if options.customClass then options.customClass else name
+				
 
 				# Create a new Layout with options.
 				layout = new Backbone.NMLayout _.extend({

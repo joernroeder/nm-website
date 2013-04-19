@@ -99,6 +99,10 @@ class Exhibition extends DataObject {
 		'view' => array(
 			'UglyHash',
 			'Title',
+			'DateRangeNice',
+			'TeaserText',
+			'IsFeatured',
+			'IsPortfolio',
 			'PreviewImageID',
 			'TeaserText',
 			'Date',

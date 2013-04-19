@@ -108,7 +108,8 @@ define [
 			# the first digit of uglyHash points to its class -> get it!
 			classType = app.Config.ClassEnc[uglyHash.substr(0,1)]
 			if classType
-				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) ->
+				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) =>
+					console.log model
 					if not model or (not nameSlug and not model.get('IsFeatured') and not model.get('IsPortfolio')) then return @.fourOhFour()
 					layout = app.useLayout 'main'
 					template = ''

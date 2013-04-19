@@ -1,8 +1,10 @@
 <!-- section class="gravity" -->
 {{#if GroupImage}}
+<section class="gravity-item group-image">
 	{{#with GroupImage.Urls._768}}
-		<img src="{{Url}}" width="{{Width}}" height="{{Height}}" class="group-image gravity-item" />
+		<img src="{{Url}}" width="{{Width}}" height="{{Height}}" />
 	{{/with}}
+</section>
 {{/if}}
 
 <section class="students gravity-item">
