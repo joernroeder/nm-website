@@ -12,6 +12,7 @@
 
 	w.picturefill = function(options) {
 		options = options || w.picturefill_opts;
+
 		var ps = w.document.getElementsByTagName( options.wrapperTag );
 
 		// Loop the pictures

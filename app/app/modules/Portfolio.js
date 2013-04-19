@@ -40,10 +40,7 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     className: 'portfolio-detail',
     template: 'portfolio-detail',
     afterRender: function() {
-      return window.picturefill({
-        wrapperTag: 'div',
-        imageTag: 'div'
-      });
+      return window.picturefill();
     },
     serialize: function() {
       if (this.model) {

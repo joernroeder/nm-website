@@ -32,7 +32,7 @@ define [
 			className: 'portfolio-detail'
 			template: 'portfolio-detail'
 			afterRender: ->
-				window.picturefill { wrapperTag: 'div', imageTag: 'div' }
+				window.picturefill()
 			serialize: () ->
 				if @.model then @.model.toJSON() else {}
 
