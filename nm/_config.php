@@ -37,15 +37,15 @@ Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 
 //CMSMenu::remove_menu_item('Help');
 
-SS_Cache::add_backend('two-level', 'TwoLevels', array(
+/*SS_Cache::add_backend('two-level', 'TwoLevels', array(
  	'slow_backend' => 'File',
- 	'fast_backend' => 'Apc',
+ 	'fast_backend' => 'xcache',
  	'slow_backend_options' => array(
  		'cache_dir' => TEMP_FOLDER . DIRECTORY_SEPARATOR . 'cache'
  	)
 ));
 
-SS_Cache::pick_backend('two-level', 'any', 20);
+SS_Cache::pick_backend('two-level', 'any', 20);*/
 
 
 // ! JJRestApi ------------------------------------
