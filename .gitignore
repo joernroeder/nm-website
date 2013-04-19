@@ -1,7 +1,10 @@
 .DS_Store
 app/app/*.js
 silverstripe-cache/*
-/assets
+!/assets/
+/assets/*
+!/assets/Uploads/
+/assets/Uploads/_resampled/*
 _ss_environment.php
 *.sublime-workspace
 *.sublime-project

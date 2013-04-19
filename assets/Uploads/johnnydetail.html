@@ -1,0 +1,11 @@
+<div>
+	<h1>{{Title}}<h1/>
+	<p>{{Text}}</p>
+</div>
+<script type="text/javascript">
+	$(document).one('template:ready', function (e) {
+		alert('This is my custom detail template! Suck my dick!')
+
+		e.stopImmediatePropagation();
+	});
+</script>

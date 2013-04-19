@@ -1,0 +1,16 @@
+<div>
+	<h1>{{FirstName}} {{Surname}}</h1>
+	{{#if Projects}}
+		{{#each Projects}}
+			<h2><a href="/about/{{../UrlSlug}}/{{UglyHash}}/">{{Title}}</a></h2>
+		{{/each}}
+	{{/if}}
+</div>
+<script>
+	$(document).one('template:ready', function (e) {
+
+		alert('This is my custom overview template! Yay!')
+
+		e.stopImmediatePropagation();
+	});
+</script>
