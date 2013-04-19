@@ -6,4 +6,17 @@
 <section>
 	{{{MarkdownedText}}}
 </section>
+<aside>
+	{{#if Exhibitions}}
+	{{/if}}
+	{{#if Workshops}}
+	{{/if}}
+	{{#if Excursions}}
+	{{/if}}
+	{{#ifProjects}}
+		{{#each combinedProjects}}
+			{{Title}}
+		{{/each}}
+	{{/ifProjects}}
+</aside>
 <!-- /article -->

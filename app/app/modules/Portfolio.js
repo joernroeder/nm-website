@@ -39,6 +39,12 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     tagName: 'article',
     className: 'portfolio-detail',
     template: 'portfolio-detail',
+    afterRender: function() {
+      return window.picturefill({
+        wrapperTag: 'div',
+        imageTag: 'div'
+      });
+    },
     serialize: function() {
       if (this.model) {
         return this.model.toJSON();
@@ -77,6 +83,23 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
       out += model.FrontendDate;
     }
     return out;
+  });
+  Handlebars.registerHelper('ifProjects', function(block) {
+    var types,
+      _this = this;
+
+    types = ['Projects', 'ChildProjects', 'ParentProjects'];
+    this.combinedProjects = [];
+    _.each(types, function(type) {
+      if (_.isArray(_this[type])) {
+        return _this.combinedProjects = _this.combinedProjects.concat(_this[type]);
+      }
+    });
+    if (this.combinedProjects.length) {
+      return block(this);
+    } else {
+      return block.inverse(this);
+    }
   });
   return Portfolio;
 });

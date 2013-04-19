@@ -154,7 +154,8 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             model: model,
             template: template
           });
-          return layout.setViewAndRenderMaybe('', detailView);
+          layout.setViewAndRenderMaybe('', detailView);
+          return console.log(app);
         });
       } else {
         return this.fourOhFour();

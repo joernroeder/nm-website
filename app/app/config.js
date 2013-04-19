@@ -4,6 +4,7 @@ require.config({
   paths: {
     libs: '../assets/js/libs',
     plugins: '../assets/js/plugins',
+    responsiveimage: '../../responsive-image/thirdparty/picturefill',
     jquery: '../assets/js/libs/jquery.min',
     underscore: '../assets/js/libs/underscore',
     backbone: '../assets/js/libs/backbone',
@@ -25,6 +26,7 @@ require.config({
     },
     'plugins/tooltip/jquery.qtip': ['jquery'],
     'plugins/gravity/jquery.gravity': ['plugins/tooltip/jquery.qtip'],
+    'responsiveimage/picturefill': ['responsiveimage/external/matchmedia'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone']

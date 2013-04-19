@@ -8,6 +8,7 @@ define [
 		'plugins/backbone.layoutmanager'
 		'plugins/backbone.JJRelational'
 		'plugins/backbone.JJRestApi'
+		'responsiveimage/picturefill'
 	],
 
 	($, _, Backbone, Handlebars) ->	

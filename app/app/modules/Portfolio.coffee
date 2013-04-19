@@ -31,6 +31,8 @@ define [
 			tagName: 'article'
 			className: 'portfolio-detail'
 			template: 'portfolio-detail'
+			afterRender: ->
+				window.picturefill { wrapperTag: 'div', imageTag: 'div' }
 			serialize: () ->
 				if @.model then @.model.toJSON() else {}
 
@@ -55,6 +57,15 @@ define [
 			else if model.FrontendDate
 				out += model.FrontendDate
 			out
+
+		Handlebars.registerHelper 'ifProjects', (block) ->
+			types = ['Projects', 'ChildProjects', 'ParentProjects']
+			@.combinedProjects = []
+			_.each types, (type) =>
+				if _.isArray @[type]
+					@.combinedProjects = @.combinedProjects.concat @[type]
+			return if @.combinedProjects.length then block @ else block.inverse @
+
 
 
 

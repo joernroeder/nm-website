@@ -121,6 +121,7 @@ define [
 
 					detailView = if not template then new Portfolio.Views.Detail({ model: model }) else new Person.Views.Custom({ model: model, template: template })
 					layout.setViewAndRenderMaybe '', detailView
+					console.log app
 			else
 				@.fourOhFour()
 
