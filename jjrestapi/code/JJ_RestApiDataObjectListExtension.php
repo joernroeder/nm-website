@@ -441,17 +441,28 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 *
 	 * @return array
 	 */
-	public function getRelationKeys($component = null, $classOnly = true) {
-
-		$relations = array();
-		$relationKeys = array(
+	private function getRelationKeyArray() {
+		return array(
 			'has_one'			=> $this->owner->has_one($component = null),
 			'belongs_to'		=> $this->owner->belongs_to($component = null, $classOnly = true),
 			'has_many'			=> $this->owner->has_many($component = null, $classOnly = true),
-			//'many_many'		=> $this->owner->many_many($component = null),
+			'many_many'			=> $this->owner->many_many($component = null),
+			//'belongs_many_many'			=> array_merge($this->getManyManyRelationKeys(), $this->getBelongsToManyManyRelationKeys())
+		);
+	}
+
+	private function getStructuralRelationKeyArray() {
+		return array(
+			'has_one'			=> $this->owner->has_one($component = null),
+			'belongs_to'		=> $this->owner->belongs_to($component = null, $classOnly = true),
+			'has_many'			=> $this->owner->has_many($component = null, $classOnly = true),
 			'many_many'			=> $this->getManyManyRelationKeys(),
 			'belongs_many_many'	=> $this->getBelongsToManyManyRelationKeys()
 		);
+	}
+
+	private function processRelationKeys($relationKeys) {
+		$relations = array();
 
 		foreach ($relationKeys as $key => $relation) {
 			if (is_array($relation) && !empty($relation)) {
@@ -470,6 +481,33 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		}
 		
 		return $relations;
+	}
+
+	public function getStructuralRelationKeys() {
+		return $this->processRelationKeys($this->getStructuralRelationKeyArray());
+	}
+
+	public function getRelationKeys() {
+		/*$relationKeys = $this->getRelationKeyArray();
+
+		foreach ($relationKeys as $key => $relation) {
+			if (is_array($relation) && !empty($relation)) {
+				foreach ($relation as $k => $v) {
+
+					if (!class_exists($v)) continue;
+
+					$relations[$k] = array(
+						'ClassName'		=> $v,
+						'Type'			=> $key,
+						'Key'			=> $k,
+						'ReverseKey'	=> singleton($v)->getReverseRelationKey($this->owner->class, $key)
+					);
+				}
+			}
+		}
+		
+		return $relations;*/
+		return $this->processRelationKeys($this->getRelationKeyArray());
 	}
 
 	private function getManyManyRelationKeys() {
@@ -511,16 +549,16 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @return String
 	 */
 	public function getReverseRelationKey($className, $key) {
+		$belongs_many_many = $this->getBelongsToManyManyRelationKeys();
+		if (is_array($belongs_many_many)) {
+			$belongs_many_many = array_flip($belongs_many_many);
+			if (array_key_exists($className, $belongs_many_many) && $key == 'many_many') return $belongs_many_many[$className];
+		}
+
 		$many_many = $this->getManyManyRelationKeys();
 		if (is_array($many_many)) {
 			$many_many = array_flip($many_many);
-			if (array_key_exists($className, $many_many) && $key == 'belongs_many_many') return $many_many[$className];
-		}
-
-		$belongs_many_many = $this->getBelongsToManyManyRelationKeys();
-		if (is_array($many_many)) {
-			$belongs_many_many = array_flip($belongs_many_many);
-			if (array_key_exists($className, $belongs_many_many) && $key == 'many_many') return $belongs_many_many[$className];
+			if (array_key_exists($className, $many_many) && in_array($key, array('belongs_many_many', 'many_many'))) return $many_many[$className];
 		}
 
 		$has_many = $this->owner->has_many();

@@ -261,7 +261,7 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 			$obj = singleton($class);
 			$relationKeys = array();
 
-			foreach ($obj->getRelationKeys() as $key => $relation) {
+			foreach ($obj->getStructuralRelationKeys() as $key => $relation) {
 				if (!array_key_exists($relation['ClassName'], $ignore)) {
 					if (!in_array($relation['ClassName'], $objects)) {
 						// update classnames array
