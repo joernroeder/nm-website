@@ -75,8 +75,8 @@ class RadialGravity
 				body.allowSleep = true
 
 			body.fixedRotation = true
-			body.linearDamping = 1.5
-			body.angularDamping = .5
+			body.linearDamping = 2.5 #1.5
+			body.angularDamping = .9 #.5
 			body.gravityScale = 0.0
 
 			body # return
@@ -313,6 +313,9 @@ class RadialGravity
 			bodyDef.userData = entity.id
 
 			@world.CreateBody(bodyDef).CreateFixture fixDef
+
+			# random seed
+			#bodyDef.GetMass()
 
 			@bodyCount++
 

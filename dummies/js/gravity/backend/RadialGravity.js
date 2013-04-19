@@ -73,8 +73,8 @@ RadialGravity = (function() {
         body.allowSleep = true;
       }
       body.fixedRotation = true;
-      body.linearDamping = 1.5;
-      body.angularDamping = .5;
+      body.linearDamping = 2.5;
+      body.angularDamping = .9;
       body.gravityScale = 0.0;
       return body;
     };
