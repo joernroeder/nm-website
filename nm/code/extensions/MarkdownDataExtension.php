@@ -37,9 +37,11 @@ class MarkdownDataExtension extends DataExtension {
 				$arr = explode(' ', $imgID);
 				$imgID = (int) $arr[0];
 				$maxWidth = (isset($arr[1]) && $arr[1]) ? 'max-width:' . $arr[1] : null;
-				$img = DataObject::get_by_id(self::$img_class, (int) $imgID);
-				if ($img->exists()) {
-					$mdText = str_replace($value, $img->getTag(null, null, $maxWidth), $mdText);
+				if ($imgID) {
+					$img = DataObject::get_by_id(self::$img_class, (int) $imgID);
+					if ($img && $img->exists()) {
+						$mdText = str_replace($value, $img->getTag(null, null, $maxWidth), $mdText);
+					}
 				}
 			}
 		}
