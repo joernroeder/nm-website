@@ -122,6 +122,7 @@ class Project extends DataObject {
 			'CalendarEntries',
 			'ParentProjects.Title',
 			'ParentProjects.UglyHash',
+			'ParentProjects.IsPortfolio',
 			'ChildProjects',
 			'Exhibitions',
 			'Workshops',

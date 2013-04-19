@@ -110,7 +110,7 @@ define [
 			if classType
 				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) =>
 					console.log model
-					if not model or (not nameSlug and not model.get('IsFeatured') and not model.get('IsPortfolio')) then return @.fourOhFour()
+					if not model or (not nameSlug and not model.get('IsPortfolio')) then return @.fourOhFour()
 					layout = app.useLayout 'main', {customClass: 'detail'}
 					template = ''
 					if nameSlug

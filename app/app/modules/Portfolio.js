@@ -43,11 +43,20 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
       return window.picturefill();
     },
     serialize: function() {
-      if (this.model) {
-        return this.model.toJSON();
-      } else {
-        return {};
-      }
+      var json, types,
+        _this = this;
+
+      console.log(this.model);
+      debugger;
+      json = this.model ? this.model.toJSON() : {};
+      types = ['Projects', 'ChildProjects', 'ParentProjects'];
+      json.combinedProjects = [];
+      _.each(types, function(type) {
+        if (_.isArray(json[type])) {
+          return json.combinedProjects = json.combinedProjects.concat(json[type]);
+        }
+      });
+      return json;
     }
   });
   Handlebars.registerHelper('nameSummary', function(persons) {
@@ -81,22 +90,17 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     }
     return out;
   });
-  Handlebars.registerHelper('ifProjects', function(block) {
-    var types,
-      _this = this;
+  Handlebars.registerHelper('portfoliolist', function(items, options) {
+    var out;
 
-    types = ['Projects', 'ChildProjects', 'ParentProjects'];
-    this.combinedProjects = [];
-    _.each(types, function(type) {
-      if (_.isArray(_this[type])) {
-        return _this.combinedProjects = _this.combinedProjects.concat(_this[type]);
+    out = '<ul>';
+    _.each(items, function(item) {
+      if (item.IsPortfolio) {
+        return out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
       }
     });
-    if (this.combinedProjects.length) {
-      return block(this);
-    } else {
-      return block.inverse(this);
-    }
+    out += '</ul>';
+    return out;
   });
   return Portfolio;
 });

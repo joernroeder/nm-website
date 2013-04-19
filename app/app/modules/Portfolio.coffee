@@ -34,7 +34,15 @@ define [
 			afterRender: ->
 				window.picturefill()
 			serialize: () ->
-				if @.model then @.model.toJSON() else {}
+				console.log @.model
+				debugger
+				json = if @.model then @.model.toJSON() else {}
+				types = ['Projects', 'ChildProjects', 'ParentProjects']
+				json.combinedProjects = []
+				_.each types, (type) =>
+					if _.isArray json[type]
+						json.combinedProjects = json.combinedProjects.concat json[type]
+				json
 
 
 		#! Handlebar helpers
@@ -58,13 +66,14 @@ define [
 				out += model.FrontendDate
 			out
 
-		Handlebars.registerHelper 'ifProjects', (block) ->
-			types = ['Projects', 'ChildProjects', 'ParentProjects']
-			@.combinedProjects = []
-			_.each types, (type) =>
-				if _.isArray @[type]
-					@.combinedProjects = @.combinedProjects.concat @[type]
-			return if @.combinedProjects.length then block @ else block.inverse @
+		Handlebars.registerHelper 'portfoliolist', (items, options) ->
+			out = '<ul>'
+			_.each items, (item) ->
+				if item.IsPortfolio
+					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'
+			out += '</ul>'
+			out
+
 
 
 

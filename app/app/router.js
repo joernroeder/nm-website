@@ -129,7 +129,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           var detailView, layout, person, template;
 
           console.log(model);
-          if (!model || (!nameSlug && !model.get('IsFeatured') && !model.get('IsPortfolio'))) {
+          if (!model || (!nameSlug && !model.get('IsPortfolio'))) {
             return _this.fourOhFour();
           }
           layout = app.useLayout('main', {
