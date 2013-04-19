@@ -558,7 +558,10 @@ aside {
   width: 12.5em;
   margin-bottom: 3em;
 }
-aside h1 {
+aside h1,
+aside h2,
+aside h3,
+aside h4 {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
@@ -570,7 +573,10 @@ aside ul {
 aside li {
   margin-top: 0.75em;
 }
-aside h1 {
+aside h1,
+aside h2,
+aside h3,
+aside h4 {
   color: #696969;
 }
 aside a {
@@ -621,7 +627,10 @@ aside a {
   margin-bottom: 3em;
   text-align: right;
 }
-.calendar h1 {
+.calendar h1,
+.calendar h2,
+.calendar h3,
+.calendar h4 {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
@@ -633,7 +642,10 @@ aside a {
 .calendar li {
   margin-top: 0.75em;
 }
-.calendar h1 {
+.calendar h1,
+.calendar h2,
+.calendar h3,
+.calendar h4 {
   color: #696969;
 }
 .calendar a {
@@ -907,7 +919,13 @@ span[data-picture] img {
   box-sizing: border-box;
 }
 .about .students h1,
-.about .alumni h1 {
+.about .alumni h1,
+.about .students h2,
+.about .alumni h2,
+.about .students h3,
+.about .alumni h3,
+.about .students h4,
+.about .alumni h4 {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
