@@ -47,6 +47,7 @@ Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 
 SS_Cache::pick_backend('two-level', 'any', 20);*/
 
+GD::set_default_quality(95);
 
 // ! JJRestApi ------------------------------------
 
