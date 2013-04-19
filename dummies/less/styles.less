@@ -30,6 +30,34 @@ body {
 	width: 100%;
 }
 
+.clearfix() {
+	/**
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
+	&:before,
+	&:after {
+		content: " "; /* 1 */
+		display: table; /* 2 */
+	}
+	
+	&:after {
+		clear: both;
+	}
+	
+	/**
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
+
+	*zoom: 1;
+}
+
 // temporärer Abstand um bei den Tests im Grid zu starten.
 article {
 //	margin-top: 7 / @em;
@@ -225,10 +253,12 @@ aside {
 
 #wrapper {
 	margin: 0 @column;
-	overflow: hidden;
+	//overflow: hidden;
 	//height: 100%;
 	min-height: 100%;
 	position: relative;
+
+	.clearfix();
 
 	&:after {
 		visibility: hidden;
@@ -494,7 +524,8 @@ span[data-picture] {
 		@marginBottom: @marginTop;
 		@marginLeft: 100% / 8 * @articleMarginLeft;
 
-		margin: @marginTop @marginRight @marginBottom @marginLeft;
+		margin: @marginTop @marginRight 0 @marginLeft;
+		padding-bottom: @marginBottom;
 		overflow: hidden;
 
 		header  {
