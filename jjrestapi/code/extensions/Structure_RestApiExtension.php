@@ -249,7 +249,7 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 		$keys = array_keys($objects);
 		while ($i < sizeOf($keys)) {
 			$class = $keys[$i];
-			//$className = $objs[$i];
+
 			if (!class_exists($class)) {
 				user_error("You've added '{$class}' to JJ_RestApis Structure-Extension. But '{$class}' doesn't exists.", E_USER_WARNING);
 			}
@@ -259,7 +259,6 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 			}
 			
 			$obj = singleton($class);
-
 			$relationKeys = array();
 
 			foreach ($obj->getRelationKeys() as $key => $relation) {
@@ -267,9 +266,9 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 					if (!in_array($relation['ClassName'], $objects)) {
 						// update classnames array
 						$keys[] = $relation['ClassName'];
-						
 						//$keys = array_keys($objects);
 					}
+
 					$relationKeys[] = $relation;
 				}
 			}

@@ -445,10 +445,12 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 
 		$relations = array();
 		$relationKeys = array(
-			'has_one'		=> $this->owner->has_one($component = null),
-			'belongs_to'	=> $this->owner->belongs_to($component = null, $classOnly = true),
-			'has_many'		=> $this->owner->has_many($component = null, $classOnly = true),
-			'many_many'		=> $this->owner->many_many($component = null)
+			'has_one'			=> $this->owner->has_one($component = null),
+			'belongs_to'		=> $this->owner->belongs_to($component = null, $classOnly = true),
+			'has_many'			=> $this->owner->has_many($component = null, $classOnly = true),
+			//'many_many'		=> $this->owner->many_many($component = null),
+			'many_many'			=> $this->getManyManyRelationKeys(),
+			'belongs_many_many'	=> $this->getBelongsToManyManyRelationKeys()
 		);
 
 		foreach ($relationKeys as $key => $relation) {
@@ -470,6 +472,36 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		return $relations;
 	}
 
+	private function getManyManyRelationKeys() {
+		$newItems = (array)Config::inst()->get($this->owner->class, 'many_many', Config::UNINHERITED);
+
+		// Validate the data
+		foreach($newItems as $k => $v) {
+			if(!is_string($k) || is_numeric($k) || !is_string($v)) {
+				user_error("$class::\$many_many has a bad entry: " 
+				. var_export($k,true). " => " . var_export($v,true) . ".  Each map key should be a"
+				. " relationship name, and the map value should be the data class to join to.", E_USER_ERROR);
+			}
+		}
+
+		return isset($items) ? array_merge($newItems, $items) : $newItems;
+	}
+
+	private function getBelongsToManyManyRelationKeys() {
+		$newItems = (array)Config::inst()->get($this->owner->class, 'belongs_many_many', Config::UNINHERITED);
+
+		// Validate the data
+		foreach($newItems as $k => $v) {
+			if(!is_string($k) || is_numeric($k) || !is_string($v)) {
+				user_error("$class::\$belongs_many_many has a bad entry: " 
+				. var_export($k,true). " => " . var_export($v,true) . ".  Each map key should be a"
+				. " relationship name, and the map value should be the data class to join to.", E_USER_ERROR);
+			}
+		}
+
+		return isset($items) ? array_merge($newItems, $items) : $newItems;
+	}
+
 
 	/**
 	 * Temporary hack to return an association name, based on class, to get around the mangle
@@ -479,20 +511,33 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @return String
 	 */
 	public function getReverseRelationKey($className, $key) {
-		if (is_array($this->owner->many_many())) {
-			$many_many = array_flip($this->owner->many_many());
-			if (array_key_exists($className, $many_many) && in_array($key, array('many_many', 'belongs_many_many'))) return $many_many[$className];
+		$many_many = $this->getManyManyRelationKeys();
+		if (is_array($many_many)) {
+			$many_many = array_flip($many_many);
+			if (array_key_exists($className, $many_many) && $key == 'belongs_many_many') return $many_many[$className];
 		}
-		if (is_array($this->owner->has_many())) {
-			$has_many = array_flip($this->owner->has_many());
+
+		$belongs_many_many = $this->getBelongsToManyManyRelationKeys();
+		if (is_array($many_many)) {
+			$belongs_many_many = array_flip($belongs_many_many);
+			if (array_key_exists($className, $belongs_many_many) && $key == 'many_many') return $belongs_many_many[$className];
+		}
+
+		$has_many = $this->owner->has_many();
+		if (is_array($has_many)) {
+			$has_many = array_flip($has_many);
 			if (array_key_exists($className, $has_many) && $key == 'has_one') return $has_many[$className];
 		}
-		if (is_array($this->owner->has_one())) {
-			$has_one = array_flip($this->owner->has_one());
+
+		$has_one = $this->owner->has_one();
+		if (is_array($has_one)) {
+			$has_one = array_flip($has_one);
 			if (array_key_exists($className, $has_one) && in_array($key, array('has_many', 'belongs_to'))) return $has_one[$className];
 		}
-		if (is_array($this->owner->belongs_to())) {
-			$belongs_to = array_flip($this->owner->belongs_to());
+
+		$belongs_to = $this->owner->belongs_to();
+		if (is_array($belongs_to)) {
+			$belongs_to = array_flip($belongs_to);
 			if (array_key_exists($className, $belongs_to) && $key == 'has_one') return $belongs_to[$className];
 		}
 		

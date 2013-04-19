@@ -702,6 +702,8 @@ span[data-picture] {
 }
 span[data-picture] span {
   display: block;
+}
+span[data-picture] img {
   height: auto;
 }
 .qtip {
