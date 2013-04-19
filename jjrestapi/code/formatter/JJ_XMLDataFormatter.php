@@ -72,7 +72,7 @@ class JJ_XMLDataFormatter extends XMLDataFormatter implements JJ_DataFormatter {
 		$id = $obj->ID;
 
 		$href_appendix = '.xml';// . self::$href_extension;
-		$objHref = Director::absoluteURL(self::$api_base . "$obj->class/$obj->ID");
+		$objHref = Director::absoluteURL($this->stat('api_base') . "$obj->class/$obj->ID");
 	
 		//$xml = "<$className href=\"$objHref{$href_appendix}\">\n";
 		$xml = "<$className>";
