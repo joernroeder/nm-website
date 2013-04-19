@@ -27,8 +27,8 @@ DataObject::add_extension('Member', 'MemberPersonExtension');
 DataObject::add_extension('ResponsiveImage', 'ResponsiveImageCaptionExtension');
 DataObject::add_extension('ResponsiveImage', 'ResponsiveImageUrlExtension');
 
-ResponsiveImage::setWrapperTag('span');
-ResponsiveImage::setImageTag('span');
+ResponsiveImage::set_wrapper_tag('span');
+ResponsiveImage::set_image_tag('span');
 
 // ! Admin-Config ---------------------------------
 
