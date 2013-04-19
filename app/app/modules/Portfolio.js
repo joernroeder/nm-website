@@ -47,7 +47,6 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
         _this = this;
 
       console.log(this.model);
-      debugger;
       json = this.model ? this.model.toJSON() : {};
       types = ['Projects', 'ChildProjects', 'ParentProjects'];
       json.combinedProjects = [];

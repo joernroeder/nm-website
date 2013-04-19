@@ -35,7 +35,6 @@ define [
 				window.picturefill()
 			serialize: () ->
 				console.log @.model
-				debugger
 				json = if @.model then @.model.toJSON() else {}
 				types = ['Projects', 'ChildProjects', 'ParentProjects']
 				json.combinedProjects = []
