@@ -70,7 +70,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		$className = $obj->class;
 		$id = $obj->ID;
 
-		$objHref = Director::absoluteURL(self::$api_base . "$obj->class/$obj->ID");
+		$objHref = Director::absoluteURL($this->stat('api_base') . "$obj->class/$obj->ID");
 		$serobj = ArrayData::array_to_object();
 
 		foreach ($obj->getApiFields($fields) as $fieldName => $fieldType) {
