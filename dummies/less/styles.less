@@ -326,9 +326,8 @@ aside {
 	.gravity-item {
 		position: relative;
 		display: inline-block;
-		//opacity: 0;
+		opacity: 0;
 		.transition(~"opacity .2s ease-in-out");
-		cursor: pointer;
 		z-index: 14000;
 
 		// on item loaded
@@ -438,9 +437,13 @@ aside {
 	}
 
 	.group-image {
-		max-width: 100% / 8 * 3;
 		float: right;
 		.wrapper;
+
+		&.loaded {
+			max-width: 100% / 8 * 3;
+			height: auto;
+		}
 	}
 
 	.person {

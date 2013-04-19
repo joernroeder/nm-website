@@ -595,7 +595,7 @@
 							console.log $item.qtip('api').tooltip
 
 					addItemEvents = ($item) ->
-						$images = $('img', $item)
+						$images = $ 'img', $item
 						loaded = 0
 
 						if $images.length
@@ -607,6 +607,7 @@
 
 									initTooltip $item
 						else
+							$item.addClass 'loaded'
 							initTooltip $item
 
 

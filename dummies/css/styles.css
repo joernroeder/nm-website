@@ -767,12 +767,12 @@ aside a {
 .gravity .gravity-item {
   position: relative;
   display: inline-block;
+  opacity: 0;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -o-transition: opacity .2s ease-in-out;
   -ms-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
-  cursor: pointer;
   z-index: 14000;
   /*
 		&:hover {
@@ -867,12 +867,15 @@ aside a {
   margin-right: 12.5%;
 }
 .about .group-image {
-  max-width: 37.5%;
   float: right;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.about .group-image.loaded {
+  max-width: 37.5%;
+  height: auto;
 }
 .about .person {
   float: left;

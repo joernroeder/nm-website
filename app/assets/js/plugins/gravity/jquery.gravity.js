@@ -678,6 +678,7 @@ var __hasProp = {}.hasOwnProperty,
                   }
                 });
               } else {
+                $item.addClass('loaded');
                 return initTooltip($item);
               }
             };
