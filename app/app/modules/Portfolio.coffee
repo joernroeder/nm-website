@@ -6,6 +6,8 @@ define [
 
 		Portfolio = app.module()
 
+		Portfolio.Config =
+			person_group_length : 4
 
 		# this is the main gravity container which has a list with all project overview items in it
 		Portfolio.Views.GravityContainer = Gravity.Views.Container.extend
@@ -33,10 +35,15 @@ define [
 			template: 'portfolio-detail'
 			afterRender: ->
 				window.picturefill()
-			serialize: () ->
-				console.log @.model
+			serialize: ->
 				json = if @.model then @.model.toJSON() else {}
 				types = ['Projects', 'ChildProjects', 'ParentProjects']
+
+				# check for person group length
+				if json.Persons.length > Portfolio.Config.person_group_length
+					json.IsGroup = true
+
+				# set up combined projects
 				json.combinedProjects = []
 				_.each types, (type) =>
 					if _.isArray json[type]
@@ -46,27 +53,35 @@ define [
 
 		#! Handlebar helpers
 		
-		Handlebars.registerHelper 'nameSummary', (persons) ->
+		Handlebars.registerHelper 'nameSummary', (persons, altText) ->
 			out = ''
 			length = persons.length
-			if length > 3 then return 'Group project'
-			for person, i in persons
+			_.each persons, (person, i) ->
 				out += person.FirstName + ' ' + person.Surname
-				if i < (length - 1)
+				if i < (length - 2)
+					out += ', '
+				else if i < (length - 1)
 					out += ' &amp; '
+
 			out
 
 		Handlebars.registerHelper 'niceDate', (model) ->
-			return '' unless model.DateRangeNice or model.FrontendDate
-			out = '// '
+			return false unless model.DateRangeNice or model.FrontendDate
+			out = ''
 			if model.DateRangeNice
 				out += model.DateRangeNice
 			else if model.FrontendDate
 				out += model.FrontendDate
 			out
 
-		Handlebars.registerHelper 'portfoliolist', (items, options) ->
-			out = '<ul>'
+		Handlebars.registerHelper 'portfoliolist', (items, title, options) ->
+			if not options
+				options = title
+				title = ''
+			title += if items.length > 1 then 's' else ''
+			out = "<h4>#{title}</h4>"
+			out += '<ul>'
+			console.log items
 			_.each items, (item) ->
 				if item.IsPortfolio
 					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'

@@ -149,7 +149,7 @@ class Exhibition extends DataObject {
 			'UglyHash',
 			'Title',
 			'DateRangeNice',
-			'TeaserText',
+			'MarkdownedTeaser',
 			'IsFeatured',
 			'IsPortfolio',
 			'PreviewImage.Urls',

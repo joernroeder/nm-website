@@ -3,6 +3,9 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
   var Portfolio;
 
   Portfolio = app.module();
+  Portfolio.Config = {
+    person_group_length: 4
+  };
   Portfolio.Views.GravityContainer = Gravity.Views.Container.extend({
     tagName: 'section',
     beforeRender: function() {
@@ -46,9 +49,11 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
       var json, types,
         _this = this;
 
-      console.log(this.model);
       json = this.model ? this.model.toJSON() : {};
       types = ['Projects', 'ChildProjects', 'ParentProjects'];
+      if (json.Persons.length > Portfolio.Config.person_group_length) {
+        json.IsGroup = true;
+      }
       json.combinedProjects = [];
       _.each(types, function(type) {
         if (_.isArray(json[type])) {
@@ -58,30 +63,28 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
       return json;
     }
   });
-  Handlebars.registerHelper('nameSummary', function(persons) {
-    var i, length, out, person, _i, _len;
+  Handlebars.registerHelper('nameSummary', function(persons, altText) {
+    var length, out;
 
     out = '';
     length = persons.length;
-    if (length > 3) {
-      return 'Group project';
-    }
-    for (i = _i = 0, _len = persons.length; _i < _len; i = ++_i) {
-      person = persons[i];
+    _.each(persons, function(person, i) {
       out += person.FirstName + ' ' + person.Surname;
-      if (i < (length - 1)) {
-        out += ' &amp; ';
+      if (i < (length - 2)) {
+        return out += ', ';
+      } else if (i < (length - 1)) {
+        return out += ' &amp; ';
       }
-    }
+    });
     return out;
   });
   Handlebars.registerHelper('niceDate', function(model) {
     var out;
 
     if (!(model.DateRangeNice || model.FrontendDate)) {
-      return '';
+      return false;
     }
-    out = '// ';
+    out = '';
     if (model.DateRangeNice) {
       out += model.DateRangeNice;
     } else if (model.FrontendDate) {
@@ -89,10 +92,17 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     }
     return out;
   });
-  Handlebars.registerHelper('portfoliolist', function(items, options) {
+  Handlebars.registerHelper('portfoliolist', function(items, title, options) {
     var out;
 
-    out = '<ul>';
+    if (!options) {
+      options = title;
+      title = '';
+    }
+    title += items.length > 1 ? 's' : '';
+    out = "<h4>" + title + "</h4>";
+    out += '<ul>';
+    console.log(items);
     _.each(items, function(item) {
       if (item.IsPortfolio) {
         return out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';

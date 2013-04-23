@@ -1,6 +1,13 @@
 <!-- article class="portfolio-detail" -->
 <header>
 	<h1>{{Title}}</h1>
+	<p>
+	{{#if IsGroup}}
+		Group project
+	{{else}}
+		{{nameSummary Persons}}
+	{{/if}}
+	</p>
 	<p>{{niceDate this}}</p>
 </header>
 <section>
@@ -8,23 +15,19 @@
 </section>
 <aside>
 	{{#if combinedProjects}}
-		<h4>Projects</h4>
-		{{{portfoliolist combinedProjects}}}
+		{{{portfoliolist combinedProjects "Project"}}}
 	{{/if}}
 
 	{{#if Exhibitions}}
-		<h4>Exhibitions</h4>
-		{{{portfoliolist Exhibitions}}}
+		{{{portfoliolist Exhibitions "Exhibition"}}}
 	{{/if}}
 	
 	{{#if Workshops}}
-		<h4>Workshops</h4>
-		{{{portfoliolist Workshops}}}
+		{{{portfoliolist Workshops "Workshop"}}}
 	{{/if}}
 	
 	{{#if Excursions}}
-		<h4>Excursions</h4>
-		{{{portfoliolist Excursions}}}
+		{{{portfoliolist Excursions "Excursion"}}}
 	{{/if}}
 </aside>
 <!-- /article -->

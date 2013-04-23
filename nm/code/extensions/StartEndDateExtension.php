@@ -49,11 +49,11 @@ class StartEndDateExtension extends Extension {
 		$end = $this->owner->dbObject('EndDate');
 
 		if ($start) {
-			$vals[] = ($start->format('H:i') == '00:00') ? $start->format('d.m.Y') : $start->format('d.m.Y H:i');
+			$vals[] = ($start->format('H:i') == '00:00') ? $start->format('d. M Y') : $start->format('d. M Y H:i');
 		} else return '';
 
 		if ($end && ($start->format('Y-m-d H:i:s') !== $end->format('Y-m-d H:i:s'))) {
-			$vals [] = ($end->format('H:i') == '00:00') ? $end->format('d.m.Y') : $end->format('d.m.Y H:i');
+			$vals [] = ($end->format('H:i') == '00:00') ? $end->format('d. M Y') : $end->format('d. M Y H:i');
 		}
 
 		return implode(' - ', $vals);
