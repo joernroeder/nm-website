@@ -8,11 +8,20 @@
 </section>
 <aside>
 	{{#if Exhibitions}}
+		<h4>Exhibitions</h4>
+		{{{portfoliolist Exhibitions}}}
 	{{/if}}
+	
 	{{#if Workshops}}
+		<h4>Workshops</h4>
+		{{{portfoliolist Workshops}}}
 	{{/if}}
+	
 	{{#if Excursions}}
+		<h4>Excursions</h4>
+		{{{portfoliolist Excursions}}}
 	{{/if}}
+
 	{{#if combinedProjects}}
 		<h4>Projects</h4>
 		{{{portfoliolist combinedProjects}}}
