@@ -7,6 +7,11 @@
 	{{{MarkdownedText}}}
 </section>
 <aside>
+	{{#if combinedProjects}}
+		<h4>Projects</h4>
+		{{{portfoliolist combinedProjects}}}
+	{{/if}}
+
 	{{#if Exhibitions}}
 		<h4>Exhibitions</h4>
 		{{{portfoliolist Exhibitions}}}
@@ -20,11 +25,6 @@
 	{{#if Excursions}}
 		<h4>Excursions</h4>
 		{{{portfoliolist Excursions}}}
-	{{/if}}
-
-	{{#if combinedProjects}}
-		<h4>Projects</h4>
-		{{{portfoliolist combinedProjects}}}
 	{{/if}}
 </aside>
 <!-- /article -->
