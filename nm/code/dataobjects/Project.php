@@ -114,24 +114,41 @@ class Project extends DataObject {
 			'IsPortfolio',
 			'IsFeatured',
 
-			'Categories.Title',
-			'Images',
+			'PreviewImage.Urls',
 			'Images.Urls',
 			'Images.Title',
 			'Images.Caption',
-			'CalendarEntries',
-			'ParentProjects.Title',
-			'ParentProjects.UglyHash',
-			'ParentProjects.IsPortfolio',
-			'ChildProjects',
-			'Exhibitions',
-			'Workshops',
-			'Excursions',
+
 			'Persons.FirstName',
 			'Persons.Surname',
 			'Persons.UrlSlug',
 			'Persons.Templates.Url',
-			'Persons.Templates.IsDetail'
+			'Persons.Templates.IsDetail',
+
+			'Categories.Title',
+
+			'CalendarEntries.DateRangeNice',
+			'CalendarEntries.Title',
+			'CalendarEntries.UrlHash',
+
+			'ParentProjects.Title',
+			'ParentProjects.UglyHash',
+			'ParentProjects.IsPortfolio',
+			'ChildProjects.Title',
+			'ChildProjects.UglyHash',
+			'ChildProjects.IsPortfolio',
+
+			'Exhibitions.Title',
+			'Exhibitions.UglyHash',
+			'Exhibitions.IsPortfolio',
+
+			'Workshops.Title',
+			'Workshops.UglyHash',
+			'Workshops.IsPortfolio',
+
+			'Excursions.Title',
+			'Excursions.UglyHash',
+			'Excursions.IsPortfolio',
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',

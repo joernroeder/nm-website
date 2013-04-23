@@ -102,25 +102,49 @@ class Excursion extends DataObject {
 		'view' => array(
 			'UglyHash',
 			'Title',
-			'IsFeatured',
-			'IsPortfolio',
-			'Location',
-			'Space',
-			'Date',
 			'TeaserText',
+			'StartDate',
+			'EndDate',
+			'DateRangeNice',
 			'Text',
 			'MarkdownedText',
 			'MarkdownedTeaser',
-			'Projects',
-			'CalendarEnties',
-			'Workshops',
-			'Persons',
-			'Exhibitions',
+			'IsPortfolio',
+			'IsFeatured',
+
+			'Space',
+			'Location',
+
+			'PreviewImage.Urls',
+			'Images.Urls',
+			'Images.Title',
+			'Images.Caption',
+
 			'Persons.FirstName',
 			'Persons.Surname',
 			'Persons.UrlSlug',
 			'Persons.Templates.Url',
-			'Persons.Templates.IsDetail'
+			'Persons.Templates.IsDetail',
+
+			'CalendarEntries.DateRangeNice',
+			'CalendarEntries.Title',
+			'CalendarEntries.UrlHash',
+
+			'Projects.Title',
+			'Projects.UglyHash',
+			'Projects.IsPortfolio',
+
+			'Exhibitions.Title',
+			'Exhibitions.UglyHash',
+			'Exhibitions.IsPortfolio',
+
+			'Workshops.Title',
+			'Workshops.UglyHash',
+			'Workshops.IsPortfolio',
+
+			'Excursions.Title',
+			'Excursions.UglyHash',
+			'Excursions.IsPortfolio',
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',

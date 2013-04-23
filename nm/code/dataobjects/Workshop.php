@@ -96,27 +96,45 @@ class Workshop extends DataObject {
 		'view' => array(
 			'UglyHash',
 			'Title',
-			'IsFeatured',
-			'IsPortfolio',
-			'PreviewImageID',
 			'TeaserText',
-			'Date',
-			'Space',
-			'Location',
+			'StartDate',
+			'EndDate',
+			'DateRangeNice',
 			'Text',
 			'MarkdownedText',
 			'MarkdownedTeaser',
-			'Exhibitions',
-			'Projects',
-			'Images',
-			'CalendarEntries',
-			'Persons',
-			'Excursions',
+			'IsPortfolio',
+			'IsFeatured',
+
+			'Space',
+			'Location',
+
+			'PreviewImage.Urls',
+			'Images.Urls',
+			'Images.Title',
+			'Images.Caption',
+
 			'Persons.FirstName',
 			'Persons.Surname',
 			'Persons.UrlSlug',
 			'Persons.Templates.Url',
-			'Persons.Templates.IsDetail'
+			'Persons.Templates.IsDetail',
+
+			'CalendarEntries.DateRangeNice',
+			'CalendarEntries.Title',
+			'CalendarEntries.UrlHash',
+			
+			'Projects.Title',
+			'Projects.UglyHash',
+			'Projects.IsPortfolio',
+
+			'Exhibitions.Title',
+			'Exhibitions.UglyHash',
+			'Exhibitions.IsPortfolio',
+			
+			'Excursions.Title',
+			'Excursions.UglyHash',
+			'Excursions.IsPortfolio',
 		),
 		'view.portfolio_init' => array(
 			'UglyHash',
