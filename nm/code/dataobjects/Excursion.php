@@ -102,6 +102,8 @@ class Excursion extends DataObject {
 		'view' => array(
 			'UglyHash',
 			'Title',
+			'IsFeatured',
+			'IsPortfolio',
 			'Location',
 			'Space',
 			'Date',
