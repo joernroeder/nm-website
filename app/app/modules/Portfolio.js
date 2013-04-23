@@ -4,7 +4,8 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
 
   Portfolio = app.module();
   Portfolio.Config = {
-    person_group_length: 4
+    person_group_length: 4,
+    group_project_title: 'Group project'
   };
   Portfolio.Views.GravityContainer = Gravity.Views.Container.extend({
     tagName: 'section',
@@ -63,9 +64,13 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
       return json;
     }
   });
-  Handlebars.registerHelper('nameSummary', function(persons, altText) {
-    var length, out;
+  Handlebars.registerHelper('nameSummary', function(persons) {
+    var conf, length, out;
 
+    conf = Portfolio.Config;
+    if (!(persons.length < conf.person_group_length)) {
+      return conf.group_project_title;
+    }
     out = '';
     length = persons.length;
     _.each(persons, function(person, i) {
@@ -91,6 +96,17 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
       out += model.FrontendDate;
     }
     return out;
+  });
+  Handlebars.registerHelper('teaserMeta', function() {
+    var nameSummary, niceDate;
+
+    niceDate = Handlebars.helpers.niceDate(this);
+    if (this.ClassName === 'Project') {
+      nameSummary = Handlebars.helpers.nameSummary(this.Persons);
+      return "" + nameSummary + " // " + niceDate;
+    } else {
+      return niceDate;
+    }
   });
   Handlebars.registerHelper('portfoliolist', function(items, title, options) {
     var out;

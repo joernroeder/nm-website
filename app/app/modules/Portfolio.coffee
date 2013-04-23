@@ -8,6 +8,7 @@ define [
 
 		Portfolio.Config =
 			person_group_length : 4
+			group_project_title : 'Group project'
 
 		# this is the main gravity container which has a list with all project overview items in it
 		Portfolio.Views.GravityContainer = Gravity.Views.Container.extend
@@ -53,7 +54,9 @@ define [
 
 		#! Handlebar helpers
 		
-		Handlebars.registerHelper 'nameSummary', (persons, altText) ->
+		Handlebars.registerHelper 'nameSummary', (persons) ->
+			conf = Portfolio.Config
+			return conf.group_project_title unless persons.length < conf.person_group_length
 			out = ''
 			length = persons.length
 			_.each persons, (person, i) ->
@@ -73,6 +76,17 @@ define [
 			else if model.FrontendDate
 				out += model.FrontendDate
 			out
+
+		Handlebars.registerHelper 'teaserMeta', ->
+			niceDate = Handlebars.helpers.niceDate @
+			if @.ClassName is 'Project'
+				nameSummary = Handlebars.helpers.nameSummary @.Persons
+				return "#{nameSummary} // #{niceDate}" 
+			else 
+				return niceDate
+
+			
+
 
 		Handlebars.registerHelper 'portfoliolist', (items, title, options) ->
 			if not options

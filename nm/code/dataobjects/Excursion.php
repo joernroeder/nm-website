@@ -147,6 +147,7 @@ class Excursion extends DataObject {
 			'Excursions.IsPortfolio',
 		),
 		'view.portfolio_init' => array(
+			'ClassName',
 			'UglyHash',
 			'Title',
 			'DateRangeNice',

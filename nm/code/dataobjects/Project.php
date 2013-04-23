@@ -151,6 +151,7 @@ class Project extends DataObject {
 			'Excursions.IsPortfolio',
 		),
 		'view.portfolio_init' => array(
+			'ClassName',
 			'UglyHash',
 			'Title',
 			'FrontendDate',
