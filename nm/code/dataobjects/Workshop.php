@@ -96,6 +96,8 @@ class Workshop extends DataObject {
 		'view' => array(
 			'UglyHash',
 			'Title',
+			'IsFeatured',
+			'IsPortfolio',
 			'PreviewImageID',
 			'TeaserText',
 			'Date',
