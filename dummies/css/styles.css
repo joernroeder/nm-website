@@ -772,6 +772,9 @@ aside a {
 #main.loading {
   opacity: 0;
 }
+.isLoading #main * {
+  cursor: default !important;
+}
 span[data-picture] {
   display: block;
 }

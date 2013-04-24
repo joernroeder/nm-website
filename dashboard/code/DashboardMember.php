@@ -38,6 +38,7 @@ class DashboardMember extends DataExtension {
 	 * dashboard.
 	 */
 	public function onAfterWrite() {
+		if (!class_exists('SiteConfig')) return false;
 		if(!$this->owner->HasConfiguredDashboard && !$this->owner->DashboardPanels()->exists()) {
 			foreach(SiteConfig::current_site_config()->DashboardPanels() as $p) {
 				$clone = $p->duplicate();
@@ -46,7 +47,8 @@ class DashboardMember extends DataExtension {
 				$clone->write();
 			}
 			$this->owner->HasConfiguredDashboard = 1;
-			$this->owner->write();
+			// Get a fresh record, so we don't run in to recursive writes.
+			Member::get()->byID($this->owner->ID)->write();
 		}
 	}
 }
