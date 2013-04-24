@@ -92,15 +92,21 @@ define [
 			if not options
 				options = title
 				title = ''
-			title += if items.length > 1 then 's' else ''
-			out = "<h4>#{title}</h4>"
-			out += '<ul>'
-			console.log items
+
+			length = 0
+			out = '<ul>'
+
+			# build list
 			_.each items, (item) ->
 				if item.IsPortfolio
 					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'
+					length++
 			out += '</ul>'
-			out
+
+			# set up title
+			title += if length > 1 then 's' else ''
+
+			return if length then "<h4>#{title}</h4>" + out else ''
 
 		Handlebars.registerHelper 'commaSeparatedWebsites', (websites) ->
 			a = []

@@ -115,23 +115,27 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     }
   });
   Handlebars.registerHelper('portfoliolist', function(items, title, options) {
-    var out;
+    var length, out;
 
     if (!options) {
       options = title;
       title = '';
     }
-    title += items.length > 1 ? 's' : '';
-    out = "<h4>" + title + "</h4>";
-    out += '<ul>';
-    console.log(items);
+    length = 0;
+    out = '<ul>';
     _.each(items, function(item) {
       if (item.IsPortfolio) {
-        return out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
+        out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
+        return length++;
       }
     });
     out += '</ul>';
-    return out;
+    title += length > 1 ? 's' : '';
+    if (length) {
+      return ("<h4>" + title + "</h4>") + out;
+    } else {
+      return '';
+    }
   });
   Handlebars.registerHelper('commaSeparatedWebsites', function(websites) {
     var a;
