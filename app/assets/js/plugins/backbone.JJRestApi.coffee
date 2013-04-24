@@ -120,7 +120,9 @@ JJRestApi.getFromDomOrApi = (name, options) ->
 	else unless options.noAjax
 		url = if options.url then options.url else JJRestApi.setObjectUrl(name)
 		if options.urlSuffix then url += options.urlSuffix
-		return $.getJSON url
+		dfd = $.getJSON url
+		JJRestApi.Events.trigger 'dfdAjax', dfd
+		return dfd
 
 
 ###*

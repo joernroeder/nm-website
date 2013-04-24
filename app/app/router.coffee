@@ -29,6 +29,17 @@ define [
 		mainDeferred: null
 
 		###*
+		 * All pending ajax requests
+		 * 
+		###
+		pendingAjax: []
+
+		initialize: (options) ->
+			# let's hook into JJRestApi's `dfdAjax` event, which gets fired on sending a request to the API
+			JJRestApi.Events.bind 'dfdAjax', (dfd) =>
+				@.pendingAjax.push dfd
+
+		###*
 		 * This method breaks off the current route if another one is called in order to prevent deferreds to trigger
 		 * when another route has already been called
 		 * 
@@ -37,7 +48,14 @@ define [
 		rejectAndBuild: ->
 			app.handleLinks()
 			deferred = @.mainDeferred
+			# kill the main deferred
 			if deferred then deferred.reject()
+
+			# kill all pending ajax requests
+			_.each @.pendingAjax, (pending) ->
+				if pending.readyState isnt 4 then pending.abort()
+
+			@.pending = []
 			@.mainDeferred = $.Deferred()
 			@.mainDeferred.done =>
 				@.mainDeferred = null
@@ -82,7 +100,6 @@ define [
 				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
-			console.log Backbone.history
 			mainDfd = @.rejectAndBuild()
 
 			layout = app.useLayout 'main', {customClass: 'about'}

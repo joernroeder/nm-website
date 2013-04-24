@@ -157,7 +157,9 @@ JJRestApi.getFromDomOrApi = function(name, options) {
     if (options.urlSuffix) {
       url += options.urlSuffix;
     }
-    return $.getJSON(url);
+    dfd = $.getJSON(url);
+    JJRestApi.Events.trigger('dfdAjax', dfd);
+    return dfd;
   }
 };
 

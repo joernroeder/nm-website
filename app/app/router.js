@@ -18,6 +18,19 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
 
     mainDeferred: null,
     /**
+    		 * All pending ajax requests
+    		 *
+    */
+
+    pendingAjax: [],
+    initialize: function(options) {
+      var _this = this;
+
+      return JJRestApi.Events.bind('dfdAjax', function(dfd) {
+        return _this.pendingAjax.push(dfd);
+      });
+    },
+    /**
     		 * This method breaks off the current route if another one is called in order to prevent deferreds to trigger
     		 * when another route has already been called
     		 * 
@@ -33,6 +46,12 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       if (deferred) {
         deferred.reject();
       }
+      _.each(this.pendingAjax, function(pending) {
+        if (pending.readyState !== 4) {
+          return pending.abort();
+        }
+      });
+      this.pending = [];
       this.mainDeferred = $.Deferred();
       return this.mainDeferred.done(function() {
         return _this.mainDeferred = null;
@@ -79,7 +98,6 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     showAboutPage: function() {
       var groupImageDfd, layout, mainDfd, personsDfd;
 
-      console.log(Backbone.history);
       mainDfd = this.rejectAndBuild();
       layout = app.useLayout('main', {
         customClass: 'about'
