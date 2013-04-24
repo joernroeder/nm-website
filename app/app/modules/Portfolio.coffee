@@ -34,8 +34,11 @@ define [
 			tagName: 'article'
 			className: 'portfolio-detail'
 			template: 'portfolio-detail'
+			beforeRender: ->
+				@._ev = $.Event 'code:kickoff', { bubbles: false }
 			afterRender: ->
 				window.picturefill()
+				$(document).trigger(@._ev)
 			serialize: ->
 				json = if @.model then @.model.toJSON() else {}
 				types = ['Projects', 'ChildProjects', 'ParentProjects']
@@ -85,9 +88,6 @@ define [
 			else 
 				return niceDate
 
-			
-
-
 		Handlebars.registerHelper 'portfoliolist', (items, title, options) ->
 			if not options
 				options = title
@@ -101,6 +101,12 @@ define [
 					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'
 			out += '</ul>'
 			out
+
+		Handlebars.registerHelper 'commaSeparatedWebsites', (websites) ->
+			a = []
+			_.each websites, (website) ->
+				a.push "<a href=\"#{website.Link}\">#{website.Title}</a>"
+			a.join ', '
 
 
 

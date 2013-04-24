@@ -43,8 +43,14 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     tagName: 'article',
     className: 'portfolio-detail',
     template: 'portfolio-detail',
+    beforeRender: function() {
+      return this._ev = $.Event('code:kickoff', {
+        bubbles: false
+      });
+    },
     afterRender: function() {
-      return window.picturefill();
+      window.picturefill();
+      return $(document).trigger(this._ev);
     },
     serialize: function() {
       var json, types,
@@ -126,6 +132,15 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     });
     out += '</ul>';
     return out;
+  });
+  Handlebars.registerHelper('commaSeparatedWebsites', function(websites) {
+    var a;
+
+    a = [];
+    _.each(websites, function(website) {
+      return a.push("<a href=\"" + website.Link + "\">" + website.Title + "</a>");
+    });
+    return a.join(', ');
   });
   return Portfolio;
 });

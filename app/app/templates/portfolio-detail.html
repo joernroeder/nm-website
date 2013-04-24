@@ -9,6 +9,9 @@
 	{{/if}}
 	</p>
 	<p>{{niceDate this}}</p>
+	{{#if Websites}}
+		<p>{{{commaSeparatedWebsites Websites}}}</p>
+	{{/if}}
 </header>
 <section>
 	{{{MarkdownedText}}}
@@ -30,4 +33,15 @@
 		{{{portfoliolist Excursions "Excursion"}}}
 	{{/if}}
 </aside>
+
+{{#if Code}}
+<script type="text/javascript">
+	$(document).one('code:kickoff', function (e) {
+		{{{Code}}}
+
+		e.stopImmediatePropagation();
+	});
+</script>
+{{/if}}
+
 <!-- /article -->
