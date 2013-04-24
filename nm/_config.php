@@ -35,6 +35,8 @@ ResponsiveImage::set_image_tag('span');
 DateField::set_default_config('showcalendar', true);
 Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 
+Security::setDefaultAdmin('default', '123456');
+
 //CMSMenu::remove_menu_item('Help');
 
 /*SS_Cache::add_backend('two-level', 'TwoLevels', array(
