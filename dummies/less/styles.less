@@ -132,6 +132,7 @@ article {
 
 	// Links im Text
 	a {
+		.transition(~"color .3s 0 ease-out, border-bottom-color .3s .2s ease-out");
 		border-bottom: 1px dashed @gray;
 
 		&:hover,
@@ -158,7 +159,7 @@ aside {
 	background: @badgeBg;
 	padding: (@line / @em) (@badgePaddingHorizontal / @em);
 	position: fixed;
-	z-index: 100;
+	z-index: 100000;
 
 	// Logo
 	> a {

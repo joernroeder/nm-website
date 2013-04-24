@@ -519,6 +519,11 @@ a {
   color: #262626;
   text-decoration: none;
   outline: none;
+  -webkit-transition: color .3s ease-out;
+  -moz-transition: color .3s ease-out;
+  -o-transition: color .3s ease-out;
+  -ms-transition: color .3s ease-out;
+  transition: color .3s ease-out;
 }
 a:hover,
 a:focus,
@@ -543,6 +548,11 @@ article header p {
   padding-bottom: 0.0625em;
 }
 article a {
+  -webkit-transition: color .3s 0 ease-out, -webkit-border-bottom-color .3s .2s ease-out;
+  -moz-transition: color .3s 0 ease-out, -moz-border-bottom-color .3s .2s ease-out;
+  -o-transition: color .3s 0 ease-out, border-bottom-color .3s .2s ease-out;
+  -ms-transition: color .3s 0 ease-out, border-bottom-color .3s .2s ease-out;
+  transition: color .3s 0 ease-out, border-bottom-color .3s .2s ease-out;
   border-bottom: 1px dashed #919191;
 }
 article a:hover,
@@ -587,7 +597,7 @@ aside a {
   background: #262626;
   padding: 1.5em 1.25em;
   position: fixed;
-  z-index: 100;
+  z-index: 100000;
 }
 .badge > a {
   display: block;
@@ -613,6 +623,11 @@ aside a {
   color: #262626;
   text-decoration: none;
   outline: none;
+  -webkit-transition: color .3s ease-out;
+  -moz-transition: color .3s ease-out;
+  -o-transition: color .3s ease-out;
+  -ms-transition: color .3s ease-out;
+  transition: color .3s ease-out;
   color: #ffffff;
   display: block;
 }
