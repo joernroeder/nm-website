@@ -26,6 +26,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     initialize: function(options) {
       var _this = this;
 
+      this.$main = $('#main');
       return JJRestApi.Events.bind('dfdAjax', function(dfd) {
         return _this.pendingAjax.push(dfd);
       });
@@ -37,11 +38,16 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     		 * @return {$.Deferred}
     */
 
-    rejectAndBuild: function() {
+    rejectAndHandle: function(options) {
       var deferred,
         _this = this;
 
+      options = options || {};
       app.handleLinks();
+      if (!options.noFadeOut) {
+        this.$main.addClass('loading');
+        app.startSpinner();
+      }
       deferred = this.mainDeferred;
       if (deferred) {
         deferred.reject();
@@ -54,7 +60,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       this.pending = [];
       this.mainDeferred = $.Deferred();
       return this.mainDeferred.done(function() {
-        return _this.mainDeferred = null;
+        _this.mainDeferred = null;
+        _this.$main.removeClass('loading');
+        return app.stopSpinner();
       });
     },
     routes: {
@@ -71,20 +79,20 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       '*url/': 'catchAllRoute'
     },
     index: function(hash) {
-      var calDfd, config, layout, mainDfd, projDfd,
+      var calDfd, config, mainDfd, projDfd,
         _this = this;
 
-      mainDfd = this.rejectAndBuild();
+      mainDfd = this.rejectAndHandle();
       config = app.Config;
-      layout = app.useLayout('index');
       projDfd = DataRetrieval.forProjectsOverview(config.Featured);
       calDfd = DataRetrieval.forCalendar('upcoming');
       $.when(projDfd, calDfd).done(function() {
         return mainDfd.resolve();
       });
       return mainDfd.done(function() {
-        var calendarContainer, modelsArray;
+        var calendarContainer, layout, modelsArray;
 
+        layout = app.useLayout('index');
         modelsArray = _this.getProjectTypeModels({
           IsFeatured: true
         });
@@ -96,20 +104,20 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showAboutPage: function() {
-      var groupImageDfd, layout, mainDfd, personsDfd;
+      var groupImageDfd, mainDfd, personsDfd;
 
-      mainDfd = this.rejectAndBuild();
-      layout = app.useLayout('main', {
-        customClass: 'about'
-      });
+      mainDfd = this.rejectAndHandle();
       groupImageDfd = DataRetrieval.forRandomGroupImage();
       personsDfd = DataRetrieval.forPersonsOverview();
       $.when(groupImageDfd, personsDfd).done(function(image) {
         return mainDfd.resolve(image);
       });
       return mainDfd.done(function(image) {
-        var coll, persons, view;
+        var coll, layout, persons, view;
 
+        layout = app.useLayout('main', {
+          customClass: 'about'
+        });
         coll = app.Collections['Person'];
         persons = {
           students: coll.where({
@@ -132,7 +140,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     showPersonPage: function(nameSlug) {
       var mainDfd;
 
-      mainDfd = this.rejectAndBuild();
+      mainDfd = this.rejectAndHandle();
       DataRetrieval.forDetailedObject('Person', nameSlug).done(function(model) {
         return mainDfd.resolve(model);
       });
@@ -162,17 +170,17 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       return this.showPortfolioDetailed(uglyHash, nameSlug);
     },
     showPortfolio: function() {
-      var layout, mainDfd,
+      var mainDfd,
         _this = this;
 
-      mainDfd = this.rejectAndBuild();
-      layout = app.useLayout('portfolio');
+      mainDfd = this.rejectAndHandle();
       DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
         return mainDfd.resolve();
       });
       return mainDfd.done(function() {
-        var modelsArray;
+        var layout, modelsArray;
 
+        layout = app.useLayout('portfolio');
         modelsArray = _this.getProjectTypeModels({
           IsPortfolio: true
         });
@@ -183,7 +191,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       var classType, mainDfd,
         _this = this;
 
-      mainDfd = this.rejectAndBuild();
+      mainDfd = this.rejectAndHandle();
       classType = app.Config.ClassEnc[uglyHash.substr(0, 1)];
       if (classType) {
         DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
@@ -231,7 +239,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       var mainDfd,
         _this = this;
 
-      mainDfd = this.rejectAndBuild();
+      mainDfd = this.rejectAndHandle();
       DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done(function(model) {
         return mainDfd.resolve(model);
       });
@@ -249,23 +257,24 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showLoginForm: function() {
-      var layout, mainDfd;
+      var mainDfd;
 
-      mainDfd = this.rejectAndBuild();
-      layout = app.useLayout('main');
+      mainDfd = this.rejectAndHandle();
       console.info('login form. if logged in, redirect to dashboard');
       Auth.performLoginCheck().done(function() {
         return mainDfd.resolve();
       });
       return mainDfd.done(function() {
+        var layout;
+
+        layout = app.useLayout('main');
         return layout.setViewAndRenderMaybe('', new Auth.Views.Login());
       });
     },
     doLogout: function() {
-      var dfd, layout, mainDfd;
+      var dfd, mainDfd;
 
-      mainDfd = this.rejectAndBuild();
-      layout = app.useLayout('main');
+      mainDfd = this.rejectAndHandle();
       dfd = $.Deferred();
       if (app.CurrentMember) {
         layout.setViewAndRenderMaybe('', new Auth.Views.Logout());
@@ -277,6 +286,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         return mainDfd.resolve();
       });
       return mainDfd.done(function() {
+        var layout;
+
+        layout = app.useLayout('main');
         return Backbone.history.navigate('/login/', true);
       });
     },

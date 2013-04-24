@@ -50,6 +50,10 @@
 		<div id="main">
 
 		</div>
+
+		<div id="spinner-target">
+
+		</div>
 	</div>
 
 	<!-- Application source. -->

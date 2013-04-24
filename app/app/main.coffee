@@ -7,7 +7,8 @@ require [
 	'modules/Workshop',
 	'modules/Exhibition',
 	'modules/CalendarEntry'
-], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry) ->
+	'plugins/misc/spin.min'
+], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner) ->
 	
 	# ! JJRELATIONAL CONFIG
 
@@ -135,6 +136,24 @@ require [
 						search:
 							UglyHash: slug
 						limit: 1
+
+		Spinner :
+			lines: 13 				# The number of lines to draw
+			length: 20 				# The length of each line
+			width: 10 				# The line thickness
+			radius: 24 				# The radius of the inner circle
+			corners: 1 				# Corner roundness (0..1)
+			rotate: 0 				# The rotation offset
+			direction: 1 			# 1: clockwise, -1: counterclockwise
+			color: '#000' 			# #rgb or #rrggbb
+			speed: 1.1 				# Rounds per second
+			trail: 60 				# Afterglow percentage
+			shadow: false 			# Whether to render a shadow
+			hwaccel: false 			# Whether to use hardware acceleration
+			className: 'spinner' 	# The CSS class to assign to the spinner
+			zIndex: 2e9 			# The z-index (defaults to 2000000000)
+			top: 'auto' 			# Top position relative to parent in px
+			left: 'auto' 			# Left position relative to parent in px
 	
 	app.bindListeners = ->
 		# we don't want to directly mess with the store, so we simply hook into
@@ -160,13 +179,25 @@ require [
 		MType = JJRestApi.Model type
 		return new MType(data)
 
-	app.handleLinks = () ->
+	app.handleLinks = ->
 		frag = Backbone.history.fragment
 		frag = '/' + frag.substring 0, frag.indexOf('/') + 1
 		$('#wrapper .badge').find('a').each (i, a) ->
 			$a = $(a)
 			$a.removeClass 'active'
 			if $a.attr('href') is frag then $a.addClass 'active'
+
+	app.setupSpinner = ->
+		@.spinner = 
+			inst: new Spinner(app.Config.Spinner)
+			target: document.getElementById('spinner-target')
+	app.startSpinner = ->
+		spinner = @.spinner
+		spinner.inst.spin(spinner.target)
+	app.stopSpinner = ->
+		spinner = @.spinner
+		spinner.inst.stop()
+		
 
 	app.bindListeners()
 
@@ -176,6 +207,8 @@ require [
 	# Inside this function, kick-off all initialization, everything up to this
 	# point should be definitions.
 	$ ->
+		app.setupSpinner()
+
 		# Hook CSRF ajax token
 		JJRestApi.hookSecurityToken()
 

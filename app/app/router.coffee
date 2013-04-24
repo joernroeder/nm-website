@@ -35,6 +35,8 @@ define [
 		pendingAjax: []
 
 		initialize: (options) ->
+			@.$main = $ '#main'
+
 			# let's hook into JJRestApi's `dfdAjax` event, which gets fired on sending a request to the API
 			JJRestApi.Events.bind 'dfdAjax', (dfd) =>
 				@.pendingAjax.push dfd
@@ -45,8 +47,14 @@ define [
 		 * 
 		 * @return {$.Deferred}
 		###
-		rejectAndBuild: ->
+		rejectAndHandle: (options) ->
+			options = options || {}
 			app.handleLinks()
+
+			unless options.noFadeOut
+				@.$main.addClass 'loading'
+				app.startSpinner()
+
 			deferred = @.mainDeferred
 			# kill the main deferred
 			if deferred then deferred.reject()
@@ -59,6 +67,8 @@ define [
 			@.mainDeferred = $.Deferred()
 			@.mainDeferred.done =>
 				@.mainDeferred = null
+				@.$main.removeClass 'loading'
+				app.stopSpinner()
 
 		routes:
 			''											: 'index'					# Calendar and featured projects
@@ -77,15 +87,14 @@ define [
 		# 
 		# 
 		# Routes always folllow the same pattern:
-		# 1.) Reject the current MainDeferred (if still existant) and build up a new one (this.rejectAndBuild)
+		# 1.) Reject the current MainDeferred (if still existant) and build up a new one (this.rejectAndHandle)
 		# 2.) Give MainDeferred a `done`-function that handles the eventual rendering
 		# 3.) Retrieve data and resolve MainDeferred within `done`
 		
 		index: (hash) ->
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
 			config = app.Config
-			layout = app.useLayout 'index'
 
 			projDfd = DataRetrieval.forProjectsOverview(config.Featured)
 			calDfd = DataRetrieval.forCalendar('upcoming')
@@ -94,15 +103,14 @@ define [
 				mainDfd.resolve()
 
 			mainDfd.done =>
+				layout = app.useLayout 'index'
 				modelsArray = @.getProjectTypeModels { IsFeatured: true }
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
 				calendarContainer = new Calendar.Views.UpcomingContainer({ collection: app.Collections.CalendarEntry })
 				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
-			mainDfd = @.rejectAndBuild()
-
-			layout = app.useLayout 'main', {customClass: 'about'}
+			mainDfd = @.rejectAndHandle()
 			
 			groupImageDfd = DataRetrieval.forRandomGroupImage()
 			personsDfd = DataRetrieval.forPersonsOverview()
@@ -111,6 +119,7 @@ define [
 				mainDfd.resolve image
 
 			mainDfd.done (image) ->
+				layout = app.useLayout 'main', {customClass: 'about'}
 				coll = app.Collections['Person']
 				persons =
 					students : coll.where { IsStudent: true }
@@ -121,7 +130,7 @@ define [
 
 
 		showPersonPage: (nameSlug) ->
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
 			# get the detailed person object
 			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
@@ -144,21 +153,21 @@ define [
 
 		showPortfolio: () ->
 			# @todo: filter/search bar
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
-			layout = app.useLayout 'portfolio'
 			# get portfolio projects
 			DataRetrieval.forProjectsOverview(app.Config.Portfolio).done =>
 				mainDfd.resolve()
 
 			mainDfd.done =>
+				layout = app.useLayout 'portfolio'
 				modelsArray = @.getProjectTypeModels { IsPortfolio: true }
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
 				
 				
 
 		showPortfolioDetailed: (uglyHash, nameSlug) ->
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
 			# if `isPersonPage`, there's a check for a custom template'
 			# the first digit of uglyHash points to its class -> get it!
@@ -186,7 +195,7 @@ define [
 			console.info 'show whole calendar'
 
 		showCalendarDetailed: (urlHash) ->
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
 			DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done (model) =>
 				mainDfd.resolve model
@@ -200,20 +209,19 @@ define [
 
 		# ! Security stuff
 		showLoginForm: () ->
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
-			layout = app.useLayout 'main'
 			console.info 'login form. if logged in, redirect to dashboard'
 			Auth.performLoginCheck().done ->
 				mainDfd.resolve()
 
 			mainDfd.done ->
+				layout = app.useLayout 'main'
 				layout.setViewAndRenderMaybe '', new Auth.Views.Login()
 
 		doLogout: ->
-			mainDfd = @.rejectAndBuild()
+			mainDfd = @.rejectAndHandle()
 
-			layout = app.useLayout 'main'
 			dfd = $.Deferred()
 			if app.CurrentMember
 				layout.setViewAndRenderMaybe '', new Auth.Views.Logout()
@@ -222,6 +230,7 @@ define [
 			dfd.done ->
 				mainDfd.resolve()
 			mainDfd.done ->
+				layout = app.useLayout 'main'
 				Backbone.history.navigate '/login/', true
 
 		catchAllRoute: (url) ->

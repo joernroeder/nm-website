@@ -37,6 +37,8 @@ require.config
 		'plugins/gravity/jquery.gravity'	: ['plugins/tooltip/jquery.qtip']
 		'responsiveimage/picturefill'		: ['responsiveimage/external/matchmedia']
 
+		'plugins/misc/spin.min'				: ['jquery']
+
 		'plugins/backbone.layoutmanager'	: ['backbone']
 		'plugins/backbone.JJRelational'		: ['backbone']
 		'plugins/backbone.JJRestApi'		: ['backbone']
