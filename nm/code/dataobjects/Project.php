@@ -63,6 +63,14 @@ class Project extends DataObject {
 		'Persons'			=> 'Person'				// Projekt-Teilnehmer
 	);
 
+	// ! Indizes ---------------------------
+	private static $indexes = array(
+		'UglyHash'			=> array(
+			'type'	=> 'unique',
+			'value'	=> 'UglyHash'
+		)
+	);
+
 	// ! Erweiterungen ---------------------
 
 	static $extensions = array(

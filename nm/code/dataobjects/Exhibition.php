@@ -59,6 +59,14 @@ class Exhibition extends DataObject {
 		'Excursions'	=> 'Excursion'				// Exkursionen
 	);
 
+	// ! Indizes ---------------------------
+	private static $indexes = array(
+		'UglyHash'			=> array(
+			'type'	=> 'unique',
+			'value'	=> 'UglyHash'
+		)
+	);
+
 	// ! Erweiterungen ---------------------
 
 	static $extensions = array(

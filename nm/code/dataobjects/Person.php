@@ -64,6 +64,14 @@ class Person extends DataObject {
 		'Member'			=> 'Member'				// Benutzer
 	);
 
+	// ! Indizes ---------------------------
+	private static $indexes = array(
+		'UrlSlug'			=> array(
+			'type'	=> 'unique',
+			'value'	=> 'UrlSlug'
+		)
+	);
+
 	// ! Such-Felder -----------------------
 
 	static $searchable_fields = array(

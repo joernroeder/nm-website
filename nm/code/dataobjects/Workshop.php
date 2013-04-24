@@ -53,6 +53,14 @@ class Workshop extends DataObject {
 		'Excursions'			=> 'Excursion'				// Exkursionen
 	);
 
+	// ! Indizes ---------------------------
+	private static $indexes = array(
+		'UglyHash'			=> array(
+			'type'	=> 'unique',
+			'value'	=> 'UglyHash'
+		)
+	);
+
 	// ! Extensions ------------------------
 	
 	static $extensions = array(
