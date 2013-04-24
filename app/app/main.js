@@ -241,6 +241,8 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     });
   };
   app.setupSpinner = function() {
+    this.$body = $('body');
+    this.$main = $('#main');
     return this.spinner = {
       inst: new Spinner(app.Config.Spinner),
       target: document.getElementById('spinner-target')
@@ -259,6 +261,14 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     spinner = this.spinner;
     spinner.target.removeClass('active');
     return spinner.inst.stop();
+  };
+  app.addLoadingClasses = function() {
+    this.$body.addClass('isLoading');
+    return this.$main.addClass('loading');
+  };
+  app.removeLoadingClasses = function() {
+    this.$body.removeClass('isLoading');
+    return this.$main.removeClass('loading');
   };
   app.bindListeners();
   $(function() {

@@ -35,8 +35,6 @@ define [
 		pendingAjax: []
 
 		initialize: (options) ->
-			@.$main = $ '#main'
-
 			# let's hook into JJRestApi's `dfdAjax` event, which gets fired on sending a request to the API
 			JJRestApi.Events.bind 'dfdAjax', (dfd) =>
 				@.pendingAjax.push dfd
@@ -52,7 +50,7 @@ define [
 			app.handleLinks()
 
 			unless options.noFadeOut
-				@.$main.addClass 'loading'
+				app.addLoadingClasses()
 				app.startSpinner()
 
 			deferred = @.mainDeferred
@@ -67,7 +65,7 @@ define [
 			@.mainDeferred = $.Deferred()
 			@.mainDeferred.done =>
 				@.mainDeferred = null
-				@.$main.removeClass 'loading'
+				app.removeLoadingClasses()
 				app.stopSpinner()
 
 		routes:

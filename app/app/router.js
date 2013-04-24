@@ -26,7 +26,6 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     initialize: function(options) {
       var _this = this;
 
-      this.$main = $('#main');
       return JJRestApi.Events.bind('dfdAjax', function(dfd) {
         return _this.pendingAjax.push(dfd);
       });
@@ -45,7 +44,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       options = options || {};
       app.handleLinks();
       if (!options.noFadeOut) {
-        this.$main.addClass('loading');
+        app.addLoadingClasses();
         app.startSpinner();
       }
       deferred = this.mainDeferred;
@@ -61,7 +60,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       this.mainDeferred = $.Deferred();
       return this.mainDeferred.done(function() {
         _this.mainDeferred = null;
-        _this.$main.removeClass('loading');
+        app.removeLoadingClasses();
         return app.stopSpinner();
       });
     },

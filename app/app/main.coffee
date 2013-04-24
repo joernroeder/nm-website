@@ -188,6 +188,8 @@ require [
 			if $a.attr('href') is frag then $a.addClass 'active'
 
 	app.setupSpinner = ->
+		@.$body = $ 'body'
+		@.$main = $ '#main'
 		@.spinner = 
 			inst: new Spinner(app.Config.Spinner)
 			target: document.getElementById('spinner-target')
@@ -199,7 +201,13 @@ require [
 		spinner = @.spinner
 		spinner.target.removeClass 'active'
 		spinner.inst.stop()
-		
+
+	app.addLoadingClasses = ->
+		@.$body.addClass('isLoading')
+		@.$main.addClass('loading')
+	app.removeLoadingClasses = ->
+		@.$body.removeClass('isLoading')
+		@.$main.removeClass('loading')
 
 	app.bindListeners()
 
