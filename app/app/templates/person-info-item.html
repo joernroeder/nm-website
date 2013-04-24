@@ -1,1 +1,11 @@
-{{FirstName}} {{Surname}}
+{{#if Image.Urls._320}}
+<a href="/about/{{UrlSlug}}/">
+	{{#with Image.Urls._320}}
+		<img src="{{Url}}" width="{{Width}}" height="{{Height}}" alt="">
+	{{/with}}
+</a>
+{{/if}}
+
+<section>
+	<h1>{{FirstName}} {{Surname}}</h1>
+</section>

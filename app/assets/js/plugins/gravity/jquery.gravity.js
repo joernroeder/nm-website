@@ -593,7 +593,7 @@ var __hasProp = {}.hasOwnProperty,
             initTooltip = function($item) {
               var $metaSection, getMargin, marginOffset;
 
-              $metaSection = $('section', $item);
+              $metaSection = $('section[role=tooltip-content]', $item);
               marginOffset = -20;
               getMargin = function(api) {
                 var $tooltip, margin;

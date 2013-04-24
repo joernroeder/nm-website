@@ -518,7 +518,7 @@
 							angle += inc
 
 					initTooltip = ($item) ->
-						$metaSection = $ 'section', $item
+						$metaSection = $ 'section[role=tooltip-content]', $item
 						marginOffset = -20
 
 						getMargin = (api) ->

@@ -761,6 +761,9 @@ aside a {
   min-height: 100%;
   width: 100%;
 }
+#main.loading {
+  opacity: 0;
+}
 span[data-picture] {
   display: block;
 }
@@ -769,6 +772,12 @@ span[data-picture] span {
 }
 span[data-picture] img {
   height: auto;
+}
+#spinner-target {
+  opacity: .5;
+}
+#spinner-target.active {
+  opacity: 1;
 }
 .qtip {
   position: absolute;
@@ -902,9 +911,12 @@ span[data-picture] img {
   padding: 0.625em;
   margin: -0.625em;
 }
-.gravity > img > section,
-.gravity .gravity-item > section {
+.gravity > img > section[role="tooltip-content"],
+.gravity .gravity-item > section[role="tooltip-content"] {
   display: none;
+}
+.main .gravity {
+  width: 100%;
 }
 .index .gravity {
   width: 75%;
@@ -947,7 +959,7 @@ span[data-picture] img {
   box-sizing: border-box;
   width: 37.5%;
 }
-.about .group-image img {
+.about .group-image.loaded img {
   max-width: 100%;
   height: auto;
 }
