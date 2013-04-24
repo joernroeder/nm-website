@@ -20,6 +20,13 @@
 			window.setTimeout callback, 1000 / 60
 	)()
 
+	window.debugGravity = false
+
+	window.logger = ->
+		if window.debugGravity
+			console.log arguments[0]
+
+
 	#window.B2D_SCALE = 100
 
 	# ---------------------------------------------
@@ -86,7 +93,7 @@
 				if tooltip.targetId and tooltip.targetId is @id
 					$item.qtip 'reposition'
 
-					console.log 'update tooltip'
+					logger 'update tooltip'
 				###
 
 				$("[data-gravity-item=#{@id}]").css
@@ -152,7 +159,7 @@
 		scaleFactor	: 30
 
 		setScale: (val) ->
-			console.log "box2DHolder set scale to #{val}"
+			logger "box2DHolder set scale to #{val}"
 			@scaleFactor = val
 			if @worker
 				@worker.postMessage
@@ -167,7 +174,7 @@
 					width	: @n(@width)
 					height	: @n(@height)
 
-				console.log "set dimensions: #{@n(@width)} - #{@n(@height)}"
+				logger "set dimensions: #{@n(@width)} - #{@n(@height)}"
 
 				@needToDraw = true
 
@@ -181,7 +188,7 @@
 
 			# init
 			@init = ->
-				console.log 'Box2DHolder init'
+				logger 'Box2DHolder init'
 
 				# set scale
 				@setScale scale
@@ -227,7 +234,7 @@
 					# logging hack
 					if 'log' is e.data.key
 						#console.info 'physics log:'
-						console.log e.data.log
+						logger e.data.log
 						return
 
 					newBodies = e.data.bodiesState
@@ -257,7 +264,7 @@
 			###
 			@initNonWorker = ->
 				alert 'no webworker support :('
-				console.log 'init non worker'
+				logger 'init non worker'
 
 			# start
 			@init()
@@ -266,7 +273,7 @@
 		 # public add
 		###
 		add: (obj) ->
-			#console.log obj
+			#logger obj
 			if obj.id is 'gravity'
 				gravity = new GravityCenter obj.id, @n(obj.left), @n(obj.top), @scaleFactor
 				@addGravity gravity
@@ -315,7 +322,7 @@
 		###
 		###
 		addGravity: (gravity) ->
-			console.log 'add Gravity'
+			logger 'add Gravity'
 			@worker.postMessage
 				key: 'addEntity'
 				entity: gravity
@@ -323,7 +330,7 @@
 		###
 		###
 		addEntity: (entity) ->
-			console.log "added entity '#{entity.id}'"
+			logger "added entity '#{entity.id}'"
 			@world[entity.id] = entity
 
 			# send notification to the worker
@@ -479,7 +486,7 @@
 								#setDimensions()
 								setAndUpdateDimensions()
 
-								console.log 'on resize'
+								logger 'on resize'
 								addGravity()
 							, 10
 
@@ -519,7 +526,7 @@
 							$tooltip = $ api.tooltip
 
 							if $tooltip.hasClass('qtip-pos-rb')
-								console.log 'inverse margin'
+								logger 'inverse margin'
 								margin *= -1
 
 							margin
@@ -592,21 +599,10 @@
 										x: 0
 										y: 10
 
-							console.log $item.qtip('api').tooltip
+							logger $item.qtip('api').tooltip
 
 					addItemEvents = ($item) ->
-						$images = $ 'img', $item
-						loaded = 0
-
-						if $images.length
-							$images.on 'load', ->
-								loaded++
-
-								if loaded is $images.length
-									$item.addClass 'loaded'
-
-									initTooltip $item
-						else
+						$item.imagesLoaded().done ($images) ->
 							$item.addClass 'loaded'
 							initTooltip $item
 
@@ -632,13 +628,13 @@
 								top		: pos.top
 								left	: pos.left
 
-							console.log itemData.top
-							console.log itemData.left
+							#logger itemData.top
+							#logger itemData.left
 
 							# add item to the box
 							methods.add itemData, storageId
 
-							#console.log itemData
+							#logger itemData
 							$item.attr 'data-gravity-item', itemId
 
 					init()

@@ -25,6 +25,12 @@ var __hasProp = {}.hasOwnProperty,
       return window.setTimeout(callback, 1000 / 60);
     };
   })();
+  window.debugGravity = false;
+  window.logger = function() {
+    if (window.debugGravity) {
+      return console.log(arguments[0]);
+    }
+  };
   /*
   	 # Creates a basic Entity with the given parameters
   	 # this should be just the base class to extend.
@@ -116,7 +122,7 @@ var __hasProp = {}.hasOwnProperty,
         				if tooltip.targetId and tooltip.targetId is @id
         					$item.qtip 'reposition'
         
-        					console.log 'update tooltip'
+        					logger 'update tooltip'
         */
 
         return $("[data-gravity-item=" + this.id + "]").css({
@@ -190,7 +196,7 @@ var __hasProp = {}.hasOwnProperty,
     Box2DHolder.prototype.scaleFactor = 30;
 
     Box2DHolder.prototype.setScale = function(val) {
-      console.log("box2DHolder set scale to " + val);
+      logger("box2DHolder set scale to " + val);
       this.scaleFactor = val;
       if (this.worker) {
         return this.worker.postMessage({
@@ -209,7 +215,7 @@ var __hasProp = {}.hasOwnProperty,
           width: this.n(this.width),
           height: this.n(this.height)
         });
-        console.log("set dimensions: " + (this.n(this.width)) + " - " + (this.n(this.height)));
+        logger("set dimensions: " + (this.n(this.width)) + " - " + (this.n(this.height)));
         return this.needToDraw = true;
       }
     };
@@ -231,7 +237,7 @@ var __hasProp = {}.hasOwnProperty,
       this.init = function() {
         var _this = this;
 
-        console.log('Box2DHolder init');
+        logger('Box2DHolder init');
         this.setScale(scale);
         this.useWorker = this.hasWebWorker();
         document.addEventListener('webkitvisibilitychange', (function() {
@@ -268,7 +274,7 @@ var __hasProp = {}.hasOwnProperty,
           var id, newBodies, newBody, _results;
 
           if ('log' === e.data.key) {
-            console.log(e.data.log);
+            logger(e.data.log);
             return;
           }
           newBodies = e.data.bodiesState;
@@ -300,7 +306,7 @@ var __hasProp = {}.hasOwnProperty,
 
       this.initNonWorker = function() {
         alert('no webworker support :(');
-        return console.log('init non worker');
+        return logger('init non worker');
       };
       this.init();
     }
@@ -379,7 +385,7 @@ var __hasProp = {}.hasOwnProperty,
 
 
     Box2DHolder.prototype.addGravity = function(gravity) {
-      console.log('add Gravity');
+      logger('add Gravity');
       return this.worker.postMessage({
         key: 'addEntity',
         entity: gravity
@@ -391,7 +397,7 @@ var __hasProp = {}.hasOwnProperty,
 
 
     Box2DHolder.prototype.addEntity = function(entity) {
-      console.log("added entity '" + entity.id + "'");
+      logger("added entity '" + entity.id + "'");
       this.world[entity.id] = entity;
       this.worker.postMessage({
         key: 'addEntity',
@@ -549,7 +555,7 @@ var __hasProp = {}.hasOwnProperty,
                 clearTimeout(resizeTimeoutId);
                 return resizeTimeoutId = setTimeout(function() {
                   setAndUpdateDimensions();
-                  console.log('on resize');
+                  logger('on resize');
                   return addGravity();
                 }, 10);
               };
@@ -595,7 +601,7 @@ var __hasProp = {}.hasOwnProperty,
                 margin = marginOffset;
                 $tooltip = $(api.tooltip);
                 if ($tooltip.hasClass('qtip-pos-rb')) {
-                  console.log('inverse margin');
+                  logger('inverse margin');
                   margin *= -1;
                 }
                 return margin;
@@ -661,26 +667,14 @@ var __hasProp = {}.hasOwnProperty,
                     }
                   }
                 });
-                return console.log($item.qtip('api').tooltip);
+                return logger($item.qtip('api').tooltip);
               }
             };
             addItemEvents = function($item) {
-              var $images, loaded;
-
-              $images = $('img', $item);
-              loaded = 0;
-              if ($images.length) {
-                return $images.on('load', function() {
-                  loaded++;
-                  if (loaded === $images.length) {
-                    $item.addClass('loaded');
-                    return initTooltip($item);
-                  }
-                });
-              } else {
+              return $item.imagesLoaded().done(function($images) {
                 $item.addClass('loaded');
                 return initTooltip($item);
-              }
+              });
             };
             findItems = function() {
               var $items,
@@ -702,8 +696,6 @@ var __hasProp = {}.hasOwnProperty,
                   top: pos.top,
                   left: pos.left
                 };
-                console.log(itemData.top);
-                console.log(itemData.left);
                 methods.add(itemData, storageId);
                 return $item.attr('data-gravity-item', itemId);
               });
