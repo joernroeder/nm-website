@@ -21,8 +21,27 @@ define [
 	 *	handled here. 
 	 * 
 	###
-	called_twice = false
 	Router = Backbone.Router.extend
+		###*
+		 * All routes should result in a `done` function of this deferred variable
+		 * @type {$.Deferred}
+		###
+		mainDeferred: null
+
+		###*
+		 * This method breaks off the current route if another one is called in order to prevent deferreds to trigger
+		 * when another route has already been called
+		 * 
+		 * @return {$.Deferred}
+		###
+		rejectAndBuild: ->
+			app.handleLinks()
+			deferred = @.mainDeferred
+			if deferred then deferred.reject()
+			@.mainDeferred = $.Deferred()
+			@.mainDeferred.done =>
+				@.mainDeferred = null
+
 		routes:
 			''											: 'index'					# Calendar and featured projects
 			'about/'									: 'showAboutPage'			# About page (Students, Statement etc.)
@@ -37,33 +56,44 @@ define [
 			'*url/'										: 'catchAllRoute'			# for example: "Impressum", else 404 error page
 
 		# ! ROUTE CATCHING
+		# 
+		# 
+		# Routes always folllow the same pattern:
+		# 1.) Reject the current MainDeferred (if still existant) and build up a new one (this.rejectAndBuild)
+		# 2.) Give MainDeferred a `done`-function that handles the eventual rendering
+		# 3.) Retrieve data and resolve MainDeferred within `done`
 		
 		index: (hash) ->
+			mainDfd = @.rejectAndBuild()
+
 			config = app.Config
 			layout = app.useLayout 'index'
 
-			# get featured projects
-			DataRetrieval.forProjectsOverview(config.Featured).done =>
+			projDfd = DataRetrieval.forProjectsOverview(config.Featured)
+			calDfd = DataRetrieval.forCalendar('upcoming')
+
+			$.when(projDfd, calDfd).done ->
+				mainDfd.resolve()
+
+			mainDfd.done =>
 				modelsArray = @.getProjectTypeModels { IsFeatured: true }
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
-
-			# get upcoming calendar data
-			DataRetrieval.forCalendar('upcoming').done =>
 				calendarContainer = new Calendar.Views.UpcomingContainer({ collection: app.Collections.CalendarEntry })
 				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
 
 		showAboutPage: () ->
-			layout = app.useLayout 'main', {customClass: 'about'}
+			console.log Backbone.history
+			mainDfd = @.rejectAndBuild()
 
-			# @todo: data we need: Statement, a random group image, all the persons (with their images, excluding externals) 
+			layout = app.useLayout 'main', {customClass: 'about'}
 			
-			# First, let's get the group image. We'll store it in app.PageInfos, as that's super basic funky info
 			groupImageDfd = DataRetrieval.forRandomGroupImage()
-				
-			# Let's get the motrfukig persons
 			personsDfd = DataRetrieval.forPersonsOverview()
 			
 			$.when(groupImageDfd, personsDfd).done (image) ->
+				mainDfd.resolve image
+
+			mainDfd.done (image) ->
 				coll = app.Collections['Person']
 				persons =
 					students : coll.where { IsStudent: true }
@@ -71,14 +101,16 @@ define [
 					employees : coll.where { IsEmployee: true }
 				view = new About.Views.GravityContainer { groupImage: image, persons: persons }
 				layout.setViewAndRenderMaybe '', view
-			
-
-			false
 
 
 		showPersonPage: (nameSlug) ->
+			mainDfd = @.rejectAndBuild()
+
 			# get the detailed person object
 			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
+				mainDfd.resolve model
+
+			mainDfd.done (model) ->
 				return @.fourOhFour() unless model
 				layout = app.useLayout 'main'
 				template = ''
@@ -89,27 +121,35 @@ define [
 
 				layout.setViewAndRenderMaybe '', view
 
+
 		showPersonDetailed: (nameSlug, uglyHash) ->
 			@.showPortfolioDetailed uglyHash, nameSlug
 
 		showPortfolio: () ->
 			# @todo: filter/search bar
+			mainDfd = @.rejectAndBuild()
 
 			layout = app.useLayout 'portfolio'
 			# get portfolio projects
 			DataRetrieval.forProjectsOverview(app.Config.Portfolio).done =>
+				mainDfd.resolve()
+
+			mainDfd.done =>
 				modelsArray = @.getProjectTypeModels { IsPortfolio: true }
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
 				
 				
 
 		showPortfolioDetailed: (uglyHash, nameSlug) ->
+			mainDfd = @.rejectAndBuild()
+
 			# if `isPersonPage`, there's a check for a custom template'
 			# the first digit of uglyHash points to its class -> get it!
 			classType = app.Config.ClassEnc[uglyHash.substr(0,1)]
 			if classType
 				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) =>
-					console.log model
+					mainDfd.resolve model
+				mainDfd.done (model) =>
 					if not model or (not nameSlug and not model.get('IsPortfolio')) then return @.fourOhFour()
 					layout = app.useLayout 'main', {customClass: 'detail'}
 					template = ''
@@ -121,16 +161,20 @@ define [
 
 					detailView = if not template then new Portfolio.Views.Detail({ model: model }) else new Person.Views.Custom({ model: model, template: template })
 					layout.setViewAndRenderMaybe '', detailView
-					console.log app
 			else
-				@.fourOhFour()
+				mainDfd.done @.fourOhFour
+				mainDfd.resolve()
 
 		showCalendar: () ->
 			console.info 'show whole calendar'
 
 		showCalendarDetailed: (urlHash) ->
-			console.info 'get calendar detailed data with slug and show'
+			mainDfd = @.rejectAndBuild()
+
 			DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done (model) =>
+				mainDfd.resolve model
+
+			mainDfd.done (model) =>
 				return @.fourOhFour() unless model
 				layout = app.useLayout 'main'
 
@@ -139,12 +183,19 @@ define [
 
 		# ! Security stuff
 		showLoginForm: () ->
+			mainDfd = @.rejectAndBuild()
+
 			layout = app.useLayout 'main'
 			console.info 'login form. if logged in, redirect to dashboard'
 			Auth.performLoginCheck().done ->
+				mainDfd.resolve()
+
+			mainDfd.done ->
 				layout.setViewAndRenderMaybe '', new Auth.Views.Login()
 
 		doLogout: ->
+			mainDfd = @.rejectAndBuild()
+
 			layout = app.useLayout 'main'
 			dfd = $.Deferred()
 			if app.CurrentMember
@@ -152,6 +203,8 @@ define [
 				dfd = Auth.logout()
 			else dfd.resolve()
 			dfd.done ->
+				mainDfd.resolve()
+			mainDfd.done ->
 				Backbone.history.navigate '/login/', true
 
 		catchAllRoute: (url) ->
@@ -246,7 +299,7 @@ define [
 					dfd.resolve()
 			else
 				dfd.resolve()
-			dfd
+			dfd.promise()
 
 		# abstract function to get the detailed data of a calendar item by its ugly Hash
 		forDetailedObject: (classType, slug, callback) ->

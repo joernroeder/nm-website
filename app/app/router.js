@@ -8,10 +8,36 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
   	 *
   */
 
-  var DataRetrieval, Router, called_twice;
+  var DataRetrieval, Router;
 
-  called_twice = false;
   Router = Backbone.Router.extend({
+    /**
+    		 * All routes should result in a `done` function of this deferred variable
+    		 * @type {$.Deferred}
+    */
+
+    mainDeferred: null,
+    /**
+    		 * This method breaks off the current route if another one is called in order to prevent deferreds to trigger
+    		 * when another route has already been called
+    		 * 
+    		 * @return {$.Deferred}
+    */
+
+    rejectAndBuild: function() {
+      var deferred,
+        _this = this;
+
+      app.handleLinks();
+      deferred = this.mainDeferred;
+      if (deferred) {
+        deferred.reject();
+      }
+      this.mainDeferred = $.Deferred();
+      return this.mainDeferred.done(function() {
+        return _this.mainDeferred = null;
+      });
+    },
     routes: {
       '': 'index',
       'about/': 'showAboutPage',
@@ -26,22 +52,24 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       '*url/': 'catchAllRoute'
     },
     index: function(hash) {
-      var config, layout,
+      var calDfd, config, layout, mainDfd, projDfd,
         _this = this;
 
+      mainDfd = this.rejectAndBuild();
       config = app.Config;
       layout = app.useLayout('index');
-      DataRetrieval.forProjectsOverview(config.Featured).done(function() {
-        var modelsArray;
+      projDfd = DataRetrieval.forProjectsOverview(config.Featured);
+      calDfd = DataRetrieval.forCalendar('upcoming');
+      $.when(projDfd, calDfd).done(function() {
+        return mainDfd.resolve();
+      });
+      return mainDfd.done(function() {
+        var calendarContainer, modelsArray;
 
         modelsArray = _this.getProjectTypeModels({
           IsFeatured: true
         });
-        return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
-      });
-      return DataRetrieval.forCalendar('upcoming').done(function() {
-        var calendarContainer;
-
+        _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
         calendarContainer = new Calendar.Views.UpcomingContainer({
           collection: app.Collections.CalendarEntry
         });
@@ -49,14 +77,19 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showAboutPage: function() {
-      var groupImageDfd, layout, personsDfd;
+      var groupImageDfd, layout, mainDfd, personsDfd;
 
+      console.log(Backbone.history);
+      mainDfd = this.rejectAndBuild();
       layout = app.useLayout('main', {
         customClass: 'about'
       });
       groupImageDfd = DataRetrieval.forRandomGroupImage();
       personsDfd = DataRetrieval.forPersonsOverview();
       $.when(groupImageDfd, personsDfd).done(function(image) {
+        return mainDfd.resolve(image);
+      });
+      return mainDfd.done(function(image) {
         var coll, persons, view;
 
         coll = app.Collections['Person'];
@@ -77,10 +110,15 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         });
         return layout.setViewAndRenderMaybe('', view);
       });
-      return false;
     },
     showPersonPage: function(nameSlug) {
-      return DataRetrieval.forDetailedObject('Person', nameSlug).done(function(model) {
+      var mainDfd;
+
+      mainDfd = this.rejectAndBuild();
+      DataRetrieval.forDetailedObject('Person', nameSlug).done(function(model) {
+        return mainDfd.resolve(model);
+      });
+      return mainDfd.done(function(model) {
         var layout, template, view;
 
         if (!model) {
@@ -106,11 +144,15 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       return this.showPortfolioDetailed(uglyHash, nameSlug);
     },
     showPortfolio: function() {
-      var layout,
+      var layout, mainDfd,
         _this = this;
 
+      mainDfd = this.rejectAndBuild();
       layout = app.useLayout('portfolio');
-      return DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
+      DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
+        return mainDfd.resolve();
+      });
+      return mainDfd.done(function() {
         var modelsArray;
 
         modelsArray = _this.getProjectTypeModels({
@@ -120,15 +162,18 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showPortfolioDetailed: function(uglyHash, nameSlug) {
-      var classType,
+      var classType, mainDfd,
         _this = this;
 
+      mainDfd = this.rejectAndBuild();
       classType = app.Config.ClassEnc[uglyHash.substr(0, 1)];
       if (classType) {
-        return DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
+        DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
+          return mainDfd.resolve(model);
+        });
+        return mainDfd.done(function(model) {
           var detailView, layout, person, template;
 
-          console.log(model);
           if (!model || (!nameSlug && !model.get('IsPortfolio'))) {
             return _this.fourOhFour();
           }
@@ -154,21 +199,25 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             model: model,
             template: template
           });
-          layout.setViewAndRenderMaybe('', detailView);
-          return console.log(app);
+          return layout.setViewAndRenderMaybe('', detailView);
         });
       } else {
-        return this.fourOhFour();
+        mainDfd.done(this.fourOhFour);
+        return mainDfd.resolve();
       }
     },
     showCalendar: function() {
       return console.info('show whole calendar');
     },
     showCalendarDetailed: function(urlHash) {
-      var _this = this;
+      var mainDfd,
+        _this = this;
 
-      console.info('get calendar detailed data with slug and show');
-      return DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done(function(model) {
+      mainDfd = this.rejectAndBuild();
+      DataRetrieval.forDetailedObject('CalendarEntry', urlHash).done(function(model) {
+        return mainDfd.resolve(model);
+      });
+      return mainDfd.done(function(model) {
         var detailView, layout;
 
         if (!model) {
@@ -182,17 +231,22 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showLoginForm: function() {
-      var layout;
+      var layout, mainDfd;
 
+      mainDfd = this.rejectAndBuild();
       layout = app.useLayout('main');
       console.info('login form. if logged in, redirect to dashboard');
-      return Auth.performLoginCheck().done(function() {
+      Auth.performLoginCheck().done(function() {
+        return mainDfd.resolve();
+      });
+      return mainDfd.done(function() {
         return layout.setViewAndRenderMaybe('', new Auth.Views.Login());
       });
     },
     doLogout: function() {
-      var dfd, layout;
+      var dfd, layout, mainDfd;
 
+      mainDfd = this.rejectAndBuild();
       layout = app.useLayout('main');
       dfd = $.Deferred();
       if (app.CurrentMember) {
@@ -201,7 +255,10 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       } else {
         dfd.resolve();
       }
-      return dfd.done(function() {
+      dfd.done(function() {
+        return mainDfd.resolve();
+      });
+      return mainDfd.done(function() {
         return Backbone.history.navigate('/login/', true);
       });
     },
@@ -317,7 +374,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       } else {
         dfd.resolve();
       }
-      return dfd;
+      return dfd.promise();
     },
     forDetailedObject: function(classType, slug, callback) {
       var coll, configObj, dfd, existModel, options, whereStatement;
