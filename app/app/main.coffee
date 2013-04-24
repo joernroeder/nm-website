@@ -160,6 +160,14 @@ require [
 		MType = JJRestApi.Model type
 		return new MType(data)
 
+	app.handleLinks = () ->
+		frag = Backbone.history.fragment
+		frag = '/' + frag.substring 0, frag.indexOf('/') + 1
+		$('#wrapper .badge').find('a').each (i, a) ->
+			$a = $(a)
+			$a.removeClass 'active'
+			if $a.attr('href') is frag then $a.addClass 'active'
+
 	app.bindListeners()
 
 	# ! KICK OFF

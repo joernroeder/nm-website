@@ -207,6 +207,21 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     MType = JJRestApi.Model(type);
     return new MType(data);
   };
+  app.handleLinks = function() {
+    var frag;
+
+    frag = Backbone.history.fragment;
+    frag = '/' + frag.substring(0, frag.indexOf('/') + 1);
+    return $('#wrapper .badge').find('a').each(function(i, a) {
+      var $a;
+
+      $a = $(a);
+      $a.removeClass('active');
+      if ($a.attr('href') === frag) {
+        return $a.addClass('active');
+      }
+    });
+  };
   app.bindListeners();
   $(function() {
     JJRestApi.hookSecurityToken();
