@@ -494,6 +494,19 @@ span[data-picture] {
 		float: left;
 		.columnsWidth(8, 3);
 		.wrapper;
+
+		a {
+			img {
+				.transition(~"opacity .2s ease-out");
+				opacity: 1;
+			}
+
+			&:hover {
+				img {
+					opacity: .7;
+				}
+			}
+		}
 	}
 
 	.students,

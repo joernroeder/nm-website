@@ -90,6 +90,11 @@
   font-variant: small-caps;
   color: #525252;
   display: inline-block;
+  -webkit-transition: color .2s ease-out;
+  -moz-transition: color .2s ease-out;
+  -o-transition: color .2s ease-out;
+  -ms-transition: color .2s ease-out;
+  transition: color .2s ease-out;
 }
 .btn:after {
   display: inline-block;
@@ -101,6 +106,11 @@
   -webkit-font-smoothing: antialiased;
   bottom: -0.09375em;
   padding-left: 0.1875em;
+  -webkit-transition: color .2s ease-out;
+  -moz-transition: color .2s ease-out;
+  -o-transition: color .2s ease-out;
+  -ms-transition: color .2s ease-out;
+  transition: color .2s ease-out;
 }
 .btn:hover,
 .btn:focus,
@@ -948,6 +958,17 @@ span[data-picture] img {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.about .person a img {
+  -webkit-transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -o-transition: opacity .2s ease-out;
+  -ms-transition: opacity .2s ease-out;
+  transition: opacity .2s ease-out;
+  opacity: 1;
+}
+.about .person a:hover img {
+  opacity: .7;
 }
 .about .students,
 .about .alumni {

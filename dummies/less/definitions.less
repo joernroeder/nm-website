@@ -159,6 +159,8 @@
 	color: @btnColor;
 	display: inline-block;
 
+	.transition(~"color .2s ease-out");
+
 	// Pfeil
 	&:after {
 		display: inline-block;
@@ -170,6 +172,7 @@
 		-webkit-font-smoothing: antialiased;
 		bottom: -1.5 / @em;
 		padding-left: 3 / @em;
+		.transition(~"color .2s ease-out");
 	}
 
 	&:hover,
