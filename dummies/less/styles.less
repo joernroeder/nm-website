@@ -278,8 +278,13 @@ aside {
 	width: 100%;
 }
 
-#main.loading {
-	opacity: 0;
+#main {
+	.transition(~"opacity .3s ease-in-out");
+	opacity: 1;
+
+	&.loading {
+		opacity: 0;
+	}
 }
 
 span[data-picture] {
@@ -295,7 +300,13 @@ span[data-picture] {
 }
 
 #spinner-target {
-	opacity: .5;
+	height: @spinnerDimension;
+	width: @spinnerDimension;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: (@spinnerDimension / -2) 0 0 @spinnerDimension / -2;
+	opacity: 0;
 
 	&.active {
 		opacity: 1;
@@ -344,6 +355,10 @@ span[data-picture] {
 
 .qtip-focus {
 	//display: block;
+}
+
+.isLoading .qtip {
+	opacity: 0 !important;
 }
 
 /*

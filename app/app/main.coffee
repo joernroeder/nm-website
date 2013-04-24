@@ -195,11 +195,11 @@ require [
 			target: document.getElementById('spinner-target')
 	app.startSpinner = ->
 		spinner = @.spinner
-		spinner.target.addClass 'active'
+		$(spinner.target).addClass 'active'
 		spinner.inst.spin(spinner.target)
 	app.stopSpinner = ->
 		spinner = @.spinner
-		spinner.target.removeClass 'active'
+		$(spinner.target).removeClass 'active'
 		spinner.inst.stop()
 
 	app.addLoadingClasses = ->

@@ -252,14 +252,14 @@ require(['app', 'router', 'modules/Project', 'modules/Person', 'modules/Excursio
     var spinner;
 
     spinner = this.spinner;
-    spinner.target.addClass('active');
+    $(spinner.target).addClass('active');
     return spinner.inst.spin(spinner.target);
   };
   app.stopSpinner = function() {
     var spinner;
 
     spinner = this.spinner;
-    spinner.target.removeClass('active');
+    $(spinner.target).removeClass('active');
     return spinner.inst.stop();
   };
   app.addLoadingClasses = function() {
