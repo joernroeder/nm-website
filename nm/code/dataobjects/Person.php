@@ -185,5 +185,13 @@ class Person extends DataObject {
 		return true;
 	}
 
+	public function onBeforeWrite() {
+		if (!$this->UrlSlug) {
+			$this->UrlSlug = Convert::raw2url($this->getTitle());
+		}
+
+		parent::onBeforeWrite();
+	}
+
 }
 
