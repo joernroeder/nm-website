@@ -576,16 +576,25 @@ var __hasProp = {}.hasOwnProperty,
               }, storageId);
             };
             layoutItems = function($items) {
-              var angle, inc, x, y;
+              var angle, inc, store, x, y;
 
               inc = Math.PI * 2 / $items.length;
               x = y = angle = 0;
+              store = storage();
               return $items.each(function(i, el) {
-                var d;
+                var $item, d, noise;
 
-                d = Math.min(storage().width, storage().height) / 2;
-                x = d * Math.cos(angle) + d;
-                y = d * Math.sin(angle) + d;
+                noise = Math.random() * 100;
+                $item = $(el);
+                if (Math.random() > .5) {
+                  noise *= -1;
+                }
+                d = Math.min(store.width, store.height) / 2;
+                x = Math.max(0, Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise));
+                y = Math.max(0, Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise));
+                console.log(store.height);
+                console.log($item.height());
+                console.log(y);
                 el.style.position = 'absolute';
                 el.style.left = x + 'px';
                 el.style.top = y + 'px';
@@ -714,8 +723,8 @@ var __hasProp = {}.hasOwnProperty,
                   top: pos.top,
                   left: pos.left
                 };
-                methods.add(itemData, storageId);
-                return $item.attr('data-gravity-item', itemId);
+                $item.attr('data-gravity-item', itemId);
+                return methods.add(itemData, storageId);
               });
             };
             init();

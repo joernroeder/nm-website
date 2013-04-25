@@ -509,11 +509,24 @@
 					layoutItems = ($items) ->
 						inc = Math.PI * 2 / $items.length
 						x = y = angle = 0
+						store = storage()
 
 						$items.each (i, el) ->
-							d = Math.min(storage().width, storage().height) / 2
-							x = d * Math.cos(angle) + d
-							y = d * Math.sin(angle) + d
+							noise = Math.random() * 100
+							$item = $ el
+
+							if Math.random() > .5
+								noise *= -1
+
+							d = Math.min(store.width, store.height) / 2
+							x = Math.max 0, Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise)
+							y = Math.max 0, Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise)
+
+							console.log store.height
+							console.log $item.height()
+							console.log y
+							#x = d * Math.cos(angle) + d
+							#y = d * Math.sin(angle) + d
 
 							el.style.position = 'absolute'
 							el.style.left = x + 'px'
@@ -653,11 +666,11 @@
 							#logger itemData.top
 							#logger itemData.left
 
-							# add item to the box
-							methods.add itemData, storageId
-
 							#logger itemData
 							$item.attr 'data-gravity-item', itemId
+
+							# add item to the box
+							methods.add itemData, storageId
 
 					init()
 
