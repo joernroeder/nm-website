@@ -42,7 +42,7 @@ define [
 		# this view displays basic pieces of information (bio, pic etc.) within the gravity view
 		Person.Views.InfoItem = Backbone.View.extend
 			tagName: 'article'
-			className: 'gravity-item'
+			className: 'gravity-item person-info'
 			template: 'person-info-item'
 			serialize: ->
 				if @.model then @.model.toJSON()
@@ -60,5 +60,13 @@ define [
 			afterRender: ->
 				$(document).trigger(@._ev)
 
+
+		# ! Handlebars Helper
+		
+		Handlebars.registerHelper 'website', (website) ->
+			href = website.Link or '#'
+			title = website.Title or href
+
+			'<a href="' + href + '">' + title + '</a>'
 
 		Person

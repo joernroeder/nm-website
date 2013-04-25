@@ -64,7 +64,17 @@ class Person extends DataObject {
 		'Member'			=> 'Member'				// Benutzer
 	);
 
+
+	// ! Extensions ------------------------
+	
+	static $extensions = array(
+		'HyphenatedTextExtension',
+		'MarkdownDataExtension'
+	);
+
+
 	// ! Indizes ---------------------------
+	
 	private static $indexes = array(
 		'UrlSlug'			=> array(
 			'type'	=> 'unique',
@@ -124,7 +134,8 @@ class Person extends DataObject {
 			'IsStudent',
 			'IsAlumni',
 			'Email',
-			'Bio',
+			//'Bio',
+			'MarkdownedBio',
 			'GraduationYear',
 			'MasterYear',
 			'Websites.Title',
@@ -183,6 +194,10 @@ class Person extends DataObject {
 
 	public function canView($member = null) {
 		return true;
+	}
+
+	public function getMarkdownedBio() {
+		return $this->MarkdownHyphenated('Bio');
 	}
 
 	public function onBeforeWrite() {

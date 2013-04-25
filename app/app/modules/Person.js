@@ -58,7 +58,7 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
   });
   Person.Views.InfoItem = Backbone.View.extend({
     tagName: 'article',
-    className: 'gravity-item',
+    className: 'gravity-item person-info',
     template: 'person-info-item',
     serialize: function() {
       if (this.model) {
@@ -89,6 +89,13 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
     afterRender: function() {
       return $(document).trigger(this._ev);
     }
+  });
+  Handlebars.registerHelper('website', function(website) {
+    var href, title;
+
+    href = website.Link || '#';
+    title = website.Title || href;
+    return '<a href="' + href + '">' + title + '</a>';
   });
   return Person;
 });

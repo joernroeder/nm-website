@@ -1,11 +1,26 @@
-{{#if Image.Urls._320}}
-<a href="/about/{{UrlSlug}}/">
-	{{#with Image.Urls._320}}
-		<img src="{{Url}}" width="{{Width}}" height="{{Height}}" alt="">
-	{{/with}}
-</a>
-{{/if}}
+<section>
+	{{#if Image.Urls._320}}
+		<a href="/about/{{UrlSlug}}/">
+		{{#with Image.Urls._320}}
+			<img src="{{Url}}" width="{{Width}}" height="{{Height}}" alt="">
+		{{/with}}
+		</a>
+	{{/if}}
+</section>
 
 <section>
-	<h1>{{FirstName}} {{Surname}}</h1>
+	<header>
+		<p>Alumni // 2005</p>
+		<h1>{{FirstName}} {{Surname}}</h1>
+	</header>
+
+	{{{MarkdownedBio}}}
+
+	{{#if Websites}}
+		<ul>
+			{{#each Websites}}
+				<li>{{{website this}}}</li>
+			{{/each}}
+		</ul>
+	{{/if}}
 </section>
