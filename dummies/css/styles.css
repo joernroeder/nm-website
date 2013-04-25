@@ -897,9 +897,15 @@ span[data-picture] img {
 .gravity .gravity-item[data-gravity-item].loaded {
   opacity: 1;
 }
-.gravity > img[data-gravity-item].loaded a,
-.gravity .gravity-item[data-gravity-item].loaded a {
+.gravity > img[data-gravity-item].loaded > a,
+.gravity .gravity-item[data-gravity-item].loaded > a {
   background: #e6e6e6;
+}
+.gravity > img[data-gravity-item].loaded > a img,
+.gravity .gravity-item[data-gravity-item].loaded > a img {
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 .gravity > img > a,
 .gravity .gravity-item > a {
@@ -991,7 +997,11 @@ span[data-picture] img {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.about .person a {
+  display: block;
+}
 .about .person a img {
+  display: block;
   -webkit-transition: opacity .2s ease-out;
   -moz-transition: opacity .2s ease-out;
   -o-transition: opacity .2s ease-out;

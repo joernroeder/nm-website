@@ -12,7 +12,7 @@ define [
 			className: 'gravity'
 			afterRender: ->
 				
-				$(@.el).height($(window).height()).RadialGravity 
+				$(@.el).RadialGravity 
 					worker:
 						physics: '/app/assets/js/plugins/gravity/backend/physics.js'
 				

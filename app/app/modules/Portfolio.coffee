@@ -23,7 +23,7 @@ define [
 
 		Portfolio.Views.ListItem = Backbone.View.extend
 			tagName: 'article'
-			className: 'gravity-item'
+			className: 'gravity-item resizable'
 			template: 'gravity-list-item'
 			serialize: () ->
 				data = if @.model then @.model.toJSON() else {}
@@ -63,7 +63,7 @@ define [
 			out = ''
 			length = persons.length
 			_.each persons, (person, i) ->
-				out += person.FirstName + ' ' + person.Surname
+				out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + person.Surname + '</a>'
 				if i < (length - 2)
 					out += ', '
 				else if i < (length - 1)

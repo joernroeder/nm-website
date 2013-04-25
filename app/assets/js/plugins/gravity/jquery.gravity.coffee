@@ -444,19 +444,22 @@
 						RadialGravityStorage.implementations[storageId]
 
 					setDimensions = ->
-						width = storage().$container.width()
-						height = storage().$container.height()
+						store = storage()
+						store.$container.css 'min-height', $(window).height()
+
+						width = store.$container.width()
+						height = store.$container.height()
 
 						width = width - (opts.padding * width)
 						height = height - (opts.padding * height)
 
-						storage().width = width
-						storage().height = height
+						store.width = width
+						store.height = height
 
 						# @todo trigger resize on box2DHolder
 						# @todo fix it
-						if storage().height <= 0
-							storage().height = $(window).height()
+						if store.height <= 0
+							store.height = $(window).height()
 
 					setAndUpdateDimensions = ->
 						setDimensions()
@@ -516,6 +519,22 @@
 							el.style.left = x + 'px'
 							el.style.top = y + 'px'
 							angle += inc
+
+					updateItemDimensions = ($items) ->
+						$items.each (i,el) ->
+
+							$item = $ el
+
+							if not $item.hasClass 'resizable' then return
+
+							rand = Math.max .7, Math.random() * 1.7
+
+							width = $item.width() * rand
+							height = $item.height() * rand
+
+							# update container
+							$item.width width
+							$item.height height
 
 					initTooltip = ($item) ->
 						$metaSection = $ 'section[role=tooltip-content]', $item
@@ -610,6 +629,7 @@
 					findItems = ->
 						$items = if opts.elementSelector then storage().$container.find(opts.elementSelector) else storage().$container.children()
 
+						updateItemDimensions $items
 						layoutItems $items
 
 						$.each $items, (index, item) =>
@@ -619,7 +639,7 @@
 
 							addItemEvents $item
 
-							itemData =
+							itemData = 
 								id		: itemId
 								width	: $item.width()
 								height	: $item.height()
@@ -627,6 +647,8 @@
 								#left	: 100
 								top		: pos.top
 								left	: pos.left
+
+							#console.log itemData
 
 							#logger itemData.top
 							#logger itemData.left

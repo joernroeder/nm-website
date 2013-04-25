@@ -505,7 +505,7 @@ var __hasProp = {}.hasOwnProperty,
             return RadialGravityStorage.itemIdCount;
           };
           return this.each(function(i, el) {
-            var addGravity, addItemEvents, findItems, getItemId, getStorageId, init, initResize, initTooltip, layoutItems, resizeTimeoutId, setAndUpdateDimensions, setDimensions, storageId;
+            var addGravity, addItemEvents, findItems, getItemId, getStorageId, init, initResize, initTooltip, layoutItems, resizeTimeoutId, setAndUpdateDimensions, setDimensions, storageId, updateItemDimensions;
 
             storageId = RadialGravityStorage.implementationCount;
             RadialGravityStorage.implementationCount++;
@@ -520,16 +520,18 @@ var __hasProp = {}.hasOwnProperty,
               return RadialGravityStorage.implementations[storageId];
             };
             setDimensions = function() {
-              var height, width;
+              var height, store, width;
 
-              width = storage().$container.width();
-              height = storage().$container.height();
+              store = storage();
+              store.$container.css('min-height', $(window).height());
+              width = store.$container.width();
+              height = store.$container.height();
               width = width - (opts.padding * width);
               height = height - (opts.padding * height);
-              storage().width = width;
-              storage().height = height;
-              if (storage().height <= 0) {
-                return storage().height = $(window).height();
+              store.width = width;
+              store.height = height;
+              if (store.height <= 0) {
+                return store.height = $(window).height();
               }
             };
             setAndUpdateDimensions = function() {
@@ -588,6 +590,21 @@ var __hasProp = {}.hasOwnProperty,
                 el.style.left = x + 'px';
                 el.style.top = y + 'px';
                 return angle += inc;
+              });
+            };
+            updateItemDimensions = function($items) {
+              return $items.each(function(i, el) {
+                var $item, height, rand, width;
+
+                $item = $(el);
+                if (!$item.hasClass('resizable')) {
+                  return;
+                }
+                rand = Math.max(.7, Math.random() * 1.7);
+                width = $item.width() * rand;
+                height = $item.height() * rand;
+                $item.width(width);
+                return $item.height(height);
               });
             };
             initTooltip = function($item) {
@@ -681,6 +698,7 @@ var __hasProp = {}.hasOwnProperty,
                 _this = this;
 
               $items = opts.elementSelector ? storage().$container.find(opts.elementSelector) : storage().$container.children();
+              updateItemDimensions($items);
               layoutItems($items);
               return $.each($items, function(index, item) {
                 var $item, itemData, itemId, pos;
