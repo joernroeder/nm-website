@@ -590,10 +590,9 @@ var __hasProp = {}.hasOwnProperty,
                   noise *= -1;
                 }
                 d = Math.min(store.width, store.height) / 2;
-                x = Math.max(0, Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise));
-                y = Math.max(0, Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise));
-                console.log(store.height);
-                console.log($item.height());
+                x = Math.max($item.width(), Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise));
+                y = Math.max($item.height(), Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise));
+                console.log(x);
                 console.log(y);
                 el.style.position = 'absolute';
                 el.style.left = x + 'px';

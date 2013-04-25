@@ -519,11 +519,10 @@
 								noise *= -1
 
 							d = Math.min(store.width, store.height) / 2
-							x = Math.max 0, Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise)
-							y = Math.max 0, Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise)
+							x = Math.max $item.width(), Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise)
+							y = Math.max $item.height(), Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise)
 
-							console.log store.height
-							console.log $item.height()
+							console.log x
 							console.log y
 							#x = d * Math.cos(angle) + d
 							#y = d * Math.sin(angle) + d
@@ -666,7 +665,7 @@
 							#logger itemData.top
 							#logger itemData.left
 
-							#logger itemData
+							# logger itemData
 							$item.attr 'data-gravity-item', itemId
 
 							# add item to the box
