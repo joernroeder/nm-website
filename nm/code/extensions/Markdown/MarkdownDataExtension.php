@@ -4,9 +4,6 @@ class MarkdownDataExtension extends DataExtension {
 
 	public static $markdown_path = '/code/thirdparty/markdown/markdown.php';
 
-	static $regex_img = "^\[img (.*?)\]^";
-	static $img_class = 'ResponsiveImage';
-
 	static $excerpt_len = 200;
 
 	public function __construct() {
@@ -16,34 +13,39 @@ class MarkdownDataExtension extends DataExtension {
 		parent::__construct();
 	}
 
-	public function Markdown($fieldName) {
+	public function Markdown($fieldName, $extensions = null) {
 		$mdText = $this->owner->$fieldName;
 		if (!$mdText) return '';
 
-		return $this->MarkdownText($mdText);
+		return $this->MarkdownText($mdText, $extensions);
 	}
 
-	public function MarkdownText($text) {
+	public function MarkdownText($text, $extensions = null) {
+
+		// normal markdown
 		$mdText = Markdown($text);
 
 		if (!$mdText) return '';
+		if (!$extensions || !is_array($extensions)) $extensions = array();
 
-		preg_match_all(self::$regex_img, $text, $ids, PREG_PATTERN_ORDER);
-
-		$found = $ids[0];
-		if (!empty($found)) {
-			foreach ($found as $key => $value) {
-				$imgID = $ids[1][$key];
-				$arr = explode(' ', $imgID);
-				$imgID = (int) $arr[0];
-				$maxWidth = (isset($arr[1]) && $arr[1]) ? 'max-width:' . $arr[1] : null;
-				if ($imgID) {
-					$img = DataObject::get_by_id(self::$img_class, (int) $imgID);
-					if ($img && $img->exists()) {
-						$mdText = str_replace($value, $img->getTag(null, null, $maxWidth), $mdText);
-					}
-				}
+		// check for extensions
+		$possible = MarkdownFormatterExtension::getSubclasses();
+		$use = array();
+		$remove = array();
+		foreach ($possible as $p) {
+			$key = isset($p::$indicator) ? $p::$indicator : $p;
+			if (in_array($key, $extensions)) {
+				$use[] = $p;
+			} else {
+				$remove[] = $p;
 			}
+		}
+		// remove unnecessary markdown tags
+		foreach ($remove as $r) {
+			$mdText = $r::removeMarkdown($mdText);
+		}
+		foreach ($use as $u) {
+			$mdText = $u::formatMarkdown($mdText);
 		}
 		
 		return $mdText;
@@ -77,11 +79,11 @@ class MarkdownDataExtension extends DataExtension {
 	** Hyphenations
 	*/
 
-	public function MarkdownHyphenated($fieldName) {
-		return $this->owner->getHyphenatedText($this->owner->Markdown($fieldName));
+	public function MarkdownHyphenated($fieldName, $extensions = null) {
+		return $this->owner->getHyphenatedText($this->owner->Markdown($fieldName, $extensions));
 	}
 
-	public function ExcerptMarkdownHyphenated($fieldName) {
-		return $this->owner->getHyphenatedText($this->owner->ExcerptMarkdown($fieldName));
+	public function ExcerptMarkdownHyphenated($fieldName, $extensions = null) {
+		return $this->owner->getHyphenatedText($this->owner->ExcerptMarkdown($fieldName, $extensions));
 	}
 }
