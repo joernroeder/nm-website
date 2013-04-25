@@ -214,22 +214,23 @@ define [
 				mainDfd.resolve()
 
 			mainDfd.done ->
+				console.log 'showing login form'
 				layout = app.useLayout 'main'
 				layout.setViewAndRenderMaybe '', new Auth.Views.Login()
 
 		doLogout: ->
-			mainDfd = @.rejectAndHandle()
-
+			if @.mainDfd
+				@.mainDfd.reject()
+				@.mainDfd = null
+			layout = app.useLayout 'main'
 			dfd = $.Deferred()
 			if app.CurrentMember
 				layout.setViewAndRenderMaybe '', new Auth.Views.Logout()
 				dfd = Auth.logout()
 			else dfd.resolve()
 			dfd.done ->
-				mainDfd.resolve()
-			mainDfd.done ->
-				layout = app.useLayout 'main'
 				Backbone.history.navigate '/login/', true
+				
 
 		catchAllRoute: (url) ->
 			console.log 'catch all route'

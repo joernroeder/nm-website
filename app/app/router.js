@@ -266,14 +266,19 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       return mainDfd.done(function() {
         var layout;
 
+        console.log('showing login form');
         layout = app.useLayout('main');
         return layout.setViewAndRenderMaybe('', new Auth.Views.Login());
       });
     },
     doLogout: function() {
-      var dfd, mainDfd;
+      var dfd, layout;
 
-      mainDfd = this.rejectAndHandle();
+      if (this.mainDfd) {
+        this.mainDfd.reject();
+        this.mainDfd = null;
+      }
+      layout = app.useLayout('main');
       dfd = $.Deferred();
       if (app.CurrentMember) {
         layout.setViewAndRenderMaybe('', new Auth.Views.Logout());
@@ -281,13 +286,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       } else {
         dfd.resolve();
       }
-      dfd.done(function() {
-        return mainDfd.resolve();
-      });
-      return mainDfd.done(function() {
-        var layout;
-
-        layout = app.useLayout('main');
+      return dfd.done(function() {
         return Backbone.history.navigate('/login/', true);
       });
     },
