@@ -588,8 +588,20 @@ span[data-picture] {
 
 			img {
 				display: inline-block;
-				margin-top: @line / @em;
+				//margin-top: @line / @em;
 				max-width: 100%;
+			}
+
+			span[data-picture] {
+				display: block;
+			}
+			span[data-picture],
+			p {
+				margin-bottom: @line / @em;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
 			}
 		}
 
@@ -598,6 +610,35 @@ span[data-picture] {
 			.columnsWidth(8 - @articleMarginCols, 2);
 			.wrapper;
 		}
+	}
+}
+
+.person-info {
+	@fullWidth: 6;
+	@imageWidth: 1.5;
+
+	// - - - - - - - 
+	
+	.columnsWidth(8, 6);
+
+	> section:first-child {
+		float: left;
+		.columnsWidth(8, @imageWidth);
+
+		a {
+			display: block;
+			border: none;
+		}
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+	}
+
+	> section:last-child {
+		.columnsWidth(8, @fullWidth - @imageWidth);
+		padding: 0 0 (@line / @em) (@line / @em);
+		float: left;
 	}
 }
 

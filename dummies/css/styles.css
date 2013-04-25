@@ -1070,8 +1070,18 @@ span[data-picture] img {
 }
 .detail article section img {
   display: inline-block;
-  margin-top: 1.5em;
   max-width: 100%;
+}
+.detail article section span[data-picture] {
+  display: block;
+}
+.detail article section span[data-picture],
+.detail article section p {
+  margin-bottom: 1.5em;
+}
+.detail article section span[data-picture]:last-child,
+.detail article section p:last-child {
+  margin-bottom: 0;
 }
 .detail article aside {
   display: inline-block;
@@ -1080,6 +1090,26 @@ span[data-picture] img {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.person-info {
+  width: 75%;
+}
+.person-info > section:first-child {
+  float: left;
+  width: 18.75%;
+}
+.person-info > section:first-child a {
+  display: block;
+  border: none;
+}
+.person-info > section:first-child img {
+  max-width: 100%;
+  height: auto;
+}
+.person-info > section:last-child {
+  width: 56.25%;
+  padding: 0 0 1.5em 1.5em;
+  float: left;
 }
 /*
  *
