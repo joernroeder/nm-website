@@ -63,9 +63,40 @@ define [
 
 		# ! Handlebars Helper
 		
-		Handlebars.registerHelper 'website', (website) ->
-			href = website.Link or '#'
-			title = website.Title or href
+		Handlebars.registerHelper 'personMeta', ->
+			out = ''
+			stats = []
+			addDate = false
+
+			if @.IsStudent
+				stats.push 'Student'
+			
+			if @.IsAlumni
+				stats.push 'Alumni'
+			
+			if @.IsEmployee
+				stats.push 'Employee'
+			
+			if @.IsExternal
+				stats.push 'External'
+
+			 
+			if not stats.length
+				return ''
+
+			# stitch together
+			out += stats.join ', '
+
+			# add year
+			if @.GraduationYear
+				out += ' // '
+				out += if @.MasterYear then @.MasterYear else @.GraduationYear
+
+			out
+		
+		Handlebars.registerHelper 'website', ->
+			href = @.Link or '#'
+			title = @.Title or href
 
 			'<a href="' + href + '">' + title + '</a>'
 

@@ -90,11 +90,39 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
       return $(document).trigger(this._ev);
     }
   });
-  Handlebars.registerHelper('website', function(website) {
+  Handlebars.registerHelper('personMeta', function() {
+    var addDate, out, stats;
+
+    out = '';
+    stats = [];
+    addDate = false;
+    if (this.IsStudent) {
+      stats.push('Student');
+    }
+    if (this.IsAlumni) {
+      stats.push('Alumni');
+    }
+    if (this.IsEmployee) {
+      stats.push('Employee');
+    }
+    if (this.IsExternal) {
+      stats.push('External');
+    }
+    if (!stats.length) {
+      return '';
+    }
+    out += stats.join(', ');
+    if (this.GraduationYear) {
+      out += ' // ';
+      out += this.MasterYear ? this.MasterYear : this.GraduationYear;
+    }
+    return out;
+  });
+  Handlebars.registerHelper('website', function() {
     var href, title;
 
-    href = website.Link || '#';
-    title = website.Title || href;
+    href = this.Link || '#';
+    title = this.Title || href;
     return '<a href="' + href + '">' + title + '</a>';
   });
   return Person;
