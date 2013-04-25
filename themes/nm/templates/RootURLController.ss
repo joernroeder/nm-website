@@ -4,7 +4,7 @@
 	<% base_tag %>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-	<title>NM Website Boilerplate</title>
+	<title>New Media Kassel</title>
 	
 	<!-- Please don't add "maximum-scale=1" here. It's bad for accessibility. -->
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
