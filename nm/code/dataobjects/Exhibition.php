@@ -108,6 +108,7 @@ class Exhibition extends DataObject {
 
 	static $api_access = array(
 		'view' => array(
+			'ClassName',
 			'UglyHash',
 			'Title',
 			'TeaserText',
