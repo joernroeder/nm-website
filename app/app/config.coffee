@@ -38,6 +38,7 @@ require.config
 		'responsiveimage/picturefill'		: ['responsiveimage/external/matchmedia']
 
 		'plugins/misc/spin.min'				: ['jquery']
+		'plugins/misc/misc'					: ['jquery']
 
 		'plugins/backbone.layoutmanager'	: ['backbone']
 		'plugins/backbone.JJRelational'		: ['backbone']

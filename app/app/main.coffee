@@ -7,8 +7,9 @@ require [
 	'modules/Workshop',
 	'modules/Exhibition',
 	'modules/CalendarEntry'
-	'plugins/misc/spin.min'
-], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner) ->
+	'plugins/misc/spin.min',
+	'plugins/misc/misc'
+], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner, misc) ->
 	
 	# ! JJRELATIONAL CONFIG
 
