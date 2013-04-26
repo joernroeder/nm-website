@@ -44,13 +44,18 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     className: 'portfolio-detail',
     template: 'portfolio-detail',
     beforeRender: function() {
-      return this._ev = $.Event('code:kickoff', {
+      this._codeEv = $.Event('code:kickoff', {
         bubbles: false
       });
+      return this._afterRenderEv = $.Event('portfoliodetail:rendered');
     },
     afterRender: function() {
+      var $doc;
+
       window.picturefill();
-      return $(document).trigger(this._ev);
+      $doc = $(document);
+      $doc.trigger(this._codeEv);
+      return $doc.trigger(this._afterRenderEv);
     },
     serialize: function() {
       var json, types,

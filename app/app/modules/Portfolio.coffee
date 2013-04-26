@@ -35,10 +35,13 @@ define [
 			className: 'portfolio-detail'
 			template: 'portfolio-detail'
 			beforeRender: ->
-				@._ev = $.Event 'code:kickoff', { bubbles: false }
+				@._codeEv = $.Event 'code:kickoff', { bubbles: false }
+				@._afterRenderEv = $.Event 'portfoliodetail:rendered'
 			afterRender: ->
 				window.picturefill()
-				$(document).trigger(@._ev)
+				$doc = $(document)
+				$doc.trigger(@._codeEv)
+				$doc.trigger(@._afterRenderEv)
 			serialize: ->
 				json = if @.model then @.model.toJSON() else {}
 				types = ['Projects', 'ChildProjects', 'ParentProjects']
