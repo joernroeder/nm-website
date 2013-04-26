@@ -150,6 +150,7 @@ class Workshop extends DataObject {
 			'UglyHash',
 			'Title',
 			'DateRangeNice',
+			'TeaserText',
 			'MarkdownedTeaser',
 			'IsFeatured',
 			'IsPortfolio',

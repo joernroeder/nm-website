@@ -160,6 +160,7 @@ class Excursion extends DataObject {
 			'UglyHash',
 			'Title',
 			'DateRangeNice',
+			'TeaserText',
 			'MarkdownedTeaser',
 			'IsFeatured',
 			'IsPortfolio',

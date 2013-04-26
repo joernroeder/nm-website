@@ -11,8 +11,9 @@ define [
 	'modules/PageError',
 	'modules/Portfolio',
 	'modules/Calendar',
-	'modules/About'
-], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About) ->
+	'modules/About',
+	'modules/ProjectSearch'
+], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch) ->
 
 	###*
 	 *
@@ -155,9 +156,6 @@ define [
 			@.showPortfolioDetailed uglyHash, nameSlug
 
 		showPortfolio: (searchTerm) ->
-			# @todo: filter/search bar
-			if searchTerm
-				console.info 'searching for: %s', searchTerm
 
 			mainDfd = @.rejectAndHandle()
 
@@ -165,15 +163,28 @@ define [
 			DataRetrieval.forProjectsOverview(app.Config.Portfolio).done =>
 				mainDfd.resolve()
 
+			# @todo: filter/search bar
+			if searchTerm
+				console.info 'searching for: %s', searchTerm
+
+			# check if the portfolio page is already present
+			justUpdate = if app.currentLayoutName is 'portfolio' then true else false
+
 			mainDfd.done =>
-				layout = app.useLayout 'portfolio'
+				unless justUpdate then layout = app.useLayout 'portfolio'
 				
 				# cache the whole portfolio
 				unless app.Cache.WholePortfolio
 					app.Cache.WholePortfolio = @.getProjectTypeModels { IsPortfolio: true }
-				
+
 				modelsArray = app.Cache.WholePortfolio
-				@.showGravityViewForModels modelsArray, 'portfolio', layout
+				
+				if searchTerm then modelsArray = DataRetrieval.filterProjectTypesBySearchTerm searchTerm
+				
+				unless justUpdate
+					@.showGravityViewForModels modelsArray, 'portfolio', layout
+				else
+					console.log 'add or remove models'
 				
 				
 
@@ -299,6 +310,36 @@ define [
 			else
 				returnDfd.resolve()
 			returnDfd.promise()
+
+		# function that takes a search term used to filter the whole portfolio
+		filterProjectTypesBySearchTerm: (searchTerm) ->
+			wholePortfolio = app.Cache.WholePortfolio
+
+			# because of simplicity reasons we iterate over an array of json objects. let's cache the whole json portfolio
+			unless app.Cache.WholePortfolioJSON
+				tmp = []
+				for model in wholePortfolio
+					tmp.push model.toJSON()
+				app.Cache.WholePortfolioJSON = tmp
+
+			# transform the searchTerm
+			searchObj = ProjectSearch.transformSearchTerm searchTerm
+			console.log searchObj
+
+			result = _.filter app.Cache.WholePortfolioJSON, (model) ->
+				result = true
+				_.each searchObj, (vals, key) ->
+					if not ProjectSearch.test(model, key, vals) then result = false
+
+				# if the filter returns true
+				return result
+
+			out = _.map result, (model) ->
+				do (model) ->
+					return _.find wholePortfolio, (m) ->
+						return m.id is model.ID and m.get('ClassName') is model.ClassName
+
+			out
 
 		# abstract function to get data for the Calendar (either the whole calendar, or merely the upcoming events)
 		forCalendar: (type) ->
