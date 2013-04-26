@@ -525,6 +525,10 @@ cite {
   font-variant: small-caps;
   font-style: normal;
 }
+strong {
+  font-family: 'Aller', 'Helvetica', sans-serif;
+  font-weight: normal;
+}
 /**
  * Links
  */
@@ -860,6 +864,10 @@ span[data-picture] img {
 	}
 }
 */
+#gravity-container {
+  position: relative;
+  height: 100%;
+}
 .gravity {
   position: absolute;
   min-height: 100%;
@@ -1151,6 +1159,10 @@ span[data-picture] img {
   width: 56.25%;
   padding: 0 0 1.5em 1.5em;
   float: left;
+}
+.person-info .websites {
+  margin-top: 1.5em;
+  list-style: none;
 }
 /*
  *

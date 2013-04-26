@@ -115,6 +115,10 @@ cite {
 	font-style: normal;
 }
 
+strong {
+	.aller();
+}
+
 /**
  * Links
  */
@@ -394,6 +398,11 @@ span[data-picture] {
 
 // ! --- Gravity -------------------------------------------
 
+#gravity-container {
+	position: relative;
+	height: 100%;
+}
+
 .gravity {
 	position: absolute;
 	min-height: 100%;
@@ -643,6 +652,7 @@ span[data-picture] {
 			display: block;
 			border: none;
 		}
+
 		img {
 			max-width: 100%;
 			height: auto;
@@ -653,6 +663,12 @@ span[data-picture] {
 		.columnsWidth(8, @fullWidth - @imageWidth);
 		padding: 0 0 (@line / @em) (@line / @em);
 		float: left;
+	}
+
+	.websites {
+		margin-top: @line / @em;
+
+		list-style: none;
 	}
 }
 
