@@ -564,6 +564,9 @@ article header p {
   color: #919191;
   padding-bottom: 0.0625em;
 }
+article header p a {
+  color: #919191;
+}
 article a {
   -webkit-transition: color .3s 0 ease-out, -webkit-border-bottom-color .3s .2s ease-out;
   -moz-transition: color .3s 0 ease-out, -moz-border-bottom-color .3s .2s ease-out;
@@ -836,6 +839,9 @@ span[data-picture] img {
   line-height: 1.3333333333333333em;
   color: #919191;
   padding-bottom: 0.0625em;
+}
+.qtip-content header p a {
+  color: #919191;
 }
 .qtip-content a.btn {
   margin-top: 0.75em;
