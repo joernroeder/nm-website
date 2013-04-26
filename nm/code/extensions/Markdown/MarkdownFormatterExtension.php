@@ -16,4 +16,20 @@ abstract class MarkdownFormatterExtension extends Object implements MarkdownForm
 		return $result;
 	}
 
+	public static function removeMarkdown($mdText) {
+		$className = get_called_class();
+		if (isset($className::$regex)) {
+			preg_match_all($className::$regex, $mdText, $res, PREG_PATTERN_ORDER);
+
+			$found = $res[0];
+			if (!empty($found)) {
+				foreach ($found as $key => $value) {
+					$mdText = str_replace($value, '', $mdText);
+				}
+			}
+		}
+
+		return $mdText;
+	}
+
 }

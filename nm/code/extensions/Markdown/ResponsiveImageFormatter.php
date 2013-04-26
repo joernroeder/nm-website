@@ -10,12 +10,12 @@ class ResponsiveImageFormatter extends MarkdownFormatterExtension {
 
 	public static $indicator = 'ResponsiveImage';
 
-	static $regex_img = "^\[img (.*?)\]^";
-	static $img_class = 'ResponsiveImage';
+	static $regex 		= "^\[img (.*?)\]^";
+	static $img_class 	= 'ResponsiveImage';
 
 	public static function formatMarkdown($mdText) {
 
-		preg_match_all(self::$regex_img, $mdText, $res, PREG_PATTERN_ORDER);
+		preg_match_all(self::$regex, $mdText, $res, PREG_PATTERN_ORDER);
 
 		$found = $res[0];
 		if (!empty($found)) {
@@ -39,20 +39,6 @@ class ResponsiveImageFormatter extends MarkdownFormatterExtension {
 						$mdText = str_replace($value, $img->getTag(), $mdText);
 					}
 				}
-			}
-		}
-
-		return $mdText;
-	}
-
-	public static function removeMarkdown($mdText) {
-		preg_match_all(self::$regex_img, $mdText, $res, PREG_PATTERN_ORDER);
-
-		$found = $res[0];
-		if (!empty($found)) {
-			foreach ($found as $key => $value) {
-				$mdText = str_replace($value, '', $mdText);
-				Debug::dump($mdText);
 			}
 		}
 
