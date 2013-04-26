@@ -49,7 +49,10 @@ class CalendarEntry extends DataObject {
 	
 	static $extensions = array(
 		'DataObjectHasSummaryExtension',
-		'StartEndDateExtension'
+		'StartEndDateExtension',
+		'HyphenatedTextExtension',
+		'MarkdownDataExtension',
+		'MarkdownedTextExtension'
 	);
 
 
@@ -82,7 +85,7 @@ class CalendarEntry extends DataObject {
 		'view' => array(
 			'DateRangeNice',
 			'Title',
-			'Text',
+			'MarkdownedText',
 			'UrlHash',
 			'Websites',
 			'Exhibitions',

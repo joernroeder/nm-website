@@ -200,7 +200,7 @@ define [
 
 			mainDfd.done (model) =>
 				return @.fourOhFour() unless model
-				layout = app.useLayout 'main'
+				layout = app.useLayout 'main', {customClass: 'detail'}
 
 				detailView = new Calendar.Views.Detail({ model: model })
 				layout.setViewAndRenderMaybe '', detailView

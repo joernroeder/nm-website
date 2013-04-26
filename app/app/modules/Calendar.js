@@ -37,9 +37,12 @@ define(['app'], function(app) {
     }
   });
   Calendar.Views.Detail = Backbone.View.extend({
-    tagName: 'section',
-    className: 'calendar-detail',
+    tagName: 'article',
+    className: 'portfolio-detail',
     template: 'calendar-detail',
+    afterRender: function() {
+      return window.picturefill();
+    },
     serialize: function() {
       if (this.model) {
         return this.model.toJSON();

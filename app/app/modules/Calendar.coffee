@@ -23,10 +23,12 @@ define [
 
 
 		Calendar.Views.Detail = Backbone.View.extend
-			tagName: 'section'
-			className: 'calendar-detail'
+			tagName: 'article'
+			className: 'portfolio-detail'
 			template: 'calendar-detail'
-			serialize: () ->
+			afterRender: ->
+				window.picturefill()
+			serialize: ->
 				if @.model then @.model.toJSON() else {}
 
 

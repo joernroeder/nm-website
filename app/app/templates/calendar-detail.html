@@ -1,6 +1,29 @@
-<!-- section class="calendar-detail" -->
-<div style="margin-top:200px;">
-<h2>{{ Title }}</h2>
-<p>{{ Text }}</p>
-</div>
-<!-- /section -->
+<!-- article class="portfolio-detail" -->
+<header>
+	<h1>{{Title}}</h1>
+	<p>{{niceDate this}}</p>
+	{{#if Websites}}
+		<p>{{{commaSeparatedWebsites Websites}}}</p>
+	{{/if}}
+</header>
+<section>
+	{{{MarkdownedText}}}
+</section>
+<aside>
+	{{#if combinedProjects}}
+		{{{portfoliolist combinedProjects "Project"}}}
+	{{/if}}
+
+	{{#if Exhibitions}}
+		{{{portfoliolist Exhibitions "Exhibition"}}}
+	{{/if}}
+	
+	{{#if Workshops}}
+		{{{portfoliolist Workshops "Workshop"}}}
+	{{/if}}
+	
+	{{#if Excursions}}
+		{{{portfoliolist Excursions "Excursion"}}}
+	{{/if}}
+</aside>
+<!-- /article -->

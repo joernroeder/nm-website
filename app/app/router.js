@@ -248,7 +248,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         if (!model) {
           return _this.fourOhFour();
         }
-        layout = app.useLayout('main');
+        layout = app.useLayout('main', {
+          customClass: 'detail'
+        });
         detailView = new Calendar.Views.Detail({
           model: model
         });
