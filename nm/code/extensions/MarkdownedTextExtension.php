@@ -14,7 +14,7 @@ class MarkdownedTextExtension extends DataExtension {
 	);
 
 	public function getMarkdownedText() {
-		return $this->owner->MarkdownHyphenated('Text', array('ResponsiveImage', 'OEmbed'));
+		return $this->owner->MarkdownHyphenated('Text', array('ResponsiveImage', 'OEmbed', 'Cite'));
 	}
 
 	public function getMarkdownedTeaser() {
