@@ -23,8 +23,6 @@ do ($ = jQuery) ->
 	resizeIframes = ->
 		$iframes = $ 'iframe', 'article.portfolio-detail'
 
-		console.log $iframes
-
 		if not $iframes.length then return
 
 		$iframes.each (i, iframe) ->
@@ -36,11 +34,9 @@ do ($ = jQuery) ->
 			if not attrWidth or not attrHeight then return
 
 			width = $iframe.width()
-			console.log width
 			scaleFactor = width / attrWidth
 
 			$iframe.height attrHeight * scaleFactor
-			console.log $iframe.height()
 
 
 	$(document).on 'portfoliodetail:rendered', resizeIframes

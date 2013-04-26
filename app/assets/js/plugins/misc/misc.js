@@ -31,7 +31,6 @@
     var $iframes;
 
     $iframes = $('iframe', 'article.portfolio-detail');
-    console.log($iframes);
     if (!$iframes.length) {
       return;
     }
@@ -45,10 +44,8 @@
         return;
       }
       width = $iframe.width();
-      console.log(width);
       scaleFactor = width / attrWidth;
-      $iframe.height(attrHeight * scaleFactor);
-      return console.log($iframe.height());
+      return $iframe.height(attrHeight * scaleFactor);
     });
   };
   $(document).on('portfoliodetail:rendered', resizeIframes);
