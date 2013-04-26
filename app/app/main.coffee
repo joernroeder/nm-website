@@ -28,6 +28,9 @@ require [
 	# our objects which get populated over time
 	app.Collections = {}
 
+	# out app cache where we store specific searches/collection items
+	app.Cache = {}
+
 	# auth
 	app.CurrentMember = {}
 

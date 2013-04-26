@@ -74,6 +74,7 @@ define [
 			'about/:nameSlug/'							: 'showPersonPage'			# Student page with normal or custom template
 			'about/:nameSlug/:uglyHash/'				: 'showPersonDetailed' 		# Project with normal or custom template
 			'portfolio/'								: 'showPortfolio'			# All projects
+			'portfolio/search/:searchTerm/'				: 'showPortfolio'			# All projects, but show only filtered
 			'portfolio/:uglyHash/'						: 'showPortfolioDetailed' 	# can be filter or detail of project
 			'calendar/'									: 'showCalendar'			# whole calendar
 			'calendar/:urlHash/'						: 'showCalendarDetailed' 	# show a detailed calendar event
@@ -102,7 +103,11 @@ define [
 
 			mainDfd.done =>
 				layout = app.useLayout 'index'
-				modelsArray = @.getProjectTypeModels { IsFeatured: true }
+				# cache the featured projects
+				unless app.Cache.Featured
+					app.Cache.Featured = @.getProjectTypeModels { IsFeatured: true }
+
+				modelsArray = app.Cache.Featured
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
 				calendarContainer = new Calendar.Views.Container({ collection: app.Collections.CalendarEntry })
 				layout.setViewAndRenderMaybe '#calendar', calendarContainer
@@ -149,8 +154,11 @@ define [
 		showPersonDetailed: (nameSlug, uglyHash) ->
 			@.showPortfolioDetailed uglyHash, nameSlug
 
-		showPortfolio: () ->
+		showPortfolio: (searchTerm) ->
 			# @todo: filter/search bar
+			if searchTerm
+				console.info 'searching for: %s', searchTerm
+
 			mainDfd = @.rejectAndHandle()
 
 			# get portfolio projects
@@ -159,7 +167,12 @@ define [
 
 			mainDfd.done =>
 				layout = app.useLayout 'portfolio'
-				modelsArray = @.getProjectTypeModels { IsPortfolio: true }
+				
+				# cache the whole portfolio
+				unless app.Cache.WholePortfolio
+					app.Cache.WholePortfolio = @.getProjectTypeModels { IsPortfolio: true }
+				
+				modelsArray = app.Cache.WholePortfolio
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
 				
 				

@@ -70,6 +70,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       'about/:nameSlug/': 'showPersonPage',
       'about/:nameSlug/:uglyHash/': 'showPersonDetailed',
       'portfolio/': 'showPortfolio',
+      'portfolio/search/:searchTerm/': 'showPortfolio',
       'portfolio/:uglyHash/': 'showPortfolioDetailed',
       'calendar/': 'showCalendar',
       'calendar/:urlHash/': 'showCalendarDetailed',
@@ -92,9 +93,12 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         var calendarContainer, layout, modelsArray;
 
         layout = app.useLayout('index');
-        modelsArray = _this.getProjectTypeModels({
-          IsFeatured: true
-        });
+        if (!app.Cache.Featured) {
+          app.Cache.Featured = _this.getProjectTypeModels({
+            IsFeatured: true
+          });
+        }
+        modelsArray = app.Cache.Featured;
         _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
         calendarContainer = new Calendar.Views.Container({
           collection: app.Collections.CalendarEntry
@@ -168,10 +172,13 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     showPersonDetailed: function(nameSlug, uglyHash) {
       return this.showPortfolioDetailed(uglyHash, nameSlug);
     },
-    showPortfolio: function() {
+    showPortfolio: function(searchTerm) {
       var mainDfd,
         _this = this;
 
+      if (searchTerm) {
+        console.info('searching for: %s', searchTerm);
+      }
       mainDfd = this.rejectAndHandle();
       DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
         return mainDfd.resolve();
@@ -180,9 +187,12 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         var layout, modelsArray;
 
         layout = app.useLayout('portfolio');
-        modelsArray = _this.getProjectTypeModels({
-          IsPortfolio: true
-        });
+        if (!app.Cache.WholePortfolio) {
+          app.Cache.WholePortfolio = _this.getProjectTypeModels({
+            IsPortfolio: true
+          });
+        }
+        modelsArray = app.Cache.WholePortfolio;
         return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
       });
     },
