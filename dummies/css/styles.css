@@ -998,6 +998,9 @@ span[data-picture] img {
   box-sizing: border-box;
   margin-right: 12.5%;
 }
+.about .statement p:last-child {
+  margin-bottom: 1.5em;
+}
 .about .group-image {
   float: right;
   padding: 0 0.75em;
@@ -1009,6 +1012,7 @@ span[data-picture] img {
 .about .group-image.loaded img {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 .about .person {
   float: left;
