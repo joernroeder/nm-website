@@ -18,6 +18,57 @@ do ($ = jQuery) ->
 			delete resizeEvents[key]
 
 
+	# ! --- Methods ---
+	
+	###
+	 # @example
+	 #	resizeParentOrChilds([
+	 #		# resize .group-image > img to .group-image.width()
+	 #		{
+	 #			parent: '.group-image'
+	 #			child: 'img'
+	 #			resize: 'child'
+	 #		},
+	 #		# resize .statement to (.statement > p).width()
+	 #		{
+	 #			parent: '.statement'
+	 #			child: 'p'
+	 #			resize: 'parent'
+	 #		}	 
+	 #	]);
+	 #
+	###
+	resizeParentOrChilds = (els) ->
+
+		if not els then return
+
+		$.each els, (i, el) ->
+			$parent = $ el.parent
+			$child = $ el.child, $parent
+
+			if not $child.length then return
+			#if not $child.length or $child.hasClass 'loaded' then return
+
+			parentWidth = $parent.width()
+			parentHeight = $parent.height()
+
+			childWidth = $child.outerWidth true
+
+			if $child.length > 1
+				childHeight = 0
+				$child.each ->
+					childHeight += $(@).outerHeight true
+			else
+				childHeight = $child.height()
+
+			if el.resize is 'child'
+				$child.height parentWidth / childWidth * childHeight 
+
+			else if el.resize is 'parent'
+				$parent.height childHeight
+
+
+
 	# ! --- Resize iframes ---
 	
 	resizeIframes = ->
@@ -41,6 +92,25 @@ do ($ = jQuery) ->
 
 	$(document).on 'portfoliodetail:rendered', resizeIframes
 	$.addOnWindowResize 'iframe', resizeIframes
+
+
+	# ! --- About ---
+	
+	$(document).on 'about:rendered', ->
+		resizeParentOrChilds [
+			{
+				parent: '.group-image'
+				child: 'img'
+				resize: 'child'
+			}
+			{
+				parent: '.statement'
+				child: 'p'
+				resize: 'parent'
+			}
+		]
+
+
 
 
 
