@@ -56,8 +56,11 @@ class RootURLController extends Controller {
 
 			// portfolio pages
 			case 'portfolio':
+				$uglyHash = '';
 				// check if detailed
-				if (isset($params['OtherAction']) && $uglyHash = Convert::raw2sql($params['OtherAction'])) {
+				if (isset($params['OtherAction'])) $uglyHash = Convert::raw2sql($params['OtherAction']);
+
+				if ($uglyHash && $uglyHash !== 'search') {
 					if ($detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash)) {
 						$returnVal .= $detailed->toDataElement('detailed-' . strtolower($detailed->class) . '-item', null)->forTemplate();
 					}
