@@ -104,8 +104,8 @@ define [
 				layout = app.useLayout 'index'
 				modelsArray = @.getProjectTypeModels { IsFeatured: true }
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
-				calendarContainer = new Calendar.Views.UpcomingContainer({ collection: app.Collections.CalendarEntry })
-				layout.setViewAndRenderMaybe '#upcoming-calendar', calendarContainer
+				calendarContainer = new Calendar.Views.Container({ collection: app.Collections.CalendarEntry })
+				layout.setViewAndRenderMaybe '#calendar', calendarContainer
 
 		showAboutPage: () ->
 			mainDfd = @.rejectAndHandle()

@@ -3,31 +3,41 @@ define(['app'], function(app) {
   var Calendar;
 
   Calendar = app.module();
-  Calendar.Views.UpcomingContainer = Backbone.View.extend({
-    tagName: 'ul',
-    id: 'upcoming-calendar-container',
-    beforeRender: function() {
-      var model, modelArray, _i, _len, _results;
-
-      modelArray = this.collection.where({
+  Calendar.Views.Container = Backbone.View.extend({
+    id: 'calendar-container',
+    template: 'calendar-container',
+    initialize: function(options) {
+      return this.upcomingEvents = this.collection.where({
         IsUpcoming: true
       });
-      if (modelArray) {
-        _results = [];
-        for (_i = 0, _len = modelArray.length; _i < _len; _i++) {
-          model = modelArray[_i];
-          _results.push(this.insertView('', new Calendar.Views.UpcomingListItem({
-            model: model
-          })));
-        }
-        return _results;
+    },
+    serialize: function() {
+      var json;
+
+      json = {};
+      if (this.upcomingEvents && this.upcomingEvents.length) {
+        json.HasItems = true;
       }
+      return json;
+    },
+    beforeRender: function() {
+      var model, _i, _len, _ref, _results;
+
+      _ref = this.upcomingEvents;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        model = _ref[_i];
+        _results.push(this.insertView('#calendar-list', new Calendar.Views.ListItem({
+          model: model
+        })));
+      }
+      return _results;
     }
   });
-  Calendar.Views.UpcomingListItem = Backbone.View.extend({
+  Calendar.Views.ListItem = Backbone.View.extend({
     tagName: 'li',
-    className: 'upcoming-calendar-list-item',
-    template: 'upcoming-calendar-list-item',
+    className: 'calendar-list-item',
+    template: 'calendar-list-item',
     serialize: function() {
       if (this.model) {
         return this.model.toJSON();

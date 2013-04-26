@@ -96,10 +96,10 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           IsFeatured: true
         });
         _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
-        calendarContainer = new Calendar.Views.UpcomingContainer({
+        calendarContainer = new Calendar.Views.Container({
           collection: app.Collections.CalendarEntry
         });
-        return layout.setViewAndRenderMaybe('#upcoming-calendar', calendarContainer);
+        return layout.setViewAndRenderMaybe('#calendar', calendarContainer);
       });
     },
     showAboutPage: function() {
