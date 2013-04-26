@@ -39,6 +39,10 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
         return _results;
       }
     },
+    afterRender: function() {
+      $(document).trigger($.Event('about:rendered'));
+      return this.initGravity();
+    },
     serialize: function() {
       return {
         GroupImage: this.groupImage

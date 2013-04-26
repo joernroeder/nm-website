@@ -5,12 +5,15 @@ define(['app', 'plugins/gravity/jquery.gravity'], function(app) {
   Gravity = app.module();
   Gravity.Views.Container = Backbone.View.extend({
     className: 'gravity',
-    afterRender: function() {
+    initGravity: function() {
       return $(this.el).RadialGravity({
         worker: {
           physics: '/app/assets/js/plugins/gravity/backend/physics.js'
         }
       });
+    },
+    afterRender: function() {
+      return this.initGravity();
     }
   });
   return Gravity;

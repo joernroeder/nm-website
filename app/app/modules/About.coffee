@@ -22,7 +22,10 @@ define [
 						@.insertView '#alumni-list', new About.Views.PersonListItem {model: alumni}
 					for employee in @.persons.employees
 						@.insertView '', new About.Views.EmployeeItem {model: employee}
-			
+
+			afterRender: ->
+				$(document).trigger $.Event 'about:rendered'
+				@.initGravity()
 
 			serialize: ->
 				{ GroupImage: @.groupImage }
