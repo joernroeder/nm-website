@@ -618,6 +618,10 @@ aside a {
   padding: 1.5em 1.25em;
   position: fixed;
   z-index: 100000;
+  -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.3);
+  -moz-box-shadow: 0 2px 5px rgba(0,0,0,.3);
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
+  color: 0 2px 5px rgba(0,0,0,.3);
 }
 .badge > a {
   display: block;
