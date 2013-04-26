@@ -501,8 +501,8 @@
 
 					addGravity = ->
 						methods.add
-							id: 'gravity',
-							top: storage().height / 2,
+							id: 'gravity'
+							top: storage().height / 2
 							left: storage().width / 2
 						, storageId
 
@@ -539,7 +539,7 @@
 
 							if not $item.hasClass 'resizable' then return
 
-							rand = Math.max .7, Math.random() * 1.7
+							rand = Math.max .2, Math.random() * 1.8
 
 							width = $item.width() * rand
 							height = $item.height() * rand

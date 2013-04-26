@@ -608,7 +608,7 @@ var __hasProp = {}.hasOwnProperty,
                 if (!$item.hasClass('resizable')) {
                   return;
                 }
-                rand = Math.max(.7, Math.random() * 1.7);
+                rand = Math.max(.2, Math.random() * 1.8);
                 width = $item.width() * rand;
                 height = $item.height() * rand;
                 $item.width(width);
