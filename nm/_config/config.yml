@@ -46,7 +46,7 @@ Structure_RestApiExtension:
     - 'ResponsiveImageObject'
     - 'File'
 CSRFProtection_RestApiExtension:
-  enable_for:
+  enabled_for:
     - 'POST'
     - 'PUT'
     - 'DELETE'
