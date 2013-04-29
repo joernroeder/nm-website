@@ -2,14 +2,14 @@
 
 class RootURLController extends Controller {
 
-	static $project_types = array(
+	private static $project_types = array(
 		'Project',
 		'Workshop',
 		'Excursion',
 		'Exhibition'
 	);
 
-	static $url_handlers = array(
+	private static $url_handlers = array(
 		'$Action/$OtherAction/$ID/$OtherID'	=> 'index'
 	);
 

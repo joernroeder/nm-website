@@ -7,7 +7,7 @@ class JJ_BaseDataFormatter {
 	 *
 	 * @var array
 	 */
-	static $relation_types = array(
+	private static $relation_types = array(
 		'has_one', 'has_many', 'belongs_to', 'many_many'
 	);
 

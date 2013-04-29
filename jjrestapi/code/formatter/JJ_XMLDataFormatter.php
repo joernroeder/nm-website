@@ -16,7 +16,7 @@ class JJ_XMLDataFormatter extends XMLDataFormatter implements JJ_DataFormatter {
 	 *
 	 * @var int
 	 */
-	public static $priority = 60;
+	private static $priority = 60;
 
 	/**
 	 *

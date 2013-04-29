@@ -19,11 +19,11 @@
  */
 class Ranking extends DataObject {
 
-	static $db = array(
+	private static $db = array(
 		'Ranking'	=> 'Int'		// Sortierung: Größer -> Wichtiger
 	);
 
-	static $has_one = array(
+	private static $has_one = array(
 		'Person'	=> 'Person',	// Person, die von ihrer Seite aus das Projekt sortiert
 		'Project'	=> 'Project'	// Das zu sortierende Projekt
 	);

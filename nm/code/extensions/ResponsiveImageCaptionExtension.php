@@ -16,11 +16,11 @@
 
 class ResponsiveImageCaptionExtension extends DataExtension {
 
-	static $db = array(
+	private static $db = array(
 		'Caption' => 'Varchar(255)'
 	);
 
-	static $searchable_fields = array(
+	private static $searchable_fields = array(
 		'Caption'
 	);
 

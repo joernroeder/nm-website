@@ -2,7 +2,7 @@
 
 class MarkdownedTextExtension extends DataExtension {
 
-	static $markdown_extensions = array(
+	private static $markdown_extensions = array(
 		'Text' => array(
 			'Image',
 			'ImageBlock',
@@ -12,6 +12,10 @@ class MarkdownedTextExtension extends DataExtension {
 		'TeaserText' => array(
 		)
 	);
+
+	private function get_markdown_extensions() {
+		return self::$markdown_extensions;
+	}
 
 	public function getMarkdownedText() {
 		return $this->owner->MarkdownHyphenated('Text', array('ResponsiveImage', 'OEmbed', 'Cite'));

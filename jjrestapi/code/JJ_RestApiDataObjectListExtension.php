@@ -8,7 +8,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @static
 	 * @var array
 	 */
-	public static $api_default_fields = array(
+	private static $api_default_fields = array(
 		'ID'		=> 'Int',
 		//'Created'	=> 'SS_DateTime'
 	);
@@ -20,7 +20,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @static
 	 * @var string
 	 */
-	public static $api_extension = 'json';
+	private static $api_extension = 'json';
 
 
 	/**
@@ -28,7 +28,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @static
 	 * @var string
 	 */
-	public static $api_logged_in_context_name = 'logged_in';
+	private static $api_logged_in_context_name = 'logged_in';
 
 
 	// ! Context Handler

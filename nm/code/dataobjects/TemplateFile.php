@@ -16,11 +16,11 @@
 
 class TemplateFile extends File {
 	
-	static $db = array(
+	private static $db = array(
 		'IsDetail'	=> 'Boolean'
 	);
 
-	static $has_one = array(
+	private static $has_one = array(
 		'Person'	=> 'Person'
 	);
 

@@ -23,7 +23,7 @@ class Workshop extends DataObject {
 
 	// ! Datenbank und Beziehungen ---------
 
-	static $db = array(
+	private static $db = array(
 		'Title'				=> 'Varchar(255)',						// Workshop Titel
 		'TeaserText'		=> 'Varchar(156)',						// Teaser Text
 		'StartDate'			=> 'Date',								// Start-Datum des Workshops
@@ -37,17 +37,17 @@ class Workshop extends DataObject {
 		'UglyHash'			=> 'Varchar'							// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 
-	static $has_one = array(
+	private static $has_one = array(
 		'PreviewImage'	=> 'DocImage'
 	);
 		
-	static $many_many = array(
+	private static $many_many = array(
 		'Exhibitions'	=> 'Exhibition',					// Ausstellungen
 		'Projects'		=> 'Project',						// Projekte
 		'Images'		=> 'DocImage'						// Bilder
 	);
 
-	static $belongs_many_many = array(
+	private static $belongs_many_many = array(
 		'CalendarEntries'		=> 'CalendarEntry',			// Kalendereinträge
 		'Persons'				=> 'Person',				// Personen
 		'Excursions'			=> 'Excursion'				// Exkursionen
@@ -63,7 +63,7 @@ class Workshop extends DataObject {
 
 	// ! Extensions ------------------------
 	
-	static $extensions = array(
+	private static $extensions = array(
 		'StartEndDateExtension',
 		'DataObjectHasSummaryExtension',
 		'TeaserCMSFieldsExtension',
@@ -76,7 +76,7 @@ class Workshop extends DataObject {
 
 	// ! Such-Felder -----------------------
 
-	static $searchable_fields = array(
+	private static $searchable_fields = array(
 		'Title',
 		'StartDate',
 		'EndDate',
@@ -85,14 +85,14 @@ class Workshop extends DataObject {
 		'Text'
 	);
 
-	static $start_date_format = 'd.m.Y H:i';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
-	static $end_date_format = 'd.m.Y H:i';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $start_date_format = 'd.m.Y H:i';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $end_date_format = 'd.m.Y H:i';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
 
 
 	// ! Admin -----------------------------
 
 	// Felder für dies Listen/Übersichten im Admin
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'Title',
 		'Date',
 		'Summary'	// ruft $this->getSummary() auf {@see DataObjectHasSummaryExtension}
@@ -100,7 +100,7 @@ class Workshop extends DataObject {
 
 	// ! API -------------------------------
 
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'ClassName',
 			'UglyHash',
@@ -163,7 +163,7 @@ class Workshop extends DataObject {
 		)
 	);
 
-	static $searchable_api_fields = array(
+	private static $searchable_api_fields = array(
 		'Title',
 		'IsFeatured',
 		'UglyHash'	=> 'ExactMatchFilter'

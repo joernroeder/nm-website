@@ -3,7 +3,7 @@
 class Structure_RestApiExtension extends JJ_RestApiDataExtension implements TemplateGlobalProvider {
 
 	
-	public static $extension_key = 'Structure';
+	private static $extension_key = 'Structure';
 
 	#public static $cache_key = 'JJ_RestApi_Structure__';
 

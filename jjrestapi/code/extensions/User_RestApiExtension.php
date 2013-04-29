@@ -2,9 +2,9 @@
 
 class User_RestApiExtension extends JJ_RestApiDataExtension implements TemplateGlobalProvider {
 
-	public static $extension_key = 'User';
+	private static $extension_key = 'User';
 
-	public static $api_access = array(
+	private static $api_access = array(
 		'view'	=> array(
 			'logged_in',
 			'FirstName',

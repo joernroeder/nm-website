@@ -22,12 +22,12 @@ class Person extends DataObject {
 
 	// ! Singular und Plural ---------------
 
-	static $singular_name = 'Person';
-	static $plural_name = 'Persons';
+	private static $singular_name = 'Person';
+	private static $plural_name = 'Persons';
 
 	// ! Datenbank und Beziehungen ---------
 
-	static $db = array(
+	private static $db = array(
 		'FirstName'			=> 'Varchar(55)',		// Vorname
 		'Surname'			=> 'Varchar(55)',		// Nachname
 		'Email'				=> 'Varchar(55)',		// Email
@@ -43,16 +43,16 @@ class Person extends DataObject {
 		'IsExternal'		=> 'Boolean',			// Flagge: Ist eine externe Person ?
 	);
 
-	static $has_one = array(
+	private static $has_one = array(
 		'Image'				=> 'PersonImage',		// Foto der Person
 	);
 
-	static $has_many = array(
+	private static $has_many = array(
 		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
 		'Templates'			=> 'TemplateFile'		// Eigenes Template
 	);
 
-	static $many_many = array(
+	private static $many_many = array(
 		'Projects'			=> 'Project',			// Projekte
 		'Websites'			=> 'Website',			// Webseiten
 		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
@@ -60,14 +60,14 @@ class Person extends DataObject {
 		'Workshops'			=> 'Workshop',			// Workshops
 	);
 
-	static $belongs_to = array(
+	private static $belongs_to = array(
 		'Member'			=> 'Member'				// Benutzer
 	);
 
 
 	// ! Extensions ------------------------
 	
-	static $extensions = array(
+	private static $extensions = array(
 		'HyphenatedTextExtension',
 		'MarkdownDataExtension'
 	);
@@ -84,7 +84,7 @@ class Person extends DataObject {
 
 	// ! Such-Felder -----------------------
 
-	static $searchable_fields = array(
+	private static $searchable_fields = array(
 		'FirstName',
 		'Surname',
 		'Email',
@@ -101,7 +101,7 @@ class Person extends DataObject {
 	// ! Admin -----------------------------
 
 	// Felder für die Listen/Übersichten im Admin
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'Title',
 		'Email',
 		'Phone',
@@ -122,7 +122,7 @@ class Person extends DataObject {
 
 	// ! API -------------------------------
 
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'FirstName',
 			'Surname',

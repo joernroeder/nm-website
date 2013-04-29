@@ -21,7 +21,7 @@
  */
 class UglyHashExtension extends DataExtension {
 
-	public static $class_enc = array(
+	private static $class_enc = array(
 		'Project'		=> '0',
 		'Excursion'		=> '1',
 		'Exhibition'	=> '2',

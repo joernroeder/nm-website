@@ -2,31 +2,31 @@
 
 class CSRFProtection_RestApiExtension extends JJ_RestApiDataExtension implements TemplateGlobalProvider {
 
-	public static $extension_key = 'SecurityID';
+	private static $extension_key = 'SecurityID';
 
 	/**
 	 * key of POST var which may store the token
 	 * @var string
 	 */
-	public static $var_name = 'SecurityID';
+	private static $var_name = 'SecurityID';
 
 	/**
 	 * key of request header which may store the token
 	 * @var string
 	 */
-	public static $request_header_name = 'X-Csrf-Token';
+	private static $request_header_name = 'X-Csrf-Token';
 
 	/**
 	 * holds our token instance
 	 * @var SecurityToken
 	 */
-	public static $token_inst = null;
+	private static $token_inst = null;
 
 	/**
 	 * defines which http methods to check token against
 	 * @var array
 	 */
-	public static $enabled_for = array(
+	private static $enabled_for = array(
 		'HEAD'	=> false,
 		'GET'	=> false,
 		'POST'	=> false,

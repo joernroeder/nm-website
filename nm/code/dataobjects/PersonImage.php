@@ -16,11 +16,11 @@
 
 class PersonImage extends ResponsiveImage {
 
-	static $belongs_to = array(
+	private static $belongs_to = array(
 		'Person'	=> 'Person'
 	);
 
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'Title',
 			'Caption',

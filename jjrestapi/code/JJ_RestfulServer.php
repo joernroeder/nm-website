@@ -2,24 +2,24 @@
 
 class JJ_RestfulServer extends RestfulServer {
 
-	static $url_handlers = array(
+	private static $url_handlers = array(
 		'$ClassName/$ID/$Relation' => 'handleAction'
 	);
 
-	public static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'handleAction',
 		'handleExtension'
 	);
 	
 	// ! Static extensions
 
-	public static $default_extension = 'json';
+	private static $default_extension = 'json';
 
-	public static $cache_prefix = 'JJ_RestApi_';
+	private static $cache_prefix = 'JJ_RestApi_';
 
-	public static $search_and		= ';';
-	public static $search_or		= '|';
-	public static $search_equals	= ':'; 
+	private static $search_and		= ';';
+	private static $search_or		= '|';
+	private static $search_equals	= ':'; 
 
 	/**
 	 * Populates fields for "non-model" requests such as Security, User, Base etc.
@@ -35,6 +35,9 @@ class JJ_RestfulServer extends RestfulServer {
 	 */
 	protected static $fields = array();
 
+	public static function get_cache_prefix() {
+		return self::$cache_prefix;
+	}
 	/**
 	 * @todo check fields
 	 * @todo merge with existing fields

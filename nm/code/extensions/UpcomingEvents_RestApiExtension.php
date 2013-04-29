@@ -2,11 +2,11 @@
 
 class UpcomingEvents_RestApiExtension extends JJ_RestApiDataExtension {
 
-	public static $extension_key = 'UpcomingEvents';
+	private static $extension_key = 'UpcomingEvents';
 
-	public static $max_display_num = 3; // maximumg upcoming events to display
+	private static $max_display_num = 3; // maximumg upcoming events to display
 
-	public static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'DateRangeNice',
 			'Title',

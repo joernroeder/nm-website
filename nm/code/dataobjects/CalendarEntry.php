@@ -22,13 +22,13 @@ class CalendarEntry extends DataObject {
 
 	// ! Singular und Plural ---------------
 	
-	static $singular_name = 'Calendar';
-	static $plural_name = 'Calendar';
+	private static $singular_name = 'Calendar';
+	private static $plural_name = 'Calendar';
 
 
 	// ! Datenbank und Beziehungen ---------
 
-	static $db = array(
+	private static $db = array(
 		'Title'		=> 'Varchar(255)',				// Titel der News
 		'StartDate'	=> 'SS_DateTime',				// Start-Datum
 		'EndDate'	=> 'SS_DateTime',				// End-Datum
@@ -36,7 +36,7 @@ class CalendarEntry extends DataObject {
 		'UrlHash'	=> 'Varchar'					// URLHash, der automatisch generiert wird in der URL einzigartig auf einen Kalendereintrag verweist
 	);
 
-	static $many_many = array(
+	private static $many_many = array(
 		'Websites'		=> 'Website',				// Webseiten
 		'Workshops'		=> 'Workshop',				// Workshops
 		'Excursions'	=> 'Excursion',				// Exkursionen
@@ -47,7 +47,7 @@ class CalendarEntry extends DataObject {
 
 	// ! Extensions ------------------------
 	
-	static $extensions = array(
+	private static $extensions = array(
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
 		'HyphenatedTextExtension',
@@ -58,21 +58,21 @@ class CalendarEntry extends DataObject {
 
 	// ! Such-Felder -----------------------
 
-	static $searchable_fields = array(
+	private static $searchable_fields = array(
 		'Title',
 		'StartDate',
 		'EndDate',
 		'Text'
 	);
 
-	static $start_date_format = 'd.m.Y H:i';			// Format des Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
-	static $end_date_format = 'd.m.Y H:i';				// Format des Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $start_date_format = 'd.m.Y H:i';			// Format des Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $end_date_format = 'd.m.Y H:i';				// Format des Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
 
 	
 	// ! Admin -----------------------------
 
 	// Felder für dies Listen/Übersichten im Admin
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'Title',
 		'Date',
 		'Summary'	// ruft $this->getSummary() auf {@see DataObjectHasSummaryExtension}
@@ -81,7 +81,7 @@ class CalendarEntry extends DataObject {
 	
 	// ! API -------------------------------	
 	
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'DateRangeNice',
 			'Title',
@@ -100,7 +100,7 @@ class CalendarEntry extends DataObject {
 		)
 	);
 
-	static $api_searchable_fields = array(
+	private static $api_searchable_fields = array(
 		'UrlHash',
 		'Title'
 	);

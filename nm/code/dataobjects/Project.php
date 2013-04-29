@@ -23,12 +23,12 @@ class Project extends DataObject {
 
 	// ! Singular und Plural ---------------
 
-	static $singular_name = 'Project';
-	static $plural_name = 'Projects';
+	private static $singular_name = 'Project';
+	private static $plural_name = 'Projects';
 
 	// ! Datenbank und Beziehungen ---------
 
-	static $db = array(
+	private static $db = array(
 		'Title'				=> 'Varchar(255)',			// Projekt Titel
 		'TeaserText'		=> 'Varchar(156)',			// Teaser Text
 		'Date'				=> 'Date',					// Projekt-Datum: Hierbei werden nur Monat und Jahr berücksichtigt.
@@ -40,21 +40,21 @@ class Project extends DataObject {
 		'UglyHash'			=> 'Varchar'				// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 
-	static $has_one = array(
+	private static $has_one = array(
 		'PreviewImage'	=> 'DocImage'
 	);
 
-	static $has_many = array(
+	private static $has_many = array(
 		'Rankings' 		=> 'Ranking'				// Sortierungssystem {@see Ranking}
 	);
 
-	static $many_many = array(
+	private static $many_many = array(
 		'ChildProjects'		=> 'Project',			// Verknüpfte "Kind"-Projekte, die zugehörig zu diesem Projekt sind 
 		'Categories'		=> 'Category',			// Kategorie (z.B. Installation)
 		'Images'			=> 'DocImage'			// Bilder
 	);
 
-	static $belongs_many_many = array(
+	private static $belongs_many_many = array(
 		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
 		'ParentProjects'	=> 'Project',			// "Eltern"-Projekte, die mit diesem Projekt verknüpft sind.
 		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
@@ -73,7 +73,7 @@ class Project extends DataObject {
 
 	// ! Erweiterungen ---------------------
 
-	static $extensions = array(
+	private static $extensions = array(
 		'DataObjectHasSummaryExtension',
 		'StartEndDateExtension',
 		'TeaserCMSFieldsExtension',
@@ -85,20 +85,20 @@ class Project extends DataObject {
 
 	// ! Such-Felder -----------------------
 
-	static $searchable_fields = array(
+	private static $searchable_fields = array(
 		'Title',
 		'Text',
 		'IsPortfolio',
 		'IsFeatured'
 	);
 
-	static $date_format = 'F, Y';				// Format des Datums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
-	static $frontend_date_format = 'M Y';
+	private static $date_format = 'F, Y';				// Format des Datums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $frontend_date_format = 'M Y';
 
 	// ! Admin -----------------------------
 
 	// Felder für die Listen/Übersichten im Admin
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'Title',
 		'FormattedDate',							// ruft $this->FormattedDate() auf {@see: StartEndDateExtension.php}
 		'Summary',									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
@@ -109,7 +109,7 @@ class Project extends DataObject {
 
 	// ! API -------------------------------
 
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'ClassName',
 			'UglyHash',
@@ -177,7 +177,7 @@ class Project extends DataObject {
 		)
 	);
 
-	static $api_searchable_fields = array(
+	private static $api_searchable_fields = array(
 		'Title',
 		'IsFeatured',
 		'UglyHash'	=> 'ExactMatchFilter'

@@ -24,7 +24,7 @@ class JJ_RestApiDataExtension extends Object {
 	 * @static
 	 * @var string
 	 */
-	public static $extension_key = '';
+	private static $extension_key = '';
 
 
 	/**
@@ -33,7 +33,7 @@ class JJ_RestApiDataExtension extends Object {
 	 * @static
 	 * @var bool
 	 */
-	public static $enabled = true;
+	private static $enabled = true;
 
 
 	/**
@@ -196,7 +196,7 @@ class JJ_RestApiDataExtension extends Object {
 	}
 
 	public function getCache() {
-		return SS_Cache::factory(JJ_RestfulServer::$cache_prefix . self::extension_key() . '_');
+		return SS_Cache::factory(JJ_RestfulServer::get_cache_prefix() . self::extension_key() . '_');
 	}
 
 }

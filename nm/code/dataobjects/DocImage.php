@@ -16,20 +16,20 @@
 
 class DocImage extends ResponsiveImage {
 
-	static $belongs_many_many = array(
+	private static $belongs_many_many = array(
 		'Excursions'	=> 'Excursion',		// Exkursionen
 		'Exhibitions'	=> 'Exhibition',	// Ausstellungen
 		'Projects'		=> 'Project',		// Projekte
 		'Workshops'		=> 'Workshop'		// Workshops
 	);
 
-	static $singular_name = 'Image';
-	static $plural_name = 'Images';
+	private static $singular_name = 'Image';
+	private static $plural_name = 'Images';
 
 
 	// ! API -------------------------------
 
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'Title',
 			'Caption',

@@ -12,7 +12,7 @@ class ResponsiveImage extends DataObject {
 
 	// ! Config
 
-	static $responsive_breakpoints = array(
+	private static $responsive_breakpoints = array(
 		'320' => 'mini',
 		'480' => 'small',
 		'768' => 'medium',
@@ -28,14 +28,14 @@ class ResponsiveImage extends DataObject {
 	 * @static
 	 * @link https://github.com/scottjehl/picturefill#supporting-ie-desktop
 	 */
-	public static $support_ie_desktop = true;
+	private static $support_ie_desktop = true;
 
 	/**
 	 * sets the min-width for IE desktops
 	 *
 	 * @static
 	 */
-	public static $ie_desktop_min_width = 640;
+	private static $ie_desktop_min_width = 640;
 
 
 	/**
@@ -43,7 +43,7 @@ class ResponsiveImage extends DataObject {
 	 *
 	 * @static
 	 */
-	public static $add_noscript = true;
+	private static $add_noscript = true;
 
 	/**
 	 * Tag names for wrapper and image element
@@ -61,25 +61,29 @@ class ResponsiveImage extends DataObject {
 
 	// ! Statics
 
-	static $db = array(
+	private static $db = array(
 		'Title' => 'Varchar'
 	);
 
-	static $has_many = array(
+	private static $has_many = array(
 		'Images' => 'ResponsiveImageObject'
 	);
 
-	static $summary_fields = array(
+	private static $summary_fields = array(
 		'Thumbnail',
 		'Title',
 		'ID'
 	);
 
-	static $searchable_fields = array(
+	private static $searchable_fields = array(
 		'Title',
 	);
 
 	public static function get_responsive_breakpoints() {
+		return self::$responsive_breakpoints;
+	}
+
+	public static function get_responsive_breakpoint_sizes() {
 		$points = array();
 
 		foreach (self::$responsive_breakpoints as $width => $name) {

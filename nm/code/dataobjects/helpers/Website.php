@@ -25,12 +25,12 @@
  */
 class Website extends DataObject {
 
-	static $db = array(
+	private static $db = array(
 		'Title'			=> 'Varchar(55)',		// Sichtbarer Titel des Links
 		'Link'			=> 'Varchar(255)'		// zu verlinkende URL
 	);
 
-	static $belongs_many_many = array(
+	private static $belongs_many_many = array(
 		'CalendarEntries'	=> 'CalendarEntry',			// Kalendereinträge
 		'Persons'			=> 'Person',				// Personen
 		'Exhibitions'		=> 'Exhibition'				// Ausstellungen
@@ -39,7 +39,7 @@ class Website extends DataObject {
 
 	// ! API -------------------------------
 
-	static $api_access = array(
+	private static $api_access = array(
 		'view' => array(
 			'Title',
 			'Link'
