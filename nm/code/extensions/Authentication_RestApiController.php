@@ -4,7 +4,7 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 
 	protected $currentUser = null;
 
-	static $url_handlers = array(
+	private static $url_handlers = array(
 		'$Action/$OtherAction'	=> 'handleAction'
 	);
 

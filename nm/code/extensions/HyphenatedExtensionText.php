@@ -2,10 +2,10 @@
 
 class HyphenatedTextExtension extends DataExtension {
 
-	public static $hyphenator_folder = '/code/thirdparty/phpHyphenator/';
-	public static $hyphen = '&shy;';
+	private static $hyphenator_folder = '/code/thirdparty/phpHyphenator/';
+	private static $hyphen = '&shy;';
 
-	public static $default_locale = 'de';
+	private static $default_locale = 'de';
 	/**
 	 *
 	 *
