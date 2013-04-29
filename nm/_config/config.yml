@@ -1,12 +1,32 @@
 ---
+Name: nm
+After: 'framework/*', 'cms/*'
+---
+SSViewer:
+  theme: 'nm'
+Member:
+  extensions:
+    MemberPersonExtension
+---
 Name: ResponsiveImage
 ---
 ResponsiveImage:
   WrapperTag: 'span'
   ImageTag: 'span'
+  extensions:
+    ResponsiveImageCaptionExtension
+    RepsonsiveImageUrlExtension
 ---
 Name: Admin
 ---
 SecurityAdmin:
   menu_icon: 'foo'
   menu_priority: 39
+GDBackend:
+  default_quality: 95
+DateField:
+  showclanedar: 1
+LeftAndMain:
+  extensions:
+    LeftAndMainExtension
+---

@@ -8,3 +8,10 @@ Director:
     'dev': 'DevelopmentAdmin'
     'Security//$Action/$ID/$OtherID': 'Security'
     '$Action/$OtherAction/$ID/$OtherID': 'RootURLController'
+---
+Name: apiroutes
+After: jjrestapi/routes#coreroutes
+---
+Director:
+  rules:
+    'api/v2/Auth': 'Authentication_RestApiController'

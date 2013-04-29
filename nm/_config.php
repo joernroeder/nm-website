@@ -22,19 +22,7 @@ SSViewer::set_theme('nm');
 i18n::set_locale('en_US');
 if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
 
-// ! DataObject Extensions ------------------------
-
-DataObject::add_extension('Member', 'MemberPersonExtension');
-DataObject::add_extension('ResponsiveImage', 'ResponsiveImageCaptionExtension');
-DataObject::add_extension('ResponsiveImage', 'ResponsiveImageUrlExtension');
-
-ResponsiveImage::set_wrapper_tag('span');
-ResponsiveImage::set_image_tag('span');
-
 // ! Admin-Config ---------------------------------
-
-DateField::set_default_config('showcalendar', true);
-Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 
 //CMSMenu::remove_menu_item('Help');
 
@@ -47,8 +35,6 @@ Object::add_extension('LeftAndMain', 'LeftAndMainExtension');
 ));
 
 SS_Cache::pick_backend('two-level', 'any', 20);*/
-
-GD::set_default_quality(95);
 
 // ! JJRestApi ------------------------------------
 
@@ -75,10 +61,6 @@ CSRFProtection_RestApiExtension::enable_for(array(
 	'PUT',
 	'DELETE',
 	'PATCH'
-));
-
-Director::addRules(20, array(
-	'api/v2/Auth'	=> 'Authentication_RestApiController'
 ));
 
 

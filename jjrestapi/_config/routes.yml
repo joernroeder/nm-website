@@ -1,0 +1,7 @@
+---
+Name: coreroutes
+After: 'framework/routes#coreroutes'
+---
+Director:
+  rules:
+    'api/v2': 'JJ_RestfulServer'
