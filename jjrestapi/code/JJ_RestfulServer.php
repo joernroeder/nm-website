@@ -396,9 +396,9 @@ class JJ_RestfulServer extends RestfulServer {
 
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
-		if (Director::isDev()) {
+		/*if (Director::isDev()) {
 			$result = false;
-		}
+		}*/
 		if ($result) {
 			$result = unserialize($result);
 		}

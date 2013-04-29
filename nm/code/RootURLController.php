@@ -105,7 +105,7 @@ class RootURLController extends Controller {
 
 	public function getDetailedProjectTypeByUglyHash(string $uglyHash) {
 		$detailed = null;
-		$flipped = array_flip(UglyHashExtension::$class_enc);
+		$flipped = array_flip(UglyHashExtension::get_class_enc());
 		$className = $flipped[substr($uglyHash, 0, 1)];
 		if ($className) {
 			$detailed = DataObject::get_one($className, "UglyHash='$uglyHash'");

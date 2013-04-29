@@ -35,6 +35,10 @@ class UglyHashExtension extends DataExtension {
 		parent::onBeforeWrite();
 	}
 
+	public static function get_class_enc() {
+		return self::$class_enc;
+	}
+
 	public function generateUglyHash() {
 		// check if the project has Persons. If yes, take the first and his/her phone number
 		$hashToSort = null;

@@ -54,7 +54,8 @@ class CSRFProtection_RestApiExtension extends JJ_RestApiDataExtension implements
 	public static function compare_request($request) {
 
 		$enabled_for = Config::inst()->get(get_called_class(), 'enabled_for');
-		if (!$enabled_for[$request->httpMethod()]) return true;
+		
+		if (!isset($enabled_for[$request->httpMethod()]) || !$enabled_for[$request->httpMethod()]) return true;
 
 		$compare = $request->getHeader(self::$request_header_name);
 
