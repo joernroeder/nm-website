@@ -17,7 +17,7 @@ interface JJ_DataFormatter {
 	 *
 	 * @return json object
 	 */
-	public function convertObj(DataObject $obj, $keys = null);
+	public function convertObj($obj, $keys = null);
 
 	/**
 	 *

@@ -159,7 +159,7 @@ class JJ_XMLDataFormatter extends XMLDataFormatter implements JJ_DataFormatter {
 	 * @param array $keys
 	 * @return json object
 	 */
-	function convertObj(DataObject $obj, $keys = null) {
+	function convertObj($obj, $keys = null) {
 		$root = $obj && isset($obj->ClassName) ? $obj->ClassName : 'root';
 		
 		if (!$obj || !is_array($obj)) return "<$root></$root>";
