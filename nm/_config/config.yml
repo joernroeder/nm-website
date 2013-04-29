@@ -29,3 +29,25 @@ DateField:
 LeftAndMain:
   extensions:
     - 'LeftAndMainExtension'
+---
+Name: JJRestApi
+---
+Structure_RestApiExtension:
+  add:
+    - 'Person'
+  ignore:
+    - 'Member'
+    - 'Ranking'
+    - 'Group'
+    - 'Permission'
+    - 'PermissionRole'
+    - 'PermissionRoleCode'
+    - 'ResponsiveImage'
+    - 'ResponsiveImageObject'
+    - 'File'
+CSRFProtection_RestApiExtension:
+  enable_for:
+    - 'POST'
+    - 'PUT'
+    - 'DELETE'
+    - 'PATCH'

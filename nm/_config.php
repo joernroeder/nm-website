@@ -36,33 +36,6 @@ if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
 
 SS_Cache::pick_backend('two-level', 'any', 20);*/
 
-// ! JJRestApi ------------------------------------
-
-
-Structure_RestApiExtension::add(array(
-	'Person'
-));
-
-Structure_RestApiExtension::ignore(array(
-	'Member',
-	'Ranking',
-	//'DashboardPanel',
-	'Group',
-	'Permission',
-	'PermissionRole',
-	'PermissionRoleCode',
-	'ResponsiveImage',
-	'ResponsiveImageObject',
-	'File'
-));
-
-CSRFProtection_RestApiExtension::enable_for(array(
-	'POST',
-	'PUT',
-	'DELETE',
-	'PATCH'
-));
-
 
 // include environment config 
 require_once('conf/ConfigureFromEnv.php');
