@@ -72,8 +72,8 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 	}
 
 	protected function getCacheKey($extension = 'json') {
-		$objects = $this->config()->get('add');
-		$ignore = $this->config()->get('ignore');
+		$objects = (array) $this->config()->get('add');
+		$ignore = (array) $this->config()->get('ignore');
 
 		$config = $this->getStructureConfig();
 
