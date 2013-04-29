@@ -6,7 +6,7 @@ SSViewer:
   theme: 'nm'
 Member:
   extensions:
-    MemberPersonExtension
+    - 'MemberPersonExtension'
 ---
 Name: ResponsiveImage
 ---
@@ -14,8 +14,8 @@ ResponsiveImage:
   WrapperTag: 'span'
   ImageTag: 'span'
   extensions:
-    ResponsiveImageCaptionExtension
-    RepsonsiveImageUrlExtension
+    - 'ResponsiveImageCaptionExtension'
+    - 'ResponsiveImageUrlExtension'
 ---
 Name: Admin
 ---
@@ -25,8 +25,7 @@ SecurityAdmin:
 GDBackend:
   default_quality: 95
 DateField:
-  showclanedar: 1
+  showcalendar: true
 LeftAndMain:
   extensions:
-    LeftAndMainExtension
----
+    - 'LeftAndMainExtension'

@@ -1,6 +1,7 @@
 ---
 Name: approutes
-After: framework/routes#coreroutes
+Before:
+  - 'jjrestapi/routes#apiroutes'
 ---
 Director:
   rules:
@@ -9,8 +10,9 @@ Director:
     'Security//$Action/$ID/$OtherID': 'Security'
     '$Action/$OtherAction/$ID/$OtherID': 'RootURLController'
 ---
-Name: apiroutes
-After: jjrestapi/routes#coreroutes
+Name: apiextraroutes
+After:
+  - 'jjrestapi/routes#apiroutes'
 ---
 Director:
   rules:

@@ -3,7 +3,7 @@ Name: coreconf
 ---
 DataObject:
   extensions:
-    JJ_RestApiDataObjectListExtension
+     - 'JJ_RestApiDataObjectListExtension'
 DataList:
   extensions:
-    JJ_RestApiDataObjectListExtension
+     - 'JJ_RestApiDataObjectListExtension'
