@@ -35,128 +35,9 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 		if (isset(self::$additional_config[$key])) unset(self::$additional_config[$key]);
 	}*/
 
-	
-	/**
-	 * Adds a class to the structure.
-	 * 
-	 * @param string|array classnames you want to add to the structure.
-	 */
-	public static function add($objects) {
-		self::add_to('structure', $objects);
-	}
+	private static $add = array();
 
-	/**
-	 * Adds a class to the structure ignore-list
-	 *
-	 * @param string|array object(s) you want to ignore for the structure
-	 */
-	public static function ignore($objects) {
-		self::add_to('ignore', $objects);
-	}
-
-	/**
-	 * add handler
-	 *
-	 * @param string list flag
-	 * @param string|array object(s)
-	 */
-	protected static function add_to($list_flag, $objects) {
-
-		// get list
-		$list = 'ignore' == $list_flag ? self::$ignored_objects : self::$structured_objects;
-
-		if (!is_array($objects)) {
-			$objects = array($objects);
-		}
-
-		foreach ($objects as $class) {
-			if (!class_exists($class)) {
-				user_error("You've added {$class} to JJ_RestApis Structure-Extension. But {$class} doesn't exists.", E_USER_WARNING);
-			}
-			else if (!array_key_exists($class, $list)) {
-				$list[$class] = $class;
-			}
-		}
-
-		// push back
-		if ('ignore' == $list_flag) {
-			self::$ignored_objects = $list;
-		}
-		else {
-			self::$structured_objects = $list;
-		}
-	}
-
-
-	/**
-	 * removes a class from the structure.
-	 *
-	 * @param string|array object(s)
-	 */
-	public static function remove($objects) {
-		self::remove_from('structure', $objects);
-	}
-
-	/**
-	 * removes a class from the structureignore ignore-list.
-	 *
-	 * @param string|array object(s)
-	 */
-	public static function unignore($objects) {
-		self::remove_from('ignore', $objects);
-	}
-
-
-	/**
-	 * remove handler
-	 *
-	 * @param string list flag
-	 * @param string|array object(s)
-	 */
-	protected static function remove_from($list_flag, $objects) {
-
-		// get list
-		$list = 'ignore' == $list_flag ? self::$ignore_objects : self::$structured_objects;
-
-		if (!is_array($objects)) {
-			$objects = array($objects);
-		}
-
-		foreach ($objects as $class) {
-			if (array_key_exists($class, $list)) {
-				unset($list[$class]);
-			}
-		}
-
-		// push back
-		if ('ignore' == $list_flag) {
-			self::$ignored_objects = $list;
-		}
-		else {
-			self::$structured_objects = $list;
-		}
-
-	}
-
-
-	/**
-	 * Returns all class-names that are part of the structure.
-	 *
-	 * @return array
-	 */
-	public static function get() {
-		return self::$structured_objects;
-	}
-
-
-	/**
-	 * Returns all class-names that are part of the structure.
-	 *
-	 * @return array
-	 */
-	public static function get_ignored() {
-		return self::$ignored_objects;
-	}
+	private static $ignore = array();
 
 
 	/**
@@ -191,8 +72,9 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 	}
 
 	protected function getCacheKey($extension = 'json') {
-		$objects = self::get();
-		$ignore = self::get_ignored();
+		$objects = $this->config()->get('add');
+		$ignore = $this->config()->get('ignore');
+
 		$config = $this->getStructureConfig();
 
 		$objectKeys = array_keys($objects);
@@ -234,8 +116,8 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 	}
 
 	protected function getStructureData($extension = null) {
-		$objects = self::get();
-		$ignore = self::get_ignored();
+		$objects = $this->config()->get('add');
+		$ignore = $this->config()->get('ignore');
 
 		if (empty($objects)) return $this->isFalse();
 
@@ -246,7 +128,8 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 		$i = 0;
 
 		// get classnames array
-		$keys = array_keys($objects);
+		//$keys = array_keys($objects);
+		$keys = array_merge(array(), $objects);
 		while ($i < sizeOf($keys)) {
 			$class = $keys[$i];
 
