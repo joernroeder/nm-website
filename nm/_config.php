@@ -7,6 +7,8 @@ ini_set('memory_limit', '1000M');
 
 // ! Globale Silverstripe Einstellung -------------
 
+Deprecation::notification_version('3.2.0');
+
 global $project;
 $project = 'nm';
 
@@ -19,7 +21,6 @@ SSViewer::set_theme('nm');
 
 i18n::set_locale('en_US');
 if (class_exists('SiteTree')) SiteTree::enable_nested_urls();
-
 
 // ! DataObject Extensions ------------------------
 
@@ -59,7 +60,7 @@ Structure_RestApiExtension::add(array(
 Structure_RestApiExtension::ignore(array(
 	'Member',
 	'Ranking',
-	'DashboardPanel',
+	//'DashboardPanel',
 	'Group',
 	'Permission',
 	'PermissionRole',
