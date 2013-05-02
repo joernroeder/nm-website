@@ -84,6 +84,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
 
       mainDfd = this.rejectAndHandle();
       config = app.Config;
+      if (app.Cache.WholePortfolio) {
+        config.Featured.present.flag = true;
+      }
       projDfd = DataRetrieval.forProjectsOverview(config.Featured);
       calDfd = DataRetrieval.forCalendar('upcoming');
       $.when(projDfd, calDfd).done(function() {

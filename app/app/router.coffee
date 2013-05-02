@@ -96,6 +96,10 @@ define [
 
 			config = app.Config
 
+			# we assume that each "featured" project is also present within the whole portfolio
+			if app.Cache.WholePortfolio
+				config.Featured.present.flag = true
+
 			projDfd = DataRetrieval.forProjectsOverview(config.Featured)
 			calDfd = DataRetrieval.forCalendar('upcoming')
 
