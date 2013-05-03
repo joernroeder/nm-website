@@ -15,16 +15,16 @@
  */
 class ProjectAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'Project'
 	);
 
-	public static $menu_priority = 90;
+	private static $menu_priority = 90;
 
-	static $url_segment = 'projects';
-	static $menu_title = 'Projects';
+	private static $url_segment = 'projects';
+	private static $menu_title = 'Projects';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

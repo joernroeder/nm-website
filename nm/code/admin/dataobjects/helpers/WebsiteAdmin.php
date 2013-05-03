@@ -15,16 +15,16 @@
  */
 class WebsiteAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'Website'
 	);
 
-	public static $menu_priority = 20;
+	private static $menu_priority = 20;
 
-	static $url_segment = 'websites';
-	static $menu_title = 'Websites';
+	private static $url_segment = 'websites';
+	private static $menu_title = 'Websites';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 }

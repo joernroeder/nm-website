@@ -15,16 +15,16 @@
  */
 class CalendarEntryAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'CalendarEntry'
 	);
 
-	public static $menu_priority = 80;
+	private static $menu_priority = 80;
 
-	static $url_segment = 'calendar';
-	static $menu_title = 'Calendar';
+	private static $url_segment = 'calendar';
+	private static $menu_title = 'Calendar';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

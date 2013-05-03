@@ -15,16 +15,16 @@
  */
 class GroupImageAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'GroupImage'
 	);
 
-	public static $menu_priority = 29;
+	private static $menu_priority = 29;
 
-	static $url_segment = 'group-images';
-	static $menu_title = 'Group-Images';
+	private static $url_segment = 'group-images';
+	private static $menu_title = 'Group-Images';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

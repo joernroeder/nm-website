@@ -15,16 +15,16 @@
  */
 class CategoryAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'Category'
 	);
 
-	public static $menu_priority = 20;
+	private static $menu_priority = 20;
 
-	static $url_segment = 'categories';
-	static $menu_title = 'Categories';
+	private static $url_segment = 'categories';
+	private static $menu_title = 'Categories';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

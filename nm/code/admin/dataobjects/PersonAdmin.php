@@ -15,16 +15,16 @@
  */
 class PersonAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'Person'
 	);
 
-	public static $menu_priority = 40;
+	private static $menu_priority = 40;
 
-	static $url_segment = 'persons';
-	static $menu_title = 'Persons';
+	private static $url_segment = 'persons';
+	private static $menu_title = 'Persons';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

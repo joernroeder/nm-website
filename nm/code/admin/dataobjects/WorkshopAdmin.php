@@ -15,16 +15,16 @@
  */
 class WorkshopAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'Workshop'
 	);
 
-	public static $menu_priority = 50;
+	private static $menu_priority = 50;
 
-	static $url_segment = 'workshops';
-	static $menu_title = 'Workshops';
+	private static $url_segment = 'workshops';
+	private static $menu_title = 'Workshops';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

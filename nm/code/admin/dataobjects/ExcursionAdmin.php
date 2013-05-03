@@ -15,16 +15,16 @@
  */
 class ExcursionAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'Excursion'
 	);
 
-	public static $menu_priority = 60;
+	private static $menu_priority = 60;
 
-	static $url_segment = 'excursions';
-	static $menu_title = 'Excursions';
+	private static $url_segment = 'excursions';
+	private static $menu_title = 'Excursions';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 

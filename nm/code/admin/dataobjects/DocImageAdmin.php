@@ -15,16 +15,16 @@
  */
 class DocImageAdmin extends ModelAdmin {
 
-	public static $managed_models = array(
+	private static $managed_models = array(
 		'DocImage'
 	);
 
-	public static $menu_priority = 30;
+	private static $menu_priority = 30;
 
-	static $url_segment = 'images';
-	static $menu_title = 'Images';
+	private static $url_segment = 'images';
+	private static $menu_title = 'Images';
 
-	static $extensions = array(
+	private static $extensions = array(
 		'IconizedModelAdminExtension'
 	);
 
