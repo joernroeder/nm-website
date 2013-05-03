@@ -2,6 +2,7 @@
 
 class SubdomainAssetsExtension extends DataExtension {
 
+	private static $domain_name = null;
 	private static $subdomain_name = null;
 	private static $subdomain_points_to_assets = null;
 
@@ -33,8 +34,18 @@ class SubdomainAssetsExtension extends DataExtension {
 		return (bool) $pointsToAssets; 
 	}
 
+	public function getDomainName() {
+		$domainName = $this->owner->config()->domain_name;
+		if ($domainName === null) {
+			$domainName = Config::inst()->get('SubdomainAssetsConfig', 'domain_name');
+		}
+
+		return $domainName ? Director::protocol() . $domainName . '/' : str_replace('://', '://' . $this->getSubdomainName() . '.', Director::absoluteBaseURL());
+	}
+
 	function SubdomainLink() {
-		$abs = str_replace('://', '://' . $this->getSubdomainName() . '.', Director::absoluteBaseURL());
+		$abs = $this->getDomainName();
+
 		$relative = $this->owner->RelativeLink();
 
 		if ($this->getSubdomainPointsToAssets()) {
