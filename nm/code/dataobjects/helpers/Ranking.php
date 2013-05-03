@@ -24,9 +24,16 @@ class Ranking extends DataObject {
 	);
 
 	private static $has_one = array(
-		'Person'	=> 'Person',	// Person, die von ihrer Seite aus das Projekt sortiert
-		'Project'	=> 'Project'	// Das zu sortierende Projekt
+		'Person'		=> 'Person',	// Person, die von ihrer Seite aus das Projekt sortiert
+		'Project'		=> 'Project',	// Das zu sortierende Projekt
+		'Workshop'		=> 'Workshop',
+		'Excursion'		=> 'Excursion',
+		'Exhibition'	=> 'Exhibition'
 	);
+
+	public function canView($member = null) {
+		return true;
+	}
 
 }
 

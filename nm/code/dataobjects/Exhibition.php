@@ -46,6 +46,10 @@ class Exhibition extends DataObject {
 		'PreviewImage'	=> 'DocImage'
 	);
 
+	private static $has_many = array(
+		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
+	);
+
 	private static $many_many = array(
 		'Websites'	=> 'Website',					// Webseite
 		'Projects'	=> 'Project',					// Projekte

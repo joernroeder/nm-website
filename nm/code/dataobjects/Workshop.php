@@ -40,6 +40,10 @@ class Workshop extends DataObject {
 	private static $has_one = array(
 		'PreviewImage'	=> 'DocImage'
 	);
+
+	private static $has_many = array(
+		'Rankings'			=> 'Ranking',					// Sortierungssystem eigener Arbeiten
+	);
 		
 	private static $many_many = array(
 		'Exhibitions'	=> 'Exhibition',					// Ausstellungen

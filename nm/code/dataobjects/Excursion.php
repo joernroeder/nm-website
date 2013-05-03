@@ -46,6 +46,10 @@ class Excursion extends DataObject {
 		'PreviewImage'	=> 'DocImage'
 	);
 
+	private static $has_many = array(
+		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
+	);
+
 	private static $many_many = array(
 		'Workshops'		=> 'Workshop',				// Workshops
 		'Exhibitions'	=> 'Exhibition',			// Ausstellungen

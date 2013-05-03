@@ -140,7 +140,7 @@ class Person extends DataObject {
 			'MasterYear',
 			'Websites.Title',
 			'Websites.Link',
-			'Project.ClassName',
+			'Projects.ClassName',
 			'Projects.UglyHash',
 			'Projects.Title',
 			'Projects.FrontendDate',
@@ -150,7 +150,8 @@ class Person extends DataObject {
 			'Projects.PreviewImage.Title',
 			'Projects.PreviewImage.Caption',
 			'Projects.PreviewImage.Urls',
-			'Workshop.ClassName',
+
+			'Workshops.ClassName',
 			'Workshops.UglyHash',
 			'Workshops.Title',
 			'Workshops.DateRangeNice',
@@ -160,6 +161,7 @@ class Person extends DataObject {
 			'Workshops.PreviewImage.Title',
 			'Workshops.PreviewImage.Caption',
 			'Workshops.PreviewImage.Urls',
+
 			'Exhibitions.ClassName',
 			'Exhibitions.UglyHash',
 			'Exhibitions.Title',
@@ -170,6 +172,7 @@ class Person extends DataObject {
 			'Exhibitions.PreviewImage.Title',
 			'Exhibitions.PreviewImage.Caption',
 			'Exhibitions.PreviewImage.Urls',
+
 			'Excursions.ClassName',
 			'Excursions.UglyHash',
 			'Excursions.Title',
@@ -180,8 +183,15 @@ class Person extends DataObject {
 			'Excursions.PreviewImage.Title',
 			'Excursions.PreviewImage.Caption',
 			'Excursions.PreviewImage.Urls',
+
 			'Templates.IsDetail',
-			'Templates.Url'
+			'Templates.Url',
+
+			'Rankings.Ranking',
+			'Rankings.Project',
+			'Rankings.Exhibition',
+			'Rankings.Excursion',
+			'Rankings.Workshop'
 		),
 		'view.about_init'	=> array(
 			'FirstName',

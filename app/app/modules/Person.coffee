@@ -18,6 +18,16 @@ define [
 					if @.get 'IsAlumni' then return 'alumni' 
 					return ''
 
+				# checks if there's a negative Ranking. If yes, returns false
+				projectIsVisible: (project) ->
+					out = true
+					@.get('Rankings').each (ranking) =>
+						className = project.get 'ClassName'
+						res = ranking.get(className)
+						if res and res.id is project.id
+							out = false
+					out
+
 			JJRestApi.extendCollection 'Person',
 				foo: 'bar'
 
@@ -33,9 +43,11 @@ define [
 					for rel in rels
 						if rel.collectionType is projectType
 							modelArray = modelArray.concat @.model.get(rel.key).models
+
 				# insert the list items
 				for model in modelArray
-					@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: 'about/' + @.model.get('UrlSlug') })
+					if @.model.projectIsVisible(model)
+						@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: 'about/' + @.model.get('UrlSlug') })
 				# insert the person item
 				@.insertView '', new Person.Views.InfoItem({ model: @.model })
 
