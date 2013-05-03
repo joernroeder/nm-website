@@ -33,5 +33,16 @@ class SubdomainAssetsExtension extends DataExtension {
 		return (bool) $pointsToAssets; 
 	}
 
+	function SubdomainLink() {
+		$abs = str_replace('://', '://' . $this->getSubdomainName() . '.', Director::absoluteBaseURL());
+		$relative = $this->owner->RelativeLink();
+
+		if ($this->getSubdomainPointsToAssets()) {
+			$relative = str_replace(ASSETS_DIR . '/', '', $relative);
+		}
+
+		return $abs . $relative;
+	}
+
 }
 
