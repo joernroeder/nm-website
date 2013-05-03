@@ -7,6 +7,8 @@ SSViewer:
 Member:
   extensions:
     - 'MemberPersonExtension'
+
+
 ---
 Name: ResponsiveImage
 ---
@@ -16,6 +18,8 @@ ResponsiveImage:
   extensions:
     - 'ResponsiveImageCaptionExtension'
     - 'ResponsiveImageUrlExtension'
+
+
 ---
 Name: Admin
 ---
@@ -29,6 +33,8 @@ DateField:
 LeftAndMain:
   extensions:
     - 'LeftAndMainExtension'
+
+
 ---
 Name: JJRestApi
 ---
@@ -51,3 +57,10 @@ CSRFProtection_RestApiExtension:
     - 'PUT'
     - 'DELETE'
     - 'PATCH'
+
+---
+Name: StaticUrls
+---
+File:
+  extensions:
+    - 'StaticsUrlExtension'
