@@ -61,9 +61,27 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @param  $relations // it seems like we don't use this!
 	 * @return EmptyJSONObject
 	 */
-	public function convertDataObjectToJSONObject(DataObjectInterface $obj, $fields = null, $relations = null, $depth = 0) {
+	public function convertDataObjectToJSONObject(DataObjectInterface $obj, $fields = null, $context = null, $depth = 0) {
 		
+		// check if canView
 		if(!$obj->canView()) return false;
+
+		// get the api fields
+		$apiFields = $obj->getApiFields($fields, $context);
+
+		// check if canViewContext the specific
+		if ($context) {
+			$subContext = $context->getSubContext();
+			$methodName = 'canView' . ($subContext ? ucfirst($subContext) : '') . 'Context';
+			if ($obj->hasMethod($methodName)) {
+				$methodResult = $obj->$methodName($apiFields);
+				if (!$methodResult) {
+					return false;
+				} else {
+					$apiFields = is_array($methodResult) ? $methodResult : $apiFields;
+				}
+			}
+		}
 
 		$depth++;
 
@@ -73,7 +91,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		$objHref = Director::absoluteURL($this->stat('api_base') . "$obj->class/$obj->ID");
 		$serobj = ArrayData::array_to_object();
 
-		foreach ($obj->getApiFields($fields) as $fieldName => $fieldType) {
+		foreach ($apiFields as $fieldName => $fieldType) {
 						
 			// Field filtering by key
 			//if (!$this->getBase()->fieldFilter($fieldName, $apiFields)) continue;
@@ -150,7 +168,7 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 *
 	 * @return json object
 	 */
-	public function convertObj($obj, $keys = null) {
+	public function convertObj($obj, $keys = null, $context = null) {
 
 		if (is_array($keys)) {
 			$keykeys = array();
@@ -169,11 +187,11 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 *
 	 *
 	 */
-	public function getDataList(SS_List $set, $fields = null) {
+	public function getDataList(SS_List $set, $fields = null, $context = null) {
 		$items = array();
 
 		foreach ($set as $do) {
-			$obj = $this->convertDataObjectToJSONObject($do, $fields);
+			$obj = $this->convertDataObjectToJSONObject($do, $fields, $context);
 			
 			if ($obj) {
 				$items[] = $obj;
@@ -189,12 +207,12 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @param SS_List $set
 	 * @return String json
 	 */
-	public function convertDataList(SS_List $set, $fields = null) {
-		$this->setRemoveFields(array(
+	public function convertDataList(SS_List $set, $fields = null, $context = null) {
+		/*$this->setRemoveFields(array(
 			'ClassName'
-		));
+		));*/
 
-		$items = $this->getDataList($set, $fields);
+		$items = $this->getDataList($set, $fields, $context);
 
 		$serobj = ArrayData::array_to_object(array(
 			'Items' => $items
@@ -203,20 +221,24 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 		return Convert::array2json($serobj->Items);
 	}
 
+	public function convertDataObject(DataObjectInterface $obj, $fields = null, $context = null) {
+		return Convert::array2json($this->convertDataObjectToJSONObject($obj, $fields, $context));
+	}
+
 
 	/**
 	 *
 	 *
 	 */
-	public function convert($data, $fields = null) {
+	public function convert($data, $fields = null, $context = null) {
 		if ($data instanceof SS_List) {
-			return $this->convertDataList($data, $fields);
+			return $this->convertDataList($data, $fields, $context);
 		}
 		else if ($data instanceof DataObject) {
-			return $this->convertDataObject($data, $fields);
+			return $this->convertDataObject($data, $fields, $context);
 		}
 		else {
-			return $this->convertObj($data, $fields);
+			return $this->convertObj($data, $fields, $context);
 		}
 	}
 

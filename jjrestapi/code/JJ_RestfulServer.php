@@ -258,7 +258,6 @@ class JJ_RestfulServer extends RestfulServer {
 
 		//$extension = $this->request->getExtension();
 		//$extension = $extension ? $extension : $this->stat('default_extension');
-		
 		$responseFormatter = $this->getResponseDataFormatter($className);
 		if (!$responseFormatter) return $this->unsupportedMediaType();
 		
@@ -271,14 +270,6 @@ class JJ_RestfulServer extends RestfulServer {
 			if (!$obj) return $this->notFound();
 			if (!$obj->canView()) return $this->permissionFailure();
 
-			// Format: /api/v1/<MyClass>/<ID>/<Relation>
-			if ($relationName) {
-				$obj = $this->getObjectRelationQuery($obj, $params, $sort, $limit, $relationName);
-				if (!$obj) return $this->notFound();
-				
-				// TODO Avoid creating data formatter again for relation class (see above)
-				$responseFormatter = $this->getResponseDataFormatter($obj->dataClass());
-			} 
 			
 		} else {
 			// Format: /api/v1/<MyClass>
@@ -289,11 +280,10 @@ class JJ_RestfulServer extends RestfulServer {
 
 		$rawFields = $this->request->getVar('fields');
 		$fields = $rawFields ? explode(',', $rawFields) : null;
-		$context = $this->getContext();
+		$context = $this->getContext($obj);
 
 		if ($obj instanceof SS_List) {
-			$fields = singleton($obj->dataClass())->getApiContextFields($context);
-			return $responseFormatter->convertDataList($obj, $fields);
+			return $responseFormatter->convertDataList($obj, $fields, $context);
 		}
 		else if (!$obj) {
 			// @todo check setTotalSize
@@ -301,7 +291,7 @@ class JJ_RestfulServer extends RestfulServer {
 			return $responseFormatter->convertDataList(new ArrayList(), $fields);
 		}
 		else {
-			return $responseFormatter->convertDataObject($obj, $fields);
+			return $responseFormatter->convertDataObject($obj, $fields, $context);
 		}
 	}
 
@@ -345,10 +335,15 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 	}
 
-	protected function getContext() {
-		$context = (string) $this->request->getVar('context');
-
-		return $context ? JJ_ApiContext::create_from_string($context) : JJ_ApiContext::create_from_string();
+	protected function getContext($obj = null) {
+		$context = (string) $this->request->getVar('context');		
+		if ($context) {
+			return JJ_ApiContext::create_from_string($context);
+		}
+		if ($obj) {
+			return $obj->getApiContext();
+		}
+		return JJ_ApiContext::create_from_string();
 	}
 
 	protected function getSearchString($params = null) {
@@ -404,6 +399,7 @@ class JJ_RestfulServer extends RestfulServer {
 		/*if (Director::isDev()) {
 			$result = false;
 		}*/
+		$result = false;
 		if ($result) {
 			$result = unserialize($result);
 		}

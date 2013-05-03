@@ -28,23 +28,23 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @static
 	 * @var string
 	 */
-	private static $api_logged_in_context_name = 'logged_in';
+	private static $api_logged_in_context_name = '';
 
 
 	// ! Context Handler
 	
 	public function getViewContext($member = null) {
-		return $this->getContextName($member);
+		return false;
 	}
 
 
 	public function getEditContext($member = null) {
-		return $this->getContextName($member);
+		return false;
 	}
 
 
 	public function getDeleteContext($member = null) {
-		return $this->getContextName($member);
+		return false;
 	}
 
 
@@ -52,11 +52,11 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @param DataObject $member
 	 * @return string context
 	 */
-	protected function getContextName($member = null) {
+	/*protected function getContextName($member = null) {
 		$memberID = $member ? $member->ID : Member::CurrentUserID();
 
 		return (int) $memberID ? self::$api_logged_in_context_name : false;
-	}
+	}*/
 
 
 	// ! DataFormatter
@@ -168,9 +168,9 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @param FieldSet $fields
 	 * @return array
 	 */
-	public function getApiFields($fields = null) {
+	public function getApiFields($fields = null, $context = null) {
 		$dbFields = array();
-		$customFields = $fields ? $fields : $this->getApiContextFields();
+		$customFields = $fields ? $fields : $this->getApiContextFields($context);
 
 		// if custom fields are specified, only select these
 		if (is_array($customFields)) {
@@ -276,8 +276,11 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 */
 	public function getApiContext($operation = 'view') {
 		$methodName = 'get' . ucfirst($operation) . 'Context';
-		$subContext = $this->owner->hasMethod($methodName) ? $this->owner->$methodName() : '';
 
+		$owner = $this->owner instanceof DataList ? singleton($this->owner->dataClass) : $owner; 
+
+		$subContext = $owner->hasMethod($methodName) ? $owner->$methodName() : '';
+	
 		return JJ_ApiContext::create_from_string($operation, $subContext);
 	}
 
@@ -302,14 +305,12 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @return array
 	 */
 	public function getApiContextFields(JJ_ApiContext $context = null) {
-
 		$fields = JJ_RestfulServer::fields();
 		$context = $context ? $context : JJ_ApiContext::create_from_string();
 
 		$apiAccess = $this->owner->stat('api_access');
 		$className = $this->owner->class;
 		$con = $context->getContext();
-
 		// try to get subcontext (view.logged_in)
 		if (isset($apiAccess[$con])) {
 			return $apiAccess[$con];

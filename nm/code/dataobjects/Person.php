@@ -191,7 +191,10 @@ class Person extends DataObject {
 			'Rankings.Project',
 			'Rankings.Exhibition',
 			'Rankings.Excursion',
-			'Rankings.Workshop'
+			'Rankings.Workshop',
+
+			// secure fields
+			'Phone'
 		),
 		'view.about_init'	=> array(
 			'FirstName',
@@ -203,12 +206,34 @@ class Person extends DataObject {
 			'IsEmployee',
 			'IsStudent',
 			'IsAlumni'
-		)
+		),
+		/*'view.secure'		=> array(
+			'FirstName',
+			'Surname',
+			'Phone'
+		)*/
 	);
+
 
 	public function canView($member = null) {
 		return true;
 	}
+
+	public function canViewContext($fields) {
+		$currentMemberID = Member::currentUserID();
+		$owner = $this->Member();
+		if ($currentMemberID && $owner && $owner->ID == $currentMemberID) return $fields;
+		
+		unset($fields['Phone']);
+		return $fields;
+	}
+
+	/*public function canViewSecureContext($member = null) {
+		$currentMemberID = Member::currentUserID();
+		$owner = $this->Member();
+		if ($currentMemberID && $owner && $owner->ID == $currentMemberID) return true;
+		return false;
+	}*/
 
 	public function getMarkdownedBio() {
 		return $this->MarkdownHyphenated('Bio');
