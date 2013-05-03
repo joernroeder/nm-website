@@ -280,7 +280,7 @@ class JJ_RestfulServer extends RestfulServer {
 		// depending on the request
 		if ($id) {
 			// Format: /api/v1/<MyClass>/<ID>
-			$obj = $this->getObjectQuery($className, array($id), $params)->First();
+			$obj = $this->getObjectQuery($className, array($id), $params)->first();
 
 			if (!$obj) return $this->notFound();
 			if (!$obj->canView()) return $this->permissionFailure();
@@ -306,7 +306,7 @@ class JJ_RestfulServer extends RestfulServer {
 		$md5ResponseFormatter = md5($responseFormatter->class);
 		$currentUserId = (int) Member::currentUserId();
 
-		$cacheKey = md5($md5Obj . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
+		$cacheKey = md5($md5Obj . '_' . $id . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
@@ -314,7 +314,7 @@ class JJ_RestfulServer extends RestfulServer {
 			$result = unserialize($result);
 		}
 		else {
-			if ($obj instanceof SS_List) {
+			if ($obj instanceof ArrayList) {
 				$result = $responseFormatter->convertDataList($obj, $fields, $context);
 			}
 			else if (!$obj) {
@@ -344,7 +344,6 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @return DataList
 	 */
 	protected function getObjectQuery($className, $ids, $params) {
-		$dataList = new DataList($className);
 		$cacheKey =  md5(implode('_', array_merge($ids, $params))) . '_ObjectQuery';
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
@@ -358,9 +357,8 @@ class JJ_RestfulServer extends RestfulServer {
 			$cache->save(serialize($result));
 		}
 
-		$dataList->addMany($result);
 
-	    return $dataList;
+	    return new ArrayList($result);
 	}
 
 	/**
@@ -403,10 +401,12 @@ class JJ_RestfulServer extends RestfulServer {
 	}
 
 	protected function getContext($obj = null) {
-		$context = (string) $this->request->getVar('context');		
+		$context = (string) $this->request->getVar('context');	
 		if ($context) {
 			return JJ_ApiContext::create_from_string($context);
 		}
+
+		if ($obj instanceof SS_List) $obj = $obj->first();
 		if ($obj) {
 			return $obj->getApiContext();
 		}
@@ -442,7 +442,6 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function getSearchQuery($className, $params = null, $sort = null, $limit = null, $existingQuery = null) {
 		$context = $this->getContext();
 		$sing = singleton($className);
-		$dataList = new DataList($className);
 
 		//$searchString = isset($params['search']) ? (String) $params['search'] : '';
 		//$searchArray = $this->urlSearchStringToArray($searchString);
@@ -477,9 +476,7 @@ class JJ_RestfulServer extends RestfulServer {
 			$cache->save(serialize($result));
 		}
 
-		$dataList->addMany($result);
-
-		return $dataList;
+		return new ArrayList($result);
 		//return $result;
 	}
 
