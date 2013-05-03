@@ -62,5 +62,5 @@ CSRFProtection_RestApiExtension:
 Name: StaticUrls
 ---
 SubdomainAssetsConfig:
-  subdomain_name: 'statics'
+  subdomain_name: 'static'
   subdomain_points_to_assets: false

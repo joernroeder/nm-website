@@ -7,7 +7,7 @@ class SubdomainAssetsConfig extends Object {
 	 * 
 	 * @var string
 	 */
-	private static $subdomain_name = 'foo';
+	private static $subdomain_name = 'static';
 
 	/**
 	 * * configured via Config-System
