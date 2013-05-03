@@ -63,4 +63,4 @@ Name: StaticUrls
 ---
 SubdomainAssetsConfig:
   subdomain_name: 'static'
-  subdomain_points_to_assets: false
+  subdomain_points_to_assets: true
