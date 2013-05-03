@@ -280,7 +280,7 @@ class JJ_RestfulServer extends RestfulServer {
 		// depending on the request
 		if ($id) {
 			// Format: /api/v1/<MyClass>/<ID>
-			$obj = $this->getObjectQuery($className, $id, $params)->First();
+			$obj = $this->getObjectQuery($className, array($id), $params)->First();
 
 			if (!$obj) return $this->notFound();
 			if (!$obj->canView()) return $this->permissionFailure();
@@ -297,20 +297,71 @@ class JJ_RestfulServer extends RestfulServer {
 		$fields = $rawFields ? explode(',', $rawFields) : null;
 		$context = $this->getContext($obj);
 
-		if ($obj instanceof SS_List) {
-			return $responseFormatter->convertDataList($obj, $fields, $context);
-		}
-		else if (!$obj) {
-			// @todo check setTotalSize
-			$responseFormatter->setTotalSize(0);
-			return $responseFormatter->convertDataList(new ArrayList(), $fields);
+		// check cached $obj
+		// if ($currentCacheKey_json)
+		
+		$md5Obj = md5($obj);
+		$md5Fields = md5($fields);
+		$md5Context = md5($context->getContext());
+		$md5ResponseFormatter = md5($responseFormatter->class);
+		$currentUserId = (int) Member::currentUserId();
+
+		$cacheKey = md5($md5Obj . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
+		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
+		$result = $cache->load($cacheKey);
+
+		if ($result) {
+			$result = unserialize($result);
 		}
 		else {
-			return $responseFormatter->convertDataObject($obj, $fields, $context);
+			if ($obj instanceof SS_List) {
+				$result = $responseFormatter->convertDataList($obj, $fields, $context);
+			}
+			else if (!$obj) {
+				// @todo check setTotalSize
+				$responseFormatter->setTotalSize(0);
+				$result = $responseFormatter->convertDataList(new ArrayList(), $fields);
+			}
+			else {
+				$result = $responseFormatter->convertDataObject($obj, $fields, $context);
+			}
+		
+			$cache->save(serialize($result));
 		}
+
+		return $result;
 	}
 
 	// ! Filter/Search
+
+	/**
+	 * Gets a single DataObject by ID,
+	 * through a request like /api/v1/<MyClass>/<MyID>
+	 * 
+	 * @param string $className
+	 * @param int $id
+	 * @param array $params
+	 * @return DataList
+	 */
+	protected function getObjectQuery($className, $ids, $params) {
+		$dataList = new DataList($className);
+		$cacheKey =  md5(implode('_', array_merge($ids, $params))) . '_ObjectQuery';
+		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
+		$result = $cache->load($cacheKey);
+
+		if ($result) {
+			$result = unserialize($result);
+		}
+		else {
+			$result = DataList::create($className)->byIDs($ids);
+			$result = $result->toArray();
+			$cache->save(serialize($result));
+		}
+
+		$dataList->addMany($result);
+
+	    return $dataList;
+	}
 
 	/**
 	 * returns the ObjectsQuery
@@ -343,7 +394,8 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 
 		if (!empty($ids)) {
-			return DataList::create($className)->byIDs($ids);
+			// @todo: check cache
+			return $this->getObjectQuery($className, $ids, $params);
 		}
 		else {
 			return $this->getSearchQuery($className, $params, $sort, $limit);	
@@ -390,7 +442,7 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function getSearchQuery($className, $params = null, $sort = null, $limit = null, $existingQuery = null) {
 		$context = $this->getContext();
 		$sing = singleton($className);
-
+		$dataList = new DataList($className);
 
 		//$searchString = isset($params['search']) ? (String) $params['search'] : '';
 		//$searchArray = $this->urlSearchStringToArray($searchString);
@@ -408,23 +460,27 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 
 		$cacheKey = $this->getSearchQueryCacheKey($searchContext, $context, $params, $sort, $limit, $existingQuery);
-
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
+
+		//$this->currentCache = $cache;
 		/*if (Director::isDev()) {
 			$result = false;
 		}*/
-		$result = false;
+
 		if ($result) {
 			$result = unserialize($result);
-			//$this->addNotModifiedHeader($result, $cache->getMetadatas($cacheKey));
 		}
 		else {
 			$result = $searchContext->getQuery($params, $sort, $limit, $existingQuery);
+			$result = $result->toArray();
 			$cache->save(serialize($result));
 		}
 
-		return $result;
+		$dataList->addMany($result);
+
+		return $dataList;
+		//return $result;
 	}
 
 	// this could be an extension for SearchContext
@@ -460,7 +516,7 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 
 		// @todo replace . and - via regular expression
-		return md5($cacheKey);
+		return md5($cacheKey) . '_SearchQuery';
 	}
 
 	/**

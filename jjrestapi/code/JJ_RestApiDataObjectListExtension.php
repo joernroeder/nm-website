@@ -277,7 +277,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	public function getApiContext($operation = 'view') {
 		$methodName = 'get' . ucfirst($operation) . 'Context';
 
-		$owner = $this->owner instanceof DataList ? singleton($this->owner->dataClass) : $owner; 
+		$owner = $this->owner instanceof DataList ? singleton($this->owner->dataClass) : $this->owner; 
 
 		$subContext = $owner->hasMethod($methodName) ? $owner->$methodName() : '';
 	
