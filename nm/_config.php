@@ -41,8 +41,5 @@ SS_Cache::add_backend('two-level', 'Two_Levels', array(
 
 SS_Cache::pick_backend('two-level', 'any', 20);
 
-Object::useCustomClass('File', 'SubdomainFile');
-Object::useCustomClass('ResponsiveImageObject', 'SubdomainResponsiveImageObject');
-
 // include environment config 
 require_once('conf/ConfigureFromEnv.php');

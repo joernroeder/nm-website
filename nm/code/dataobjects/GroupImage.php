@@ -14,7 +14,7 @@
  *
  */
 
-class GroupImage extends ResponsiveImage {
+class GroupImage extends SubdomainResponsiveImage {
 	
 	private static $api_access = array(
 		'view' => array(

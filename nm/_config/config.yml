@@ -13,8 +13,8 @@ Member:
 Name: ResponsiveImage
 ---
 ResponsiveImage:
-  WrapperTag: 'span'
-  ImageTag: 'span'
+  wrapper_tag: 'span'
+  image_tag: 'span'
   extensions:
     - 'ResponsiveImageCaptionExtension'
     - 'ResponsiveImageUrlExtension'
@@ -61,6 +61,6 @@ CSRFProtection_RestApiExtension:
 ---
 Name: StaticUrls
 ---
-File:
-  extensions:
-    - 'StaticsUrlExtension'
+SubdomainAssetsConfig:
+  subdomain_name: 'statics'
+  subdomain_points_to_assets: false

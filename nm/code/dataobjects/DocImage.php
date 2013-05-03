@@ -14,7 +14,7 @@
  *
  */
 
-class DocImage extends ResponsiveImage {
+class DocImage extends SubdomainResponsiveImage {
 
 	private static $belongs_many_many = array(
 		'Excursions'	=> 'Excursion',		// Exkursionen

@@ -14,7 +14,7 @@
  *
  */
 
-class PersonImage extends ResponsiveImage {
+class PersonImage extends SubdomainResponsiveImage {
 
 	private static $belongs_to = array(
 		'Person'	=> 'Person'
