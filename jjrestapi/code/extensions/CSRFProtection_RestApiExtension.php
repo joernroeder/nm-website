@@ -22,6 +22,8 @@ class CSRFProtection_RestApiExtension extends JJ_RestApiDataExtension implements
 	 */
 	private static $token_inst = null;
 
+	private static $use_cache = false;
+
 	/**
 	 * defines which http methods to check token against
 	 * @var array

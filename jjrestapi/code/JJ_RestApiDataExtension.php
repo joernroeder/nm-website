@@ -35,6 +35,14 @@ class JJ_RestApiDataExtension extends Object {
 	 */
 	private static $enabled = true;
 
+	/**
+	 * Defines whether data should be cached or not
+	 *
+	 * @static
+	 * @var bool
+	 */
+	private static $use_cache = true;	
+
 
 	/**
 	 * owner, ussually a JJ_RestfulServer instance
@@ -99,7 +107,9 @@ class JJ_RestApiDataExtension extends Object {
 
 		$fields = $self->getFields($self->stat('api_access'));
 
-		return $self->convert($self->getData($extension), $fields);
+		$data = $self->cachedOrGetData($extension);
+
+		return $self->convert($data, $fields);
 	}
 
 
@@ -167,6 +177,33 @@ class JJ_RestApiDataExtension extends Object {
 		return $this->getOwner()->getResponseFormatter()->convert($data, $fields);
 	}
 
+	public function cachedOrGetData($extension = null) {
+		$use_cache = $this->config()->get('use_cache');
+		$data = null;
+		$save_to_cache = false;
+
+		if ($use_cache) {
+			$extension = $extension ? $extension  :'json';
+			$cacheKey = $this->getCacheKey($extension);
+			$cache = $this->getCache();
+
+			if ($data = $cache->load($cacheKey)) {
+				$data = unserialize($data);
+			} else {
+				$save_to_cache = true;
+			}
+		}
+
+		if (!$data) {
+			$data = $this->getData($extension);
+		}
+
+		if ($use_cache && $save_to_cache) {
+			$cache->save(serialize($data));
+		}
+
+		return $data;	
+	}
 
 	public function getData($extension = null) {
 		return array();
@@ -197,6 +234,16 @@ class JJ_RestApiDataExtension extends Object {
 
 	public function getCache() {
 		return SS_Cache::factory(JJ_RestfulServer::get_cache_prefix() . self::extension_key() . '_');
+	}
+
+	/**
+	 * gets the key for caching. Default is a md5 of $extension_key . $extension
+	 * @param  String $extension json|xml
+	 * @return String
+	 */
+	public function getCacheKey($extension) {
+		$key = $this->config()->get('extension_key');
+		return md5($extension . '.' . $key);
 	}
 
 }

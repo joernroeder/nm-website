@@ -71,7 +71,7 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 		return !empty($config) ? array('Config' => $config) : array();
 	}
 
-	protected function getCacheKey($extension = 'json') {
+	public function getCacheKey($extension = 'json') {
 		$objects = (array) $this->config()->get('add');
 		$ignore = (array) $this->config()->get('ignore');
 
@@ -91,7 +91,6 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 
 		return md5($cacheKey);
 	}
-
 	
 	/**
 	 * returns the structure as array.
@@ -100,19 +99,7 @@ class Structure_RestApiExtension extends JJ_RestApiDataExtension implements Temp
 	 * @return array
 	 */
 	public function getData($extension = null) {
-		$extension = $extension ? $extension : 'json';
-		$cacheKey = $this->getCacheKey($extension);
-		$cache = $this->getCache();
-		
-		if ($data = $cache->load($cacheKey)) {
-			$data = unserialize($data);
-		}
-		else {
-			$data = $this->getStructureData($extension);
-			$cache->save(serialize($data));
-		}
-
-		return $data;
+		return $this->getStructureData($extension);
 	}
 
 	protected function getStructureData($extension = null) {

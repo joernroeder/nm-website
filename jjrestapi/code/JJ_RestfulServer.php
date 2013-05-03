@@ -184,8 +184,13 @@ class JJ_RestfulServer extends RestfulServer {
 		$keys = array();
 
 		foreach ($extensions as $extension) {
+
 			// skip disabled extensions
 			if (!Config::inst()->get($extension, 'enabled')) continue;
+
+			// skip abstract classes
+			/*$refl = new ReflectionClass($extension);
+			if ($refl->isAbstract()) continue;*/
 
 			$key = Config::inst()->get($extension, 'extension_key');
 			
