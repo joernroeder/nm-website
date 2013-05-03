@@ -417,7 +417,7 @@ class JJ_RestfulServer extends RestfulServer {
 		$result = false;
 		if ($result) {
 			$result = unserialize($result);
-			$this->addNotModifiedHeader($result, $cache->getMetadatas($cacheKey));
+			//$this->addNotModifiedHeader($result, $cache->getMetadatas($cacheKey));
 		}
 		else {
 			$result = $searchContext->getQuery($params, $sort, $limit, $existingQuery);
