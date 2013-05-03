@@ -160,6 +160,21 @@ class JJ_RestfulServer extends RestfulServer {
 		$response->addHeader('Content-Type', $contentType);
 	}
 
+	/**
+	 * adds the current content type as to the response 
+	 *
+	 */
+	public function addNotModifiedHeader($result, $cacheData) {
+		$response = $this->getResponse();
+		$response->setStatusCode(304);
+		$etag = md5($result);
+		
+		$response->removeHeader('Cache-Control');
+
+		$response->addHeader('Etag', $etag);
+		$response->addHeader('Last-Modified', gmdate("D, d M Y H:i:s", $cacheData['mtime']) . ' GMT'); 
+	}
+
 	// ! Extensions handling
 	public function getSubclasses($className) {
 		if (!$className) return false;
@@ -402,6 +417,7 @@ class JJ_RestfulServer extends RestfulServer {
 		$result = false;
 		if ($result) {
 			$result = unserialize($result);
+			$this->addNotModifiedHeader($result, $cache->getMetadatas($cacheKey));
 		}
 		else {
 			$result = $searchContext->getQuery($params, $sort, $limit, $existingQuery);
