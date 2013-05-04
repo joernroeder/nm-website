@@ -307,13 +307,10 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       dfd = $.Deferred();
       if (app.CurrentMember) {
         layout.setViewAndRenderMaybe('', new Auth.Views.Logout());
-        dfd = Auth.logout();
+        return dfd = Auth.logout();
       } else {
-        dfd.resolve();
+        return dfd.resolve();
       }
-      return dfd.done(function() {
-        return Backbone.history.navigate('/login/', true);
-      });
     },
     catchAllRoute: function(url) {
       return console.log('catch all route');
@@ -354,6 +351,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     forProjectsOverview: function(configObj) {
       var dfds, present, projectType, projectTypes, returnDfd, _fn, _i, _len;
 
+      console.log(app);
       present = configObj.present;
       projectTypes = app.Config.ProjectTypes;
       returnDfd = new $.Deferred();
@@ -367,6 +365,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             urlSuffix: configObj.urlSuffix
           };
           return dfds.push(JJRestApi.getFromDomOrApi(projectType, options).done(function(data) {
+            console.log(data);
             return app.handleFetchedModels(projectType, data);
           }));
         };
@@ -486,6 +485,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           data = _.isArray(data) ? data : [data];
           model = data.length === 1 ? app.handleFetchedModel(classType, data[0]) : null;
           model._isCompletelyFetched = true;
+          model._isFetchedWhenLoggedIn = true;
           return dfd.resolve(model);
         });
       }
@@ -522,7 +522,8 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       existModel.fetch({
         success: function(model) {
           dfd.resolve(model);
-          return model._isCompletelyFetched = true;
+          model._isCompletelyFetched = true;
+          return model._isFetchedWhenLoggedIn = true;
         }
       });
       return dfd.promise();

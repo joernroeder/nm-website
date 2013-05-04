@@ -612,6 +612,11 @@ aside h4 {
 aside a {
   color: #505050;
 }
+#user-widget {
+  position: fixed;
+  top: 1.5em;
+  right: 3em;
+}
 .badge {
   display: inline-block;
   background: #262626;

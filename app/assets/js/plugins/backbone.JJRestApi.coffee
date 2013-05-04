@@ -76,8 +76,9 @@ JJRestApi.extendCollection = (className, collTypeToExtendFrom, extension) ->
 		@.Collections[className] = collTypeToExtendFrom.extend extension
 
 
-JJRestApi.setObjectUrl = (className) ->
-	@.url + className + '.' + @.extension
+JJRestApi.setObjectUrl = (className, options) ->
+	options = options || {}
+	@.url + className + (if options.id then '/' + options.id else '') + '.' + @.extension
 
 ###*
  *
@@ -118,7 +119,7 @@ JJRestApi.getFromDomOrApi = (name, options) ->
 		return dfd.promise()
 
 	else unless options.noAjax
-		url = if options.url then options.url else JJRestApi.setObjectUrl(name)
+		url = if options.url then options.url else JJRestApi.setObjectUrl(name, options)
 		if options.urlSuffix then url += options.urlSuffix
 		dfd = $.getJSON url
 		JJRestApi.Events.trigger 'dfdAjax', dfd

@@ -1,6 +1,7 @@
 require [
 	'app'
 	'router'
+	'modules/Auth',
 	'modules/Project',
 	'modules/Person',
 	'modules/Excursion',
@@ -9,7 +10,7 @@ require [
 	'modules/CalendarEntry'
 	'plugins/misc/spin.min',
 	'plugins/misc/misc'
-], (app, Router, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner, misc) ->
+], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner, misc) ->
 	
 	# ! JJRELATIONAL CONFIG
 
@@ -33,6 +34,12 @@ require [
 
 	# auth
 	app.CurrentMember = {}
+	app.CurrentMemberPerson = null
+
+	# base url
+	app.origin = if window.location.origin then window.location.origin else window.location.protocol + '//' + window.location.host
+
+	console.log app.origin
 
 	# basic config with flags to check whether specific data is already present or not
 	# also serves as the expression interface between SilverStripe and Backbone. Put hardcoded string in there
@@ -195,6 +202,10 @@ require [
 			$a.removeClass 'active'
 			if $a.attr('href') is frag then $a.addClass 'active'
 
+	app.initialLoggedInCheck = ->
+		JJRestApi.getFromDomOrApi('current-member', {noAjax: true}).done (data) ->
+			Auth.handleUserServerResponse(data)
+
 	app.setupSpinner = ->
 		@.$body = $ 'body'
 		@.$main = $ '#main'
@@ -239,6 +250,8 @@ require [
 					app.Collections[name] = new CollClass()
 
 			buildCollections app.Config.StoreHooks
+
+			app.initialLoggedInCheck()
 
 			# kick off
 			Backbone.history.start pushState: true

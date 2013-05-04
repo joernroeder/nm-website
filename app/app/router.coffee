@@ -256,8 +256,6 @@ define [
 				layout.setViewAndRenderMaybe '', new Auth.Views.Logout()
 				dfd = Auth.logout()
 			else dfd.resolve()
-			dfd.done ->
-				Backbone.history.navigate '/login/', true
 				
 
 		catchAllRoute: (url) ->
@@ -290,6 +288,7 @@ define [
 		# or 'portfolio page'
 	
 		forProjectsOverview: (configObj) ->
+			console.log app
 			present = configObj.present
 			projectTypes = app.Config.ProjectTypes
 
@@ -305,6 +304,7 @@ define [
 							name: configObj.domName(projectType)
 							urlSuffix : configObj.urlSuffix
 						dfds.push JJRestApi.getFromDomOrApi(projectType, options).done((data) ->
+							console.log data
 							app.handleFetchedModels projectType, data
 						)
 				$.when.apply(@, dfds).done ->
@@ -406,7 +406,10 @@ define [
 				JJRestApi.getFromDomOrApi(classType, options).done (data) ->
 					data = if _.isArray(data) then data else [data]
 					model = if data.length is 1 then app.handleFetchedModel(classType, data[0]) else null
+					# set a flag that says the model is completely fetched
 					model._isCompletelyFetched = true
+					# set a flag that says if the model has been fetched while logged in
+					model._isFetchedWhenLoggedIn = true
 					dfd.resolve model	
 
 			dfd.promise()
@@ -434,7 +437,10 @@ define [
 			existModel.fetch
 				success: (model) ->
 					dfd.resolve model
+					# set a flag that says the model is completely fetched
 					model._isCompletelyFetched = true
+					# set a flag that says if the model has been fetched while logged in
+					model._isFetchedWhenLoggedIn = true
 			dfd.promise()
 
 	Router

@@ -1,0 +1,8 @@
+<span>
+{{#if Person.Image.Urls._320}}
+	{{#with Person.Image.Urls._320}}
+		<img src="{{Url}}" width="50" />
+	{{/with}}
+{{/if}}
+</span>
+<span>{{ Member.Email }}</span>

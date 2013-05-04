@@ -103,8 +103,9 @@ JJRestApi.extendCollection = function(className, collTypeToExtendFrom, extension
   }
 };
 
-JJRestApi.setObjectUrl = function(className) {
-  return this.url + className + '.' + this.extension;
+JJRestApi.setObjectUrl = function(className, options) {
+  options = options || {};
+  return this.url + className + (options.id ? '/' + options.id : '') + '.' + this.extension;
 };
 
 /**
@@ -153,7 +154,7 @@ JJRestApi.getFromDomOrApi = function(name, options) {
     dfd.resolve(data);
     return dfd.promise();
   } else if (!options.noAjax) {
-    url = options.url ? options.url : JJRestApi.setObjectUrl(name);
+    url = options.url ? options.url : JJRestApi.setObjectUrl(name, options);
     if (options.urlSuffix) {
       url += options.urlSuffix;
     }

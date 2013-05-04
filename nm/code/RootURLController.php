@@ -28,7 +28,24 @@ class RootURLController extends Controller {
 	}
 
 	public function getInitData($params) {
+
+		
 		$returnVal = '';
+
+		/**
+		 *defaults 
+		 */
+		// User + his/her Person
+		$userData = singleton('User_RestApiExtension')->getData();
+		$de = new JJ_DataElement('current-member', $userData, 'json', 'view');
+		$returnVal .= $de->forTemplate();
+
+		$currentPerson = null;
+		if (isset($userData['PersonID']) && $id = $userData['PersonID']) {
+			$currentPerson = DataObject::get_by_id('Person', (int) $id);
+			$returnVal .= $currentPerson->toDataElement('current-member-person')->forTemplate();
+		}
+
 		switch ($params['Action']) {
 			// about pages
 			case 'about':
@@ -40,7 +57,8 @@ class RootURLController extends Controller {
 						}
 					} else {
 						// person page
-						$returnVal .= DataObject::get_one('Person', "UrlSlug='$urlSlug'")->toDataElement('detailed-person-item', null)->forTemplate();
+						$person = ($currentPerson && $currentPerson->UrlSlug == $urlSlug) ? $currentPerson : DataObject::get_one('Person', "UrlSlug='$urlSlug'");
+						$returnVal .= $person->toDataElement('detailed-person-item', null)->forTemplate();
 					}
 				} else {
 					// simple about page with statement, groupimage and people, yo!

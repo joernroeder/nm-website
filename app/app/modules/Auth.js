@@ -10,10 +10,19 @@ define(['app'], function(app) {
   Auth = app.module();
   Auth.ping = {
     url: JJRestApi.setObjectUrl('User'),
-    interval: 10000
+    interval: 20000
   };
   Auth.loginUrl = 'api/v2/Auth/login';
   Auth.logoutUrl = 'api/v2/Auth/logout';
+  Auth.Cache = {
+    userWidget: null
+  };
+  Auth.redirectTo = function(slug) {
+    var url;
+
+    url = app.origin + '/' + slug + '/';
+    return window.location.replace(url);
+  };
   Auth.logout = function() {
     return $.post(Auth.logoutUrl).pipe(function(res) {
       if (res.success) {
@@ -22,18 +31,29 @@ define(['app'], function(app) {
         return $.Deferred().reject(res);
       }
     }).done(function(res) {
-      console.log('cancelling login ping');
+      console.log('cancelling login ping, redirecting...');
       app.CurrentMember = {};
-      return Auth.cancelLoginPing();
+      Auth.cancelLoginPing();
+      return Auth.redirectTo('login');
     }).promise();
   };
-  Auth.performLoginCheck = function() {
-    return $.getJSON(this.ping.url).done(function(data) {
-      app.CurrentMember = data || {};
-      if (data.Email) {
-        return Auth.kickOffLoginPing();
+  Auth.handleUserServerResponse = function(data) {
+    if (data.Email) {
+      Auth.kickOffLoginPing();
+      if (!app.CurrentMember.Email) {
+        app.CurrentMember = data;
+        return Auth.fetchMembersPerson().done(function() {
+          return Auth.updateUserWidget();
+        });
+      } else if (data.Email !== app.CurrentMember.Email) {
+        return Auth.redirectTo('secured/dashboard');
       }
-    }).promise();
+    } else {
+      return app.CurrentMember = {};
+    }
+  };
+  Auth.performLoginCheck = function() {
+    return $.getJSON(this.ping.url).done(Auth.handleUserServerResponse).promise();
   };
   Auth.kickOffLoginPing = function() {
     var _this = this;
@@ -42,7 +62,7 @@ define(['app'], function(app) {
     return this.loginPing = window.setTimeout(function() {
       return _this.performLoginCheck().done(function() {
         if (!app.CurrentMember.Email) {
-          return Backbone.history.navigate('/login/', true);
+          return Auth.redirectTo('login');
         }
       });
     }, this.ping.interval);
@@ -53,10 +73,65 @@ define(['app'], function(app) {
       return delete this.loginPing;
     }
   };
+  Auth.updateUserWidget = function() {
+    var widget;
+
+    widget = this.Cache.userWidget = this.Cache.userWidget || new Auth.Views.Widget();
+    return widget.render();
+  };
+  Auth.fetchMembersPerson = function() {
+    var dfd, existModel, id;
+
+    dfd = new $.Deferred();
+    if (app.CurrentMemberPerson) {
+      dfd.resolve();
+      return dfd.promise();
+    }
+    id = app.CurrentMember.PersonID;
+    if (!id) {
+      console.log('no id');
+      dfd.reject();
+      return dfd.promise();
+    }
+    existModel = app.Collections.Person.get(id);
+    if (existModel) {
+      if (existModel._isFetchedWhenLoggedIn) {
+        app.CurrentMemberPerson = existModel;
+        dfd.resolve();
+      } else {
+        existModel.fetch({
+          success: function(model) {
+            model._isCompletelyFetched = true;
+            model._isFetchedWhenLoggedIn = true;
+            app.CurrentMemberPerson = model;
+            return dfd.resolve();
+          }
+        });
+      }
+    } else {
+      JJRestApi.getFromDomOrApi('Person', {
+        name: 'current-member-person',
+        id: id
+      }).done(function(data) {
+        var model;
+
+        if (_.isObject(data)) {
+          model = app.handleFetchedModel('Person', data);
+          model._isCompletelyFetched = true;
+          model._isFetchedWhenLoggedIn = true;
+          app.CurrentMemberPerson = model;
+          return dfd.resolve();
+        } else {
+          return dfd.reject();
+        }
+      });
+    }
+    return dfd.promise();
+  };
   Auth.Views.Login = Backbone.View.extend({
     tagName: 'section',
     idAttribute: 'login-form',
-    template: 'login-form',
+    template: 'security/login-form',
     events: {
       'submit form': 'submitLoginForm'
     },
@@ -73,10 +148,7 @@ define(['app'], function(app) {
         email: email,
         remember: rem
       }).done(function(member) {
-        if (member.Email) {
-          app.CurrentMember = member;
-          Auth.kickOffLoginPing();
-        }
+        Auth.handleUserServerResponse(member);
         return _this.render();
       });
       return false;
@@ -87,10 +159,25 @@ define(['app'], function(app) {
   });
   Auth.Views.Logout = Backbone.View.extend({
     tagName: 'section',
-    idAttriubte: 'logging-out',
-    template: 'logging-out',
+    idAttribute: 'logging-out',
+    template: 'security/logging-out',
     serialize: function() {
       return app.CurrentMember;
+    }
+  });
+  Auth.Views.Widget = Backbone.View.extend({
+    tagName: 'section',
+    el: $('#user-widget'),
+    template: 'security/user-widget',
+    serialize: function() {
+      var person;
+
+      person = app.CurrentMemberPerson ? app.CurrentMemberPerson.toJSON() : void 0;
+      console.log(person);
+      return {
+        Member: app.CurrentMember,
+        Person: person
+      };
     }
   });
   return Auth;

@@ -38,7 +38,8 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 			$res = array(
 				'FirstName'		=> $member->FirstName,
 				'Surname'		=> $member->Surname,
-				'Email'			=> $member->Email
+				'Email'			=> $member->Email,
+				'PersonID'		=> (int) $member->PersonID
 			);
 		}
 

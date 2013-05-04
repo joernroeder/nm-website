@@ -178,7 +178,8 @@ class JJ_RestApiDataExtension extends Object {
 	}
 
 	public function cachedOrGetData($extension = null) {
-		$use_cache = $this->config()->get('use_cache');
+		$use_cache = Config::inst()->get(get_called_class(), 'use_cache');
+
 		$data = null;
 		$save_to_cache = false;
 

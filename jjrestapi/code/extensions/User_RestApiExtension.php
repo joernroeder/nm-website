@@ -4,12 +4,14 @@ class User_RestApiExtension extends JJ_RestApiDataExtension implements TemplateG
 
 	private static $extension_key = 'User';
 
+	private static $use_cache = false;
+
 	private static $api_access = array(
 		'view'	=> array(
-			'logged_in',
 			'FirstName',
 			'Surname',
-			'Email'
+			'Email',
+			'PersonID'
 		)
 	);
 
@@ -22,13 +24,16 @@ class User_RestApiExtension extends JJ_RestApiDataExtension implements TemplateG
 	public function getData($extension = null) {
 		$member = Member::CurrentUserID() ? Member::CurrentUser() : false;
 		$res = array();
+
 		if ($member) {
 			$res = array(
 				'FirstName'	=> $member->FirstName,
 				'Surname'	=> $member->Surname ? $member->Surname : false,
-				'Email'		=> $member->Email ? $member->Email : false
+				'Email'		=> $member->Email ? $member->Email : false,
+				'PersonID'	=> (int) $member->Person()->ID
 			);
 		}
+		
 		return $res;
 	}
 
