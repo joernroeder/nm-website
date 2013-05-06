@@ -73,8 +73,16 @@
 					</ul>
 
 					<!-- Editor -->
-					<section class="editor-sidebar open_" id="editor-sidebar">
+					<section class="editor-sidebar" id="editor-sidebar">
 						<nav>
+							<ul>
+								<li>
+									<a href="#">User</a>
+								</li>
+								<li>
+									<a href="#">Log out</a>
+								</li>
+							</ul>
 							<ul>
 								<li>
 									<a href="#" id="show-editor-sidebar">Editor</a>
@@ -85,7 +93,7 @@
 								</li>
 
 								<li>
-									<a href="">Save</a>
+									<a href="#">Save</a>
 								</li>
 							</ul>
 						</nav>
