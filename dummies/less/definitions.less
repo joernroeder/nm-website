@@ -27,6 +27,17 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'Entypo';
+	src: url('/dummies/webfonts/entypo/entypo-webfont.eot');
+	src: url('/dummies/webfonts/entypo/entypo-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('/dummies/webfonts/entypo/entypo-webfont.woff') format('woff'),
+		 url('/dummies/webfonts/entypo/entypo-webfont.ttf') format('truetype'),
+		 url('/dummies/webfonts/entypo/entypo-webfont.svg#allerregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
 /**
  * Verwende  den "Aller"-Font. Zurücksetzen auf den normalen Style
  */
@@ -41,6 +52,38 @@
 .aller-light() {
 	font-family: 'AllerLight', 'Helvetica', sans-serif;
 	font-weight: normal;
+}
+
+/**
+ * Verwende den "Entypo"-Font. Zurücksetzen auf den normalen Style
+ */
+.icon-font() {
+	font-family: 'Entypo';
+	font-weight: normal;
+}
+
+.icon-large() {
+	font-size: @icon-large / @em;
+}
+
+.icon-excursion() {
+	.icon-font;
+	content: '\1F30E';	
+}
+
+.icon-exhibition() {
+	.icon-font;
+	content: '\E70A';	
+}
+
+.icon-project() {
+	.icon-font;
+	content: '\1F4C1';
+}
+
+.icon-workshop() {
+	.icon-font;
+	content: '\1F3A8';
 }
 
 /**
@@ -148,6 +191,11 @@
 	text-decoration: none;
 	outline: none;
 	.transition(~"color .3s ease-out");
+
+	&:before,
+	&:after {
+		.transition(~"color .3s ease-out");
+	}
 
 	&:hover, // mouseover
 	&:focus,
