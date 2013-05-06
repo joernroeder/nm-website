@@ -1236,6 +1236,13 @@ span[data-picture] img {
   height: 0;
   opacity: 0;
 }
+/*input[type="search"] {
+
+	&::-webkit-search-cancel-button {
+		background-color: red;
+		color: red;
+	}
+}*/
 .editor-sidebar {
   position: fixed;
   top: 0;
@@ -1256,21 +1263,47 @@ span[data-picture] img {
 }
 .editor-sidebar .editor-sidebar-content {
   max-height: 100%;
-  position: fixed;
   overflow: scroll;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 0 1.5em 1.5em;
+  padding: 1.5em 1.5em;
 }
-.editor-sidebar .editor-sidebar-content > *:nth-child(2) {
-  margin-top: 7.5em;
+.editor-sidebar .scrollbox {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  max-height: 100%;
+  /*
+		background:
+			// Shadow covers
+			linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
+			linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
+		
+			// Shadows
+			radial-gradient(50% 0, farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)),
+			radial-gradient(50% 100%,farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
+
+		background:
+			// Shadow covers
+			linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
+			linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
+		
+			// Shadows
+			radial-gradient(farthest-side at 50% 0, rgba(0,0,0,1), rgba(0,0,0,0)),
+			radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
+
+		background-repeat: no-repeat;
+		background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+	
+		// Opera doesn't support this in the shorthand
+		background-attachment: local, local, scroll, scroll;*/
+
 }
 .editor-sidebar header {
-  position: fixed;
   width: 100%;
   background: #262626;
-  padding: 1.5em 1.5em 0 0;
+  padding: 1.5em 1.5em 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1311,7 +1344,7 @@ span[data-picture] img {
   -webkit-appearance: textfield;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #919191;
+  border-bottom: 1px solid #5e5e5e;
   padding: 0.75em 0;
   color: #919191;
   font-variant: small-caps;
@@ -1319,22 +1352,70 @@ span[data-picture] img {
 
   /* ie */
 
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+  -webkit-transition: border .3s ease-in-out, color .3s ease-in-out;
+  -moz-transition: border .3s ease-in-out, color .3s ease-in-out;
+  -o-transition: border .3s ease-in-out, color .3s ease-in-out;
+  -ms-transition: border .3s ease-in-out, color .3s ease-in-out;
+  transition: border .3s ease-in-out, color .3s ease-in-out;
 }
 .editor-sidebar input[type="search"]::-webkit-input-placeholder {
-  color: #ff0000;
+  color: #5e5e5e;
 }
 .editor-sidebar input[type="search"]::-moz-placeholder {
-  color: #ff0000;
+  color: #5e5e5e;
 }
 .editor-sidebar input[type="search"]:-ms-input-placeholder {
-  color: #ff0000;
+  color: #5e5e5e;
 }
 .editor-sidebar input[type="search"]:-moz-placeholder {
-  color: #ff0000;
+  color: #5e5e5e;
+}
+.editor-sidebar input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.editor-sidebar input[type="search"]:focus {
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+  border-bottom-color: #919191;
+}
+.editor-sidebar input[type="search"]:focus::-webkit-input-placeholder {
+  color: #787878;
+}
+.editor-sidebar input[type="search"]:focus::-moz-placeholder {
+  color: #787878;
+}
+.editor-sidebar input[type="search"]:focus:-ms-input-placeholder {
+  color: #787878;
+}
+.editor-sidebar input[type="search"]:focus:-moz-placeholder {
+  color: #787878;
 }
 .editor-sidebar .image-list {
   list-style: none;
-  margin: 0 -10px;
+  -webkit-column-count: 1;
+  column-count: 1;
+  -moz-column-count: 1;
+  -webkit-column-gap: 10px;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
+  opacity: 0;
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
   /**
 	 * For modern browsers
 	 * 1. The space content is one way to avoid an Opera bug when the
@@ -1364,23 +1445,90 @@ span[data-picture] img {
 .editor-sidebar .image-list:after {
   clear: both;
 }
+.editor-sidebar .image-list:before,
+.editor-sidebar .image-list:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.editor-sidebar .image-list:after {
+  clear: both;
+}
 .editor-sidebar .image-list li {
   float: left;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
 }
 .editor-sidebar .image-list a {
-  margin: 10px;
   background: gray;
   display: block;
-  width: 140px;
-  height: 140px;
+  width: 100%;
+}
+.editor-sidebar .image-list a:hover {
+  background: #d9df20;
+}
+.editor-sidebar .image-list a:hover > * {
+  opacity: .8;
+}
+.editor-sidebar .image-list a.selected {
+  background: #d9df20;
+}
+.editor-sidebar .image-list a.selected > * {
+  opacity: .4;
+}
+.editor-sidebar .image-list a > * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
+}
+.editor-sidebar .image-list a img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.editor-sidebar[class*="columns-"]:not(.open) .image-list {
+  opacity: 0;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+}
+.editor-sidebar[class*="columns-"] .image-list {
+  opacity: 1;
+}
+.editor-sidebar.columns-2 .image-list {
+  column-count: 2;
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+}
+.editor-sidebar.columns-3 .image-list {
+  column-count: 3;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+}
+.editor-sidebar.columns-4 .image-list {
+  column-count: 4;
+  -webkit-column-count: 4;
+  -moz-column-count: 4;
 }
 .editor-sidebar > nav {
   position: absolute;
-  left: -3.125em;
+  left: -5em;
   top: 50%;
-  width: 3.125em;
+  width: 5em;
   margin-top: -4.5em;
   background: #262626;
+  text-align: right;
 }
 .editor-sidebar > nav ul {
   margin: 0;

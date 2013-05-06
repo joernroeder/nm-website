@@ -12,6 +12,10 @@
 
 		<!-- Tooltip -->
 		<script src="/dummies/js/tooltip/jquery.qtip.js"></script>
+
+		<!-- Editor -->
+		<script src="/app/assets/js/plugins/misc/misc.js"></script>
+		<script src="/dummies/js/editor/jquery.editor.js"></script>
 		
 	</body>
 	

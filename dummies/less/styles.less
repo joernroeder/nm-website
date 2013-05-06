@@ -35,6 +35,8 @@ body {
 	&::-moz-placeholder { color: @color; } /* firefox 19+ */
 	&:-ms-input-placeholder { color: @color; } /* ie */
 	&:-moz-placeholder { color: @color; }
+
+	.transition(~"color .3s ease-in-out");
 }
 
 .clearfix() {
@@ -725,6 +727,14 @@ span[data-picture] {
 	}
 }
 
+/*input[type="search"] {
+
+	&::-webkit-search-cancel-button {
+		background-color: red;
+		color: red;
+	}
+}*/
+
 .editor-sidebar {
 	position: fixed;
 	top: 0;
@@ -743,21 +753,53 @@ span[data-picture] {
 
 	.editor-sidebar-content {
 		max-height: 100%;
-		position: fixed;
+		//position: fixed;
 		overflow: scroll;
 		.box-sizing(border-box);
-		padding: 0 (@line / @em) (@line / @em);
+		padding: (@line / @em) (@line / @em);
 
 		&> *:nth-child(2) {
-			margin-top: @line * 5 / @em;
+			//margin-top: @line * 5 / @em;
 		}
 	}
 
+	.scrollbox {
+		position: relative;
+		overflow: auto;
+		width: 100%;
+		max-height: 100%;
+		//margin: 50px auto;
+
+		/*
+		background:
+			// Shadow covers
+			linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
+			linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
+		
+			// Shadows
+			radial-gradient(50% 0, farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)),
+			radial-gradient(50% 100%,farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
+
+		background:
+			// Shadow covers
+			linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
+			linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
+		
+			// Shadows
+			radial-gradient(farthest-side at 50% 0, rgba(0,0,0,1), rgba(0,0,0,0)),
+			radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
+
+		background-repeat: no-repeat;
+		background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+	
+		// Opera doesn't support this in the shorthand
+		background-attachment: local, local, scroll, scroll;*/
+	}
+
 	header {
-		position: fixed;
 		width: 100%;
 		background: @editorSidebarBg;
-		padding: (@line / @em) (@line / @em) 0 0;
+		padding: (@line / @em) (@line / @em) 0;
 		.box-sizing(border-box);
 	}
 
@@ -777,36 +819,129 @@ span[data-picture] {
 		-webkit-appearance: textfield;
 		background: transparent;
 		border: none;
-		border-bottom: 1px solid @gray;
+		border-bottom: 1px solid darken(@gray, 20%);
 
 		padding: @line / 2 / @em 0;
 
 		color: @gray;
 		.small-caps;
 
-		.placeholder(red);
+		.placeholder(darken(@gray, 20%));
+
+		.transition(~"border .3s ease-in-out, color .3s ease-in-out");
+
+		&::-webkit-search-decoration {
+			-webkit-appearance: none;
+		}
+
+		&:focus {
+			.placeholder(darken(@gray, 10%));
+			border-bottom-color: @gray;
+		}
 	}
 
 	.image-list {
+		@gap: 10px;
+
 		list-style: none;
-		margin: 0 -10px;
+		.clearfix;
+
+		-webkit-column-count		: 1;
+		column-count				: 1;
+		-moz-column-count			: 1;
+		-webkit-column-gap			: @gap;
+		-moz-column-gap				: @gap;
+		column-gap					: @gap;
+
+		opacity: 0;
+
+		.transition(~"opacity .2s ease-in-out");
+
+		//.transition(~"opacity .2s ease-in-out");
 		.clearfix;
 
 		li {
 			float: left;
+			display: inline-block;
+			width: 100%;
+			margin-bottom: 10px;
+			//break-inside: avoid-column;
+			//-webkit-column-break-inside: avoid;
+			//float: left;
 		}
 
 		a {
-			margin: 10px;
 			background: gray;
 			display: block;
-			width: 140px;
-			height: 140px;
+			width: 100%;
+
+			&:hover {
+				background: @nmColor;
+				& > * {
+					opacity: .8;
+				}
+			}
+
+			&.selected {
+				background: @nmColor;
+				& > * {
+					opacity: .4;
+				}
+			}
+
+			&> * {
+				.user-select(none);
+				.transition(~"opacity .2s ease-in-out");
+			}
+
+			img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+		}
+	}
+
+	&[class*="columns-"] {
+
+		&:not(.open) {
+			.image-list {
+				opacity: 0;
+				.transition(none);
+			}
+		}
+
+		.image-list {
+			opacity: 1;
+		}
+	}
+
+	&.columns-2 {
+		.image-list {
+			column-count			: 2;
+			-webkit-column-count	: 2;
+			-moz-column-count		: 2;
+		}
+	}
+
+	&.columns-3 {
+		.image-list {
+			column-count			: 3;
+			-webkit-column-count	: 3;
+			-moz-column-count		: 3;
+		}
+	}
+
+	&.columns-4 {
+		.image-list {
+			column-count			: 4;
+			-webkit-column-count	: 4;
+			-moz-column-count		: 4;
 		}
 	}
 
 	> nav {
-		@width: 50;
+		@width: 80;
 
 		position: absolute;
 		left: -@width / @em;
@@ -815,6 +950,7 @@ span[data-picture] {
 		margin-top: -@line * 3 / @em;
 
 		background: @editorSidebarBg;
+		text-align: right;
 
 		ul {
 			margin: 0;

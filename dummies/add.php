@@ -77,7 +77,7 @@
 						<nav>
 							<ul>
 								<li>
-									<a href="#editor-sidebar">Editor</a>
+									<a href="#" id="show-editor-sidebar">Editor</a>
 								</li>
 
 								<li>
@@ -89,16 +89,14 @@
 								</li>
 							</ul>
 						</nav>
-
-						<section class="editor-sidebar-content">
-							<header>
-								<h1>Test</h1>
-								<input type="search" id="sidebar-search" placeholder="Fucki Search">
-							</header>
-
+						<header>
+							<h1>Images</h1>
+							<input type="search" id="sidebar-search" placeholder="Find by Caption">
+						</header>
+						<section class="editor-sidebar-content scrollbox">
 							<ul class="image-list">
-								<?php for ($i = 0; $i < 20; $i++) : ?>
-									<li><a href="#" class="img">image <?php echo $i; ?></a></li>
+								<?php for ($i = 0; $i < 100; $i++) : ?>
+									<li><a href="#"><img src="http://placedog.com/100/100" alt=""></a></li>
 								<?php endfor; ?>
 							</ul>
 						</section>
