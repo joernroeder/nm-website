@@ -941,7 +941,7 @@ span[data-picture] {
 	}
 
 	> nav {
-		@width: 80;
+		@width: 100;
 
 		position: absolute;
 		left: -@width / @em;
@@ -951,6 +951,8 @@ span[data-picture] {
 
 		background: @editorSidebarBg;
 		text-align: right;
+		padding-left: @line / @em;
+		.box-sizing(border-box);
 
 		ul {
 			margin: 0;
@@ -958,6 +960,11 @@ span[data-picture] {
 			list-style: none;
 
 			color: #fff;
+			border-bottom: 1px solid @gray;
+
+			&:last-child {
+				border: none;
+			}
 		}
 
 		li {

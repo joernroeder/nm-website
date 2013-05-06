@@ -1523,18 +1523,26 @@ span[data-picture] img {
 }
 .editor-sidebar > nav {
   position: absolute;
-  left: -5em;
+  left: -6.25em;
   top: 50%;
-  width: 5em;
+  width: 6.25em;
   margin-top: -4.5em;
   background: #262626;
   text-align: right;
+  padding-left: 1.5em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .editor-sidebar > nav ul {
   margin: 0;
   padding: 0;
   list-style: none;
   color: #fff;
+  border-bottom: 1px solid #919191;
+}
+.editor-sidebar > nav ul:last-child {
+  border: none;
 }
 .editor-sidebar > nav li {
   padding: 0.625em;
