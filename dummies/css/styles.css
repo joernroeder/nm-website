@@ -1601,13 +1601,13 @@ span[data-picture] img {
 }
 .editor-sidebar > nav {
   position: absolute;
-  left: -6.25em;
+  left: -5.625em;
   top: 50%;
-  width: 6.25em;
+  width: 5.625em;
   margin-top: -9em;
   background: #262626;
   text-align: right;
-  padding-left: 1.5em;
+  padding-left: 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
