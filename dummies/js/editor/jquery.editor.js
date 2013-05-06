@@ -54,13 +54,16 @@
     return setColumnCount();
   };
   $('#show-editor-sidebar').on('click', function() {
-    return toggleSidebar();
+    console.log('toggle active');
+    $(this).blur().toggleClass('active');
+    toggleSidebar();
+    return false;
   });
   $imageList = $('.image-list', $editorSidebar);
   if ($imageList.length) {
     $('a', $imageList).on('click', function() {
       $('.selected', $imageList).not(this).removeClass('selected');
-      return $(this).toggleClass('selected');
+      return $(this).blur().toggleClass('selected');
     });
     false;
   }

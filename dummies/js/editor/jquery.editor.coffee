@@ -61,7 +61,11 @@ do ($ = jQuery) ->
 
 	# toggle sidebar
 	$('#show-editor-sidebar').on 'click', ->
+		console.log 'toggle active'
+		$(@).blur().toggleClass 'active'
 		toggleSidebar()
+
+		false
 
 	
 	# ! --- Image List ---
@@ -72,8 +76,7 @@ do ($ = jQuery) ->
 		$('a', $imageList).on 'click', ->
 			$('.selected', $imageList).not(@).removeClass 'selected'
 
-			$(@).toggleClass 'selected'
-
+			$(@).blur().toggleClass 'selected'
 
 		false
 
