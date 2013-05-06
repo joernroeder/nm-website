@@ -54,6 +54,7 @@
 
 					<!-- Choose Project-Item List -->
 
+					<!--
 					<ul class="project-type-list">
 						<li>
 							<a href="#" class="excursion">Excursion</a>
@@ -71,8 +72,32 @@
 							<a href="#" class="workshop">Workshop</a>
 						</li>
 					</ul>
+					-->
 
-					<!-- Editor -->
+					<!-- Overview -->
+
+					<section class="overview">
+						<article class="gravity-item">
+							<a href="/{{LinkTo}}/{{UglyHash}}/">
+								<!--{{#with PreviewImage.Urls._320}}-->
+									<img src="http://placedog.com/160/160" width="{{Width}}" height="{{Height}}"/>
+								<!--{{/with}}-->
+							</a>
+							<section class="meta">
+								<header>
+									<h1>
+										<a href="/{{LinkTo}}/{{UglyHash}}/">{{Title}}</a>
+									</h1>
+									<p>{{{teaserMeta}}}</p>
+								</header>
+								<p>
+									{{{MarkdownedTeaser}}}
+								</p>
+							</section>
+						</article>
+					</section>
+
+					<!-- Editor Sidebar -->
 					<section class="editor-sidebar" id="editor-sidebar">
 						<nav>
 							<ul>
@@ -104,7 +129,7 @@
 						<section class="editor-sidebar-content scrollbox">
 							<ul class="image-list">
 								<?php for ($i = 0; $i < 100; $i++) : ?>
-									<li><a href="#"><img src="http://placedog.com/100/100" alt=""></a></li>
+									<li><a href="#"><img src="_http://placedog.com/100/100" alt=""></a></li>
 								<?php endfor; ?>
 							</ul>
 						</section>

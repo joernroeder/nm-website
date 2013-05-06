@@ -944,22 +944,6 @@ span[data-picture] img {
   -ms-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
   z-index: 14000;
-  /*
-		&:hover {
-			z-index: 16000;
-			&> a {
-				background: @bgColor;
-				padding: @gravityItemBorder / @em;
-				margin: -@gravityItemBorder / @em;
-				.transition(~"padding .1s ease-out, margin .1s ease-out");
-			}
-
-			img {
-				opacity: 1
-			}
-		}
-		*/
-
 }
 .gravity > img[data-gravity-item].loaded,
 .gravity .gravity-item[data-gravity-item].loaded {
@@ -996,8 +980,8 @@ span[data-picture] img {
 .gravity .gravity-item.has-tooltip {
   z-index: 16000;
   /*img {
-				opacity: 1;
-			}*/
+			opacity: 1;
+		}*/
 
 }
 .gravity > img.has-tooltip > a,
@@ -1243,6 +1227,100 @@ span[data-picture] img {
 		color: red;
 	}
 }*/
+.editor .overview {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 50%;
+  margin-left: -25%;
+}
+.editor .overview article {
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
+  z-index: 14000;
+  opacity: 1;
+  /**
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
+
+  /**
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
+
+  *zoom: 1;
+}
+.editor .overview article[data-gravity-item].loaded {
+  opacity: 1;
+}
+.editor .overview article[data-gravity-item].loaded > a {
+  background: #e6e6e6;
+}
+.editor .overview article[data-gravity-item].loaded > a img {
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+.editor .overview article > a {
+  position: relative;
+  display: block;
+  border: none;
+  -webkit-transition: padding .2s ease-out, margin .2s ease-out;
+  -moz-transition: padding .2s ease-out, margin .2s ease-out;
+  -o-transition: padding .2s ease-out, margin .2s ease-out;
+  -ms-transition: padding .2s ease-out, margin .2s ease-out;
+  transition: padding .2s ease-out, margin .2s ease-out;
+  padding: 0;
+  margin: 0;
+}
+.editor .overview article > a img {
+  display: block;
+}
+.editor .overview article.has-tooltip {
+  z-index: 16000;
+  /*img {
+			opacity: 1;
+		}*/
+
+}
+.editor .overview article.has-tooltip > a {
+  padding: 0.625em;
+  margin: -0.625em;
+}
+.editor .overview article > section[role="tooltip-content"] {
+  display: none;
+}
+.editor .overview article:before,
+.editor .overview article:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.editor .overview article:after {
+  clear: both;
+}
+.editor .overview article > a,
+.editor .overview article section.meta {
+  float: left;
+}
+.editor .overview article > :first-child:not(:last-child) {
+  margin-right: 1.5em;
+}
 .editor-sidebar {
   position: fixed;
   top: 0;
@@ -1526,7 +1604,7 @@ span[data-picture] img {
   left: -6.25em;
   top: 50%;
   width: 6.25em;
-  margin-top: -4.5em;
+  margin-top: -9em;
   background: #262626;
   text-align: right;
   padding-left: 1.5em;

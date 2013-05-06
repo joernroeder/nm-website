@@ -441,76 +441,64 @@ span[data-picture] {
 
 	&> img,
 	.gravity-item {
-		position: relative;
-		display: inline-block;
-		opacity: 0;
-		.transition(~"opacity .2s ease-in-out");
-		z-index: 14000;
+		.gravity-item();
+	}
+}
 
-		// on item loaded
-		&[data-gravity-item].loaded {
-			opacity: 1;
+.gravity-item() {
+	position: relative;
+	display: inline-block;
+	opacity: 0;
+	.transition(~"opacity .2s ease-in-out");
+	z-index: 14000;
 
-			&> a {
-				background: @bgColor;
-
-				img {
-					min-width: 100%;
-					max-width: 100%;
-					height: auto;
-				}
-			}
-		}
+	// on item loaded
+	&[data-gravity-item].loaded {
+		opacity: 1;
 
 		&> a {
-			position: relative;
+			background: @bgColor;
+
+			img {
+				min-width: 100%;
+				max-width: 100%;
+				height: auto;
+			}
+		}
+	}
+
+	&> a {
+		position: relative;
+		display: block;
+		border: none;
+
+		.transition(~"padding .2s ease-out, margin .2s ease-out"); 
+
+		padding: 0;
+		margin: 0;
+
+		img {
 			display: block;
-			border: none;
+			//opacity: .5;
+		}
+	}
 
-			.transition(~"padding .2s ease-out, margin .2s ease-out"); 
+	// @todo: fix z-index delay on fade out
+	&.has-tooltip {
+		z-index: 16000;
 
-			padding: 0;
-			margin: 0;
-
-			img {
-				display: block;
-				//opacity: .5;
-			}
+		&> a {
+			padding: @gravityItemBorder / @em;
+			margin: -@gravityItemBorder / @em;
 		}
 
-		// @todo: fix z-index delay on fade out
-		&.has-tooltip {
-			z-index: 16000;
+		/*img {
+			opacity: 1;
+		}*/
+	}
 
-			&> a {
-				padding: @gravityItemBorder / @em;
-				margin: -@gravityItemBorder / @em;
-			}
-
-			/*img {
-				opacity: 1;
-			}*/
-		}
-
-		&> section[role="tooltip-content"] {
-			display: none;
-		}
-
-		/*
-		&:hover {
-			z-index: 16000;
-			&> a {
-				background: @bgColor;
-				padding: @gravityItemBorder / @em;
-				margin: -@gravityItemBorder / @em;
-				.transition(~"padding .1s ease-out, margin .1s ease-out");
-			}
-
-			img {
-				opacity: 1
-			}
-		}
-		*/
+	&> section[role="tooltip-content"] {
+		display: none;
 	}
 }
 
@@ -735,6 +723,32 @@ span[data-picture] {
 	}
 }*/
 
+.editor .overview {
+	@width: 4;
+
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	.columnsWidth(8,4);
+
+	margin-left: -@width / 2 / 8 * 100%;
+
+	article {
+		.gravity-item();
+		opacity: 1;
+		.clearfix;
+
+		&> a,
+		section.meta {
+			float: left;
+		}
+
+		&> :first-child:not(:last-child) {
+			margin-right: @line / @em;
+		}
+	}
+}
+
 .editor-sidebar {
 	position: fixed;
 	top: 0;
@@ -947,7 +961,7 @@ span[data-picture] {
 		left: -@width / @em;
 		top: 50%;
 		width: @width / @em;
-		margin-top: -@line * 3 / @em;
+		margin-top: -@line * 6 / @em;
 
 		background: @editorSidebarBg;
 		text-align: right;
