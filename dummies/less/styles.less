@@ -731,6 +731,7 @@ span[data-picture] {
 	right: 0;
 	width: 0;
 	min-height: 100%;
+	max-height: 100%;
 	background: @editorSidebarBg;
 	.transition(~"width @{editorSlideTransition} ease-in-out");
 
@@ -741,9 +742,23 @@ span[data-picture] {
 	}
 
 	.editor-sidebar-content {
-		overflow: hidden;
+		max-height: 100%;
+		position: fixed;
+		overflow: scroll;
 		.box-sizing(border-box);
-		padding: @line / @em;
+		padding: 0 (@line / @em) (@line / @em);
+
+		&> *:nth-child(2) {
+			margin-top: @line * 5 / @em;
+		}
+	}
+
+	header {
+		position: fixed;
+		width: 100%;
+		background: @editorSidebarBg;
+		padding: (@line / @em) (@line / @em) 0 0;
+		.box-sizing(border-box);
 	}
 
 	h1, h2, h3 {
@@ -770,6 +785,24 @@ span[data-picture] {
 		.small-caps;
 
 		.placeholder(red);
+	}
+
+	.image-list {
+		list-style: none;
+		margin: 0 -10px;
+		.clearfix;
+
+		li {
+			float: left;
+		}
+
+		a {
+			margin: 10px;
+			background: gray;
+			display: block;
+			width: 140px;
+			height: 140px;
+		}
 	}
 
 	> nav {

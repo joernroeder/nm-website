@@ -91,9 +91,16 @@
 						</nav>
 
 						<section class="editor-sidebar-content">
-							<h1>Test</h1>
+							<header>
+								<h1>Test</h1>
+								<input type="search" id="sidebar-search" placeholder="Fucki Search">
+							</header>
 
-							<input type="search" id="sidebar-search" placeholder="Fucki Search">
+							<ul class="image-list">
+								<?php for ($i = 0; $i < 20; $i++) : ?>
+									<li><a href="#" class="img">image <?php echo $i; ?></a></li>
+								<?php endfor; ?>
+							</ul>
 						</section>
 					</section>
 

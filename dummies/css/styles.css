@@ -1242,6 +1242,7 @@ span[data-picture] img {
   right: 0;
   width: 0;
   min-height: 100%;
+  max-height: 100%;
   background: #262626;
   -webkit-transition: width .3s ease-in-out;
   -moz-transition: width .3s ease-in-out;
@@ -1254,11 +1255,25 @@ span[data-picture] img {
   width: 25%;
 }
 .editor-sidebar .editor-sidebar-content {
-  overflow: hidden;
+  max-height: 100%;
+  position: fixed;
+  overflow: scroll;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 1.5em;
+  padding: 0 1.5em 1.5em;
+}
+.editor-sidebar .editor-sidebar-content > *:nth-child(2) {
+  margin-top: 7.5em;
+}
+.editor-sidebar header {
+  position: fixed;
+  width: 100%;
+  background: #262626;
+  padding: 1.5em 1.5em 0 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .editor-sidebar h1,
 .editor-sidebar h2,
@@ -1316,6 +1331,48 @@ span[data-picture] img {
 }
 .editor-sidebar input[type="search"]:-moz-placeholder {
   color: #ff0000;
+}
+.editor-sidebar .image-list {
+  list-style: none;
+  margin: 0 -10px;
+  /**
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
+
+  /**
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
+
+  *zoom: 1;
+}
+.editor-sidebar .image-list:before,
+.editor-sidebar .image-list:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.editor-sidebar .image-list:after {
+  clear: both;
+}
+.editor-sidebar .image-list li {
+  float: left;
+}
+.editor-sidebar .image-list a {
+  margin: 10px;
+  background: gray;
+  display: block;
+  width: 140px;
+  height: 140px;
 }
 .editor-sidebar > nav {
   position: absolute;
