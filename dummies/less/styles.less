@@ -381,6 +381,7 @@ span[data-picture] {
 .editor-popover {
 	background-color: @editorPopoverBg;
 	color: @editorPopoverColor; 
+	opacity: 1;
 }
 
 .qtip-content {
@@ -406,6 +407,44 @@ span[data-picture] {
 
 .isLoading .qtip {
 	opacity: 0 !important;
+}
+
+/* IE9 fix - removes all filters */
+.qtip:not(.ie9haxors) div.qtip-content,
+.qtip:not(.ie9haxors) div.qtip-titlebar{
+	filter: none;
+	-ms-filter: none;
+}
+
+.qtip .qtip-tip{
+	margin: 0 auto;
+	overflow: hidden;
+	z-index: 10;
+	
+}
+
+/* Opera bug #357 - Incorrect tip position
+https://github.com/Craga89/qTip2/issues/367 */
+x:-o-prefocus, .qtip .qtip-tip{
+	visibility: hidden;
+}
+
+.qtip .qtip-tip,
+.qtip .qtip-tip .qtip-vml,
+.qtip .qtip-tip canvas{
+	position: absolute;
+
+	color: #123456;
+	background: transparent;
+	border: 0 dashed transparent;
+}
+
+.qtip .qtip-tip canvas{ top: 0; left: 0; }
+
+.qtip .qtip-tip .qtip-vml{
+	behavior: url(#default#VML);
+	display: inline-block;
+	visibility: visible;
 }
 
 /*

@@ -2,25 +2,33 @@
 
 do ($ = jQuery) ->
 
-	editorTypes = ['markdown']
+	editorTypes = ['markdown', 'date']
+	openPopovers = {}
 
 	$('[contenteditable="true"][data-editor-type]').each (i, el) ->
 		
+		hideOpen = ->
+			$.map openPopovers, (api, id) ->
+				api.hide()
+				delete openPopovers[api._id]
+
 		open = ->
+			hideOpen()
 			api.show()
+			openPopovers[api._id] = api
 
 		close = ->
 			api.hide()
+			delete openPopovers[api._id]
+			#openPopovers.push api
 
 		toggle = ->
-			if api.tooltip
-				api.toggle()
+			if api.tooltip and $(api.tooltip).hasClass('qtip-focus')
+				close()
 			else
 				open()
 
 		getContent = ->
-			console.log elType
-
 			"<h1>#{elType} Editor</h1>"
 
 		$el = $ el
@@ -37,6 +45,11 @@ do ($ = jQuery) ->
 			position:
 				at: 'right center'
 				my: 'left center'
+				
+				adjust:
+					x: 10
+					resize: true # @todo: own resize method
+
 			show:
 				event: false
 				#ready: true
@@ -45,11 +58,14 @@ do ($ = jQuery) ->
 				event: false
 				#inactive: 3000
 				fixed: true
-			style: 'editor-popover'
+
+			style: 
+				classes: 'editor-popover'
+				tip:
+					width: 20
+					height: 10
 
 		api = $el.qtip 'api'
-
-		console.log api
 
 		$el.on 'click', ->
 			toggle()

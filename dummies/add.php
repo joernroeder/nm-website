@@ -88,7 +88,7 @@
 									<h1>
 										<a href="/{{LinkTo}}/{{UglyHash}}/">{{Title}}</a>
 									</h1>
-									<p>{{{teaserMeta}}}</p>
+									<p><span contenteditable="true" data-editor-type="date">{{Date}}</span></p>
 								</header>
 								<p contenteditable="true" data-editor-type="markdown">
 									{{{MarkdownedTeaser}}}
