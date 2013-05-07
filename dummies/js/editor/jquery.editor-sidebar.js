@@ -107,6 +107,5 @@
 
   })();
   win = window;
-  win.sidebar = new EditorSidebar();
-  return win.sidebar.open();
+  return win.sidebar = new EditorSidebar();
 })(jQuery);

@@ -95,9 +95,7 @@ do ($ = jQuery) ->
 			@setSidebarHeight()
 			@setColumnCount()
 
-
 	# create sidebar
 	win = window
 	win.sidebar = new EditorSidebar()
-	win.sidebar.open()
 
