@@ -90,7 +90,7 @@
 									</h1>
 									<p>{{{teaserMeta}}}</p>
 								</header>
-								<p>
+								<p contenteditable="true" data-editor-type="markdown">
 									{{{MarkdownedTeaser}}}
 								</p>
 							</section>
