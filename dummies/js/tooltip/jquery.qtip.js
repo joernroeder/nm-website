@@ -6,8 +6,8 @@
  * Released under the MIT, GPL licenses
  * http://jquery.org/license
  *
- * Date: Tue Apr 16 2013 11:11 GMT+0200+0200
- * Plugins: viewport
+ * Date: Tue May 7 2013 12:52 GMT+0200+0200
+ * Plugins: viewport svg
  * Styles: basic css3
  */
 /*global window: false, jQuery: false, console: false, define: false */
@@ -1964,6 +1964,201 @@ QTIP.defaults = {
 	}
 
 	return adjusted;
+};;PLUGINS.polys = {
+	// POLY area coordinate calculator
+	//	Special thanks to Ed Cradock for helping out with this.
+	//	Uses a binary search algorithm to find suitable coordinates.
+	polygon: function(baseCoords, corner) {
+		var result = {
+			width: 0, height: 0,
+			position: {
+				top: 1e10, right: 0,
+				bottom: 0, left: 1e10
+			},
+			adjustable: FALSE
+		},
+		i = 0, next,
+		coords = [],
+		compareX = 1, compareY = 1,
+		realX = 0, realY = 0,
+		newWidth, newHeight;
+
+		// First pass, sanitize coords and determine outer edges
+		i = baseCoords.length; while(i--) {
+			next = [ parseInt(baseCoords[--i], 10), parseInt(baseCoords[i+1], 10) ];
+
+			if(next[0] > result.position.right){ result.position.right = next[0]; }
+			if(next[0] < result.position.left){ result.position.left = next[0]; }
+			if(next[1] > result.position.bottom){ result.position.bottom = next[1]; }
+			if(next[1] < result.position.top){ result.position.top = next[1]; }
+
+			coords.push(next);
+		}
+
+		// Calculate height and width from outer edges
+		newWidth = result.width = Math.abs(result.position.right - result.position.left);
+		newHeight = result.height = Math.abs(result.position.bottom - result.position.top);
+
+		// If it's the center corner...
+		if(corner.abbrev() === 'c') {
+			result.position = {
+				left: result.position.left + (result.width / 2),
+				top: result.position.top + (result.height / 2)
+			};
+		}
+		else {
+			// Second pass, use a binary search algorithm to locate most suitable coordinate
+			while(newWidth > 0 && newHeight > 0 && compareX > 0 && compareY > 0)
+			{
+				newWidth = Math.floor(newWidth / 2);
+				newHeight = Math.floor(newHeight / 2);
+
+				if(corner.x === LEFT){ compareX = newWidth; }
+				else if(corner.x === RIGHT){ compareX = result.width - newWidth; }
+				else{ compareX += Math.floor(newWidth / 2); }
+
+				if(corner.y === TOP){ compareY = newHeight; }
+				else if(corner.y === BOTTOM){ compareY = result.height - newHeight; }
+				else{ compareY += Math.floor(newHeight / 2); }
+
+				i = coords.length; while(i--)
+				{
+					if(coords.length < 2){ break; }
+
+					realX = coords[i][0] - result.position.left;
+					realY = coords[i][1] - result.position.top;
+
+					if((corner.x === LEFT && realX >= compareX) ||
+					(corner.x === RIGHT && realX <= compareX) ||
+					(corner.x === CENTER && (realX < compareX || realX > (result.width - compareX))) ||
+					(corner.y === TOP && realY >= compareY) ||
+					(corner.y === BOTTOM && realY <= compareY) ||
+					(corner.y === CENTER && (realY < compareY || realY > (result.height - compareY)))) {
+						coords.splice(i, 1);
+					}
+				}
+			}
+			result.position = { left: coords[0][0], top: coords[0][1] };
+		}
+
+		return result;
+	},
+
+	rect: function(ax, ay, bx, by, corner) {
+		return {
+			width: Math.abs(bx - ax),
+			height: Math.abs(by - ay),
+			position: {
+				left: Math.min(ax, bx),
+				top: Math.min(ay, by)
+			}
+		};
+	},
+
+	_angles: {
+		tc: 3 / 2, tr: 7 / 4, tl: 5 / 4, 
+		bc: 1 / 2, br: 1 / 4, bl: 3 / 4, 
+		rc: 2, lc: 1, c: 0
+	},
+	ellipse: function(cx, cy, rx, ry, corner) {
+		var c = PLUGINS.polys._angles[ corner.abbrev() ],
+			rxc = rx * Math.cos( c * Math.PI ),
+			rys = ry * Math.sin( c * Math.PI );
+
+		return {
+			width: (rx * 2) - Math.abs(rxc),
+			height: (ry * 2) - Math.abs(rys),
+			position: {
+				left: cx + rxc,
+				top: cy + rys
+			},
+			adjustable: FALSE
+		};
+	},
+	circle: function(cx, cy, r, corner) {
+		return PLUGINS.polys.ellipse(cx, cy, r, r, corner);
+	}
+};;PLUGINS.svg = function(api, svg, corner, adjustMethod)
+{
+	var doc = $(document),
+		elem = svg[0],
+		result = FALSE,
+		name, box, position, dimensions;
+
+	// Ascend the parentNode chain until we find an element with getBBox()
+	while(!elem.getBBox) { elem = elem.parentNode; }
+	if(!elem.getBBox || !elem.parentNode) { return FALSE; }
+
+	// Determine which shape calculation to use
+	switch(elem.nodeName) {
+		case 'rect':
+			position = PLUGINS.svg.toPixel(elem, elem.x.baseVal.value, elem.y.baseVal.value);
+			dimensions = PLUGINS.svg.toPixel(elem,
+				elem.x.baseVal.value + elem.width.baseVal.value,
+				elem.y.baseVal.value + elem.height.baseVal.value
+			);
+
+			result = PLUGINS.polys.rect(
+				position[0], position[1],
+				dimensions[0], dimensions[1],
+				corner
+			);
+		break;
+
+		case 'ellipse':
+		case 'circle':
+			position = PLUGINS.svg.toPixel(elem,
+				elem.cx.baseVal.value,
+				elem.cy.baseVal.value
+			);
+
+			result = PLUGINS.polys.ellipse(
+				position[0], position[1],
+				(elem.rx || elem.r).baseVal.value, 
+				(elem.ry || elem.r).baseVal.value,
+				corner
+			);
+		break;
+
+		case 'line':
+		case 'polygon':
+		case 'polyline':
+			points = elem.points || [
+				{ x: elem.x1.baseVal.value, y: elem.y1.baseVal.value },
+				{ x: elem.x2.baseVal.value, y: elem.y2.baseVal.value }
+			];
+
+			for(result = [], i = -1, len = points.numberOfItems || points.length; ++i < len;) {
+				next = points.getItem ? points.getItem(i) : points[i];
+				result.push.apply(result, PLUGINS.svg.toPixel(elem, next.x, next.y));
+			}
+
+			result = PLUGINS.polys.polygon(result, corner);
+		break;
+
+		// Invalid shape
+		default: return FALSE;
+	}
+
+	// Adjust by scroll offset
+	result.position.left += doc.scrollLeft();
+	result.position.top += doc.scrollTop();
+
+	return result;
+};
+
+PLUGINS.svg.toPixel = function(elem, x, y) {
+	var mtx = elem.getScreenCTM(),
+		root = elem.farthestViewportElement || elem,
+		result, point;
+
+	// Create SVG point
+	if(!root.createSVGPoint) { return FALSE; }
+	point = root.createSVGPoint();
+
+	point.x = x; point.y = y;
+	result = point.matrixTransform(mtx);
+	return [ result.x, result.y ];
 };;}));
 }( window, document ));
 
