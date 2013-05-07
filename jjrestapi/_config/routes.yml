@@ -5,6 +5,4 @@ After:
 ---
 Director:
   rules:
-  Director:
-  rules:
     'api/v2': 'JJ_RestfulServer'

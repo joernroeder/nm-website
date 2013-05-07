@@ -17,3 +17,4 @@ After:
 Director:
   rules:
     'api/v2/Auth': 'Authentication_RestApiController'
+    '_md_': 'MarkdownEditor_Controller'

@@ -85,7 +85,6 @@ define [
 			id = app.CurrentMember.PersonID
 
 			if not id 
-				console.log 'no id'
 				dfd.reject()
 				return dfd.promise()
 
@@ -152,7 +151,6 @@ define [
 			template: 'security/user-widget'
 			serialize: ->
 				person = if app.CurrentMemberPerson then app.CurrentMemberPerson.toJSON()
-				console.log person
 				{ Member: app.CurrentMember, Person: person }
 
 		Auth

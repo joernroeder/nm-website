@@ -89,7 +89,6 @@ define(['app'], function(app) {
     }
     id = app.CurrentMember.PersonID;
     if (!id) {
-      console.log('no id');
       dfd.reject();
       return dfd.promise();
     }
@@ -173,7 +172,6 @@ define(['app'], function(app) {
       var person;
 
       person = app.CurrentMemberPerson ? app.CurrentMemberPerson.toJSON() : void 0;
-      console.log(person);
       return {
         Member: app.CurrentMember,
         Person: person

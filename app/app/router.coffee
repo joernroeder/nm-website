@@ -288,7 +288,6 @@ define [
 		# or 'portfolio page'
 	
 		forProjectsOverview: (configObj) ->
-			console.log app
 			present = configObj.present
 			projectTypes = app.Config.ProjectTypes
 
@@ -304,7 +303,6 @@ define [
 							name: configObj.domName(projectType)
 							urlSuffix : configObj.urlSuffix
 						dfds.push JJRestApi.getFromDomOrApi(projectType, options).done((data) ->
-							console.log data
 							app.handleFetchedModels projectType, data
 						)
 				$.when.apply(@, dfds).done ->
