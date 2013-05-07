@@ -8,6 +8,8 @@ do ($ = jQuery) ->
 		$sidebarHeader: null
 		$sidebarContent: null
 
+		$imageList: null
+
 		columnsPrefix: 'columns-'
 
 		constructor: ->
@@ -15,31 +17,18 @@ do ($ = jQuery) ->
 			@.$sidebarHeader = $ '> header', @.$editorSidebar
 			@.$sidebarContent = $ 'section.editor-sidebar-content', @.$editorSidebar
 
-			# toggle sidebar
-			$('#show-editor-sidebar').on 'click', (el) =>
-				$(el).blur().toggleClass 'active'
-				@toggle()
+			# set sidebar basics
+			@setSidebarHeight()
+			@setColumnCount()
 
-				false
-			
-			# ! --- Image List ---
-			
-			$imageList = $ '.image-list', @.$editorSidebar
-
-			if $imageList.length
-				$('a', $imageList).on 'click', ->
-					$('.selected', $imageList).not(@).removeClass 'selected'
-
-					$(@).blur().toggleClass 'selected'
-
-				false
-
-			# register events
+			# register window events
 			$.addOnWindowResize 'editor.sidebar.height', =>
 				@onResizeSidebar()
 
-			@setSidebarHeight()
-			@setColumnCount()
+			# init components
+			@initToggleBtn()
+			@initImageList()
+
 
 		open: ->
 			@.$editorSidebar.addClass('open');
@@ -82,6 +71,24 @@ do ($ = jQuery) ->
 					.removeClass(@columnsPrefix + prefColumnsCount)
 					.addClass(@columnsPrefix + columnsCount)
 					.data('columns', columnsCount)
+
+		initToggleBtn: ->
+			$('#show-editor-sidebar').on 'click', (el) =>
+				$(el).blur().toggleClass 'active'
+				@toggle()
+
+				false
+
+		initImageList: ->
+			@.$imageList = $ '.image-list', @.$editorSidebar
+
+			if @.$imageList.length
+				$('a', @.$imageList).on 'click', ->
+					$('.selected', @.$imageList).not(@).removeClass 'selected'
+
+					$(@).blur().toggleClass 'selected'
+
+				false
 
 		# bundle methods
 		onResizeSidebar: ->

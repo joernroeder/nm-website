@@ -9,33 +9,23 @@
 
     EditorSidebar.prototype.$sidebarContent = null;
 
+    EditorSidebar.prototype.$imageList = null;
+
     EditorSidebar.prototype.columnsPrefix = 'columns-';
 
     function EditorSidebar() {
-      var $imageList,
-        _this = this;
+      var _this = this;
 
       this.$editorSidebar = $('.editor-sidebar');
       this.$sidebarHeader = $('> header', this.$editorSidebar);
       this.$sidebarContent = $('section.editor-sidebar-content', this.$editorSidebar);
-      $('#show-editor-sidebar').on('click', function(el) {
-        $(el).blur().toggleClass('active');
-        _this.toggle();
-        return false;
-      });
-      $imageList = $('.image-list', this.$editorSidebar);
-      if ($imageList.length) {
-        $('a', $imageList).on('click', function() {
-          $('.selected', $imageList).not(this).removeClass('selected');
-          return $(this).blur().toggleClass('selected');
-        });
-        false;
-      }
+      this.setSidebarHeight();
+      this.setColumnCount();
       $.addOnWindowResize('editor.sidebar.height', function() {
         return _this.onResizeSidebar();
       });
-      this.setSidebarHeight();
-      this.setColumnCount();
+      this.initToggleBtn();
+      this.initImageList();
     }
 
     EditorSidebar.prototype.open = function() {
@@ -84,6 +74,27 @@
       columnsCount = Math.floor(width / 75);
       if (columnsCount) {
         return this.$editorSidebar.removeClass(this.columnsPrefix + prefColumnsCount).addClass(this.columnsPrefix + columnsCount).data('columns', columnsCount);
+      }
+    };
+
+    EditorSidebar.prototype.initToggleBtn = function() {
+      var _this = this;
+
+      return $('#show-editor-sidebar').on('click', function(el) {
+        $(el).blur().toggleClass('active');
+        _this.toggle();
+        return false;
+      });
+    };
+
+    EditorSidebar.prototype.initImageList = function() {
+      this.$imageList = $('.image-list', this.$editorSidebar);
+      if (this.$imageList.length) {
+        $('a', this.$imageList).on('click', function() {
+          $('.selected', this.$imageList).not(this).removeClass('selected');
+          return $(this).blur().toggleClass('selected');
+        });
+        return false;
       }
     };
 
