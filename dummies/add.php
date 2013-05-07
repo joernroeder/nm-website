@@ -86,11 +86,11 @@
 							<section class="meta">
 								<header>
 									<h1>
-										<a href="/{{LinkTo}}/{{UglyHash}}/">{{Title}}</a>
+										<a href="/{{LinkTo}}/{{UglyHash}}/" contenteditable="true">{{Title}}</a>
 									</h1>
-									<p><span contenteditable="true" data-editor-type="date">{{Date}}</span></p>
+									<p><span data-editor-type="date">{{Date}}</span></p>
 								</header>
-								<p contenteditable="true" data-editor-type="markdown">
+								<p data-editor-type="markdown">
 									{{{MarkdownedTeaser}}}
 								</p>
 							</section>

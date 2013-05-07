@@ -2,10 +2,10 @@
 
 do ($ = jQuery) ->
 
-	editorTypes = ['markdown', 'date']
+	editorTypes = ['markdown', 'date', 'inline']
 	openPopovers = {}
 
-	$('[contenteditable="true"][data-editor-type]').each (i, el) ->
+	$('[contenteditable="true"],[data-editor-type]').each (i, el) ->
 		
 		hideOpen = ->
 			$.map openPopovers, (api, id) ->
@@ -31,9 +31,14 @@ do ($ = jQuery) ->
 		getContent = ->
 			"<h1>#{elType} Editor</h1>"
 
+		_type = ''
+		getType = ->
+			if _type then return _type
+			_type = if $el.attr 'contenteditable' then 'inline' else $el.data 'editor-type'
+
 		$el = $ el
 
-		elType = $el.data 'editor-type'
+		elType = getType()
 
 		if -1 is $.inArray elType, editorTypes then return
 
@@ -68,5 +73,8 @@ do ($ = jQuery) ->
 		api = $el.qtip 'api'
 
 		$el.on 'click', ->
-			toggle()
+			if getType() is 'inline'
+				hideOpen()
+			else
+				toggle()
 			

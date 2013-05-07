@@ -2,10 +2,10 @@
 "use strict";(function($) {
   var editorTypes, openPopovers;
 
-  editorTypes = ['markdown', 'date'];
+  editorTypes = ['markdown', 'date', 'inline'];
   openPopovers = {};
-  return $('[contenteditable="true"][data-editor-type]').each(function(i, el) {
-    var $el, api, close, elType, getContent, hideOpen, open, toggle;
+  return $('[contenteditable="true"],[data-editor-type]').each(function(i, el) {
+    var $el, api, close, elType, getContent, getType, hideOpen, open, toggle, _type;
 
     hideOpen = function() {
       return $.map(openPopovers, function(api, id) {
@@ -32,8 +32,15 @@
     getContent = function() {
       return "<h1>" + elType + " Editor</h1>";
     };
+    _type = '';
+    getType = function() {
+      if (_type) {
+        return _type;
+      }
+      return _type = $el.attr('contenteditable') ? 'inline' : $el.data('editor-type');
+    };
     $el = $(el);
-    elType = $el.data('editor-type');
+    elType = getType();
     if (-1 === $.inArray(elType, editorTypes)) {
       return;
     }
@@ -67,7 +74,11 @@
     });
     api = $el.qtip('api');
     return $el.on('click', function() {
-      return toggle();
+      if (getType() === 'inline') {
+        return hideOpen();
+      } else {
+        return toggle();
+      }
     });
   });
 })(jQuery);
