@@ -15,7 +15,8 @@
 
 		<!-- Editor -->
 		<script src="/app/assets/js/plugins/misc/misc.js"></script>
-		<script src="/dummies/js/editor/jquery.editor.js"></script>
+		<script src="/dummies/js/editor/jquery.editor-sidebar.js"></script>
+		<script src="/dummies/js/editor/jquery.editor-tooltip.js"></script>
 		
 	</body>
 	
