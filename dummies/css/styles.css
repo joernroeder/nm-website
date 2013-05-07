@@ -1599,6 +1599,26 @@ span[data-picture] img {
   -webkit-column-count: 4;
   -moz-column-count: 4;
 }
+.editor-sidebar.columns-5 .image-list {
+  column-count: 5;
+  -webkit-column-count: 5;
+  -moz-column-count: 5;
+}
+.editor-sidebar.columns-6 .image-list {
+  column-count: 6;
+  -webkit-column-count: 6;
+  -moz-column-count: 6;
+}
+.editor-sidebar.columns-7 .image-list {
+  column-count: 7;
+  -webkit-column-count: 7;
+  -moz-column-count: 7;
+}
+.editor-sidebar.columns-8 .image-list {
+  column-count: 8;
+  -webkit-column-count: 8;
+  -moz-column-count: 8;
+}
 .editor-sidebar > nav {
   position: absolute;
   left: -5.625em;
