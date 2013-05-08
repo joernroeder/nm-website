@@ -86,9 +86,9 @@
 							<section class="meta">
 								<header>
 									<h1>
-										<a href="/{{LinkTo}}/{{UglyHash}}/" contenteditable="true">{{Title}}</a>
+										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline">{{Title}}</a>
 									</h1>
-									<p><span data-editor-type="date">{{Date}}</span></p>
+									<p><span data-editor-type="date" data-editor-options="{date: {format: 'Y'}}">{{Date}}</span></p>
 								</header>
 								<p data-editor-type="markdown">
 									{{{MarkdownedTeaser}}}
