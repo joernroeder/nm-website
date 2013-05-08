@@ -133,6 +133,18 @@ do ($ = jQuery) ->
 
 		contentTypes: []
 
+		foo: (o) ->
+			oo = {}
+			for k of o
+				t = oo
+				parts = k.split(".")
+				key = parts.pop()
+				while parts.length
+					part = parts.shift()
+					t = t[part] = t[part] or {}
+				t[key] = o[k]
+			oo
+
 		constructor: (@editor) ->
 			@name = @.constructor.name.toLowerCase()
 			@setValue @name
@@ -152,6 +164,10 @@ do ($ = jQuery) ->
 			@setOptions element.data @editor.getAttr('options')
 
 			console.log @getDataName()
+			obj = {}
+			obj[@getDataName()] = 'my value ' + @id
+
+			console.log @foo(obj)
 			#console.warn 'subclass this method to run your custom code'
 
 		###
@@ -324,6 +340,8 @@ do ($ = jQuery) ->
 		contentTypes: ['markdown']
 		markdown: null
 
+		previewClass: 'preview'
+
 		init: (element) ->
 			super element
 
@@ -337,12 +355,12 @@ do ($ = jQuery) ->
 					@close()
 				###
 			$text = $ '<textarea>',
-				'class': 'preview'
+				'class': @previewClass
 
 			$text.val(element.text())
 
 			$preview = $ '<div>', 
-				'class': 'preview'
+				'class': @previewClass
 
 			@setPopoverContent $text
 
@@ -353,6 +371,13 @@ do ($ = jQuery) ->
 
 		open: ->
 			super()
+
+
+	class SplitMarkdownEditable extends MarkdownEditable
+		
+		contentTypes: ['markdown-split']
+		
+		previewClass: 'preview split'
 
 
 
@@ -370,6 +395,7 @@ do ($ = jQuery) ->
 	window.editorComponents.InlineEditable = InlineEditable
 	window.editorComponents.DateEditable = DateEditable
 	window.editorComponents.MarkdownEditable = MarkdownEditable
+	window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable
 
 	# construction
 	
@@ -383,7 +409,8 @@ do ($ = jQuery) ->
 	window.editor = new Editor [
 		'InlineEditable'
 		'DateEditable'
-		'MarkdownEditable'
+		'MarkdownEditable',
+		'SplitMarkdownEditable'
 	]
 
 			

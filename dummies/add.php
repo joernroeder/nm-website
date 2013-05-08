@@ -111,7 +111,7 @@
 									</h1>
 									<p><span data-editor-type="date" data-editor-options='{"date": {"format": "Y"}}'>{{Date}}</span></p>
 								</header>
-								<p data-editor-type="markdown">
+								<p data-editor-type="markdown-split">
 # h1
 
 ## h2 

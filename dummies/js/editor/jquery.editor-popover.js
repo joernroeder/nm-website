@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($) {
-  var DateEditable, Editable, Editor, InlineEditable, MarkdownEditable, PopoverEditable, _ref, _ref1, _ref2;
+  var DateEditable, Editable, Editor, InlineEditable, MarkdownEditable, PopoverEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3;
 
   Editor = (function() {
     var addComponent, addContentType, createComponent, events, getComponentByContentType, init, _components, _contentTypes;
@@ -200,6 +200,23 @@ var __hasProp = {}.hasOwnProperty,
 
     Editable.prototype.contentTypes = [];
 
+    Editable.prototype.foo = function(o) {
+      var k, key, oo, part, parts, t;
+
+      oo = {};
+      for (k in o) {
+        t = oo;
+        parts = k.split(".");
+        key = parts.pop();
+        while (parts.length) {
+          part = parts.shift();
+          t = t[part] = t[part] || {};
+        }
+        t[key] = o[k];
+      }
+      return oo;
+    };
+
     function Editable(editor) {
       this.editor = editor;
       this.name = this.constructor.name.toLowerCase();
@@ -217,10 +234,15 @@ var __hasProp = {}.hasOwnProperty,
     }
 
     Editable.prototype.init = function(element) {
+      var obj;
+
       this.element = element;
       this.setDataName(element.data(this.editor.getAttr('name')));
       this.setOptions(element.data(this.editor.getAttr('options')));
-      return console.log(this.getDataName());
+      console.log(this.getDataName());
+      obj = {};
+      obj[this.getDataName()] = 'my value ' + this.id;
+      return console.log(this.foo(obj));
     };
 
     /*
@@ -457,6 +479,8 @@ var __hasProp = {}.hasOwnProperty,
 
     MarkdownEditable.prototype.markdown = null;
 
+    MarkdownEditable.prototype.previewClass = 'preview';
+
     MarkdownEditable.prototype.init = function(element) {
       var $preview, $text,
         _this = this;
@@ -471,11 +495,11 @@ var __hasProp = {}.hasOwnProperty,
       */
 
       $text = $('<textarea>', {
-        'class': 'preview'
+        'class': this.previewClass
       });
       $text.val(element.text());
       $preview = $('<div>', {
-        'class': 'preview'
+        'class': this.previewClass
       });
       this.setPopoverContent($text);
       return this.markdown = new JJMarkdownEditor($text, {
@@ -491,15 +515,31 @@ var __hasProp = {}.hasOwnProperty,
     return MarkdownEditable;
 
   })(PopoverEditable);
+  SplitMarkdownEditable = (function(_super) {
+    __extends(SplitMarkdownEditable, _super);
+
+    function SplitMarkdownEditable() {
+      _ref3 = SplitMarkdownEditable.__super__.constructor.apply(this, arguments);
+      return _ref3;
+    }
+
+    SplitMarkdownEditable.prototype.contentTypes = ['markdown-split'];
+
+    SplitMarkdownEditable.prototype.previewClass = 'preview split';
+
+    return SplitMarkdownEditable;
+
+  })(MarkdownEditable);
   window.editorComponents = {};
   window.editorComponents.Editable = Editable;
   window.editorComponents.PopoverEditable = PopoverEditable;
   window.editorComponents.InlineEditable = InlineEditable;
   window.editorComponents.DateEditable = DateEditable;
   window.editorComponents.MarkdownEditable = MarkdownEditable;
+  window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
   jQuery.event.props.push('dataTransfer');
   $(document).on('dragover drop', function(e) {
     return e.preventDefault();
   });
-  return window.editor = new Editor(['InlineEditable', 'DateEditable', 'MarkdownEditable']);
+  return window.editor = new Editor(['InlineEditable', 'DateEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
 })(jQuery);
