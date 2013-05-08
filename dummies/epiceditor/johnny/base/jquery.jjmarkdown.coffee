@@ -91,7 +91,6 @@ class JJMarkdownEditor
 				imgReplacements.push cap
 				imgIds.push parseInt(cap[1])
 
-		console.log imgReplacements
 		# replace images
 		markdownImageDfd = @.requestImagesByIds(imgIds)
 		markdownImageDfd.done =>
@@ -169,8 +168,8 @@ class JJMarkdownEditor
 					isContainer = true
 				# check if target is <p> or anything else. if anything else then get parent <p>
 				else
-					if not $target.is('p, div')
-						$temp = $target.closest('p')
+					if not $target.attr('data-editor-pos')
+						$temp = $target.closest('[data-editor-pos]')
 						if $temp.length
 							$target = $temp
 						else
@@ -278,9 +277,9 @@ class JJMarkdownEditor
 
 						# insert rawMd at right position
 						if $target.is($preview)
-							@.$input._val @.$input._val() + rawMd + nl
+							@.$input._val nl + @.$input._val() + rawMd + nl
 						else
-							@.insertAtEditorPos $target, rawMd + nl
+							@.insertAtEditorPos $target, nl + rawMd + nl
 
 						# parse markdown again
 						@.parseMarkdown();

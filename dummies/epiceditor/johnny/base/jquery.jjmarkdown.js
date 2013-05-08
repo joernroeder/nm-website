@@ -93,7 +93,6 @@
         imgReplacements.push(cap);
         imgIds.push(parseInt(cap[1]));
       }
-      console.log(imgReplacements);
       markdownImageDfd = this.requestImagesByIds(imgIds);
       markdownImageDfd.done(function() {
         var cache;
@@ -178,8 +177,8 @@
           if ($target.is($preview)) {
             isContainer = true;
           } else {
-            if (!$target.is('p, div')) {
-              $temp = $target.closest('p');
+            if (!$target.attr('data-editor-pos')) {
+              $temp = $target.closest('[data-editor-pos]');
               if ($temp.length) {
                 $target = $temp;
               } else {
@@ -292,9 +291,9 @@
               $dropzone.remove();
               nl = '  \n\n';
               if ($target.is($preview)) {
-                _this.$input._val(_this.$input._val() + rawMd + nl);
+                _this.$input._val(nl + _this.$input._val() + rawMd + nl);
               } else {
-                _this.insertAtEditorPos($target, rawMd + nl);
+                _this.insertAtEditorPos($target, nl + rawMd + nl);
               }
               return _this.parseMarkdown();
             }).always(function() {
