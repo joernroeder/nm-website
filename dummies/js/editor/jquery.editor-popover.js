@@ -409,7 +409,7 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       InlineEditable.__super__.init.call(this, element);
-      return element.attr('contenteditable', true).on('click', function() {
+      return element.attr('contenteditable', true).on('click focus', function() {
         return _this.trigger('editor.closepopovers');
       });
     };
@@ -455,9 +455,33 @@ var __hasProp = {}.hasOwnProperty,
 
     MarkdownEditable.prototype.contentTypes = ['markdown'];
 
+    MarkdownEditable.prototype.markdown = null;
+
     MarkdownEditable.prototype.init = function(element) {
+      var $preview, $text,
+        _this = this;
+
       MarkdownEditable.__super__.init.call(this, element);
-      return this.setPopoverContent('Markdown <strong>Content</strong>');
+      element.on('focus', function() {
+        return _this.trigger('editor.closepopovers');
+      });
+      /*
+      				.on 'blur', =>
+      					@close()
+      */
+
+      $text = $('<textarea>', {
+        'class': 'preview'
+      });
+      $text.val(element.text());
+      $preview = $('<div>', {
+        'class': 'preview'
+      });
+      this.setPopoverContent($text);
+      return this.markdown = new JJMarkdownEditor($text, {
+        preview: element,
+        contentGetter: 'val'
+      });
     };
 
     MarkdownEditable.prototype.open = function() {
@@ -473,5 +497,9 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.InlineEditable = InlineEditable;
   window.editorComponents.DateEditable = DateEditable;
   window.editorComponents.MarkdownEditable = MarkdownEditable;
+  jQuery.event.props.push('dataTransfer');
+  $(document).on('dragover drop', function(e) {
+    return e.preventDefault();
+  });
   return window.editor = new Editor(['InlineEditable', 'DateEditable', 'MarkdownEditable']);
 })(jQuery);

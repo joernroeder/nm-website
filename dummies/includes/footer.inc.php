@@ -16,6 +16,13 @@
 		<!-- Editor -->
 		<script src="/app/assets/js/plugins/misc/misc.js"></script>
 		<script src="/dummies/js/editor/jquery.editor-sidebar.js"></script>
+
+		<!-- JJMarkdown -->
+		<script src="/responsive-image/thirdparty/picturefill/picturefill.js" type="text/javascript"></script>
+		<script src="/dummies/epiceditor/johnny/thirdparty/marked.js" type="text/javascript"></script>
+		<script src="/dummies/epiceditor/johnny/thirdparty/jquery.tabby.js" type="text/javascript"></script>
+		<script src="/dummies/epiceditor/johnny/base/jquery.jjMarkdown.js" type="text/javascript"></script>
+
 		<script src="/dummies/js/editor/jquery.editor-popover.js"></script>
 		
 	</body>

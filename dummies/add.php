@@ -29,6 +29,27 @@
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
+
+		<style type="text/css">
+			.preview {
+				width: 100%;
+				height: 400px;
+			}
+
+			*[data-editor-type="markdown"] {
+				padding-bottom: 40px;
+			}
+			*[data-editor-type="markdown"] img {
+				max-width: 100%;
+				height: auto;
+			}
+
+			.dropzone {
+				width: 100%;
+				height: 50px;
+				background: pink;
+			}
+		</style>
 	</head>
 	
 	<body lang="en" class="editor">
@@ -91,11 +112,15 @@
 									<p><span data-editor-type="date" data-editor-options='{"date": {"format": "Y"}}'>{{Date}}</span></p>
 								</header>
 								<p data-editor-type="markdown">
-									{{{MarkdownedTeaser}}}
-								</p>
+# h1
+
+## h2 
+
+MarkdownedTeaser
+</p>
 								<p data-editor-type="markdown">
-									{{{MarkdownedTeaser}}}
-								</p>
+MarkdownedTeaser
+</p>
 							</section>
 						</article>
 					</section>

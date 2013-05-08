@@ -297,7 +297,7 @@ do ($ = jQuery) ->
 
 			element
 				.attr('contenteditable', true)
-				.on 'click', =>
+				.on 'click focus', =>
 					@trigger 'editor.closepopovers'
 
 
@@ -322,11 +322,34 @@ do ($ = jQuery) ->
 	class MarkdownEditable extends PopoverEditable
 
 		contentTypes: ['markdown']
+		markdown: null
 
 		init: (element) ->
 			super element
 
-			@setPopoverContent 'Markdown <strong>Content</strong>'
+			element
+				#.attr('contenteditable', true)
+				.on('focus', =>
+					@trigger 'editor.closepopovers'
+				)
+				###
+				.on 'blur', =>
+					@close()
+				###
+			$text = $ '<textarea>',
+				'class': 'preview'
+
+			$text.val(element.text())
+
+			$preview = $ '<div>', 
+				'class': 'preview'
+
+			@setPopoverContent $text
+
+			@markdown = new JJMarkdownEditor $text,
+				preview : element
+				contentGetter: 'val'
+			
 
 		open: ->
 			super()
@@ -349,6 +372,14 @@ do ($ = jQuery) ->
 	window.editorComponents.MarkdownEditable = MarkdownEditable
 
 	# construction
+	
+	# init file transfer
+	jQuery.event.props.push 'dataTransfer'
+	# disable drag'n'drop for whole document
+	
+	$(document).on 'dragover drop', (e) ->
+		e.preventDefault()
+
 	window.editor = new Editor [
 		'InlineEditable'
 		'DateEditable'
