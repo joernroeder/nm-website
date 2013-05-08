@@ -29,8 +29,8 @@
 
     function JJMarkdownEditor(selector, opts) {
       this.options = $.extend({}, this.defaults, opts);
-      this.$input = $(selector);
-      this.$preview = $(this.options.preview);
+      this.$input = selector instanceof jQuery ? selector : $(selector);
+      this.$preview = this.options.preview instanceof jQuery ? this.options.preview : $(this.options.preview);
       this.initialize();
     }
 

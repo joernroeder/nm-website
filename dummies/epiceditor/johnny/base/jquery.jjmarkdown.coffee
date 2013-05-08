@@ -23,8 +23,8 @@ class JJMarkdownEditor
 
 	constructor : (selector, opts) ->
 		@.options = $.extend {}, @.defaults, opts
-		@.$input = $ selector
-		@.$preview = $ @.options.preview
+		@.$input = if selector instanceof jQuery then selector else $(selector)
+		@.$preview = if @.options.preview instanceof jQuery then @.options.preview else $(@.options.preview)
 		@.initialize()
 
 	_cleanupEvents : ->
