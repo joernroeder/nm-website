@@ -140,7 +140,8 @@ class JJMarkdownEditor
 
 			if not @.currentDrag
 				@.currentDrag =
-					$dropzone: $('<div />', {class: 'dropzone'})
+					$dropzone: $ '<div>',
+						'class': 'dropzone'
 				# increase dragcount and set it as data
 				@.dragCount++
 				$preview.data 'dragid', @.dragCount
@@ -155,7 +156,7 @@ class JJMarkdownEditor
 			if currDrag.hideDropzoneTimeout then clearTimeout @.currentDrag.hideDropzoneTimeout
 
 			# get the dragover target
-			$target = $ e.originalEvent.originalTarget
+			$target = $ e.target
 
 			if not $target.is $dropzone
 
@@ -177,7 +178,7 @@ class JJMarkdownEditor
 				func = if isContainer then 'appendTo' else 'insertBefore'
 
 				currDrag.$target = $target
-
+			
 				$dropzone[func].call $dropzone, $target
 
 		# This should prevent uploading when the file was dropped next to the dropzone or on an older dropzone that's still active
