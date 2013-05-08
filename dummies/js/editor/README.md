@@ -18,6 +18,8 @@
 
 ## Variables
 
+### _value
+
 ### contentTypes: _array_  
 ```
 	contentTypes: ['markdown']
@@ -29,6 +31,9 @@
 
 - constructor ( _Editor_ )
 - init ( _$element_ )
+- setValue ( _value_ )
+- getValue()
+- render()
 
 ### EventSystem
 
@@ -47,5 +52,5 @@ __Note: All Names will be namespaced with the component name!__
 - open()
 - close()
 - toggle()
-- getContent()
-- setContent( _string|html_ )
+- setPopoverContent( _string|html_ )
+- getPopoverContent()

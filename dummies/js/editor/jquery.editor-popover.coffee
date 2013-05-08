@@ -109,10 +109,14 @@ do ($ = jQuery) ->
 	 # @param [Editor] editor
 	###
 	class Editable 
+
+		_value: null
+
 		contentTypes: []
 
 		constructor: (@editor) ->
 			@name = @.constructor.name.toLowerCase()
+			@setValue @name
 
 			# generate a unique id @link http://stackoverflow.com/a/2117523/520544
 			@id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace /[xy]/g, (c) ->
@@ -150,13 +154,25 @@ do ($ = jQuery) ->
 			name = getEventName name
 			@editor.off name, callback
 
+		setValue: (value) ->
+			@_value = value
+			@render()
+
+		getValue: ->
+			@_value
+
+		render: ->
+			if @element
+				@element.html @getValue()
+
+
 
 	###
 	 # Abstract Popover Class
 	###
 	class PopoverEditable extends Editable
 
-		_popoverContent = ''
+		_popoverContent: ''
 
 		constructor: (@editor) ->
 			if @.constructor.name is 'PopoverEditable'
@@ -167,7 +183,10 @@ do ($ = jQuery) ->
 		init: (@element) ->
 			element.qtip
 				content: 
-					text: @getContent()
+					text: =>
+						console.log @name
+						console.log @getValue()
+						@getPopoverContent()
 					title: ''
 
 				position:
@@ -216,15 +235,15 @@ do ($ = jQuery) ->
 			else
 				@open()
 
-		getContent: ->
+		getPopoverContent: ->
 			types = @contentTypes.join ', '
-			return if _popoverContent then _popoverContent else "<h1>#{types} Editor</h1>"
+			return if @_popoverContent then @_popoverContent else "<h1>#{types} Editor</h1>"
 
 		###
 		 # @todo: update current popover content
 		###
-		setContent: (value) ->
-			_popoverContent = value
+		setPopoverContent: (value) ->
+			@_popoverContent = value
 
 
 	# ! --- Editable Sub-Classes ---
@@ -237,10 +256,10 @@ do ($ = jQuery) ->
 		contentTypes: ['inline']
 
 		init: (@element) ->
-			@element.attr 'contenteditable', true
-
-			element.on 'click', =>
-				@trigger 'editor.closepopovers'
+			element
+				.attr('contenteditable', true)
+				.on 'click', =>
+					@trigger 'editor.closepopovers'
 
 
 	###
@@ -250,6 +269,13 @@ do ($ = jQuery) ->
 
 		contentTypes: ['date']
 
+		format: 'Y'
+
+		init: (element) ->
+			super element
+
+			@setPopoverContent $('<input type="text">')
+
 
 	###
 	 # Markdown Component
@@ -257,6 +283,11 @@ do ($ = jQuery) ->
 	class MarkdownEditable extends PopoverEditable
 
 		contentTypes: ['markdown']
+
+		init: (element) ->
+			super element
+
+			@setPopoverContent 'Fucka'
 
 
 

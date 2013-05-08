@@ -170,11 +170,14 @@ var __hasProp = {}.hasOwnProperty,
   Editable = (function() {
     var getEventName;
 
+    Editable.prototype._value = null;
+
     Editable.prototype.contentTypes = [];
 
     function Editable(editor) {
       this.editor = editor;
       this.name = this.constructor.name.toLowerCase();
+      this.setValue(this.name);
       this.id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r, v;
 
@@ -224,6 +227,21 @@ var __hasProp = {}.hasOwnProperty,
       return this.editor.off(name, callback);
     };
 
+    Editable.prototype.setValue = function(value) {
+      this._value = value;
+      return this.render();
+    };
+
+    Editable.prototype.getValue = function() {
+      return this._value;
+    };
+
+    Editable.prototype.render = function() {
+      if (this.element) {
+        return this.element.html(this.getValue());
+      }
+    };
+
     return Editable;
 
   })();
@@ -232,11 +250,9 @@ var __hasProp = {}.hasOwnProperty,
   */
 
   PopoverEditable = (function(_super) {
-    var _popoverContent;
-
     __extends(PopoverEditable, _super);
 
-    _popoverContent = '';
+    PopoverEditable.prototype._popoverContent = '';
 
     function PopoverEditable(editor) {
       this.editor = editor;
@@ -252,7 +268,11 @@ var __hasProp = {}.hasOwnProperty,
       this.element = element;
       element.qtip({
         content: {
-          text: this.getContent(),
+          text: function() {
+            console.log(_this.name);
+            console.log(_this.getValue());
+            return _this.getPopoverContent();
+          },
           title: ''
         },
         position: {
@@ -307,12 +327,12 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    PopoverEditable.prototype.getContent = function() {
+    PopoverEditable.prototype.getPopoverContent = function() {
       var types;
 
       types = this.contentTypes.join(', ');
-      if (_popoverContent) {
-        return _popoverContent;
+      if (this._popoverContent) {
+        return this._popoverContent;
       } else {
         return "<h1>" + types + " Editor</h1>";
       }
@@ -323,8 +343,8 @@ var __hasProp = {}.hasOwnProperty,
     */
 
 
-    PopoverEditable.prototype.setContent = function(value) {
-      return _popoverContent = value;
+    PopoverEditable.prototype.setPopoverContent = function(value) {
+      return this._popoverContent = value;
     };
 
     return PopoverEditable;
@@ -348,8 +368,7 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       this.element = element;
-      this.element.attr('contenteditable', true);
-      return element.on('click', function() {
+      return element.attr('contenteditable', true).on('click', function() {
         return _this.trigger('editor.closepopovers');
       });
     };
@@ -371,6 +390,13 @@ var __hasProp = {}.hasOwnProperty,
 
     DateEditable.prototype.contentTypes = ['date'];
 
+    DateEditable.prototype.format = 'Y';
+
+    DateEditable.prototype.init = function(element) {
+      DateEditable.__super__.init.call(this, element);
+      return this.setPopoverContent($('<input type="text">'));
+    };
+
     return DateEditable;
 
   })(PopoverEditable);
@@ -387,6 +413,11 @@ var __hasProp = {}.hasOwnProperty,
     }
 
     MarkdownEditable.prototype.contentTypes = ['markdown'];
+
+    MarkdownEditable.prototype.init = function(element) {
+      MarkdownEditable.__super__.init.call(this, element);
+      return this.setPopoverContent('Fucka');
+    };
 
     return MarkdownEditable;
 
