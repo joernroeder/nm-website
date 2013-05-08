@@ -4,7 +4,7 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($) {
-  var DateEditable, Editable, Editor, InlineEditable, MarkdownEditable, PopoverEditable, _ref, _ref1, _ref2, _ref3;
+  var DateEditable, Editable, Editor, InlineEditable, MarkdownEditable, PopoverEditable, _ref, _ref1, _ref2;
 
   Editor = (function() {
     var addContentType, components, contentTypes, events, init;
@@ -223,12 +223,19 @@ var __hasProp = {}.hasOwnProperty,
     return InlineEditable;
 
   })(Editable);
+  /*
+  	 # Abstract Popover Class
+  */
+
   PopoverEditable = (function(_super) {
     __extends(PopoverEditable, _super);
 
-    function PopoverEditable() {
-      _ref1 = PopoverEditable.__super__.constructor.apply(this, arguments);
-      return _ref1;
+    function PopoverEditable(editor) {
+      this.editor = editor;
+      if (this.constructor.name === 'PopoverEditable') {
+        throw new ReferenceError('"PopoverEditable" is an abstract class. Please use one of the subclasses instead.');
+      }
+      PopoverEditable.__super__.constructor.call(this, editor);
     }
 
     PopoverEditable.prototype.init = function(element) {
@@ -302,12 +309,16 @@ var __hasProp = {}.hasOwnProperty,
     return PopoverEditable;
 
   })(Editable);
+  /*
+  	 # Date Component
+  */
+
   DateEditable = (function(_super) {
     __extends(DateEditable, _super);
 
     function DateEditable() {
-      _ref2 = DateEditable.__super__.constructor.apply(this, arguments);
-      return _ref2;
+      _ref1 = DateEditable.__super__.constructor.apply(this, arguments);
+      return _ref1;
     }
 
     DateEditable.prototype.contentTypes = ['date'];
@@ -315,12 +326,16 @@ var __hasProp = {}.hasOwnProperty,
     return DateEditable;
 
   })(PopoverEditable);
+  /*
+  	 # Markdown Component
+  */
+
   MarkdownEditable = (function(_super) {
     __extends(MarkdownEditable, _super);
 
     function MarkdownEditable() {
-      _ref3 = MarkdownEditable.__super__.constructor.apply(this, arguments);
-      return _ref3;
+      _ref2 = MarkdownEditable.__super__.constructor.apply(this, arguments);
+      return _ref2;
     }
 
     MarkdownEditable.prototype.contentTypes = ['markdown'];

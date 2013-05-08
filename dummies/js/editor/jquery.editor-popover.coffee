@@ -134,6 +134,8 @@ do ($ = jQuery) ->
 		off: (name, callback) ->
 			name = getEventName name
 			@editor.off name, callback
+
+
 	###
 	 #
 	###
@@ -147,7 +149,16 @@ do ($ = jQuery) ->
 			@trigger 'editor.closepopovers'
 
 
-	class PopoverEditable extends Editable	
+	###
+	 # Abstract Popover Class
+	###
+	class PopoverEditable extends Editable
+
+		constructor: (@editor) ->
+			if @.constructor.name is 'PopoverEditable'
+				throw new ReferenceError '"PopoverEditable" is an abstract class. Please use one of the subclasses instead.'
+
+			super editor
 
 		init: (@element) ->
 			element.qtip
@@ -205,38 +216,43 @@ do ($ = jQuery) ->
 			types = @contentTypes.join ', '
 			"<h1>#{types} Editor</h1>"
 
-		#openPopovers: {}
 
-
+	###
+	 # Date Component
+	###
 	class DateEditable extends PopoverEditable
 
 		contentTypes: ['date']
 
 
+	###
+	 # Markdown Component
+	###
 	class MarkdownEditable extends PopoverEditable
 
 		contentTypes: ['markdown']
 
 
 
-	# ! --- publish base classes ---
+	# ! --- Implementation --------------------------------
+
+
+	# publish base
 	window.editorComponents = {}
 
-	#window..editorComponents.Editor = Editor
 	window.editorComponents.Editable = Editable
 	window.editorComponents.PopoverEditable = PopoverEditable
 
 
-	# ! --- publish sub classes ---
-	
+	# publish sub classes	
 	window.editorComponents.InlineEditable = InlineEditable
 	window.editorComponents.DateEditable = DateEditable
 	#window.editorComponents.MarkdownEditable = MarkdownEditable
 
 	# construction
 	window.editor = new Editor [
-		'InlineEditable',
-		'DateEditable',
+		'InlineEditable'
+		'DateEditable'
 		#'MarkdownEditable'
 	]
 			
