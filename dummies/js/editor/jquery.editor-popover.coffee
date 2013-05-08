@@ -7,13 +7,21 @@ do ($ = jQuery) ->
 		_components = {}
 		events = {}
 
-		attrName: 'data-editor-type'
+		attr:
+			namespace: 'editor-'
+			type: 'type'
+			name: 'name'
+			options: 'options'
 		
 		constructor: (components) ->
 			$.map components, (component) =>
 				addComponent component
 
 			init.call @
+
+		getAttr: (name) ->
+			if @attr[name] then @attr.namespace + @attr[name] else false
+
 
 		###
 		 # on, off, trigger via $.Callbacks() 
@@ -37,9 +45,9 @@ do ($ = jQuery) ->
 		 # @private
 		###
 		init = ->
-			$('[' + @attrName + ']').each (i, el) =>
+			$('[data-' + @getAttr('type') + ']').each (i, el) =>
 				$el = $ el
-				contentType = $el.data 'editor-type'
+				contentType = $el.data @getAttr('type')
 
 				if -1 isnt $.inArray(contentType, Object.keys(_contentTypes))
 					component = getComponentByContentType.call @, contentType
@@ -87,6 +95,9 @@ do ($ = jQuery) ->
 		getComponent: (id) ->
 			if _components[id] then _components[id] else null
 
+		getComponents: ->
+			_components
+
 
 		###
 		 #
@@ -103,6 +114,12 @@ do ($ = jQuery) ->
 				_contentTypes[lowerType] = componentName
 
 
+		save: ->
+			console.log 'save state!!'
+			@trigger 'saved'
+
+
+
 	###
 	 # Abstract Editable Class
 	 # 
@@ -111,6 +128,8 @@ do ($ = jQuery) ->
 	class Editable 
 
 		_value: null
+		_options: {}
+		_dataName: ''
 
 		contentTypes: []
 
@@ -129,7 +148,11 @@ do ($ = jQuery) ->
 
 		# kick off your stuff from here!
 		init: (@element) ->
-			console.log 'subclass this method to run your custom code'
+			@setDataName element.data @editor.getAttr('name') 
+			@setOptions element.data @editor.getAttr('options')
+
+			console.log @getDataName()
+			#console.warn 'subclass this method to run your custom code'
 
 		###
 		 # returns a namespaced event name
@@ -147,19 +170,33 @@ do ($ = jQuery) ->
 
 		on: (name, callback) ->
 			name = getEventName name
-			console.log name
 			@editor.on name, callback
 
 		off: (name, callback) ->
 			name = getEventName name
 			@editor.off name, callback
 
+		# --- 
+		
 		setValue: (value) ->
 			@_value = value
 			@render()
 
 		getValue: ->
 			@_value
+
+		# --- 
+		
+		setDataName: (@_dataName) ->
+		setOptions: (@_options) ->
+
+		# ---
+
+		getDataName: ->
+			@_dataName
+
+		getOptions: ->
+			@_options
 
 		render: ->
 			if @element
@@ -180,12 +217,12 @@ do ($ = jQuery) ->
 
 			super editor
 
-		init: (@element) ->
+		init: (element) ->
+			super element
+
 			element.qtip
 				content: 
 					text: =>
-						console.log @name
-						console.log @getValue()
 						@getPopoverContent()
 					title: ''
 
@@ -255,7 +292,9 @@ do ($ = jQuery) ->
 
 		contentTypes: ['inline']
 
-		init: (@element) ->
+		init: (element) ->
+			super element
+
 			element
 				.attr('contenteditable', true)
 				.on 'click', =>
@@ -287,7 +326,10 @@ do ($ = jQuery) ->
 		init: (element) ->
 			super element
 
-			@setPopoverContent 'Fucka'
+			@setPopoverContent 'Markdown <strong>Content</strong>'
+
+		open: ->
+			super()
 
 
 
@@ -312,4 +354,5 @@ do ($ = jQuery) ->
 		'DateEditable'
 		'MarkdownEditable'
 	]
+
 			

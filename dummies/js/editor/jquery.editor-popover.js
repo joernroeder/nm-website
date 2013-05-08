@@ -15,7 +15,12 @@ var __hasProp = {}.hasOwnProperty,
 
     events = {};
 
-    Editor.prototype.attrName = 'data-editor-type';
+    Editor.prototype.attr = {
+      namespace: 'editor-',
+      type: 'type',
+      name: 'name',
+      options: 'options'
+    };
 
     function Editor(components) {
       var _this = this;
@@ -25,6 +30,14 @@ var __hasProp = {}.hasOwnProperty,
       });
       init.call(this);
     }
+
+    Editor.prototype.getAttr = function(name) {
+      if (this.attr[name]) {
+        return this.attr.namespace + this.attr[name];
+      } else {
+        return false;
+      }
+    };
 
     /*
     		 # on, off, trigger via $.Callbacks() 
@@ -61,11 +74,11 @@ var __hasProp = {}.hasOwnProperty,
     init = function() {
       var _this = this;
 
-      return $('[' + this.attrName + ']').each(function(i, el) {
+      return $('[data-' + this.getAttr('type') + ']').each(function(i, el) {
         var $el, component, contentType;
 
         $el = $(el);
-        contentType = $el.data('editor-type');
+        contentType = $el.data(_this.getAttr('type'));
         if (-1 !== $.inArray(contentType, Object.keys(_contentTypes))) {
           component = getComponentByContentType.call(_this, contentType);
           $el.data('editor-component-id', component.id);
@@ -138,6 +151,10 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
+    Editor.prototype.getComponents = function() {
+      return _components;
+    };
+
     /*
     		 #
     		 # @private
@@ -158,6 +175,11 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
+    Editor.prototype.save = function() {
+      console.log('save state!!');
+      return this.trigger('saved');
+    };
+
     return Editor;
 
   })();
@@ -171,6 +193,10 @@ var __hasProp = {}.hasOwnProperty,
     var getEventName;
 
     Editable.prototype._value = null;
+
+    Editable.prototype._options = {};
+
+    Editable.prototype._dataName = '';
 
     Editable.prototype.contentTypes = [];
 
@@ -192,7 +218,9 @@ var __hasProp = {}.hasOwnProperty,
 
     Editable.prototype.init = function(element) {
       this.element = element;
-      return console.log('subclass this method to run your custom code');
+      this.setDataName(element.data(this.editor.getAttr('name')));
+      this.setOptions(element.data(this.editor.getAttr('options')));
+      return console.log(this.getDataName());
     };
 
     /*
@@ -218,7 +246,6 @@ var __hasProp = {}.hasOwnProperty,
 
     Editable.prototype.on = function(name, callback) {
       name = getEventName(name);
-      console.log(name);
       return this.editor.on(name, callback);
     };
 
@@ -234,6 +261,22 @@ var __hasProp = {}.hasOwnProperty,
 
     Editable.prototype.getValue = function() {
       return this._value;
+    };
+
+    Editable.prototype.setDataName = function(_dataName) {
+      this._dataName = _dataName;
+    };
+
+    Editable.prototype.setOptions = function(_options) {
+      this._options = _options;
+    };
+
+    Editable.prototype.getDataName = function() {
+      return this._dataName;
+    };
+
+    Editable.prototype.getOptions = function() {
+      return this._options;
     };
 
     Editable.prototype.render = function() {
@@ -265,12 +308,10 @@ var __hasProp = {}.hasOwnProperty,
     PopoverEditable.prototype.init = function(element) {
       var _this = this;
 
-      this.element = element;
+      PopoverEditable.__super__.init.call(this, element);
       element.qtip({
         content: {
           text: function() {
-            console.log(_this.name);
-            console.log(_this.getValue());
             return _this.getPopoverContent();
           },
           title: ''
@@ -367,7 +408,7 @@ var __hasProp = {}.hasOwnProperty,
     InlineEditable.prototype.init = function(element) {
       var _this = this;
 
-      this.element = element;
+      InlineEditable.__super__.init.call(this, element);
       return element.attr('contenteditable', true).on('click', function() {
         return _this.trigger('editor.closepopovers');
       });
@@ -416,7 +457,11 @@ var __hasProp = {}.hasOwnProperty,
 
     MarkdownEditable.prototype.init = function(element) {
       MarkdownEditable.__super__.init.call(this, element);
-      return this.setPopoverContent('Fucka');
+      return this.setPopoverContent('Markdown <strong>Content</strong>');
+    };
+
+    MarkdownEditable.prototype.open = function() {
+      return MarkdownEditable.__super__.open.call(this);
     };
 
     return MarkdownEditable;

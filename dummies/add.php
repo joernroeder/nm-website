@@ -83,13 +83,16 @@
 									<img src="http://placedog.com/160/160" width="{{Width}}" height="{{Height}}"/>
 								<!--{{/with}}-->
 							</a>
-							<section class="meta">
+							<section class="meta" data-editor-scope="Person">
 								<header>
 									<h1>
-										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline">{{Title}}</a>
+										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="\Image.Title">{{Title}}</a>
 									</h1>
-									<p><span data-editor-type="date" data-editor-options="{date: {format: 'Y'}}">{{Date}}</span></p>
+									<p><span data-editor-type="date" data-editor-options='{"date": {"format": "Y"}}'>{{Date}}</span></p>
 								</header>
+								<p data-editor-type="markdown">
+									{{{MarkdownedTeaser}}}
+								</p>
 								<p data-editor-type="markdown">
 									{{{MarkdownedTeaser}}}
 								</p>
