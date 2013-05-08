@@ -10,7 +10,8 @@
       convertingDelay: 200,
       hideDropzoneDelay: 1000,
       imageUrl: '/_md_/images/docimage',
-      errorMsg: 'Sorry, but there has been an error.'
+      errorMsg: 'Sorry, but there has been an error.',
+      contentGetter: 'val'
     };
 
     JJMarkdownEditor.prototype.$input = null;
@@ -30,6 +31,7 @@
     function JJMarkdownEditor(selector, opts) {
       this.options = $.extend({}, this.defaults, opts);
       this.$input = selector instanceof jQuery ? selector : $(selector);
+      this.$input._val = this.$input[this.options.contentGetter];
       this.$preview = this.options.preview instanceof jQuery ? this.options.preview : $(this.options.preview);
       this.initialize();
     }
@@ -84,7 +86,7 @@
       var cap, imgIds, imgReplacements, markdown, markdownImageDfd, tocheck,
         _this = this;
 
-      tocheck = markdown = marked(this.$input.val());
+      tocheck = markdown = marked(this.$input._val());
       imgIds = [];
       imgReplacements = [];
       while (cap = this.rules.img.exec(tocheck)) {
@@ -176,7 +178,7 @@
           if ($target.is($preview)) {
             isContainer = true;
           } else {
-            if ($target.is('a, strong, span')) {
+            if (!$target.is('p, div')) {
               $temp = $target.closest('p');
               if ($temp.length) {
                 $target = $temp;
@@ -290,7 +292,7 @@
               $dropzone.remove();
               nl = '  \n\n';
               if ($target.is($preview)) {
-                _this.$input.val(_this.$input.val() + rawMd + nl);
+                _this.$input._val(_this.$input._val() + rawMd + nl);
               } else {
                 _this.insertAtEditorPos($target, rawMd + nl);
               }
@@ -308,9 +310,9 @@
 
       if (!$el.is('div')) {
         pos = $el.data('editor-pos');
-        val = this.$input.val();
+        val = this.$input._val();
         val = [val.slice(0, pos), md, val.slice(pos)].join('');
-        return this.$input.val(val);
+        return this.$input._val(val);
       }
     };
 

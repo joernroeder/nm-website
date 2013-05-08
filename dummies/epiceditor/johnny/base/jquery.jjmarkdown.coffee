@@ -4,11 +4,12 @@ $ = jQuery
 class JJMarkdownEditor
 
 	defaults :
-		preview : '#preview'								# preview container selector
-		convertingDelay : 200								# interval in which the textarea is parsed (in ms)
-		hideDropzoneDelay : 1000 							# (ms) defines after which time the dropzone for images fades out when the Markdown field is left
-		imageUrl : '/_md_/images/docimage' 					# url to which the image requests should refer
-		errorMsg : 'Sorry, but there has been an error.' 	# default upload error message
+		preview 			: '#preview'								# preview container selector
+		convertingDelay 	: 200								# interval in which the textarea is parsed (in ms)
+		hideDropzoneDelay 	: 1000 							# (ms) defines after which time the dropzone for images fades out when the Markdown field is left
+		imageUrl 			: '/_md_/images/docimage' 					# url to which the image requests should refer
+		errorMsg 			: 'Sorry, but there has been an error.' 	# default upload error message
+		contentGetter		: 'val'
 
 	$input : null
 	$preview: null
@@ -24,6 +25,7 @@ class JJMarkdownEditor
 	constructor : (selector, opts) ->
 		@.options = $.extend {}, @.defaults, opts
 		@.$input = if selector instanceof jQuery then selector else $(selector)
+		@.$input._val = @.$input[@.options.contentGetter]
 		@.$preview = if @.options.preview instanceof jQuery then @.options.preview else $(@.options.preview)
 		@.initialize()
 
@@ -79,7 +81,7 @@ class JJMarkdownEditor
 	parseMarkdown : ->
 
 		# @todo cleanup listeners
-		tocheck = markdown = marked @.$input.val()
+		tocheck = markdown = marked @.$input._val()
 		# CUSTOM MARKDOWN
 		
 		imgIds = []
@@ -167,7 +169,7 @@ class JJMarkdownEditor
 					isContainer = true
 				# check if target is <p> or anything else. if anything else then get parent <p>
 				else
-					if $target.is('a, strong, span')
+					if not $target.is('p, div')
 						$temp = $target.closest('p')
 						if $temp.length
 							$target = $temp
@@ -276,7 +278,7 @@ class JJMarkdownEditor
 
 						# insert rawMd at right position
 						if $target.is($preview)
-							@.$input.val @.$input.val() + rawMd + nl
+							@.$input._val @.$input._val() + rawMd + nl
 						else
 							@.insertAtEditorPos $target, rawMd + nl
 
@@ -292,9 +294,9 @@ class JJMarkdownEditor
 		if not $el.is 'div'
 			# is probably normal paragraph
 			pos = $el.data 'editor-pos'
-			val = @.$input.val()
+			val = @.$input._val()
 			val = [val.slice(0, pos), md, val.slice(pos)].join ''
-			@.$input.val val
+			@.$input._val val
 
 
 
