@@ -19,7 +19,7 @@ class JJMarkdownEditor
 	imageCache : []
 
 	rules :
-		img: /\[img (.*?)\]/gim
+		img: /\[img\s{1,}(.*?)\]/gim
 
 	constructor : (selector, opts) ->
 		@.options = $.extend {}, @.defaults, opts

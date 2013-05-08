@@ -24,7 +24,7 @@
     JJMarkdownEditor.prototype.imageCache = [];
 
     JJMarkdownEditor.prototype.rules = {
-      img: /\[img (.*?)\]/gim
+      img: /\[img\s{1,}(.*?)\]/gim
     };
 
     function JJMarkdownEditor(selector, opts) {
