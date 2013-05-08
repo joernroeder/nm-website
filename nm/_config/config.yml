@@ -62,5 +62,5 @@ CSRFProtection_RestApiExtension:
 Name: StaticUrls
 ---
 SubdomainAssetsConfig:
-  domain_name: 'static.newmediakassel.com'
-  subdomain_points_to_assets: true
+  domain_name: 'nm.local'
+  subdomain_points_to_assets: false

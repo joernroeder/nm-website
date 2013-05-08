@@ -2,14 +2,12 @@
 
 class MarkdownEditor_Controller extends Controller {
 
-	private static $url_handlers = array(
-		'images/$ID/$OtherID'	=> 'images',
+	/*private static $url_handlers = array(
 		'$Action/$ID/$OtherID' 	=> 'handleAction'
 	);
-
+*/
 	private static $allowed_actions = array(
-		'images',
-		'handleAction'
+		'images'
 	);
 
 	protected static $supported_class_types = array(
@@ -20,25 +18,50 @@ class MarkdownEditor_Controller extends Controller {
 	protected static $preview_img_height = 300;
 
 	protected $current_member = null;
+	protected $image_type = null;
 
-	public function init() {
-		parent::init();
-
+	public function isAuthorized() {
 		$this->current_member = Member::CurrentUserID() ? Member::CurrentUser() : null;
-		if (!$this->current_member) return $this->methodNotAllowed();
+		return $this->current_member ? true : false;
 
 		/**
 		 * @todo: CSRF Protection (copy from JJ_RestfulServer.php)
 		 */
 	}
 
-	public function index() {
-		return $this->notFound();
+	public function index(SS_HTTPRequest $request = null) {
+		if (!$this->urlParams['Action']) {
+			return $this->notFound();
+		}
 	}
 
 	public function images() {
+		if (!$this->isAuthorized()) return $this->methodNotAllowed();
+
+		$imageType = $this->urlParams['ID'];
+		// get the necessary class type
+		$this->imageType = isset(self::$supported_class_types[$imageType]) ? self::$supported_class_types[$imageType] : null;
+
+
+
 		if ($this->request->isPOST()) {
 			return $this->handleImageUpload();
+		} else
+		if ($this->request->isGET()) {
+			$out = array();
+			$ids = $this->request->getVar('ids');
+			$ids = explode(',', $ids);
+
+			$list = DataList::create($this->imageType)->byIDs($ids);
+	
+			foreach ($list as $image) {
+				$out[] = array(
+					'tag'	=> $image->forTemplate(),
+					'id'	=> $image->ID
+				);
+			}
+
+			return json_encode($out);
 		}
 	}
 
@@ -53,12 +76,8 @@ class MarkdownEditor_Controller extends Controller {
 	protected function handleImageUpload() {
 		$response = array();
 
-		$imageType = $this->urlParams['ID'];
-		// get the necessary class type
-		$imageType = isset(self::$supported_class_types[$imageType]) ? self::$supported_class_types[$imageType] : null;
-
 		$postVars = $this->request->postVars();
-		if (!$postVars || empty($postVars) || !$imageType) return $this->notFound();
+		if (!$postVars || empty($postVars) || !$this->imageType) return $this->notFound();
 
 		foreach ($postVars as $key => $fileRequest) {
 			if ( !is_array($fileRequest) || !$fileRequest['tmp_name'] || $fileRequest['error'] ) return $this->methodFailed();
@@ -66,25 +85,23 @@ class MarkdownEditor_Controller extends Controller {
 
 			// change the name to make it really unique
 			$fileRequest['name'] = md5(time()) . '-' . $fileRequest['name'];
-			
+
 			// make the ResponsiveImage sublass
-			$imgObj = new $imageType();
+			$imgObj = new $this->imageType();
 			$imgObj->write();
 
 			// make the image
-			$image = new ResponsiveImageObject();
+			$image = new SubdomainResponsiveImageObject();
 			$u = new Upload();
 			$u->loadIntoFile($fileRequest, $image);
 			$image->OwnerID = $this->current_member->ID;
 			$image->ResponsiveID = $imgObj->ID;
 			$image->write();
-			
-			// preview
-			$previewImage = $image->SetRatioSize(self::$preview_img_width, self::$preview_img_height);
+
 
 			$response[] = array(
-				'previewPath'	=> $previewImage->getURL(),
-				'responsiveId'	=> $imgObj->ID
+				'tag'	=> $imgObj->forTemplate(),
+				'id'	=> $imgObj->ID
 			);
 		}
 

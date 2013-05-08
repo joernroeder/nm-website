@@ -4,25 +4,12 @@
 
   $ = jQuery;
 
-  /*
-  marked.Parser.parse = (src, opts, rawsrc) ->
-  	# we need to get the raw src
-  	parser = new marked.Parser opts
-  	parser.parse src, rawsrc
-  
-  marked.Parser.prototype.__parse = marked.Parser.prototype.parse
-  marked.Parser.prototype.parse = (src, rawsrc) ->
-  	return marked.Parser.prototype.__parse src
-  	console.log 'new parsing function'
-  */
-
-
   JJMarkdownEditor = (function() {
     JJMarkdownEditor.prototype.defaults = {
       preview: '#preview',
       convertingDelay: 200,
       hideDropzoneDelay: 1000,
-      imagePOSTUrl: '/_md_/images/docimage',
+      imageUrl: '/_md_/images/docimage',
       errorMsg: 'Sorry, but there has been an error.'
     };
 
@@ -35,6 +22,10 @@
     JJMarkdownEditor.prototype.dragCount = 0;
 
     JJMarkdownEditor.prototype.imageCache = [];
+
+    JJMarkdownEditor.prototype.rules = {
+      img: /\[img (.*?)\]/gim
+    };
 
     function JJMarkdownEditor(selector, opts) {
       this.options = $.extend({}, this.defaults, opts);
@@ -90,7 +81,68 @@
     };
 
     JJMarkdownEditor.prototype.parseMarkdown = function() {
-      return this.$preview.html(marked(this.$input.val()));
+      var cap, imgIds, imgReplacements, markdown, markdownImageDfd, tocheck,
+        _this = this;
+
+      tocheck = markdown = marked(this.$input.val());
+      imgIds = [];
+      imgReplacements = [];
+      while (cap = this.rules.img.exec(tocheck)) {
+        imgReplacements.push(cap);
+        imgIds.push(parseInt(cap[1]));
+      }
+      console.log(imgReplacements);
+      markdownImageDfd = this.requestImagesByIds(imgIds);
+      markdownImageDfd.done(function() {
+        var cache;
+
+        cache = _this.imageCache;
+        return $.each(imgReplacements, function(i, replace) {
+          return (function(replace) {
+            return $.each(cache, function(j, obj) {
+              if (obj.id === parseInt(replace[1])) {
+                return markdown = markdown.replace(replace[0], obj.tag);
+              }
+            });
+          })(replace);
+        });
+      });
+      return $.when(markdownImageDfd).then(function() {
+        _this.$preview.html(markdown);
+        return window.picturefill();
+      });
+    };
+
+    JJMarkdownEditor.prototype.requestImagesByIds = function(ids) {
+      var dfd, reqIds, url,
+        _this = this;
+
+      dfd = new $.Deferred();
+      _this = this;
+      reqIds = [];
+      $.each(ids, function(i, id) {
+        return (function(id) {
+          var found;
+
+          found = false;
+          $.each(_this.imageCache, function(j, obj) {
+            return found = true;
+          });
+          if (!found) {
+            return reqIds.push(id);
+          }
+        })(id);
+      });
+      if (!reqIds.length) {
+        dfd.resolve();
+        return dfd;
+      }
+      url = this.options.imageUrl + '?ids=' + reqIds.join(',');
+      return $.getJSON(url).done(function(data) {
+        if ($.isArray(data)) {
+          return _this.imageCache = _this.imageCache.concat(data);
+        }
+      });
     };
 
     JJMarkdownEditor.prototype.dragAndDropSetup = function() {
@@ -124,7 +176,7 @@
           if ($target.is($preview)) {
             isContainer = true;
           } else {
-            if ($target.is('a, strong')) {
+            if ($target.is('a, strong, span')) {
               $temp = $target.closest('p');
               if ($temp.length) {
                 $target = $temp;
@@ -202,7 +254,7 @@
               });
             } else {
               req = $.ajax({
-                url: _this.options.imagePOSTUrl,
+                url: _this.options.imageUrl,
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -225,7 +277,7 @@
             }).fail(function(res) {
               return $dropzone.append('<p>' + _this.options.errorMsg + '</p>');
             }).done(function(data) {
-              var $img, $span, imgs, nl, obj, pos, rawMd, _i, _len;
+              var imgs, nl, obj, rawMd, _i, _len;
 
               data = $.parseJSON(data);
               imgs = [];
@@ -233,21 +285,16 @@
               for (_i = 0, _len = data.length; _i < _len; _i++) {
                 obj = data[_i];
                 _this.imageCache.push(obj);
-                $span = $('<span>');
-                $img = $('<img>');
-                $img.attr('src', obj.previewPath);
-                $img.data('id', obj.responsiveId);
-                $span.append($img);
-                imgs.push($img[0]);
-                rawMd += '[img ' + obj.responsiveId + ']';
+                rawMd += '[img ' + obj.id + ']';
               }
-              $dropzone.replaceWith($(imgs));
-              nl = '  \n';
+              $dropzone.remove();
+              nl = '  \n\n';
               if ($target.is($preview)) {
-                return _this.$input.val(_this.$input.val() + nl + rawMd);
+                _this.$input.val(_this.$input.val() + rawMd + nl);
               } else {
-                return pos = _this.getEditorPosByElement($target);
+                _this.insertAtEditorPos($target, rawMd + nl);
               }
+              return _this.parseMarkdown();
             }).always(function() {
               return $progressBar.remove();
             });
@@ -256,12 +303,14 @@
       };
     };
 
-    JJMarkdownEditor.prototype.getEditorPosByElement = function($el) {
-      var lines;
+    JJMarkdownEditor.prototype.insertAtEditorPos = function($el, md) {
+      var pos, val;
 
-      if (!$el.is('div, span')) {
-        lines = this.$input.val().split('\n');
-        return console.log(lines);
+      if (!$el.is('div')) {
+        pos = $el.data('editor-pos');
+        val = this.$input.val();
+        val = [val.slice(0, pos), md, val.slice(pos)].join('');
+        return this.$input.val(val);
       }
     };
 

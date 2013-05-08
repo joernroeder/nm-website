@@ -1,27 +1,13 @@
 $ = jQuery
 
 
-# override Parser
-
-###
-marked.Parser.parse = (src, opts, rawsrc) ->
-	# we need to get the raw src
-	parser = new marked.Parser opts
-	parser.parse src, rawsrc
-
-marked.Parser.prototype.__parse = marked.Parser.prototype.parse
-marked.Parser.prototype.parse = (src, rawsrc) ->
-	return marked.Parser.prototype.__parse src
-	console.log 'new parsing function'
-###
-
 class JJMarkdownEditor
 
 	defaults :
 		preview : '#preview'								# preview container selector
 		convertingDelay : 200								# interval in which the textarea is parsed (in ms)
 		hideDropzoneDelay : 1000 							# (ms) defines after which time the dropzone for images fades out when the Markdown field is left
-		imagePOSTUrl : '/_md_/images/docimage' 				# url to which a POST request should refer
+		imageUrl : '/_md_/images/docimage' 					# url to which the image requests should refer
 		errorMsg : 'Sorry, but there has been an error.' 	# default upload error message
 
 	$input : null
@@ -31,6 +17,9 @@ class JJMarkdownEditor
 	dragCount: 0
 
 	imageCache : []
+
+	rules :
+		img: /\[img (.*?)\]/gim
 
 	constructor : (selector, opts) ->
 		@.options = $.extend {}, @.defaults, opts
@@ -88,8 +77,57 @@ class JJMarkdownEditor
 		@
 
 	parseMarkdown : ->
+
 		# @todo cleanup listeners
-		@.$preview.html marked(@.$input.val())
+		tocheck = markdown = marked @.$input.val()
+		# CUSTOM MARKDOWN
+		
+		imgIds = []
+		imgReplacements = []
+		
+		while cap = @.rules.img.exec(tocheck)
+				imgReplacements.push cap
+				imgIds.push parseInt(cap[1])
+
+		console.log imgReplacements
+		# replace images
+		markdownImageDfd = @.requestImagesByIds(imgIds)
+		markdownImageDfd.done =>
+			cache = @.imageCache
+			$.each imgReplacements, (i, replace) ->
+				do (replace) ->
+					$.each cache, (j, obj) ->
+						if obj.id is parseInt(replace[1])
+							markdown = markdown.replace replace[0], obj.tag
+
+
+		$.when(markdownImageDfd).then ->
+			_this.$preview.html markdown
+			window.picturefill()
+
+
+	requestImagesByIds : (ids) ->
+		dfd = new $.Deferred()
+		_this = @
+		reqIds = []
+		$.each ids, (i, id) ->
+			do (id) ->
+				found = false
+				$.each _this.imageCache, (j, obj) ->
+					found = true
+				if not found then reqIds.push id
+
+		# get the missing images from the server
+		if not reqIds.length
+			dfd.resolve()
+			return dfd
+		url = @.options.imageUrl + '?ids=' + reqIds.join(',')
+
+		$.getJSON(url)
+			.done (data) =>
+				if $.isArray(data)
+					@.imageCache = @.imageCache.concat data
+
 
 	dragAndDropSetup : ->
 		$preview = @.$preview
@@ -128,7 +166,7 @@ class JJMarkdownEditor
 					isContainer = true
 				# check if target is <p> or anything else. if anything else then get parent <p>
 				else
-					if $target.is('a, strong')
+					if $target.is('a, strong, span')
 						$temp = $target.closest('p')
 						if $temp.length
 							$target = $temp
@@ -208,7 +246,7 @@ class JJMarkdownEditor
 						req.reject { error: errorMsg }
 					else
 						req = $.ajax
-							url: @.options.imagePOSTUrl
+							url: @.options.imageUrl
 							data: formData,
 							processData: false,
 							contentType: false,
@@ -223,44 +261,40 @@ class JJMarkdownEditor
 						#msg = res.error || @.options.errorMsg
 						$dropzone.append '<p>' + @.options.errorMsg + '</p>'
 					.done (data) =>
-						# this is our success function, yo
-						# insert the preview image, remove $dropzone. 
-						# insert right [img] tag within the editor
 				
 						data = $.parseJSON data
 						imgs = []
 						rawMd = ''
 						for obj in data
 							@.imageCache.push obj
-							$span = $ '<span>'
-							$img = $ '<img>'						
-							$img.attr 'src', obj.previewPath
-							$img.data 'id', obj.responsiveId
-							$span.append $img
-							imgs.push $img[0]
-							rawMd += '[img ' + obj.responsiveId + ']'
+							rawMd += '[img ' + obj.id + ']'
 
-						$dropzone.replaceWith $(imgs)
+						$dropzone.remove()
 
-						nl = '  \n'
+						nl = '  \n\n'
 
-						# @todo: insert rawMd at right position
+						# insert rawMd at right position
 						if $target.is($preview)
-							@.$input.val @.$input.val() + nl + rawMd
+							@.$input.val @.$input.val() + rawMd + nl
 						else
-							# try to find the right position
-							pos = @.getEditorPosByElement $target
+							@.insertAtEditorPos $target, rawMd + nl
+
+						# parse markdown again
+						@.parseMarkdown();
 
 
 					.always =>
 						$progressBar.remove()
 
-	getEditorPosByElement : ($el) ->
+	insertAtEditorPos : ($el, md) ->
 		# not oembed, images
-		if not $el.is 'div, span'
-			# must be normal text
-			lines = @.$input.val().split '\n'
-			console.log lines
+		if not $el.is 'div'
+			# is probably normal paragraph
+			pos = $el.data 'editor-pos'
+			val = @.$input.val()
+			val = [val.slice(0, pos), md, val.slice(pos)].join ''
+			@.$input.val val
+
 
 
 

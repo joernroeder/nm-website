@@ -93,7 +93,6 @@ block.tables = merge({}, block.gfm, {
 
 function Lexer(options) {
   this.tokens = [];
-  this.strs = [];
   this.tokens.links = {};
   this.options = options || marked.defaults;
   this.rules = block.normal;
@@ -150,19 +149,9 @@ Lexer.prototype.token = function(src, top) {
     , item
     , space
     , i
-    , l
-    , before
-    , iter = 0;
+    , l;
 
-  before = src;
   while (src) {
-    if (iter) {
-      this.tokens[this.tokens.length -1].origin = before.substring(0, before.indexOf(src));
-    }
-    before = src;
-
-    iter++;
-
 
     // newline
     if (cap = this.rules.newline.exec(src)) {
@@ -442,9 +431,6 @@ Lexer.prototype.token = function(src, top) {
         Error('Infinite loop on byte: ' + src.charCodeAt(0));
     }
   }
-  
-  if (this.tokens && this.tokens.length) this.tokens[this.tokens.length -1].origin = before;
-
 
   return this.tokens;
 };
@@ -784,36 +770,22 @@ function Parser(options) {
  * Static Parse Method
  */
 
-Parser.parse = function(src, options, rawsrc) {
+Parser.parse = function(src, options) {
   var parser = new Parser(options);
-  return parser.parse(src, rawsrc);
+  return parser.parse(src);
 };
 
 /**
  * Parse Loop
  */
 
-Parser.prototype.parse = function(src, rawsrc) {
-  var positions = [];
-  for (var i = 0;i<src.length;i++) {
-    node = src[i];
-    positions.push(rawsrc.indexOf(node.origin));
-  }
-
+Parser.prototype.parse = function(src) {
   this.inline = new InlineLexer(src.links, this.options);
   this.tokens = src.reverse();
 
   var out = '';
   while (this.next()) {
-    var tok = this.tok(),
-        pos = positions[0],
-        ltp = tok.indexOf('>');
-
-    // insert position
-    if (tok) tok = [tok.slice(0, ltp), ' data-editor-pos="' + pos + '"', tok.slice(ltp)].join('');
-    positions.shift();
-
-    out += tok;
+    out += this.tok();
   }
 
   return out;
