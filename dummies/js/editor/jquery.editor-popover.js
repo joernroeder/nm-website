@@ -7,19 +7,21 @@ var __hasProp = {}.hasOwnProperty,
   var DateEditable, Editable, Editor, InlineEditable, MarkdownEditable, PopoverEditable, _ref, _ref1, _ref2;
 
   Editor = (function() {
-    var addContentType, components, contentTypes, events, init;
+    var addComponent, addContentType, createComponent, events, getComponentByContentType, init, _components, _contentTypes;
 
-    contentTypes = {};
+    _contentTypes = {};
 
-    components = {};
+    _components = {};
 
     events = {};
+
+    Editor.prototype.attrName = 'data-editor-type';
 
     function Editor(components) {
       var _this = this;
 
       $.map(components, function(component) {
-        return _this.addComponent(component);
+        return addComponent(component);
       });
       init.call(this);
     }
@@ -51,16 +53,22 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
+    /*
+    		 # @private
+    */
+
+
     init = function() {
       var _this = this;
 
-      return $('[data-editor-type]').each(function(i, el) {
+      return $('[' + this.attrName + ']').each(function(i, el) {
         var $el, component, contentType;
 
         $el = $(el);
         contentType = $el.data('editor-type');
-        if (-1 !== $.inArray(contentType, Object.keys(contentTypes))) {
-          component = _this.getComponentByContentType(contentType);
+        if (-1 !== $.inArray(contentType, Object.keys(_contentTypes))) {
+          component = getComponentByContentType.call(_this, contentType);
+          $el.data('editor-component-id', component.id);
           return component.init($el);
         }
       });
@@ -69,43 +77,62 @@ var __hasProp = {}.hasOwnProperty,
     /*
     		 # registers a new component
     		 #
-    		 # @public
-    		 #
+    		 # @private
     		 # @param [string] name
     */
 
 
-    Editor.prototype.addComponent = function(name) {
+    addComponent = function(name) {
       var component,
         _this = this;
 
+      if (!window.editorComponents[name]) {
+        throw new ReferenceError("The Component '" + name + "' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?");
+      }
       console.log('add Component: ' + name);
       component = new window.editorComponents[name](this);
-      $.map(component.contentTypes, function(type) {
+      return $.map(component.contentTypes, function(type) {
         return addContentType(type, name);
       });
-      return components[name] = [];
     };
 
-    Editor.prototype.getComponentByContentType = function(type) {
+    /*
+    		 # @private
+    */
+
+
+    getComponentByContentType = function(type) {
       var componentName, lowerType;
 
       lowerType = type.toLowerCase();
-      componentName = contentTypes[lowerType];
+      componentName = _contentTypes[lowerType];
       if (componentName) {
-        return this.getComponent(componentName);
+        return createComponent.call(this, componentName);
       } else {
         return null;
       }
     };
 
-    Editor.prototype.getComponent = function(name) {
+    /*
+    		 # @private
+    */
+
+
+    createComponent = function(name) {
       var component;
 
       if (window.editorComponents[name]) {
         component = new window.editorComponents[name](this);
-        components[name].push(component);
+        _components[component.id] = component;
         return component;
+      } else {
+        return null;
+      }
+    };
+
+    Editor.prototype.getComponent = function(id) {
+      if (_components[id]) {
+        return _components[id];
       } else {
         return null;
       }
@@ -124,10 +151,10 @@ var __hasProp = {}.hasOwnProperty,
       var lowerType;
 
       lowerType = type.toLowerCase();
-      if (contentTypes[lowerType]) {
-        throw new Error('Another Component (' + contentTypes[lowerType] + ') is already handling the content-type "' + type + '"');
+      if (_contentTypes[lowerType]) {
+        throw new Error('Another Component (' + _contentTypes[lowerType] + ') is already handling the content-type "' + type + '"');
       } else {
-        return contentTypes[lowerType] = componentName;
+        return _contentTypes[lowerType] = componentName;
       }
     };
 
@@ -181,7 +208,7 @@ var __hasProp = {}.hasOwnProperty,
       if (eventData == null) {
         eventData = {};
       }
-      eventData['sender'] = this.id;
+      eventData['senderId'] = this.id;
       name = getEventName(name);
       return this.editor.trigger(name, eventData);
     };
@@ -201,34 +228,15 @@ var __hasProp = {}.hasOwnProperty,
 
   })();
   /*
-  	 #
-  */
-
-  InlineEditable = (function(_super) {
-    __extends(InlineEditable, _super);
-
-    function InlineEditable() {
-      _ref = InlineEditable.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
-    InlineEditable.prototype.contentTypes = ['inline'];
-
-    InlineEditable.prototype.init = function(element) {
-      this.element = element;
-      this.element.attr('contenteditable', true);
-      return this.trigger('editor.closepopovers');
-    };
-
-    return InlineEditable;
-
-  })(Editable);
-  /*
   	 # Abstract Popover Class
   */
 
   PopoverEditable = (function(_super) {
+    var _popoverContent;
+
     __extends(PopoverEditable, _super);
+
+    _popoverContent = '';
 
     function PopoverEditable(editor) {
       this.editor = editor;
@@ -303,10 +311,50 @@ var __hasProp = {}.hasOwnProperty,
       var types;
 
       types = this.contentTypes.join(', ');
-      return "<h1>" + types + " Editor</h1>";
+      if (_popoverContent) {
+        return _popoverContent;
+      } else {
+        return "<h1>" + types + " Editor</h1>";
+      }
+    };
+
+    /*
+    		 # @todo: update current popover content
+    */
+
+
+    PopoverEditable.prototype.setContent = function(value) {
+      return _popoverContent = value;
     };
 
     return PopoverEditable;
+
+  })(Editable);
+  /*
+  	 #
+  */
+
+  InlineEditable = (function(_super) {
+    __extends(InlineEditable, _super);
+
+    function InlineEditable() {
+      _ref = InlineEditable.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    InlineEditable.prototype.contentTypes = ['inline'];
+
+    InlineEditable.prototype.init = function(element) {
+      var _this = this;
+
+      this.element = element;
+      this.element.attr('contenteditable', true);
+      return element.on('click', function() {
+        return _this.trigger('editor.closepopovers');
+      });
+    };
+
+    return InlineEditable;
 
   })(Editable);
   /*
@@ -348,5 +396,6 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.PopoverEditable = PopoverEditable;
   window.editorComponents.InlineEditable = InlineEditable;
   window.editorComponents.DateEditable = DateEditable;
-  return window.editor = new Editor(['InlineEditable', 'DateEditable']);
+  window.editorComponents.MarkdownEditable = MarkdownEditable;
+  return window.editor = new Editor(['InlineEditable', 'DateEditable', 'MarkdownEditable']);
 })(jQuery);

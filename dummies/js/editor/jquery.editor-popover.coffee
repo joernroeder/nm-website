@@ -3,13 +3,15 @@
 do ($ = jQuery) ->
 
 	class Editor
-		contentTypes = {}
-		components = {}
+		_contentTypes = {}
+		_components = {}
 		events = {}
+
+		attrName: 'data-editor-type'
 		
 		constructor: (components) ->
 			$.map components, (component) =>
-				@addComponent component
+				addComponent component
 
 			init.call @
 
@@ -31,46 +33,59 @@ do ($ = jQuery) ->
 		trigger: (name, eventData) ->
 			if events[name] then events[name].fire eventData
 
+		###
+		 # @private
+		###
 		init = ->
-			$('[data-editor-type]').each (i, el) =>
+			$('[' + @attrName + ']').each (i, el) =>
 				$el = $ el
 				contentType = $el.data 'editor-type'
 
-				if -1 isnt $.inArray(contentType, Object.keys(contentTypes))
-					component = @getComponentByContentType contentType
+				if -1 isnt $.inArray(contentType, Object.keys(_contentTypes))
+					component = getComponentByContentType.call @, contentType
 					#component.setElement $el
+					$el.data 'editor-component-id', component.id
 					component.init $el
 
 
 		###
 		 # registers a new component
 		 #
-		 # @public
-		 #
+		 # @private
 		 # @param [string] name
 		###
-		addComponent: (name) ->
-			console.log 'add Component: ' + name
+		addComponent = (name) ->
+			if not window.editorComponents[name]
+				throw new ReferenceError "The Component '#{name}' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?"
 
+			console.log 'add Component: ' + name
 			component = new window.editorComponents[name](@)
 			$.map component.contentTypes, (type) =>
 				addContentType type, name
 
-			components[name] = []
-
-		getComponentByContentType: (type) ->
+		###
+		 # @private
+		###
+		getComponentByContentType = (type) ->
 			lowerType = type.toLowerCase()
-			componentName = contentTypes[lowerType]
+			componentName = _contentTypes[lowerType]
 			
-			return if componentName then @getComponent componentName else null
+			return if componentName then createComponent.call @, componentName else null
 
-		getComponent: (name) ->
+		###
+		 # @private
+		###
+		createComponent = (name) ->
 			if window.editorComponents[name]
 				component = new window.editorComponents[name](@)
-				components[name].push component
+				_components[component.id] = component
 				return component
+
 			else
 				return null
+
+		getComponent: (id) ->
+			if _components[id] then _components[id] else null
 
 
 		###
@@ -82,10 +97,10 @@ do ($ = jQuery) ->
 		###
 		addContentType = (type, componentName) ->
 			lowerType = type.toLowerCase()
-			if contentTypes[lowerType]
-				throw new Error 'Another Component (' + contentTypes[lowerType] + ') is already handling the content-type "' + type + '"'
+			if _contentTypes[lowerType]
+				throw new Error 'Another Component (' + _contentTypes[lowerType] + ') is already handling the content-type "' + type + '"'
 			else
-				contentTypes[lowerType] = componentName
+				_contentTypes[lowerType] = componentName
 
 
 	###
@@ -122,7 +137,7 @@ do ($ = jQuery) ->
 			name = if -1 isnt name.indexOf '.' then name else @name + '.' + name
 
 		trigger: (name, eventData = {}) ->
-			eventData['sender'] = @id
+			eventData['senderId'] = @id
 			name = getEventName name
 			@editor.trigger name, eventData
 
@@ -137,22 +152,11 @@ do ($ = jQuery) ->
 
 
 	###
-	 #
-	###
-	class InlineEditable extends Editable
-
-		contentTypes: ['inline']
-
-		init: (@element) ->
-			@element.attr 'contenteditable', true
-
-			@trigger 'editor.closepopovers'
-
-
-	###
 	 # Abstract Popover Class
 	###
 	class PopoverEditable extends Editable
+
+		_popoverContent = ''
 
 		constructor: (@editor) ->
 			if @.constructor.name is 'PopoverEditable'
@@ -214,7 +218,29 @@ do ($ = jQuery) ->
 
 		getContent: ->
 			types = @contentTypes.join ', '
-			"<h1>#{types} Editor</h1>"
+			return if _popoverContent then _popoverContent else "<h1>#{types} Editor</h1>"
+
+		###
+		 # @todo: update current popover content
+		###
+		setContent: (value) ->
+			_popoverContent = value
+
+
+	# ! --- Editable Sub-Classes ---
+
+	###
+	 #
+	###
+	class InlineEditable extends Editable
+
+		contentTypes: ['inline']
+
+		init: (@element) ->
+			@element.attr 'contenteditable', true
+
+			element.on 'click', =>
+				@trigger 'editor.closepopovers'
 
 
 	###
@@ -247,12 +273,12 @@ do ($ = jQuery) ->
 	# publish sub classes	
 	window.editorComponents.InlineEditable = InlineEditable
 	window.editorComponents.DateEditable = DateEditable
-	#window.editorComponents.MarkdownEditable = MarkdownEditable
+	window.editorComponents.MarkdownEditable = MarkdownEditable
 
 	# construction
 	window.editor = new Editor [
 		'InlineEditable'
 		'DateEditable'
-		#'MarkdownEditable'
+		'MarkdownEditable'
 	]
 			
