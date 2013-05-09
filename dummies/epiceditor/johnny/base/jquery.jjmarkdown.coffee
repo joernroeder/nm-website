@@ -16,11 +16,12 @@ class JJMarkdownEditor
 
 	currentDrag : null
 	dragCount: 0
+	fileDragPermitted: true
 
 	imageCache : []
 
 	rules :
-		img: /\[img\s{1,}(.*?)\]/gim
+		img: /\[img\s{1,}(.*?)\]/gi
 
 	constructor : (selector, opts) ->
 		@.options = $.extend {}, @.defaults, opts
@@ -81,29 +82,49 @@ class JJMarkdownEditor
 	parseMarkdown : ->
 
 		# @todo cleanup listeners
-		tocheck = markdown = marked @.$input._val()
+		raw = @.$input._val()
+		markdown = marked raw
+
 		# CUSTOM MARKDOWN
+		 
+		# 1. replace single images
 		
 		imgIds = []
 		imgReplacements = []
 		
-		while cap = @.rules.img.exec(tocheck)
+		while cap = @.rules.img.exec(markdown)
 				imgReplacements.push cap
-				imgIds.push parseInt(cap[1])
+				id = parseInt cap[1]
+				if $.inArray(id, imgIds) < 0 then imgIds.push parseInt(cap[1])
 
-		# replace images
+
 		markdownImageDfd = @.requestImagesByIds(imgIds)
 		markdownImageDfd.done =>
+			patternsUsed = []
 			cache = @.imageCache
-			$.each imgReplacements, (i, replace) ->
-				do (replace) ->
-					$.each cache, (j, obj) ->
+			$.each imgReplacements, (i, replace) =>
+				do (replace) =>
+					$.each cache, (j, obj) =>
 						if obj.id is parseInt(replace[1])
-							markdown = markdown.replace replace[0], obj.tag
+							# replace and insert the position within the editor
+							
+							pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
+							exp = new RegExp(pattern, 'gi')
+						
+							# only execute if pattern hasn't been used already
+							if $.inArray(pattern, patternsUsed) < 0
+								while cap = exp.exec(raw)
+									tag = @.insertDataIntoRawTag obj.tag, 'editor-pos' , cap['index']
+									tag = @.insertDataIntoRawTag tag, 'md-tag', pattern
 
+									markdown = markdown.replace replace[0], tag
 
-		$.when(markdownImageDfd).then ->
-			_this.$preview.html markdown
+							patternsUsed.push pattern
+
+		$.when(markdownImageDfd).then =>
+			@.$preview.trigger 'markdown:replaced'
+			@.$preview.html markdown
+			@.inlineDragAndDropSetup()
 			window.picturefill()
 
 
@@ -129,7 +150,7 @@ class JJMarkdownEditor
 				if $.isArray(data)
 					@.imageCache = @.imageCache.concat data
 
-
+	# this sets up the drag and drop for files
 	dragAndDropSetup : ->
 		$preview = @.$preview
 
@@ -138,6 +159,8 @@ class JJMarkdownEditor
 		# !- Dragging over the preview container: show our image dropzone
 
 		$preview.on 'dragover', (e) =>
+
+			if not @.fileDragPermitted then return
 
 			if not @.currentDrag
 				@.currentDrag =
@@ -190,6 +213,7 @@ class JJMarkdownEditor
 				return false
 
 		_setHideDropzoneTimeout = =>
+			if not @.currentDrag then return
 			clearTimeout @.currentDrag.hideDropzoneTimeout
 			@.currentDrag.hideDropzoneTimeout = setTimeout =>
 				@.currentDrag.$dropzone.hide().detach().show()
@@ -277,9 +301,9 @@ class JJMarkdownEditor
 
 						# insert rawMd at right position
 						if $target.is($preview)
-							@.$input._val nl + @.$input._val() + rawMd + nl
+							@.$input._val @.$input._val() + rawMd + nl
 						else
-							@.insertAtEditorPos $target, nl + rawMd + nl
+							@.insertAtEditorPos $target, rawMd + nl
 
 						# parse markdown again
 						@.parseMarkdown();
@@ -288,15 +312,23 @@ class JJMarkdownEditor
 					.always =>
 						$progressBar.remove()
 
-	insertAtEditorPos : ($el, md) ->
-		# not oembed, images
-		if not $el.is 'div'
-			# is probably normal paragraph
-			pos = $el.data 'editor-pos'
-			val = @.$input._val()
-			val = [val.slice(0, pos), md, val.slice(pos)].join ''
-			@.$input._val val
+	inlineDragAndDropSetup : () ->
+		###*
+		 * @todo  check if this is really necessary or if we handle that also via the dropzone
+		###
+		console.log 'inline drag and drop setup'
 
+	# !- Convenience functions
+
+	insertAtEditorPos : ($el, md) ->
+		pos = $el.data 'editor-pos'
+		val = @.$input._val()
+		val = [val.slice(0, pos), md, val.slice(pos)].join ''
+		@.$input._val val
+
+	insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
+		ltp = rawTag.indexOf '>'
+		[rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('');
 
 
 

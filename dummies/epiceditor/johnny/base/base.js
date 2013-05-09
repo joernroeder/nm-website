@@ -11,6 +11,12 @@
     $(document).on('dragover drop', function(e) {
       return e.preventDefault();
     });
+    $('#testimg').on('dragstart', function(e) {
+      return e.dataTransfer.setData('text/html', null);
+    });
+    $('#testarea').on('dragover', function(e) {
+      return console.log(e);
+    });
     return editor = new JJMarkdownEditor('#editor');
   });
 

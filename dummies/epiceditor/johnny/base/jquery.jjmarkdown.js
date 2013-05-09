@@ -22,10 +22,12 @@
 
     JJMarkdownEditor.prototype.dragCount = 0;
 
+    JJMarkdownEditor.prototype.fileDragPermitted = true;
+
     JJMarkdownEditor.prototype.imageCache = [];
 
     JJMarkdownEditor.prototype.rules = {
-      img: /\[img\s{1,}(.*?)\]/gim
+      img: /\[img\s{1,}(.*?)\]/gi
     };
 
     function JJMarkdownEditor(selector, opts) {
@@ -83,33 +85,52 @@
     };
 
     JJMarkdownEditor.prototype.parseMarkdown = function() {
-      var cap, imgIds, imgReplacements, markdown, markdownImageDfd, tocheck,
+      var cap, id, imgIds, imgReplacements, markdown, markdownImageDfd, raw,
         _this = this;
 
-      tocheck = markdown = marked(this.$input._val());
+      raw = this.$input._val();
+      markdown = marked(raw);
       imgIds = [];
       imgReplacements = [];
-      while (cap = this.rules.img.exec(tocheck)) {
+      while (cap = this.rules.img.exec(markdown)) {
         imgReplacements.push(cap);
-        imgIds.push(parseInt(cap[1]));
+        id = parseInt(cap[1]);
+        if ($.inArray(id, imgIds) < 0) {
+          imgIds.push(parseInt(cap[1]));
+        }
       }
       markdownImageDfd = this.requestImagesByIds(imgIds);
       markdownImageDfd.done(function() {
-        var cache;
+        var cache, patternsUsed;
 
+        patternsUsed = [];
         cache = _this.imageCache;
         return $.each(imgReplacements, function(i, replace) {
           return (function(replace) {
             return $.each(cache, function(j, obj) {
+              var exp, pattern, tag;
+
               if (obj.id === parseInt(replace[1])) {
-                return markdown = markdown.replace(replace[0], obj.tag);
+                pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
+                exp = new RegExp(pattern, 'gi');
+                if ($.inArray(pattern, patternsUsed) < 0) {
+                  while (cap = exp.exec(raw)) {
+                    tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', cap['index']);
+                    tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
+                    console.log(tag);
+                    markdown = markdown.replace(replace[0], tag);
+                  }
+                }
+                return patternsUsed.push(pattern);
               }
             });
           })(replace);
         });
       });
       return $.when(markdownImageDfd).then(function() {
+        _this.$preview.trigger('markdown:replaced');
         _this.$preview.html(markdown);
+        _this.inlineDragAndDropSetup();
         return window.picturefill();
       });
     };
@@ -155,6 +176,9 @@
       $preview.on('dragover', function(e) {
         var $dropzone, $target, $temp, currDrag, func, isContainer;
 
+        if (!_this.fileDragPermitted) {
+          return;
+        }
         if (!_this.currentDrag) {
           _this.currentDrag = {
             $dropzone: $('<div>', {
@@ -202,6 +226,9 @@
         }
       });
       _setHideDropzoneTimeout = function() {
+        if (!_this.currentDrag) {
+          return;
+        }
         clearTimeout(_this.currentDrag.hideDropzoneTimeout);
         return _this.currentDrag.hideDropzoneTimeout = setTimeout(function() {
           return _this.currentDrag.$dropzone.hide().detach().show();
@@ -291,9 +318,9 @@
               $dropzone.remove();
               nl = '  \n\n';
               if ($target.is($preview)) {
-                _this.$input._val(nl + _this.$input._val() + rawMd + nl);
+                _this.$input._val(_this.$input._val() + rawMd + nl);
               } else {
-                _this.insertAtEditorPos($target, nl + rawMd + nl);
+                _this.insertAtEditorPos($target, rawMd + nl);
               }
               return _this.parseMarkdown();
             }).always(function() {
@@ -304,15 +331,27 @@
       };
     };
 
+    JJMarkdownEditor.prototype.inlineDragAndDropSetup = function() {
+      /**
+      		 * @todo  check if this is really necessary or if we handle that also via the dropzone
+      */
+      return console.log('inline drag and drop setup');
+    };
+
     JJMarkdownEditor.prototype.insertAtEditorPos = function($el, md) {
       var pos, val;
 
-      if (!$el.is('div')) {
-        pos = $el.data('editor-pos');
-        val = this.$input._val();
-        val = [val.slice(0, pos), md, val.slice(pos)].join('');
-        return this.$input._val(val);
-      }
+      pos = $el.data('editor-pos');
+      val = this.$input._val();
+      val = [val.slice(0, pos), md, val.slice(pos)].join('');
+      return this.$input._val(val);
+    };
+
+    JJMarkdownEditor.prototype.insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
+      var ltp;
+
+      ltp = rawTag.indexOf('>');
+      return [rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('');
     };
 
     return JJMarkdownEditor;
