@@ -16,5 +16,6 @@ $(function() {
   $('#testarea').on('dragover', function(e) {
     return console.log(e);
   });
-  return editor = new JJMarkdownEditor('#editor');
+  editor = new JJMarkdownEditor('#editor');
+  return JJMarkdownEditor.setAsDraggable($('#testimg'));
 });

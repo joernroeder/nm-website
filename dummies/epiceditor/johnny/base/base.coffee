@@ -18,3 +18,5 @@ $ ->
 
 
 	editor = new JJMarkdownEditor '#editor'
+
+	JJMarkdownEditor.setAsDraggable $('#testimg')

@@ -1,5 +1,12 @@
 "use strict"
 
+###*
+ *
+ *	@todo  complete _cleanup function
+ *	@todo  check if the _bindDropHandler function can be simplified
+ * 
+###
+
 do ($ = jQuery) ->
 
 	class JJMarkdownEditor
@@ -25,12 +32,28 @@ do ($ = jQuery) ->
 		rules :
 			img: /\[img\s{1,}(.*?)\]/gi
 
+		pendingAjax: []
+
 		constructor : (selector, opts) ->
 			@.options = $.extend {}, @.defaults, opts
 			@.$input = if selector instanceof jQuery then selector else $(selector)
 			@.$input._val = @.$input[@.options.contentGetter]
 			@.$preview = if @.options.preview instanceof jQuery then @.options.preview else $(@.options.preview)
 			@.initialize()
+
+		# static function that allows certain elements to be dragged onto the preview area
+		@setAsDraggable : ($els) ->
+			if not JJMarkdownEditor.draggables then JJMarkdownEditor.draggables = []
+			# filter only those that have a md-tag
+			$els = $els.filter '[data-md-tag]'
+			if $els.length
+				JJMarkdownEditor.draggables.push $els
+				$els.on 'dragstart', (e) ->
+					JJMarkdownEditor._activeDraggable = $(@).data('md-tag').replace('\\[', '[').replace('\\]', ']')
+				$els.on 'dragend', (e) ->
+					JJMarkdownEditor._activeDraggable = null
+
+
 
 		_cleanupEvents : ->
 			@.$input.off 'keyup scroll'
@@ -83,7 +106,10 @@ do ($ = jQuery) ->
 
 		parseMarkdown : ->
 
-			# @todo cleanup listeners
+			# kill pending ajax requests
+			$.each @.pendingAjax, (i, pending) ->
+				if pending.readyState isnt 4 and pending.abort then pending.abort()
+			
 			raw = @.$input._val()
 			markdown = marked raw
 
@@ -122,8 +148,12 @@ do ($ = jQuery) ->
 										markdown = markdown.replace replace[0], tag
 
 								patternsUsed.push pattern
+			@.pendingAjax.push markdownImageDfd
 
 			$.when(markdownImageDfd).then =>
+				# assumes all ajax requests are done
+				@.pendingAjax = []
+
 				@.$preview.trigger 'markdown:replaced'
 				@.$preview.html markdown
 				@.inlineDragAndDropSetup()
@@ -138,7 +168,7 @@ do ($ = jQuery) ->
 				do (id) ->
 					found = false
 					$.each _this.imageCache, (j, obj) ->
-						found = true
+						if obj.id is id then found = true
 					if not found then reqIds.push id
 
 			# get the missing images from the server
@@ -246,10 +276,15 @@ do ($ = jQuery) ->
 					if @.inlineElementDragged
 						$el = $ @.inlineElementDragged
 
-						if $target.is $preview
-							@.moveElementToEditorBottom $el
-						else
-							@.moveElementAbove $el, $target
+						@.moveInlineElement $el, $target
+
+						$dropzone.remove()
+						# rerender
+						@.parseMarkdown()
+					else
+					# element moved in from outside the $preview-area
+					if md = JJMarkdownEditor._activeDraggable
+						@.insertAtEditorPosByEl $target, md
 
 						$dropzone.remove()
 						# rerender
@@ -314,10 +349,7 @@ do ($ = jQuery) ->
 							nl = '  \n\n'
 
 							# insert rawMd at right position
-							if $target.is($preview)
-								@.$input._val @.$input._val() + rawMd + nl
-							else
-								@.insertAtEditorPos $target, rawMd + nl
+							@.insertAtEditorPosByEl $target, rawMd + nl
 
 							# rerender
 							@.parseMarkdown();
@@ -345,23 +377,18 @@ do ($ = jQuery) ->
 
 		# !- Convenience functions
 		
-		# moves $el above $target within the editor
-		moveElementAbove : ($el, $target) ->
+		# moves $el above $target within the editor, if $target is $preview, append
+		moveInlineElement : ($el, $target) ->
 			mdTag = $el.data('md-tag').replace /\\/g, ''
-			# add lenght to position because we insert it before we remove it
-			pos = $el.data('editor-pos') + mdTag.length
-
+			
+			pos = $el.data('editor-pos')
+			
+			# add length to position because if the element is inserted before its original position
+			if not ($target.is @.$preview) and ($target.data('editor-pos') < pos) then pos += mdTag.length
 			# insert the mdTag in editor
-			@.insertAtEditorPos $target, mdTag
+			@.insertAtEditorPosByEl $target, mdTag
 			# remove the obsolete moved mdTag
 			@.removeAtEditorPos pos, mdTag
-
-		# moves $el to the editor bottom
-		moveElementToEditorBottom : ($el) ->
-			mdTag = $el.data('md-tag').replace /\\/g, ''
-			pos = $el.data('editor-pos')
-			@.removeAtEditorPos pos, mdTag
-			@.$input._val(@.$input._val() + mdTag)
 
 
 		removeAtEditorPos : (pos, md) ->
@@ -369,10 +396,14 @@ do ($ = jQuery) ->
 			val = [val.slice(0, pos), val.slice(pos + md.length)].join ''
 			@.$input._val val
 
-		insertAtEditorPos : ($el, md) ->
-			pos = $el.data 'editor-pos'
+		# inserts at the editor-pos of $el. if $el is the $preview-area, appends it
+		insertAtEditorPosByEl : ($el, md) ->
 			val = @.$input._val()
-			val = [val.slice(0, pos), md, val.slice(pos)].join ''
+			if $el.is @.$preview
+				val = val + md
+			else
+				pos = $el.data 'editor-pos'
+				val = [val.slice(0, pos), md, val.slice(pos)].join ''
 			@.$input._val val
 
 		insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
