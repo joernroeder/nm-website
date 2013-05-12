@@ -13,7 +13,7 @@ do ($ = jQuery) ->
 
 		defaults :
 			preview 			: '#preview'								# preview container selector
-			convertingDelay 	: 200								# interval in which the textarea is parsed (in ms)
+			parsingDelay	 	: 200								# interval in which the textarea is parsed (in ms)
 			hideDropzoneDelay 	: 1000 							# (ms) defines after which time the dropzone for images fades out when the Markdown field is left
 			imageUrl 			: '/_md_/images/docimage' 					# url to which the image requests should refer
 			errorMsg 			: 'Sorry, but there has been an error.' 	# default upload error message
@@ -77,7 +77,7 @@ do ($ = jQuery) ->
 				if delayTimeout then clearTimeout delayTimeout
 				delayTimeout = setTimeout ->
 					_this.parseMarkdown()
-				, _this.options.convertingDelay
+				, _this.options.parsingDelay
 
 			# Setup the scrolling listener
 			$els = $input.add $preview
@@ -254,10 +254,9 @@ do ($ = jQuery) ->
 
 			_bindDropHandler = =>
 				if @.currentDrag.dropHandlerBound then return false
-
 				@.currentDrag.dropHandlerBound = true
 
-				# ! - dropping on our dropzone: upload and handle response shit!
+				# ! - dropping on our dropzone
 				@.currentDrag.$dropzone.on 'drop', (e) =>
 
 					$dropzone = @.currentDrag.$dropzone
@@ -272,26 +271,28 @@ do ($ = jQuery) ->
 					# empty current drag object
 					@.currentDrag = null
 
+					# defer rerendering
+					dfdParse = new $.Deferred()
+					dfdParse.done =>
+						$dropzone.remove()
+						@.parseMarkdown()
+
 					# inline moving of element
-					if @.inlineElementDragged
-						$el = $ @.inlineElementDragged
-
-						@.moveInlineElement $el, $target
-
-						$dropzone.remove()
-						# rerender
-						@.parseMarkdown()
-					else
+					if el = @.inlineElementDragged
+						console.log el
+						console.log 'moving of inline element'
+						@.moveInlineElement $(el), $target
+						@.inlineElementDragged = null
+						dfdParse.resolve()
 					# element moved in from outside the $preview-area
-					if md = JJMarkdownEditor._activeDraggable
+					else if md = JJMarkdownEditor._activeDraggable
+						console.log 'draggable from outside'
 						@.insertAtEditorPosByEl $target, md
-
-						$dropzone.remove()
-						# rerender
-						@.parseMarkdown()
-					else
+						JJMarkdownEditor._activeDraggable = null
+						dfdParse.resolve()
 					# upload
-					if e.dataTransfer.files.length
+					else if e.dataTransfer.files.length
+						console.log 'uploading'
 						errorMsg = null
 
 						# ! - Progress bar shit
@@ -344,16 +345,11 @@ do ($ = jQuery) ->
 								@.imageCache.push obj
 								rawMd += '[img ' + obj.id + ']'
 
-							$dropzone.remove()
-
 							nl = '  \n\n'
-
 							# insert rawMd at right position
 							@.insertAtEditorPosByEl $target, rawMd + nl
 
-							# rerender
-							@.parseMarkdown();
-
+							dfdParse.resolve()
 
 						.always =>
 							$progressBar.remove()

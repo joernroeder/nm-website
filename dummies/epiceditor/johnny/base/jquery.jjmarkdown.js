@@ -12,7 +12,7 @@
   JJMarkdownEditor = (function() {
     JJMarkdownEditor.prototype.defaults = {
       preview: '#preview',
-      convertingDelay: 200,
+      parsingDelay: 200,
       hideDropzoneDelay: 1000,
       imageUrl: '/_md_/images/docimage',
       errorMsg: 'Sorry, but there has been an error.',
@@ -86,7 +86,7 @@
         }
         return delayTimeout = setTimeout(function() {
           return _this.parseMarkdown();
-        }, _this.options.convertingDelay);
+        }, _this.options.parsingDelay);
       });
       $els = $input.add($preview);
       scrollArea = null;
@@ -271,7 +271,7 @@
         }
         _this.currentDrag.dropHandlerBound = true;
         return _this.currentDrag.$dropzone.on('drop', function(e) {
-          var $dropzone, $el, $progressBar, $target, errorMsg, files, formData, hideDropzoneTimeout, md, req, _xhrProgress;
+          var $dropzone, $progressBar, $target, dfdParse, el, errorMsg, files, formData, hideDropzoneTimeout, md, req, _xhrProgress;
 
           $dropzone = _this.currentDrag.$dropzone;
           $target = _this.currentDrag.$target;
@@ -281,22 +281,24 @@
           }
           $dropzone.off('drop');
           _this.currentDrag = null;
-          if (_this.inlineElementDragged) {
-            $el = $(_this.inlineElementDragged);
-            _this.moveInlineElement($el, $target);
+          dfdParse = new $.Deferred();
+          dfdParse.done(function() {
             $dropzone.remove();
-            _this.parseMarkdown();
-          } else {
-
-          }
-          if (md = JJMarkdownEditor._activeDraggable) {
+            return _this.parseMarkdown();
+          });
+          if (el = _this.inlineElementDragged) {
+            console.log(el);
+            console.log('moving of inline element');
+            _this.moveInlineElement($(el), $target);
+            _this.inlineElementDragged = null;
+            return dfdParse.resolve();
+          } else if (md = JJMarkdownEditor._activeDraggable) {
+            console.log('draggable from outside');
             _this.insertAtEditorPosByEl($target, md);
-            $dropzone.remove();
-            _this.parseMarkdown();
-          } else {
-
-          }
-          if (e.dataTransfer.files.length) {
+            JJMarkdownEditor._activeDraggable = null;
+            return dfdParse.resolve();
+          } else if (e.dataTransfer.files.length) {
+            console.log('uploading');
             errorMsg = null;
             $progressBar = $('<div />', {
               "class": 'progress-bar'
@@ -360,10 +362,9 @@
                 _this.imageCache.push(obj);
                 rawMd += '[img ' + obj.id + ']';
               }
-              $dropzone.remove();
               nl = '  \n\n';
               _this.insertAtEditorPosByEl($target, rawMd + nl);
-              return _this.parseMarkdown();
+              return dfdParse.resolve();
             }).always(function() {
               return $progressBar.remove();
             });
