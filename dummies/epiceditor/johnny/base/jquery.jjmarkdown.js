@@ -287,18 +287,14 @@
             return _this.parseMarkdown();
           });
           if (el = _this.inlineElementDragged) {
-            console.log(el);
-            console.log('moving of inline element');
             _this.moveInlineElement($(el), $target);
             _this.inlineElementDragged = null;
             return dfdParse.resolve();
           } else if (md = JJMarkdownEditor._activeDraggable) {
-            console.log('draggable from outside');
             _this.insertAtEditorPosByEl($target, md);
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
           } else if (e.dataTransfer.files.length) {
-            console.log('uploading');
             errorMsg = null;
             $progressBar = $('<div />', {
               "class": 'progress-bar'

@@ -279,20 +279,16 @@ do ($ = jQuery) ->
 
 					# inline moving of element
 					if el = @.inlineElementDragged
-						console.log el
-						console.log 'moving of inline element'
 						@.moveInlineElement $(el), $target
 						@.inlineElementDragged = null
 						dfdParse.resolve()
 					# element moved in from outside the $preview-area
 					else if md = JJMarkdownEditor._activeDraggable
-						console.log 'draggable from outside'
 						@.insertAtEditorPosByEl $target, md
 						JJMarkdownEditor._activeDraggable = null
 						dfdParse.resolve()
 					# upload
 					else if e.dataTransfer.files.length
-						console.log 'uploading'
 						errorMsg = null
 
 						# ! - Progress bar shit
