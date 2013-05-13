@@ -28,9 +28,11 @@ do ($ = jQuery) ->
 		fileDragPermitted: true
 
 		imageCache : []
+		oembedCache: []
 
 		rules :
 			img: /\[img\s{1,}(.*?)\]/gi
+			oembed: /\[embed\s{1,}(.*?)\]/gi
 
 		pendingAjax: []
 
@@ -113,74 +115,24 @@ do ($ = jQuery) ->
 			raw = @.$input._val()
 			markdown = marked raw
 
-			# CUSTOM MARKDOWN
-			 
-			# 1. replace single images
-			
-			imgIds = []
-			imgReplacements = []
-			
-			while cap = @.rules.img.exec(markdown)
-					imgReplacements.push cap
-					id = parseInt cap[1]
-					if $.inArray(id, imgIds) < 0 then imgIds.push parseInt(cap[1])
+			# Custom parsers, always need to pass the markdown + the raw version
+			imgSeed = SingleImgMarkdownParser.requestData raw
+			embedSeed = OEmbedMarkdownParser.requestData raw
 
+			@.pendingAjax.push imgSeed
 
-			markdownImageDfd = @.requestImagesByIds(imgIds)
-			markdownImageDfd.done =>
-				patternsUsed = []
-				cache = @.imageCache
-				$.each imgReplacements, (i, replace) =>
-					do (replace) =>
-						$.each cache, (j, obj) =>
-							if obj.id is parseInt(replace[1])
-								# replace and insert the position within the editor
-								
-								pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
-								exp = new RegExp(pattern, 'gi')
-							
-								# only execute if pattern hasn't been used already
-								if $.inArray(pattern, patternsUsed) < 0
-									while cap = exp.exec(raw)
-										tag = @.insertDataIntoRawTag obj.tag, 'editor-pos' , cap['index']
-										tag = @.insertDataIntoRawTag tag, 'md-tag', pattern
-
-										markdown = markdown.replace replace[0], tag
-
-								patternsUsed.push pattern
-			@.pendingAjax.push markdownImageDfd
-
-			$.when(markdownImageDfd).then =>
+			$.when(imgSeed, embedSeed).then =>
 				# assumes all ajax requests are done
 				@.pendingAjax = []
+
+				# convert everything
+				markdown = SingleImgMarkdownParser.parseMarkdown markdown
+				markdown = OEmbedMarkdownParser.parseMarkdown markdown
 
 				@.$preview.trigger 'markdown:replaced'
 				@.$preview.html markdown
 				@.inlineDragAndDropSetup()
 				window.picturefill()
-
-
-		requestImagesByIds : (ids) ->
-			dfd = new $.Deferred()
-			_this = @
-			reqIds = []
-			$.each ids, (i, id) ->
-				do (id) ->
-					found = false
-					$.each _this.imageCache, (j, obj) ->
-						if obj.id is id then found = true
-					if not found then reqIds.push id
-
-			# get the missing images from the server
-			if not reqIds.length
-				dfd.resolve()
-				return dfd
-			url = @.options.imageUrl + '?ids=' + reqIds.join(',')
-
-			$.getJSON(url)
-				.done (data) =>
-					if $.isArray(data)
-						@.imageCache = @.imageCache.concat data
 
 		# this sets up the drag and drop for files
 		dragAndDropSetup : ->
@@ -354,7 +306,7 @@ do ($ = jQuery) ->
 			$preview = @.$preview
 
 			# moving of single inline images
-			$imgs = $preview.find('[data-md-tag][data-picture]')
+			$imgs = $preview.find('[data-md-tag]')
 			_this = @
 			$imgs.on 'dragstart', (e) ->
 				_this.inlineElementDragged = @
@@ -398,9 +350,82 @@ do ($ = jQuery) ->
 				val = [val.slice(0, pos), md, val.slice(pos)].join ''
 			@.$input._val val
 
-		insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
+
+	class CustomMarkdownParser
+		@rule: null
+		@url: ''
+		@cache: []
+		@_tempReplacements: null
+		@_raw : null
+
+		@requestData: (raw) ->
+			@_raw = raw
+			replacements = []
+			founds = []
+			while cap = @rule.exec raw
+				replacements.push cap
+				found = @parseFound cap[1]
+
+				if $.inArray(found, founds) < 0 then founds.push found
+
+			@_tempReplacements = replacements
+
+
+			dfd = new $.Deferred()
+			_this = @
+			reqIds = []
+			$.each founds, (i, id) ->
+				do (id) ->
+					found = false
+					$.each _this.cache, (j, obj) ->
+						if obj.id is id then found = true
+					if not found then reqIds.push id
+
+			# get the missing images from the server
+			if not reqIds.length
+				dfd.resolve()
+				return dfd
+			url = @url + '?ids=' + reqIds.join(',')
+
+			$.getJSON(url)
+				.done (data) =>
+					if $.isArray(data)
+						@cache = @.cache.concat data
+
+		@parseMarkdown: (md) ->
+			patternsUsed = []
+			raw = @._raw
+			cache = @cache
+
+			$.each @_tempReplacements, (i, replace) =>
+				do (replace) =>
+					$.each cache, (j, obj) =>
+						if obj.id is @parseFound(replace[1])
+							# replace and insert the position within the editor
+							pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
+							tag = @insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
+							tag = @insertDataIntoRawTag tag, 'md-tag', pattern
+							md = md.replace replace[0], tag
+			@_raw = null
+			@_tempReplacements = null
+			md
+
+		@parseFound: (data) ->
+			data
+
+		@insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
 			ltp = rawTag.indexOf '>'
-			[rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('');
+			[rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('')
+
+	class SingleImgMarkdownParser extends CustomMarkdownParser
+		@rule: /\[img\s{1,}(.*?)\]/gi
+		@url: '/_md_/images/docimage'
+		@parseFound: (data) ->
+			parseInt data
+
+	class OEmbedMarkdownParser extends CustomMarkdownParser
+		@rule: /\[embed\s{1,}(.*?)\]/gi
+		@url: '/_md_/oembed'
 
 
 

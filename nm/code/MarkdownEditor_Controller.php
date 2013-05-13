@@ -7,7 +7,8 @@ class MarkdownEditor_Controller extends Controller {
 	);
 */
 	private static $allowed_actions = array(
-		'images'
+		'images',
+		'oembed'
 	);
 
 	protected static $supported_class_types = array(
@@ -49,8 +50,7 @@ class MarkdownEditor_Controller extends Controller {
 		} else
 		if ($this->request->isGET()) {
 			$out = array();
-			$ids = $this->request->getVar('ids');
-			$ids = explode(',', $ids);
+			$ids = $this->getIds();
 
 			$list = DataList::create($this->imageType)->byIDs($ids);
 	
@@ -63,6 +63,30 @@ class MarkdownEditor_Controller extends Controller {
 
 			return json_encode($out);
 		}
+	}
+
+	public function oembed() {
+		if (!$this->isAuthorized()) return $this->methodNotAllowed();
+
+		if ($this->request->isGET()) {
+			$out = array();
+			$ids = $this->getIds();
+			
+			foreach ($ids as $shortcode) {
+				$oembed = Oembed::handle_shortcode(array('width' => '200'), $shortcode, null, null);
+				$out[] = array(
+					'tag'	=> $oembed,
+					'id'	=> $shortcode
+				);
+			}
+
+			return json_encode($out);
+		} else return $this->notFound();
+	}
+
+	private function getIds() {
+		$ids = $this->request->getVar('ids');
+		return explode(',', $ids);
 	}
 
 

@@ -6,8 +6,12 @@
  *	@todo  check if the _bindDropHandler function can be simplified
  *
 */
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
 (function($) {
-  var JJMarkdownEditor;
+  var CustomMarkdownParser, JJMarkdownEditor, OEmbedMarkdownParser, SingleImgMarkdownParser, _ref, _ref1;
 
   JJMarkdownEditor = (function() {
     JJMarkdownEditor.prototype.defaults = {
@@ -33,8 +37,11 @@
 
     JJMarkdownEditor.prototype.imageCache = [];
 
+    JJMarkdownEditor.prototype.oembedCache = [];
+
     JJMarkdownEditor.prototype.rules = {
-      img: /\[img\s{1,}(.*?)\]/gi
+      img: /\[img\s{1,}(.*?)\]/gi,
+      oembed: /\[embed\s{1,}(.*?)\]/gi
     };
 
     JJMarkdownEditor.prototype.pendingAjax = [];
@@ -110,7 +117,7 @@
     };
 
     JJMarkdownEditor.prototype.parseMarkdown = function() {
-      var cap, id, imgIds, imgReplacements, markdown, markdownImageDfd, raw,
+      var embedSeed, imgSeed, markdown, raw,
         _this = this;
 
       $.each(this.pendingAjax, function(i, pending) {
@@ -120,83 +127,17 @@
       });
       raw = this.$input._val();
       markdown = marked(raw);
-      imgIds = [];
-      imgReplacements = [];
-      while (cap = this.rules.img.exec(markdown)) {
-        imgReplacements.push(cap);
-        id = parseInt(cap[1]);
-        if ($.inArray(id, imgIds) < 0) {
-          imgIds.push(parseInt(cap[1]));
-        }
-      }
-      markdownImageDfd = this.requestImagesByIds(imgIds);
-      markdownImageDfd.done(function() {
-        var cache, patternsUsed;
-
-        patternsUsed = [];
-        cache = _this.imageCache;
-        return $.each(imgReplacements, function(i, replace) {
-          return (function(replace) {
-            return $.each(cache, function(j, obj) {
-              var exp, pattern, tag;
-
-              if (obj.id === parseInt(replace[1])) {
-                pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
-                exp = new RegExp(pattern, 'gi');
-                if ($.inArray(pattern, patternsUsed) < 0) {
-                  while (cap = exp.exec(raw)) {
-                    tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', cap['index']);
-                    tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
-                    markdown = markdown.replace(replace[0], tag);
-                  }
-                }
-                return patternsUsed.push(pattern);
-              }
-            });
-          })(replace);
-        });
-      });
-      this.pendingAjax.push(markdownImageDfd);
-      return $.when(markdownImageDfd).then(function() {
+      imgSeed = SingleImgMarkdownParser.requestData(raw);
+      embedSeed = OEmbedMarkdownParser.requestData(raw);
+      this.pendingAjax.push(imgSeed);
+      return $.when(imgSeed, embedSeed).then(function() {
         _this.pendingAjax = [];
+        markdown = SingleImgMarkdownParser.parseMarkdown(markdown);
+        markdown = OEmbedMarkdownParser.parseMarkdown(markdown);
         _this.$preview.trigger('markdown:replaced');
         _this.$preview.html(markdown);
         _this.inlineDragAndDropSetup();
         return window.picturefill();
-      });
-    };
-
-    JJMarkdownEditor.prototype.requestImagesByIds = function(ids) {
-      var dfd, reqIds, url,
-        _this = this;
-
-      dfd = new $.Deferred();
-      _this = this;
-      reqIds = [];
-      $.each(ids, function(i, id) {
-        return (function(id) {
-          var found;
-
-          found = false;
-          $.each(_this.imageCache, function(j, obj) {
-            if (obj.id === id) {
-              return found = true;
-            }
-          });
-          if (!found) {
-            return reqIds.push(id);
-          }
-        })(id);
-      });
-      if (!reqIds.length) {
-        dfd.resolve();
-        return dfd;
-      }
-      url = this.options.imageUrl + '?ids=' + reqIds.join(',');
-      return $.getJSON(url).done(function(data) {
-        if ($.isArray(data)) {
-          return _this.imageCache = _this.imageCache.concat(data);
-        }
       });
     };
 
@@ -374,7 +315,7 @@
         _this = this;
 
       $preview = this.$preview;
-      $imgs = $preview.find('[data-md-tag][data-picture]');
+      $imgs = $preview.find('[data-md-tag]');
       _this = this;
       $imgs.on('dragstart', function(e) {
         return _this.inlineElementDragged = this;
@@ -420,15 +361,138 @@
       return this.$input._val(val);
     };
 
-    JJMarkdownEditor.prototype.insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
+    return JJMarkdownEditor;
+
+  })();
+  CustomMarkdownParser = (function() {
+    function CustomMarkdownParser() {}
+
+    CustomMarkdownParser.rule = null;
+
+    CustomMarkdownParser.url = '';
+
+    CustomMarkdownParser.cache = [];
+
+    CustomMarkdownParser._tempReplacements = null;
+
+    CustomMarkdownParser._raw = null;
+
+    CustomMarkdownParser.requestData = function(raw) {
+      var cap, dfd, found, founds, replacements, reqIds, url,
+        _this = this;
+
+      this._raw = raw;
+      replacements = [];
+      founds = [];
+      while (cap = this.rule.exec(raw)) {
+        replacements.push(cap);
+        found = this.parseFound(cap[1]);
+        if ($.inArray(found, founds) < 0) {
+          founds.push(found);
+        }
+      }
+      this._tempReplacements = replacements;
+      dfd = new $.Deferred();
+      _this = this;
+      reqIds = [];
+      $.each(founds, function(i, id) {
+        return (function(id) {
+          found = false;
+          $.each(_this.cache, function(j, obj) {
+            if (obj.id === id) {
+              return found = true;
+            }
+          });
+          if (!found) {
+            return reqIds.push(id);
+          }
+        })(id);
+      });
+      if (!reqIds.length) {
+        dfd.resolve();
+        return dfd;
+      }
+      url = this.url + '?ids=' + reqIds.join(',');
+      return $.getJSON(url).done(function(data) {
+        if ($.isArray(data)) {
+          return _this.cache = _this.cache.concat(data);
+        }
+      });
+    };
+
+    CustomMarkdownParser.parseMarkdown = function(md) {
+      var cache, patternsUsed, raw,
+        _this = this;
+
+      patternsUsed = [];
+      raw = this._raw;
+      cache = this.cache;
+      $.each(this._tempReplacements, function(i, replace) {
+        return (function(replace) {
+          return $.each(cache, function(j, obj) {
+            var pattern, tag;
+
+            if (obj.id === _this.parseFound(replace[1])) {
+              pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
+              tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
+              tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
+              return md = md.replace(replace[0], tag);
+            }
+          });
+        })(replace);
+      });
+      this._raw = null;
+      this._tempReplacements = null;
+      return md;
+    };
+
+    CustomMarkdownParser.parseFound = function(data) {
+      return data;
+    };
+
+    CustomMarkdownParser.insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
       var ltp;
 
       ltp = rawTag.indexOf('>');
       return [rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('');
     };
 
-    return JJMarkdownEditor;
+    return CustomMarkdownParser;
 
   })();
+  SingleImgMarkdownParser = (function(_super) {
+    __extends(SingleImgMarkdownParser, _super);
+
+    function SingleImgMarkdownParser() {
+      _ref = SingleImgMarkdownParser.__super__.constructor.apply(this, arguments);
+      return _ref;
+    }
+
+    SingleImgMarkdownParser.rule = /\[img\s{1,}(.*?)\]/gi;
+
+    SingleImgMarkdownParser.url = '/_md_/images/docimage';
+
+    SingleImgMarkdownParser.parseFound = function(data) {
+      return parseInt(data);
+    };
+
+    return SingleImgMarkdownParser;
+
+  })(CustomMarkdownParser);
+  OEmbedMarkdownParser = (function(_super) {
+    __extends(OEmbedMarkdownParser, _super);
+
+    function OEmbedMarkdownParser() {
+      _ref1 = OEmbedMarkdownParser.__super__.constructor.apply(this, arguments);
+      return _ref1;
+    }
+
+    OEmbedMarkdownParser.rule = /\[embed\s{1,}(.*?)\]/gi;
+
+    OEmbedMarkdownParser.url = '/_md_/oembed';
+
+    return OEmbedMarkdownParser;
+
+  })(CustomMarkdownParser);
   return window.JJMarkdownEditor = JJMarkdownEditor;
 })(jQuery);
