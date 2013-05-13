@@ -708,11 +708,7 @@ InlineLexer.prototype.output = function(src) {
 
     // text
     if (cap = this.rules.text.exec(src)) {
-      console.log("TEXT BEFORE");
-      console.log(src);
       src = src.substring(cap[0].length);
-      console.log("TEXT AFTER");
-      console.log(src);
       out += escape(cap[0]);
       continue;
     }
