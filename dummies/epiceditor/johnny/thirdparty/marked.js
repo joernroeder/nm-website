@@ -466,7 +466,11 @@ var inline = {
   code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
   del: noop,
-  text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
+  // commented out by johnny, because added 'cite'
+  //text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/,
+  // custom by johnny
+  cite: /^""([\s\S]+?)""/,
+  text: /^[\s\S]+?(?=[\\<!\[_"*`]| {2,}\n|$)/
 };
 
 inline._inside = /(?:\[[^\]]*\]|[^\]]|\](?=[^\[]*\]))*/;
@@ -571,6 +575,7 @@ InlineLexer.prototype.output = function(src) {
     , cap;
 
   while (src) {
+
     // escape
     if (cap = this.rules.escape.exec(src)) {
       src = src.substring(cap[0].length);
@@ -654,6 +659,19 @@ InlineLexer.prototype.output = function(src) {
       continue;
     }
 
+    /*
+    ** custom edit by johnny
+     */
+    // cite
+    
+    if (cap = this.rules.cite.exec(src)) {
+      src = src.substring(cap[0].length);
+      out += '<cite>'
+        + this.output(cap[2] || cap[1])
+        + '</cite>';
+      continue;
+    }
+
     // em
     if (cap = this.rules.em.exec(src)) {
       src = src.substring(cap[0].length);
@@ -690,7 +708,11 @@ InlineLexer.prototype.output = function(src) {
 
     // text
     if (cap = this.rules.text.exec(src)) {
+      console.log("TEXT BEFORE");
+      console.log(src);
       src = src.substring(cap[0].length);
+      console.log("TEXT AFTER");
+      console.log(src);
       out += escape(cap[0]);
       continue;
     }
