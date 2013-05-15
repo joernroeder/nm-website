@@ -120,13 +120,17 @@
 								<p data-editor-type="markdown-split" data-editor-name="Description">
 # h1
 
-## h2 
+MarkdownedTeaser
+</p>
+								<p data-editor-type="markdown" data-editor-name="\Project.Description">MarkdownedTeaser</p>
 
-MarkdownedTeaser
-</p>
-								<p data-editor-type="markdown" data-editor-name="\Project.Description">
-MarkdownedTeaser
-</p>
+								<div data-editor-scope="\My.Fucki">
+									<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Image.Foo">{{Foo}}</a>
+									<div data-editor-scope="Image">
+										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Test">{{Test}}</a>
+										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Title">{{Title}}</a>
+									</div>
+								</div>
 							</section>
 						</article>
 					</section>
