@@ -8,7 +8,11 @@
  * (2013)
  * 
  * A jQuery Markdown Editor with input & preview area, featuring several extra markdown syntax extensions like [img {id}] and [embed {url}]
- * Requirements: jQuery, Tabby jQuery plugin & marked_jjedit.js
+ * Requirements: 
+ * 	- jQuery
+ * 	- Tabby jQuery plugin
+ * 	- marked_jjedit.js
+ * 	- jquery.jjfileupload.js
  *
 */
 
@@ -16,7 +20,7 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($) {
-  var CustomMarkdownParser, FileUpload, JJMarkdownEditor, OEmbedMarkdownParser, SingleImgMarkdownParser, _ref, _ref1;
+  var CustomMarkdownParser, JJMarkdownEditor, OEmbedMarkdownParser, SingleImgMarkdownParser, _ref, _ref1;
 
   JJMarkdownEditor = (function() {
     /**
@@ -290,7 +294,7 @@ var __hasProp = {}.hasOwnProperty,
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
           } else if (e.dataTransfer.files.length) {
-            uploadDfd = FileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.errorMsg);
+            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.errorMsg);
             return uploadDfd.done(function(data) {
               var imgParser, nl, obj, rawMd, _i, _len;
 
@@ -366,87 +370,6 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     return JJMarkdownEditor;
-
-  })();
-  FileUpload = (function() {
-    function FileUpload() {}
-
-    /**
-    		 * Uploads the dropped files (from the filesystem)
-    		 * @param  {Event} e               	The drop event
-    		 * @param  {jQuery} $dropzone       Where the files have been dropped
-    		 * @param  {string} postUrl         URL to post the files to
-    		 * @param  {string} defaultErrorMsg Default error message
-    		 * @param  {int} maxAllowed			Maximum allowed number of files
-    		 * @return {$.Deferred}             jQuery Deferred object
-    */
-
-
-    FileUpload["do"] = function(e, $dropzone, postUrl, defaultErrorMsg, maxAllowed) {
-      var $progressBar, errorMsg, files, formData, req, _xhrProgress,
-        _this = this;
-
-      errorMsg = null;
-      $progressBar = $('<div />', {
-        "class": 'progress-bar'
-      }).appendTo($dropzone);
-      $progressBar.append($('<div />'));
-      _xhrProgress = function(e) {
-        var completed;
-
-        if (e.lengthComputable) {
-          completed = (e.loaded / e.total) * 100;
-          return $progressBar.find('div').css('width', completed + '%');
-        }
-      };
-      files = e.dataTransfer.files;
-      formData = new FormData();
-      if (maxAllowed && files.length > maxAllowed) {
-        files = array_slice(files, 0, 3);
-      }
-      $.each(files, function(index, file) {
-        if (!file.type.match('image.*')) {
-          return errorMsg = 'Sorry, but ' + file.name + ' is no image, bitch!';
-        } else {
-          return formData.append(file.name, file);
-        }
-      });
-      if (errorMsg) {
-        console.log(errorMsg);
-        req = new $.Deferred();
-        req.reject({
-          error: errorMsg
-        });
-      } else {
-        req = $.ajax({
-          url: postUrl,
-          data: formData,
-          processData: false,
-          contentType: false,
-          type: 'POST',
-          xhr: function() {
-            var xhr;
-
-            xhr = new XMLHttpRequest();
-            xhr.upload.addEventListener('progress', _xhrProgress, false);
-            return xhr;
-          }
-        });
-      }
-      return req.pipe(function(res) {
-        if (!res.error) {
-          return res;
-        } else {
-          return $.Deferred().reject(res);
-        }
-      }).fail(function(res) {
-        return $dropzone.append('<p>' + defaultErrorMsg + '</p>');
-      }).always(function() {
-        return $progressBar.remove();
-      });
-    };
-
-    return FileUpload;
 
   })();
   CustomMarkdownParser = (function() {
