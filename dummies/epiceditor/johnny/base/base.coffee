@@ -9,9 +9,6 @@ $ ->
 	
 	$(document).on 'dragover drop', (e) ->
 		e.preventDefault()
-	
-	$('#testimg').on 'dragstart', (e) ->
-		e.dataTransfer.setData 'text/html', null
 
 	$('#testarea').on 'dragover', (e) ->
 		console.log e
@@ -20,6 +17,6 @@ $ ->
 	editor = new JJMarkdownEditor '#editor',
 		afterRender: ->
 			window.picturefill()
-		onChange: (data) ->
-			console.log data
-			
+
+	new JJImageDropzone '#dropper',
+		url: '/_md_/images/personimage'

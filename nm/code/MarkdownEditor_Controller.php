@@ -12,7 +12,8 @@ class MarkdownEditor_Controller extends Controller {
 	);
 
 	protected static $supported_class_types = array(
-		'docimage'	=> 'DocImage'
+		'docimage'		=> 'DocImage',
+		'personimage'	=> 'PersonImage'
 	);
 
 	protected static $preview_img_width = 300;
@@ -110,7 +111,7 @@ class MarkdownEditor_Controller extends Controller {
 			// change the name to make it really unique
 			$fileRequest['name'] = md5(time()) . '-' . $fileRequest['name'];
 
-			// make the ResponsiveImage sublass
+			// make the ResponsiveImage subclass
 			$imgObj = new $this->imageType();
 			$imgObj->write();
 

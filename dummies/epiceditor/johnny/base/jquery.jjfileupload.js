@@ -17,35 +17,27 @@
     		 * @param  {jQuery} $dropzone       Where the files have been dropped
     		 * @param  {string} postUrl         URL to post the files to
     		 * @param  {string} defaultErrorMsg Default error message
+    		 * @param  {stirng} filematch		String to match filenames to
     		 * @param  {int} maxAllowed			Maximum allowed number of files
     		 * @return {$.Deferred}             jQuery Deferred object
     */
 
 
-    JJFileUpload["do"] = function(e, $dropzone, postUrl, defaultErrorMsg, maxAllowed) {
-      var $progressBar, errorMsg, files, formData, req, _xhrProgress,
+    JJFileUpload["do"] = function(e, $dropzone, postUrl, defaultErrorMsg, filematch, maxAllowed) {
+      var $progress, errorMsg, files, formData, req,
         _this = this;
 
       errorMsg = null;
-      $progressBar = $('<div />', {
-        "class": 'progress-bar'
+      $progress = $('<div />', {
+        "class": 'progress'
       }).appendTo($dropzone);
-      $progressBar.append($('<div />'));
-      _xhrProgress = function(e) {
-        var completed;
-
-        if (e.lengthComputable) {
-          completed = (e.loaded / e.total) * 100;
-          return $progressBar.find('div').css('width', completed + '%');
-        }
-      };
       files = e.dataTransfer.files;
       formData = new FormData();
       if (maxAllowed && files.length > maxAllowed) {
         files = array_slice(files, 0, 3);
       }
       $.each(files, function(index, file) {
-        if (!file.type.match('image.*')) {
+        if (!file.type.match(filematch)) {
           return errorMsg = 'Sorry, but ' + file.name + ' is no image, bitch!';
         } else {
           return formData.append(file.name, file);
@@ -58,6 +50,7 @@
           error: errorMsg
         });
       } else {
+        $dropzone.addClass('uploading');
         req = $.ajax({
           url: postUrl,
           data: formData,
@@ -68,7 +61,14 @@
             var xhr;
 
             xhr = new XMLHttpRequest();
-            xhr.upload.addEventListener('progress', _xhrProgress, false);
+            xhr.upload.onprogress = function(evt) {
+              var completed;
+
+              if (evt.lengthComputable) {
+                completed = (evt.loaded / evt.total) * 100;
+                return $progress.html(completed + '%');
+              }
+            };
             return xhr;
           }
         });
@@ -82,7 +82,8 @@
       }).fail(function(res) {
         return $dropzone.append('<p>' + defaultErrorMsg + '</p>');
       }).always(function() {
-        return $progressBar.remove();
+        $dropzone.removeClass('uploading');
+        return $progress.remove();
       });
     };
 

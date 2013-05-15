@@ -302,13 +302,17 @@ var __hasProp = {}.hasOwnProperty,
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
           } else if (e.dataTransfer.files.length) {
-            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.errorMsg);
+            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.errorMsg, 'image.*');
             return uploadDfd.done(function(data) {
               var imgParser, nl, obj, rawMd, _i, _len;
 
               data = $.parseJSON(data);
               if (imgParser = _this.customParsers.SingleImgMarkdownParser) {
                 imgParser.cache = imgParser.cache.concat(data);
+                _this.trigger('newData', {
+                  className: imgParser.className,
+                  data: data
+                });
               }
               rawMd = '';
               for (_i = 0, _len = data.length; _i < _len; _i++) {

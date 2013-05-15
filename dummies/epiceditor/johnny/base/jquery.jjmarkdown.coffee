@@ -276,7 +276,7 @@ do ($ = jQuery) ->
 						dfdParse.resolve()
 					# upload
 					else if e.dataTransfer.files.length
-						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, @.options.errorMsg
+						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, @.options.errorMsg, 'image.*'
 
 						uploadDfd.done (data) =>
 					
@@ -285,6 +285,9 @@ do ($ = jQuery) ->
 							# add to our image cache, if existing
 							if imgParser = @.customParsers.SingleImgMarkdownParser
 								imgParser.cache = imgParser.cache.concat data
+
+								# trigger that there's new data which has been uploaded
+								@.trigger 'newData', { className: imgParser.className, data: data }
 
 							rawMd = ''
 							for obj in data

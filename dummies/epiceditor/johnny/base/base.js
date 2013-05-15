@@ -10,19 +10,16 @@ $(function() {
   $(document).on('dragover drop', function(e) {
     return e.preventDefault();
   });
-  $('#testimg').on('dragstart', function(e) {
-    return e.dataTransfer.setData('text/html', null);
-  });
   $('#testarea').on('dragover', function(e) {
     return console.log(e);
   });
   JJMarkdownEditor.setAsDraggable($('#testimg'));
-  return editor = new JJMarkdownEditor('#editor', {
+  editor = new JJMarkdownEditor('#editor', {
     afterRender: function() {
       return window.picturefill();
-    },
-    onChange: function(data) {
-      return console.log(data);
     }
+  });
+  return new JJImageDropzone('#dropper', {
+    url: '/_md_/images/personimage'
   });
 });
