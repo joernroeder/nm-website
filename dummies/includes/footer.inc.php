@@ -19,8 +19,10 @@
 
 		<!-- JJMarkdown -->
 		<script src="/responsive-image/thirdparty/picturefill/picturefill.js" type="text/javascript"></script>
-		<script src="/dummies/epiceditor/johnny/thirdparty/marked.js" type="text/javascript"></script>
 		<script src="/dummies/epiceditor/johnny/thirdparty/jquery.tabby.js" type="text/javascript"></script>
+
+		<script src="/dummies/epiceditor/johnny/base/marked_jjedit.js" type="text/javascript"></script>
+		<script src="/dummies/epiceditor/johnny/base/jquery.jjfileupload.js" type="text/javascript"></script>
 		<script src="/dummies/epiceditor/johnny/base/jquery.jjMarkdown.js" type="text/javascript"></script>
 
 		<script src="/dummies/js/editor/jquery.editor-popover.js"></script>
