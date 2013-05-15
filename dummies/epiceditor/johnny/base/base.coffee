@@ -16,7 +16,9 @@ $ ->
 	$('#testarea').on 'dragover', (e) ->
 		console.log e
 
-
-	editor = new JJMarkdownEditor '#editor'
-
 	JJMarkdownEditor.setAsDraggable $('#testimg')
+	editor = new JJMarkdownEditor '#editor',
+		afterRender: ->
+			window.picturefill()
+		onChange: (data) ->
+			console.log data

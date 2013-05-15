@@ -16,6 +16,13 @@ $(function() {
   $('#testarea').on('dragover', function(e) {
     return console.log(e);
   });
-  editor = new JJMarkdownEditor('#editor');
-  return JJMarkdownEditor.setAsDraggable($('#testimg'));
+  JJMarkdownEditor.setAsDraggable($('#testimg'));
+  return editor = new JJMarkdownEditor('#editor', {
+    afterRender: function() {
+      return window.picturefill();
+    },
+    onChange: function(data) {
+      return console.log(data);
+    }
+  });
 });

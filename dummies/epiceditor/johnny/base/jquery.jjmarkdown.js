@@ -2,8 +2,13 @@
 "use strict";
 /**
  *
- *	@todo  complete _cleanup function
- *	@todo  check if the _bindDropHandler function can be simplified
+ * JJMarkdownEditor 
+ * v.0.0.1
+ *
+ * (2013)
+ * 
+ * A jQuery Markdown Editor with input & preview area, featuring several extra markdown syntax extensions like [img {id}] and [embed {url}]
+ * Requirements: jQuery, Tabby jQuery plugin & marked_jjedit.js
  *
 */
 
@@ -14,13 +19,24 @@ var __hasProp = {}.hasOwnProperty,
   var CustomMarkdownParser, JJMarkdownEditor, OEmbedMarkdownParser, SingleImgMarkdownParser, _ref, _ref1;
 
   JJMarkdownEditor = (function() {
+    /**
+    		 * 
+    		 * Default options
+    		 *
+    */
+
+    var setAsActiveDraggable;
+
     JJMarkdownEditor.prototype.defaults = {
       preview: '#preview',
       parsingDelay: 200,
       hideDropzoneDelay: 1000,
-      imageUrl: '/_md_/images/docimage',
       errorMsg: 'Sorry, but there has been an error.',
-      contentGetter: 'val'
+      contentGetter: 'val',
+      customParsers: ['SingleImgMarkdownParser', 'OEmbedMarkdownParser'],
+      customParserOptions: {},
+      afterRender: null,
+      onChange: null
     };
 
     JJMarkdownEditor.prototype.$input = null;
@@ -35,16 +51,9 @@ var __hasProp = {}.hasOwnProperty,
 
     JJMarkdownEditor.prototype.fileDragPermitted = true;
 
-    JJMarkdownEditor.prototype.imageCache = [];
-
-    JJMarkdownEditor.prototype.oembedCache = [];
-
-    JJMarkdownEditor.prototype.rules = {
-      img: /\[img\s{1,}(.*?)\]/gi,
-      oembed: /\[embed\s{1,}(.*?)\]/gi
-    };
-
     JJMarkdownEditor.prototype.pendingAjax = [];
+
+    JJMarkdownEditor.prototype.customParsers = {};
 
     function JJMarkdownEditor(selector, opts) {
       this.options = $.extend({}, this.defaults, opts);
@@ -54,6 +63,24 @@ var __hasProp = {}.hasOwnProperty,
       this.initialize();
     }
 
+    /**
+    		 *
+    		 * Static functions that allow DOM Elements to be dragged into the Preview area of any JJMarkdown Editor
+    		 *
+    */
+
+
+    setAsActiveDraggable = function(e) {
+      var set;
+
+      if (e.type === 'dragstart') {
+        set = $(e.currentTarget).data('md-tag').replace('\\[', '[').replace('\\]', ']');
+      } else {
+        null;
+      }
+      return JJMarkdownEditor._activeDraggable = set;
+    };
+
     JJMarkdownEditor.setAsDraggable = function($els) {
       if (!JJMarkdownEditor.draggables) {
         JJMarkdownEditor.draggables = [];
@@ -61,28 +88,41 @@ var __hasProp = {}.hasOwnProperty,
       $els = $els.filter('[data-md-tag]');
       if ($els.length) {
         JJMarkdownEditor.draggables.push($els);
-        $els.on('dragstart', function(e) {
-          return JJMarkdownEditor._activeDraggable = $(this).data('md-tag').replace('\\[', '[').replace('\\]', ']');
-        });
-        return $els.on('dragend', function(e) {
-          return JJMarkdownEditor._activeDraggable = null;
+        return $els.on('dragstart dragend', setAsActiveDraggable);
+      }
+    };
+
+    JJMarkdownEditor.cleanupDraggables = function() {
+      if (JJMarkdownEditor.draggables) {
+        return $.each(JJMarkdownEditor.draggables, function(i, $els) {
+          return $els.off('dragstart dragend');
         });
       }
     };
 
-    JJMarkdownEditor.prototype._cleanupEvents = function() {
-      this.$input.off('keyup scroll');
-      this.$preview.off('scroll dragover dragleave');
-      return this.$dropzone.off('drop');
+    JJMarkdownEditor.prototype.cleanup = function() {
+      this.$input.remove();
+      this.$preview.remove();
+      return this.$dropzone.remove();
     };
 
     JJMarkdownEditor.prototype.initialize = function() {
-      var $els, $input, $preview, scrollArea, _this;
+      var $els, $input, $preview, scrollArea,
+        _this = this;
 
+      $.each(this.options.customParsers, function(i, parser) {
+        var opts, p;
+
+        p = window[parser];
+        if (p) {
+          opts = _this.options.customParserOptions[parser];
+          return _this.customParsers[parser] = new p(opts);
+        }
+      });
       $input = this.$input;
-      $input.tabby().trigger('keyup');
       $preview = this.$preview;
       _this = this;
+      $input.tabby().trigger('keyup');
       this.delayTimeout = null;
       $input.off('keyup').on('keyup', function(e) {
         var $this, delayTimeout;
@@ -117,7 +157,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJMarkdownEditor.prototype.parseMarkdown = function() {
-      var embedSeed, imgSeed, markdown, raw,
+      var markdown, raw, seeds,
         _this = this;
 
       $.each(this.pendingAjax, function(i, pending) {
@@ -127,17 +167,30 @@ var __hasProp = {}.hasOwnProperty,
       });
       raw = this.$input._val();
       markdown = marked(raw);
-      imgSeed = SingleImgMarkdownParser.requestData(raw);
-      embedSeed = OEmbedMarkdownParser.requestData(raw);
-      this.pendingAjax.push(imgSeed);
-      return $.when(imgSeed, embedSeed).then(function() {
+      seeds = [];
+      $.each(this.customParsers, function(i, parser) {
+        var seed;
+
+        seed = parser.requestData(raw);
+        seeds.push(seed);
+        if (!parser.noAjax) {
+          return _this.pendingAjax.push(seed);
+        }
+      });
+      return $.when.apply($, seeds).then(function() {
         _this.pendingAjax = [];
-        markdown = SingleImgMarkdownParser.parseMarkdown(markdown);
-        markdown = OEmbedMarkdownParser.parseMarkdown(markdown);
+        $.each(_this.customParsers, function(i, parser) {
+          return markdown = parser.parseMarkdown(markdown);
+        });
         _this.$preview.trigger('markdown:replaced');
         _this.$preview.html(markdown);
         _this.inlineDragAndDropSetup();
-        return window.picturefill();
+        if (_this.options.afterRender) {
+          _this.options.afterRender();
+        }
+        if (_this.options.onChange) {
+          return _this.options.onChange(raw);
+        }
       });
     };
 
@@ -296,7 +349,6 @@ var __hasProp = {}.hasOwnProperty,
               rawMd = '';
               for (_i = 0, _len = data.length; _i < _len; _i++) {
                 obj = data[_i];
-                _this.imageCache.push(obj);
                 rawMd += '[img ' + obj.id + ']';
               }
               nl = '  \n\n';
@@ -305,6 +357,8 @@ var __hasProp = {}.hasOwnProperty,
             }).always(function() {
               return $progressBar.remove();
             });
+          } else {
+            return $dropzone.remove();
           }
         });
       };
@@ -365,19 +419,30 @@ var __hasProp = {}.hasOwnProperty,
 
   })();
   CustomMarkdownParser = (function() {
-    function CustomMarkdownParser() {}
+    CustomMarkdownParser.prototype.rule = null;
 
-    CustomMarkdownParser.rule = null;
+    CustomMarkdownParser.prototype.url = '';
 
-    CustomMarkdownParser.url = '';
+    CustomMarkdownParser.prototype.cache = [];
 
-    CustomMarkdownParser.cache = [];
+    CustomMarkdownParser.prototype.usedIds = [];
 
-    CustomMarkdownParser._tempReplacements = null;
+    CustomMarkdownParser.prototype._tempReplacements = null;
 
-    CustomMarkdownParser._raw = null;
+    CustomMarkdownParser.prototype._raw = null;
 
-    CustomMarkdownParser.requestData = function(raw) {
+    function CustomMarkdownParser(opts) {
+      var a, b;
+
+      if (opts) {
+        for (a in opts) {
+          b = opts[a];
+          this[a] = b;
+        }
+      }
+    }
+
+    CustomMarkdownParser.prototype.requestData = function(raw) {
       var cap, dfd, found, founds, replacements, reqIds, url,
         _this = this;
 
@@ -420,41 +485,54 @@ var __hasProp = {}.hasOwnProperty,
       });
     };
 
-    CustomMarkdownParser.parseMarkdown = function(md) {
-      var cache, patternsUsed, raw,
+    CustomMarkdownParser.prototype.parseMarkdown = function(md) {
+      var cache, patternsUsed, raw, usedIds,
         _this = this;
 
       patternsUsed = [];
       raw = this._raw;
       cache = this.cache;
+      usedIds = [];
       $.each(this._tempReplacements, function(i, replace) {
-        return (function(replace) {
-          return $.each(cache, function(j, obj) {
-            var pattern, tag;
+        return $.each(cache, function(j, obj) {
+          var pattern, tag;
 
-            if (obj.id === _this.parseFound(replace[1])) {
-              pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
-              tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
-              tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
-              return md = md.replace(replace[0], tag);
-            }
-          });
-        })(replace);
+          if (obj.id === _this.parseFound(replace[1])) {
+            usedIds.push(obj.id);
+            pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
+            tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
+            tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
+            return md = md.replace(replace[0], tag);
+          }
+        });
       });
       this._raw = null;
       this._tempReplacements = null;
+      this.usedIds = $.unique(usedIds);
       return md;
     };
 
-    CustomMarkdownParser.parseFound = function(data) {
+    CustomMarkdownParser.prototype.parseFound = function(data) {
       return data;
     };
 
-    CustomMarkdownParser.insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
+    CustomMarkdownParser.prototype.insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
       var ltp;
 
       ltp = rawTag.indexOf('>');
       return [rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('');
+    };
+
+    CustomMarkdownParser.prototype.returnIds = function() {
+      var out;
+
+      out = {
+        ids: this.usedIds
+      };
+      if (this.className) {
+        out.className = this.className;
+      }
+      return out;
     };
 
     return CustomMarkdownParser;
@@ -468,11 +546,13 @@ var __hasProp = {}.hasOwnProperty,
       return _ref;
     }
 
-    SingleImgMarkdownParser.rule = /\[img\s{1,}(.*?)\]/gi;
+    SingleImgMarkdownParser.prototype.className = 'DocImage';
 
-    SingleImgMarkdownParser.url = '/_md_/images/docimage';
+    SingleImgMarkdownParser.prototype.rule = /\[img\s{1,}(.*?)\]/gi;
 
-    SingleImgMarkdownParser.parseFound = function(data) {
+    SingleImgMarkdownParser.prototype.url = '/_md_/images/docimage';
+
+    SingleImgMarkdownParser.prototype.parseFound = function(data) {
       return parseInt(data);
     };
 
@@ -487,12 +567,14 @@ var __hasProp = {}.hasOwnProperty,
       return _ref1;
     }
 
-    OEmbedMarkdownParser.rule = /\[embed\s{1,}(.*?)\]/gi;
+    OEmbedMarkdownParser.prototype.rule = /\[embed\s{1,}(.*?)\]/gi;
 
-    OEmbedMarkdownParser.url = '/_md_/oembed';
+    OEmbedMarkdownParser.prototype.url = '/_md_/oembed';
 
     return OEmbedMarkdownParser;
 
   })(CustomMarkdownParser);
-  return window.JJMarkdownEditor = JJMarkdownEditor;
+  window.JJMarkdownEditor = JJMarkdownEditor;
+  window.SingleImgMarkdownParser = SingleImgMarkdownParser;
+  return window.OEmbedMarkdownParser = OEmbedMarkdownParser;
 })(jQuery);

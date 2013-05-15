@@ -2,8 +2,13 @@
 
 ###*
  *
- *	@todo  complete _cleanup function
- *	@todo  check if the _bindDropHandler function can be simplified
+ * JJMarkdownEditor 
+ * v.0.0.1
+ *
+ * (2013)
+ * 
+ * A jQuery Markdown Editor with input & preview area, featuring several extra markdown syntax extensions like [img {id}] and [embed {url}]
+ * Requirements: jQuery, Tabby jQuery plugin & marked_jjedit.js
  * 
 ###
 
@@ -11,13 +16,21 @@ do ($ = jQuery) ->
 
 	class JJMarkdownEditor
 
+		###*
+		 * 
+		 * Default options
+		 * 
+		###
 		defaults :
-			preview 			: '#preview'								# preview container selector
-			parsingDelay	 	: 200								# interval in which the textarea is parsed (in ms)
-			hideDropzoneDelay 	: 1000 							# (ms) defines after which time the dropzone for images fades out when the Markdown field is left
-			imageUrl 			: '/_md_/images/docimage' 					# url to which the image requests should refer
-			errorMsg 			: 'Sorry, but there has been an error.' 	# default upload error message
-			contentGetter		: 'val'
+			preview 			: '#preview'												# Sepcifies the preview area: Accepts either CSS-selector or jQuery object
+			parsingDelay	 	: 200														# Interval in which the markdown should be parsed (in ms)
+			hideDropzoneDelay 	: 1000 														# Defines after which time the dropzone within the preview area fades out when the markdown field is left (in ms)
+			errorMsg 			: 'Sorry, but there has been an error.' 					# Default error message
+			contentGetter		: 'val'														# Defines how to retrieve the input area's data. Default is 'val' (thus $input.val())
+			customParsers		: ['SingleImgMarkdownParser', 'OEmbedMarkdownParser']		# Defines which custom markdown parsers are active 
+			customParserOptions	: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
+			afterRender			: null														# Method to call after the markdown rendering has been done
+			onChange			: null														# Function to pass the data to, after the parsing has been done
 
 		$input : null
 		$preview: null
@@ -27,14 +40,8 @@ do ($ = jQuery) ->
 		dragCount: 0
 		fileDragPermitted: true
 
-		imageCache : []
-		oembedCache: []
-
-		rules :
-			img: /\[img\s{1,}(.*?)\]/gi
-			oembed: /\[embed\s{1,}(.*?)\]/gi
-
-		pendingAjax: []
+		pendingAjax : []
+		customParsers : {}
 
 		constructor : (selector, opts) ->
 			@.options = $.extend {}, @.defaults, opts
@@ -43,33 +50,52 @@ do ($ = jQuery) ->
 			@.$preview = if @.options.preview instanceof jQuery then @.options.preview else $(@.options.preview)
 			@.initialize()
 
-		# static function that allows certain elements to be dragged onto the preview area
+		###*
+		 *
+		 * Static functions that allow DOM Elements to be dragged into the Preview area of any JJMarkdown Editor
+		 * 
+		###
+
+		# private
+		setAsActiveDraggable = (e) ->
+			if e.type is 'dragstart' then set = $(e.currentTarget).data('md-tag').replace('\\[', '[').replace('\\]', ']') else null
+			JJMarkdownEditor._activeDraggable = set
+
 		@setAsDraggable : ($els) ->
 			if not JJMarkdownEditor.draggables then JJMarkdownEditor.draggables = []
 			# filter only those that have a md-tag
 			$els = $els.filter '[data-md-tag]'
 			if $els.length
 				JJMarkdownEditor.draggables.push $els
-				$els.on 'dragstart', (e) ->
-					JJMarkdownEditor._activeDraggable = $(@).data('md-tag').replace('\\[', '[').replace('\\]', ']')
-				$els.on 'dragend', (e) ->
-					JJMarkdownEditor._activeDraggable = null
+				$els.on 'dragstart dragend', setAsActiveDraggable
+
+		@cleanupDraggables: ->
+			if JJMarkdownEditor.draggables
+				$.each JJMarkdownEditor.draggables, (i, $els) ->
+					$els.off 'dragstart dragend'
 
 
-
-		_cleanupEvents : ->
-			@.$input.off 'keyup scroll'
-			@.$preview.off 'scroll dragover dragleave'
-			@.$dropzone.off 'drop'
-
+		# removes input-,preview- and dropzone, unbinding all events
+		cleanup : ->
+			@.$input.remove()
+			@.$preview.remove()
+			@.$dropzone.remove()
 
 		initialize : ->
-			# Support tabs in textarea and trigger a keyup to init preview
-			$input = @.$input
-			$input.tabby().trigger 'keyup'
-			$preview = @.$preview
+			
+			# setup the used custom parsers
+			$.each @.options.customParsers, (i, parser) =>
+				p = window[parser]
+				if p
+					opts = @.options.customParserOptions[parser]
+					@.customParsers[parser] = new p(opts)
 
+			$input = @.$input
+			$preview = @.$preview
 			_this = this
+
+			# Support tabs in textarea and trigger a keyup to init preview
+			$input.tabby().trigger 'keyup'
 
 			@.delayTimeout = null
 
@@ -107,7 +133,6 @@ do ($ = jQuery) ->
 			@
 
 		parseMarkdown : ->
-
 			# kill pending ajax requests
 			$.each @.pendingAjax, (i, pending) ->
 				if pending.readyState isnt 4 and pending.abort then pending.abort()
@@ -115,24 +140,27 @@ do ($ = jQuery) ->
 			raw = @.$input._val()
 			markdown = marked raw
 
-			# Custom parsers, always need to pass the markdown + the raw version
-			imgSeed = SingleImgMarkdownParser.requestData raw
-			embedSeed = OEmbedMarkdownParser.requestData raw
+			# Custom parsers, always need to pass the raw version
+			seeds = []
+			$.each @.customParsers, (i, parser) =>
+				seed = parser.requestData raw
+				seeds.push seed
+				if not parser.noAjax then @.pendingAjax.push seed
 
-			@.pendingAjax.push imgSeed
-
-			$.when(imgSeed, embedSeed).then =>
+			$.when.apply($, seeds).then =>
 				# assumes all ajax requests are done
 				@.pendingAjax = []
 
 				# convert everything
-				markdown = SingleImgMarkdownParser.parseMarkdown markdown
-				markdown = OEmbedMarkdownParser.parseMarkdown markdown
+				$.each @.customParsers, (i, parser) =>
+					markdown = parser.parseMarkdown markdown
 
 				@.$preview.trigger 'markdown:replaced'
 				@.$preview.html markdown
 				@.inlineDragAndDropSetup()
-				window.picturefill()
+
+				if @.options.afterRender then @.options.afterRender()
+				if @.options.onChange then @.options.onChange raw
 
 		# this sets up the drag and drop for files
 		dragAndDropSetup : ->
@@ -290,7 +318,6 @@ do ($ = jQuery) ->
 							imgs = []
 							rawMd = ''
 							for obj in data
-								@.imageCache.push obj
 								rawMd += '[img ' + obj.id + ']'
 
 							nl = '  \n\n'
@@ -301,6 +328,9 @@ do ($ = jQuery) ->
 
 						.always =>
 							$progressBar.remove()
+					else
+						# always remove dropzone
+						$dropzone.remove()
 
 		inlineDragAndDropSetup : () ->
 			$preview = @.$preview
@@ -352,23 +382,29 @@ do ($ = jQuery) ->
 
 
 	class CustomMarkdownParser
-		@rule: null
-		@url: ''
-		@cache: []
-		@_tempReplacements: null
-		@_raw : null
+		rule: null
+		url: ''
+		cache: []
+		usedIds: []
+		_tempReplacements: null
+		_raw : null
 
-		@requestData: (raw) ->
-			@_raw = raw
+		constructor: (opts) ->
+			if opts
+				for a, b of opts
+					@[a] = b
+
+		requestData: (raw) ->
+			@._raw = raw
 			replacements = []
 			founds = []
-			while cap = @rule.exec raw
+			while cap = @.rule.exec raw
 				replacements.push cap
-				found = @parseFound cap[1]
+				found = @.parseFound cap[1]
 
 				if $.inArray(found, founds) < 0 then founds.push found
 
-			@_tempReplacements = replacements
+			@._tempReplacements = replacements
 
 
 			dfd = new $.Deferred()
@@ -385,48 +421,58 @@ do ($ = jQuery) ->
 			if not reqIds.length
 				dfd.resolve()
 				return dfd
-			url = @url + '?ids=' + reqIds.join(',')
+			url = @.url + '?ids=' + reqIds.join(',')
 
 			$.getJSON(url)
 				.done (data) =>
 					if $.isArray(data)
-						@cache = @.cache.concat data
+						@.cache = @.cache.concat data
 
-		@parseMarkdown: (md) ->
+		parseMarkdown: (md) ->
 			patternsUsed = []
 			raw = @._raw
-			cache = @cache
+			cache = @.cache
+			usedIds = []
+			$.each @._tempReplacements, (i, replace) =>
+				$.each cache, (j, obj) =>
+					if obj.id is @.parseFound(replace[1])
+						usedIds.push obj.id
+						# replace and insert the position within the editor
+						pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
+						tag = @.insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
+						tag = @.insertDataIntoRawTag tag, 'md-tag', pattern
+						md = md.replace replace[0], tag
 
-			$.each @_tempReplacements, (i, replace) =>
-				do (replace) =>
-					$.each cache, (j, obj) =>
-						if obj.id is @parseFound(replace[1])
-							# replace and insert the position within the editor
-							pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
-							tag = @insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
-							tag = @insertDataIntoRawTag tag, 'md-tag', pattern
-							md = md.replace replace[0], tag
-			@_raw = null
-			@_tempReplacements = null
+			@._raw = null
+			@._tempReplacements = null
+			@.usedIds = $.unique usedIds
 			md
 
-		@parseFound: (data) ->
+		parseFound: (data) ->
 			data
 
-		@insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
+		insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
 			ltp = rawTag.indexOf '>'
 			[rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('')
 
+		returnIds: ->
+			out = {ids: @.usedIds}
+			if @.className then out.className = @.className
+			out
+
 	class SingleImgMarkdownParser extends CustomMarkdownParser
-		@rule: /\[img\s{1,}(.*?)\]/gi
-		@url: '/_md_/images/docimage'
-		@parseFound: (data) ->
+		className: 'DocImage'
+		rule: /\[img\s{1,}(.*?)\]/gi
+		url: '/_md_/images/docimage'
+		parseFound: (data) ->
 			parseInt data
 
 	class OEmbedMarkdownParser extends CustomMarkdownParser
-		@rule: /\[embed\s{1,}(.*?)\]/gi
-		@url: '/_md_/oembed'
+		rule: /\[embed\s{1,}(.*?)\]/gi
+		url: '/_md_/oembed'
 
 
 
 	window.JJMarkdownEditor = JJMarkdownEditor
+	window.SingleImgMarkdownParser = SingleImgMarkdownParser
+	window.OEmbedMarkdownParser = OEmbedMarkdownParser
