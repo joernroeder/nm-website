@@ -1560,7 +1560,6 @@ x:-o-prefocus,
 }
 .editor-sidebar .editor-sidebar-content > section {
   opacity: 0;
-  overflow: hidden;
   /**
 	 * For modern browsers
 	 * 1. The space content is one way to avoid an Opera bug when the
