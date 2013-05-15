@@ -284,12 +284,16 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditable.prototype.triggerScopeEvent = function(type, eventData) {
+      var scope;
+
       if (eventData == null) {
         eventData = {};
       }
+      scope = this.getDataScope();
       eventData['name'] = this.getDataName();
+      eventData['scope'] = scope;
       eventData['senderId'] = this.id;
-      return this.editor.trigger(type + ':' + this.getDataScope(), eventData);
+      return this.editor.trigger(type + ':' + scope, eventData);
     };
 
     JJEditable.prototype.triggerDataEvent = function(type, eventData) {
@@ -347,11 +351,15 @@ var __hasProp = {}.hasOwnProperty,
         return dataName.split('.').slice(-1)[0];
       };
       getNamespace = function(dataName) {
-        var start;
+        var appendix;
 
-        start = dataName[0] === '\\' ? 1 : 0;
+        appendix = '.';
+        if (dataName[0] === '\\') {
+          appendix = '';
+          dataName = dataName.slice(1);
+        }
         if (dataName.lastIndexOf('.') !== -1) {
-          return '.' + dataName.slice(start, dataName.lastIndexOf('.'));
+          return appendix + dataName.slice(0, dataName.lastIndexOf('.'));
         } else {
           return '';
         }
@@ -689,10 +697,10 @@ var __hasProp = {}.hasOwnProperty,
   });
   editor = new JJEditor(['InlineEditable', 'DateEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
   editor.on('change:My.Fucki.Image', function(e) {
-    return console.log("changed " + e.name + " from " + e.prevValue + " to " + e.value);
+    return console.log("changed '" + e.name + "' within " + e.scope + " from " + e.prevValue + " to " + e.value);
   });
-  editor.on('change:My.Fucki.Image.Title', function(e) {
-    return console.log("changed Image.Title from " + e.prevValue + " to " + e.value);
+  editor.on('change:My.Fucki.Image.Test', function(e) {
+    return console.log("changed Test from " + e.prevValue + " to " + e.value);
   });
   return window.editor = editor;
 })(jQuery);

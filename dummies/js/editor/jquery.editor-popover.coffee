@@ -200,9 +200,11 @@ do ($ = jQuery) ->
 			@editor.trigger name, eventData
 
 		triggerScopeEvent: (type, eventData = {}) ->
+			scope = @getDataScope();
 			eventData['name'] = @getDataName()
+			eventData['scope'] = scope
 			eventData['senderId'] = @id
-			@editor.trigger type + ':' + @getDataScope(), eventData
+			@editor.trigger type + ':' + scope, eventData
 
 		triggerDataEvent: (type, eventData = {}) ->
 			eventData['senderId'] = @id
@@ -248,8 +250,15 @@ do ($ = jQuery) ->
 				dataName.split('.').slice(-1)[0]
 
 			getNamespace = (dataName) ->
-				start = if dataName[0] is '\\' then 1 else 0
-				if dataName.lastIndexOf('.') isnt -1 then '.' + dataName.slice start, dataName.lastIndexOf('.') else ''
+				appendix = '.'
+				if dataName[0] is '\\'
+					appendix = ''
+					dataName = dataName.slice 1
+
+				if dataName.lastIndexOf('.') isnt -1
+					return appendix + dataName.slice 0, dataName.lastIndexOf('.')
+				else
+					return ''
 
 			getElementScope = =>
 				scopeDataName = @editor.getAttr 'scope'
@@ -531,10 +540,10 @@ do ($ = jQuery) ->
 	]
 
 	editor.on 'change:My.Fucki.Image', (e) ->
-		console.log "changed #{e.name} from #{e.prevValue} to #{e.value}"
+		console.log "changed '#{e.name}' within #{e.scope} from #{e.prevValue} to #{e.value}"
 
-	editor.on 'change:My.Fucki.Image.Title', (e) ->
-		console.log "changed Image.Title from #{e.prevValue} to #{e.value}"
+	editor.on 'change:My.Fucki.Image.Test', (e) ->
+		console.log "changed Test from #{e.prevValue} to #{e.value}"
 
 
 
