@@ -1386,6 +1386,10 @@ x:-o-prefocus,
   box-sizing: border-box;
   padding: 0 1.5em 1.5em;
 }
+.editor-sidebar .editor-sidebar-content.filtered section:not(.active) {
+  height: 0;
+  margin: 0;
+}
 .editor-sidebar .editor-sidebar-content header {
   background: #d9df20;
   padding: 0.375em 1.5em;
@@ -1407,6 +1411,12 @@ x:-o-prefocus,
 }
 .editor-sidebar .editor-sidebar-content section {
   margin-bottom: 3em;
+}
+.editor-sidebar .editor-sidebar-content section.active {
+  background: red;
+}
+.editor-sidebar .editor-sidebar-content section.active ~ section {
+  background: blue;
 }
 .editor-sidebar .scrollbox {
   position: relative;
@@ -1550,11 +1560,40 @@ x:-o-prefocus,
 }
 .editor-sidebar .editor-sidebar-content > section {
   opacity: 0;
-  -webkit-transition: opacity .2s ease-in-out;
-  -moz-transition: opacity .2s ease-in-out;
-  -o-transition: opacity .2s ease-in-out;
-  -ms-transition: opacity .2s ease-in-out;
-  transition: opacity .2s ease-in-out;
+  overflow: hidden;
+  /**
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
+
+  /**
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
+
+  *zoom: 1;
+  -webkit-transition: height 1s ease-in-out, opacity .2s ease-in-out;
+  -moz-transition: height 1s ease-in-out, opacity .2s ease-in-out;
+  -o-transition: height 1s ease-in-out, opacity .2s ease-in-out;
+  -ms-transition: height 1s ease-in-out, opacity .2s ease-in-out;
+  transition: height 1s ease-in-out, opacity .2s ease-in-out;
+}
+.editor-sidebar .editor-sidebar-content > section:before,
+.editor-sidebar .editor-sidebar-content > section:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.editor-sidebar .editor-sidebar-content > section:after {
+  clear: both;
 }
 .editor-sidebar .image-list {
   list-style: none;

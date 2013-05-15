@@ -27,6 +27,7 @@ do ($ = jQuery) ->
 
 			# init components
 			@initToggleBtn()
+			@initFilter()
 			@initImageList()
 
 
@@ -89,6 +90,25 @@ do ($ = jQuery) ->
 					$(@).blur().toggleClass 'selected'
 
 				false
+
+		initFilter: ->
+			@.$filter = $ 'select.filter', @.$editorSidebar
+
+			if @.$filter.length
+				@.$filter.on 'change', (e) =>
+					val = $(e.target).val()
+					if val
+						$filtered = $ "[data-filter-id=#{val}]", @.$sidebarContent
+						if $filtered.length
+							@.$sidebarContent.addClass 'filtered'
+							$filtered.addClass('active').siblings().removeClass 'active'
+					else
+						@.$sidebarContent
+							.removeClass('filtered')
+							.find('.active')
+							.removeClass('active')
+
+			console.log @.$filter
 
 		# bundle methods
 		onResizeSidebar: ->

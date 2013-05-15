@@ -126,6 +126,7 @@ MarkdownedTeaser
 					</section>
 
 					<!-- Editor Sidebar -->
+					<?php $projects = 10; ?>
 					<section class="editor-sidebar" id="editor-sidebar">
 						<nav>
 							<ul>
@@ -152,17 +153,17 @@ MarkdownedTeaser
 						</nav>
 						<header>
 							<h1>Images</h1>
-							<select class="choose-project">
+							<select class="filter">
 								<option value="">Choose Project</option>
-								<?php for ($j = 0; $j < 20; $j++) : ?>
-									<option>Option <?php echo $j; ?></option>
+								<?php for ($j = 0; $j < $projects; $j++) : ?>
+									<option value="<?php echo $j; ?>">Option <?php echo $j; ?></option>
 								<?php endfor; ?>
 							</select>
 							<!--<input type="search" id="sidebar-search" placeholder="Find by Caption">-->
 						</header>
 						<section class="editor-sidebar-content scrollbox">
-							<?php for ($k = 0; $k < 3; $k++) : ?>
-									<section>
+							<?php for ($k = 0; $k < $projects; $k++) : ?>
+									<section data-filter-id="<?php echo $k; ?>">
 										<header>
 											<h2>Project <?php echo $k; ?></h2>
 										</header>

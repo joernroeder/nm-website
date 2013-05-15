@@ -25,6 +25,7 @@
         return _this.onResizeSidebar();
       });
       this.initToggleBtn();
+      this.initFilter();
       this.initImageList();
     }
 
@@ -96,6 +97,29 @@
         });
         return false;
       }
+    };
+
+    EditorSidebar.prototype.initFilter = function() {
+      var _this = this;
+
+      this.$filter = $('select.filter', this.$editorSidebar);
+      if (this.$filter.length) {
+        this.$filter.on('change', function(e) {
+          var $filtered, val;
+
+          val = $(e.target).val();
+          if (val) {
+            $filtered = $("[data-filter-id=" + val + "]", _this.$sidebarContent);
+            if ($filtered.length) {
+              _this.$sidebarContent.addClass('filtered');
+              return $filtered.addClass('active').siblings().removeClass('active');
+            }
+          } else {
+            return _this.$sidebarContent.removeClass('filtered').find('.active').removeClass('active');
+          }
+        });
+      }
+      return console.log(this.$filter);
     };
 
     EditorSidebar.prototype.onResizeSidebar = function() {

@@ -820,6 +820,14 @@ x:-o-prefocus, .qtip .qtip-tip{
 			//margin-top: @line * 5 / @em;
 		}
 
+		&.filtered {
+			section:not(.active) {
+				height: 0;
+				margin: 0;
+
+			}
+		}
+
 		header {
 			background: @nmColor;
 			padding: (@line / 4 / @em) (@line / @em);
@@ -835,6 +843,14 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		section {
 			margin-bottom: @line * 2 / @em;
+
+			&.active {
+				background: red;
+				&~ section {
+					background: blue;
+					//display: none;
+				}
+			}
 		}
 	}
 
@@ -926,7 +942,10 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	.editor-sidebar-content > section {
 		opacity: 0;
-		.transition(~"opacity .2s ease-in-out");
+		overflow: hidden;
+		.clearfix;
+
+		.transition(~"height 1s ease-in-out, opacity .2s ease-in-out");
 	}
 
 	.image-list {
