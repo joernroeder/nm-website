@@ -1487,7 +1487,7 @@ x:-o-prefocus,
 .editor-sidebar a.active {
   color: #d9df20;
 }
-.editor-sidebar select.choose-project {
+.editor-sidebar select.filter {
   width: 100%;
   margin: 0.75em 0;
 }
