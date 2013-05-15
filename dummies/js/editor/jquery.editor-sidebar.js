@@ -104,7 +104,7 @@
 
       this.$filter = $('select.filter', this.$editorSidebar);
       if (this.$filter.length) {
-        this.$filter.on('change', function(e) {
+        return this.$filter.on('change', function(e) {
           var $filtered, val;
 
           val = $(e.target).val();
@@ -119,7 +119,6 @@
           }
         });
       }
-      return console.log(this.$filter);
     };
 
     EditorSidebar.prototype.onResizeSidebar = function() {

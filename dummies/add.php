@@ -49,6 +49,12 @@
 				height: 50px;
 				background: pink;
 			}
+
+			.gravity-item > a {
+				width: 160px;
+				height: 160px;
+				background: gray;
+			}
 		</style>
 	</head>
 	
@@ -97,28 +103,28 @@
 
 					<!-- Overview -->
 
-					<section class="overview">
+					<section class="overview" data-editor-scope="\Foo">
 						<article class="gravity-item">
 							<a href="/{{LinkTo}}/{{UglyHash}}/">
 								<!--{{#with PreviewImage.Urls._320}}-->
 									<img src="http://placedog.com/160/160" width="{{Width}}" height="{{Height}}"/>
 								<!--{{/with}}-->
 							</a>
-							<section class="meta" data-editor-scope="Person">
-								<header>
+							<section class="meta">
+								<header data-editor-scope="\Person">
 									<h1>
-										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="\Image.Title">{{Title}}</a>
+										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="\My.Fucki.Image.Title">{{Title}}</a>
 									</h1>
-									<p><span data-editor-type="date" data-editor-options='{"date": {"format": "Y"}}'>{{Date}}</span></p>
+									<p><span data-editor-type="date" data-editor-name="Date" data-editor-options='{"date": {"format": "Y"}}'>{{Date}}</span></p>
 								</header>
-								<p data-editor-type="markdown-split">
+								<p data-editor-type="markdown-split" data-editor-name="Description">
 # h1
 
 ## h2 
 
 MarkdownedTeaser
 </p>
-								<p data-editor-type="markdown">
+								<p data-editor-type="markdown" data-editor-name="\Project.Description">
 MarkdownedTeaser
 </p>
 							</section>

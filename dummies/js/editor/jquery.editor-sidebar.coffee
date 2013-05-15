@@ -108,8 +108,6 @@ do ($ = jQuery) ->
 							.find('.active')
 							.removeClass('active')
 
-			console.log @.$filter
-
 		# bundle methods
 		onResizeSidebar: ->
 			@setSidebarHeight()

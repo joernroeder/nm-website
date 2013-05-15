@@ -4,9 +4,9 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($) {
-  var DateEditable, Editable, Editor, InlineEditable, MarkdownEditable, PopoverEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, editor, _ref, _ref1, _ref2, _ref3;
 
-  Editor = (function() {
+  JJEditor = (function() {
     var addComponent, addContentType, createComponent, events, getComponentByContentType, init, _components, _contentTypes;
 
     _contentTypes = {};
@@ -15,14 +15,15 @@ var __hasProp = {}.hasOwnProperty,
 
     events = {};
 
-    Editor.prototype.attr = {
-      namespace: 'editor-',
+    JJEditor.prototype.attr = {
+      _namespace: 'editor-',
       type: 'type',
       name: 'name',
+      scope: 'scope',
       options: 'options'
     };
 
-    function Editor(components) {
+    function JJEditor(components) {
       var _this = this;
 
       $.map(components, function(component) {
@@ -31,9 +32,9 @@ var __hasProp = {}.hasOwnProperty,
       init.call(this);
     }
 
-    Editor.prototype.getAttr = function(name) {
+    JJEditor.prototype.getAttr = function(name) {
       if (this.attr[name]) {
-        return this.attr.namespace + this.attr[name];
+        return this.attr._namespace + this.attr[name];
       } else {
         return false;
       }
@@ -46,24 +47,33 @@ var __hasProp = {}.hasOwnProperty,
     */
 
 
-    Editor.prototype.on = function(name, callback) {
+    JJEditor.prototype.on = function(name, callback) {
       if (!events[name]) {
         events[name] = $.Callbacks();
       }
       return events[name].add(callback);
     };
 
-    Editor.prototype.off = function(name, callback) {
+    JJEditor.prototype.off = function(name, callback) {
       if (!events[name]) {
         return;
       }
       return events[name].remove(callback);
     };
 
-    Editor.prototype.trigger = function(name, eventData) {
+    JJEditor.prototype.trigger = function(name, eventData) {
+      if (name.indexOf(':' !== -1)) {
+        console.group('EDITOR: trigger ' + name);
+        console.log(eventData);
+        console.groupEnd();
+      }
       if (events[name]) {
         return events[name].fire(eventData);
       }
+    };
+
+    JJEditor.prototype.triggerScope = function(type, scope, eventData) {
+      return '';
     };
 
     /*
@@ -143,7 +153,7 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    Editor.prototype.getComponent = function(id) {
+    JJEditor.prototype.getComponent = function(id) {
       if (_components[id]) {
         return _components[id];
       } else {
@@ -151,7 +161,7 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    Editor.prototype.getComponents = function() {
+    JJEditor.prototype.getComponents = function() {
       return _components;
     };
 
@@ -175,12 +185,12 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    Editor.prototype.save = function() {
+    JJEditor.prototype.save = function() {
       console.log('save state!!');
       return this.trigger('saved');
     };
 
-    return Editor;
+    return JJEditor;
 
   })();
   /*
@@ -189,18 +199,22 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param [Editor] editor
   */
 
-  Editable = (function() {
+  JJEditable = (function() {
     var getEventName;
 
-    Editable.prototype._value = null;
+    JJEditable.prototype._prevValue = '';
 
-    Editable.prototype._options = {};
+    JJEditable.prototype._value = '';
 
-    Editable.prototype._dataName = '';
+    JJEditable.prototype._options = {};
 
-    Editable.prototype.contentTypes = [];
+    JJEditable.prototype._dataName = '';
 
-    Editable.prototype.foo = function(o) {
+    JJEditable.prototype._dataFullName = '';
+
+    JJEditable.prototype.contentTypes = [];
+
+    JJEditable.prototype.extractName = function(o) {
       var k, key, oo, part, parts, t;
 
       oo = {};
@@ -217,10 +231,9 @@ var __hasProp = {}.hasOwnProperty,
       return oo;
     };
 
-    function Editable(editor) {
+    function JJEditable(editor) {
       this.editor = editor;
       this.name = this.constructor.name.toLowerCase();
-      this.setValue(this.name);
       this.id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r, v;
 
@@ -233,16 +246,10 @@ var __hasProp = {}.hasOwnProperty,
       }
     }
 
-    Editable.prototype.init = function(element) {
-      var obj;
-
+    JJEditable.prototype.init = function(element) {
       this.element = element;
       this.setDataName(element.data(this.editor.getAttr('name')));
-      this.setOptions(element.data(this.editor.getAttr('options')));
-      console.log(this.getDataName());
-      obj = {};
-      obj[this.getDataName()] = 'my value ' + this.id;
-      return console.log(this.foo(obj));
+      return this.setOptions(element.data(this.editor.getAttr('options')));
     };
 
     /*
@@ -257,7 +264,7 @@ var __hasProp = {}.hasOwnProperty,
       return name = -1 !== name.indexOf('.') ? name : this.name + '.' + name;
     };
 
-    Editable.prototype.trigger = function(name, eventData) {
+    JJEditable.prototype.trigger = function(name, eventData) {
       if (eventData == null) {
         eventData = {};
       }
@@ -266,71 +273,170 @@ var __hasProp = {}.hasOwnProperty,
       return this.editor.trigger(name, eventData);
     };
 
-    Editable.prototype.on = function(name, callback) {
+    JJEditable.prototype.triggerScopeEvent = function(type, eventData) {
+      if (eventData == null) {
+        eventData = {};
+      }
+      eventData['name'] = this.getDataName();
+      eventData['senderId'] = this.id;
+      return this.editor.trigger(type + ':' + this.getDataScope(), eventData);
+    };
+
+    JJEditable.prototype.triggerDataEvent = function(type, eventData) {
+      if (eventData == null) {
+        eventData = {};
+      }
+      eventData['senderId'] = this.id;
+      return this.editor.trigger(type + ':' + this.getDataFullName(), eventData);
+    };
+
+    JJEditable.prototype.on = function(name, callback) {
       name = getEventName(name);
       return this.editor.on(name, callback);
     };
 
-    Editable.prototype.off = function(name, callback) {
+    JJEditable.prototype.off = function(name, callback) {
       name = getEventName(name);
       return this.editor.off(name, callback);
     };
 
-    Editable.prototype.setValue = function(value) {
+    JJEditable.prototype.setValue = function(value) {
+      if (this._prevValue === value) {
+        return;
+      }
+      this._prevValue = this._value;
       this._value = value;
+      this.triggerScopeEvent('change', {
+        value: this._value,
+        prevValue: this._prevValue
+      });
+      this.triggerDataEvent('change', {
+        value: this._value,
+        prevValue: this._prevValue
+      });
       return this.render();
     };
 
-    Editable.prototype.getValue = function() {
+    JJEditable.prototype.getValue = function() {
       return this._value;
     };
 
-    Editable.prototype.setDataName = function(_dataName) {
-      this._dataName = _dataName;
+    JJEditable.prototype.updateValue = function() {
+      return this.setValue(this.getValueFromContent());
     };
 
-    Editable.prototype.setOptions = function(_options) {
+    JJEditable.prototype.getValueFromContent = function() {
+      return '';
+    };
+
+    JJEditable.prototype.setDataName = function(dataName) {
+      var getElementScope, getName, getNamespace, name, scope,
+        _this = this;
+
+      getName = function(dataName) {
+        return dataName.split('.').slice(-1)[0];
+      };
+      getNamespace = function(dataName) {
+        var start;
+
+        start = dataName[0] === '\\' ? 1 : 0;
+        return dataName.slice(start, dataName.lastIndexOf('.'));
+      };
+      getElementScope = function() {
+        var cleanUpScopeName, crawlDom, scopeDataName;
+
+        scopeDataName = _this.editor.getAttr('scope');
+        cleanUpScopeName = function(name) {
+          if (name[0] === '\\') {
+            return name.slice(1);
+          } else {
+            return name;
+          }
+        };
+        crawlDom = function($el, currentScope) {
+          var $scopeEl, scopeName;
+
+          $scopeEl = $el.closest("[data-" + scopeDataName + "]");
+          if ($scopeEl.length) {
+            scopeName = $scopeEl.data(scopeDataName);
+            currentScope = scopeName + currentScope;
+            if (scopeName[0] !== '\\') {
+              return currentScope = crawlDom($scopeEl.parent(), '.' + currentScope);
+            } else {
+              return cleanUpScopeName(currentScope);
+            }
+          } else if (currentScope[0] === '\\') {
+            return cleanUpScopeName(currentScope);
+          } else {
+            throw new Error("Couldn't find a complete scope for " + (getName(dataName)) + ". Maybe you forgot to add a Backslash at the beginning of your stack? \Foo.Bar.FooBar");
+          }
+        };
+        return crawlDom(_this.element, '');
+      };
+      if (!dataName) {
+        throw new Error('Please add a data-' + this.editor.getAttr('name') + ' attribute');
+      }
+      console.log('setDataName: ' + dataName);
+      if (dataName[0] === '\\') {
+        scope = getNamespace(dataName);
+      } else {
+        scope = getElementScope();
+      }
+      name = getName(dataName);
+      this._dataScope = scope;
+      return this._dataName = name;
+    };
+
+    JJEditable.prototype.setOptions = function(_options) {
       this._options = _options;
     };
 
-    Editable.prototype.getDataName = function() {
+    JJEditable.prototype.getDataScope = function() {
+      return this._dataScope;
+    };
+
+    JJEditable.prototype.getDataFullName = function() {
+      return "" + this._dataScope + "." + this._dataName;
+    };
+
+    JJEditable.prototype.getDataName = function() {
       return this._dataName;
     };
 
-    Editable.prototype.getOptions = function() {
+    JJEditable.prototype.getOptions = function() {
       return this._options;
     };
 
-    Editable.prototype.render = function() {
+    JJEditable.prototype.render = function() {
       if (this.element) {
         return this.element.html(this.getValue());
       }
     };
 
-    return Editable;
+    return JJEditable;
 
   })();
   /*
   	 # Abstract Popover Class
   */
 
-  PopoverEditable = (function(_super) {
-    __extends(PopoverEditable, _super);
+  JJPopoverEditable = (function(_super) {
+    __extends(JJPopoverEditable, _super);
 
-    PopoverEditable.prototype._popoverContent = '';
+    JJPopoverEditable.prototype._popoverContent = '';
 
-    function PopoverEditable(editor) {
+    function JJPopoverEditable(editor) {
       this.editor = editor;
       if (this.constructor.name === 'PopoverEditable') {
         throw new ReferenceError('"PopoverEditable" is an abstract class. Please use one of the subclasses instead.');
       }
-      PopoverEditable.__super__.constructor.call(this, editor);
+      JJPopoverEditable.__super__.constructor.call(this, editor);
     }
 
-    PopoverEditable.prototype.init = function(element) {
+    JJPopoverEditable.prototype.init = function(element) {
       var _this = this;
 
-      PopoverEditable.__super__.init.call(this, element);
+      JJPopoverEditable.__super__.init.call(this, element);
       element.qtip({
         content: {
           text: function() {
@@ -373,16 +479,16 @@ var __hasProp = {}.hasOwnProperty,
       });
     };
 
-    PopoverEditable.prototype.open = function() {
+    JJPopoverEditable.prototype.open = function() {
       this.trigger('editor.closepopovers');
       return this.api.show();
     };
 
-    PopoverEditable.prototype.close = function() {
+    JJPopoverEditable.prototype.close = function() {
       return this.api.hide();
     };
 
-    PopoverEditable.prototype.toggle = function() {
+    JJPopoverEditable.prototype.toggle = function() {
       if (this.api.tooltip && $(this.api.tooltip).hasClass('qtip-focus')) {
         return this.close();
       } else {
@@ -390,7 +496,7 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    PopoverEditable.prototype.getPopoverContent = function() {
+    JJPopoverEditable.prototype.getPopoverContent = function() {
       var types;
 
       types = this.contentTypes.join(', ');
@@ -406,13 +512,13 @@ var __hasProp = {}.hasOwnProperty,
     */
 
 
-    PopoverEditable.prototype.setPopoverContent = function(value) {
+    JJPopoverEditable.prototype.setPopoverContent = function(value) {
       return this._popoverContent = value;
     };
 
-    return PopoverEditable;
+    return JJPopoverEditable;
 
-  })(Editable);
+  })(JJEditable);
   /*
   	 #
   */
@@ -431,14 +537,20 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       InlineEditable.__super__.init.call(this, element);
-      return element.attr('contenteditable', true).on('click focus', function() {
+      return element.attr('contenteditable', true).on('keyup', function(e) {
+        return _this.updateValue();
+      }).on('click focus', function() {
         return _this.trigger('editor.closepopovers');
       });
     };
 
+    InlineEditable.prototype.getValueFromContent = function() {
+      return this.element.text();
+    };
+
     return InlineEditable;
 
-  })(Editable);
+  })(JJEditable);
   /*
   	 # Date Component
   */
@@ -456,13 +568,24 @@ var __hasProp = {}.hasOwnProperty,
     DateEditable.prototype.format = 'Y';
 
     DateEditable.prototype.init = function(element) {
+      var $input,
+        _this = this;
+
       DateEditable.__super__.init.call(this, element);
-      return this.setPopoverContent($('<input type="text">'));
+      $input = $('<input type="text">');
+      $input.on('keyup', function(e) {
+        return _this.updateValue();
+      });
+      return this.setPopoverContent($input);
+    };
+
+    DateEditable.prototype.getValueFromContent = function() {
+      return this.element.val();
     };
 
     return DateEditable;
 
-  })(PopoverEditable);
+  })(JJPopoverEditable);
   /*
   	 # Markdown Component
   */
@@ -478,6 +601,8 @@ var __hasProp = {}.hasOwnProperty,
     MarkdownEditable.prototype.contentTypes = ['markdown'];
 
     MarkdownEditable.prototype.markdown = null;
+
+    MarkdownEditable.prototype.markdownChangeTimeout = null;
 
     MarkdownEditable.prototype.previewClass = 'preview';
 
@@ -504,7 +629,15 @@ var __hasProp = {}.hasOwnProperty,
       this.setPopoverContent($text);
       return this.markdown = new JJMarkdownEditor($text, {
         preview: element,
-        contentGetter: 'val'
+        contentGetter: 'val',
+        onChange: function(val) {
+          if (_this.markdownChangeTimeout) {
+            clearTimeout(_this.markdownChangeTimeout);
+          }
+          return _this.markdownChangeTimeout = setTimeout(function() {
+            return _this.setValue(val);
+          }, 1000);
+        }
       });
     };
 
@@ -514,7 +647,7 @@ var __hasProp = {}.hasOwnProperty,
 
     return MarkdownEditable;
 
-  })(PopoverEditable);
+  })(JJPopoverEditable);
   SplitMarkdownEditable = (function(_super) {
     __extends(SplitMarkdownEditable, _super);
 
@@ -531,8 +664,8 @@ var __hasProp = {}.hasOwnProperty,
 
   })(MarkdownEditable);
   window.editorComponents = {};
-  window.editorComponents.Editable = Editable;
-  window.editorComponents.PopoverEditable = PopoverEditable;
+  window.editorComponents.JJEditable = JJEditable;
+  window.editorComponents.JJPopoverEditable = JJPopoverEditable;
   window.editorComponents.InlineEditable = InlineEditable;
   window.editorComponents.DateEditable = DateEditable;
   window.editorComponents.MarkdownEditable = MarkdownEditable;
@@ -541,5 +674,12 @@ var __hasProp = {}.hasOwnProperty,
   $(document).on('dragover drop', function(e) {
     return e.preventDefault();
   });
-  return window.editor = new Editor(['InlineEditable', 'DateEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
+  editor = new JJEditor(['InlineEditable', 'DateEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
+  editor.on('change:My.Fucki.Image', function(e) {
+    return console.log("changed " + e.name + " from " + e.prevValue + " to " + e.value);
+  });
+  editor.on('change:My.Fucki.Image.Title', function(e) {
+    return console.log("changed Image.Title from " + e.prevValue + " to " + e.value);
+  });
+  return window.editor = editor;
 })(jQuery);

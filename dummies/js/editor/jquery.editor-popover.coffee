@@ -2,15 +2,16 @@
 
 do ($ = jQuery) ->
 
-	class Editor
+	class JJEditor
 		_contentTypes = {}
 		_components = {}
 		events = {}
 
 		attr:
-			namespace: 'editor-'
+			_namespace: 'editor-'
 			type: 'type'
 			name: 'name'
+			scope: 'scope'
 			options: 'options'
 		
 		constructor: (components) ->
@@ -20,7 +21,7 @@ do ($ = jQuery) ->
 			init.call @
 
 		getAttr: (name) ->
-			if @attr[name] then @attr.namespace + @attr[name] else false
+			if @attr[name] then @attr._namespace + @attr[name] else false
 
 
 		###
@@ -39,7 +40,15 @@ do ($ = jQuery) ->
 			events[name].remove callback
 
 		trigger: (name, eventData) ->
+			if name.indexOf ':' isnt -1
+				console.group 'EDITOR: trigger ' + name
+				console.log eventData
+				console.groupEnd()
+
 			if events[name] then events[name].fire eventData
+
+		triggerScope: (type, scope, eventData) ->
+			return ''
 
 		###
 		 # @private
@@ -125,15 +134,17 @@ do ($ = jQuery) ->
 	 # 
 	 # @param [Editor] editor
 	###
-	class Editable 
+	class JJEditable 
 
-		_value: null
+		_prevValue: ''
+		_value: ''
 		_options: {}
 		_dataName: ''
+		_dataFullName: ''
 
 		contentTypes: []
 
-		foo: (o) ->
+		extractName: (o) ->
 			oo = {}
 			for k of o
 				t = oo
@@ -147,7 +158,7 @@ do ($ = jQuery) ->
 
 		constructor: (@editor) ->
 			@name = @.constructor.name.toLowerCase()
-			@setValue @name
+			#@setValue @name
 
 			# generate a unique id @link http://stackoverflow.com/a/2117523/520544
 			@id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace /[xy]/g, (c) ->
@@ -163,11 +174,10 @@ do ($ = jQuery) ->
 			@setDataName element.data @editor.getAttr('name') 
 			@setOptions element.data @editor.getAttr('options')
 
-			console.log @getDataName()
-			obj = {}
-			obj[@getDataName()] = 'my value ' + @id
+			#obj = {}
+			#obj[@getDataFullName()] = @getValue()
 
-			console.log @foo(obj)
+			#console.log @extractName(obj)
 			#console.warn 'subclass this method to run your custom code'
 
 		###
@@ -182,7 +192,17 @@ do ($ = jQuery) ->
 		trigger: (name, eventData = {}) ->
 			eventData['senderId'] = @id
 			name = getEventName name
+			#console.log name
 			@editor.trigger name, eventData
+
+		triggerScopeEvent: (type, eventData = {}) ->
+			eventData['name'] = @getDataName()
+			eventData['senderId'] = @id
+			@editor.trigger type + ':' + @getDataScope(), eventData
+
+		triggerDataEvent: (type, eventData = {}) ->
+			eventData['senderId'] = @id
+			@editor.trigger type + ':' + @getDataFullName(), eventData
 
 		on: (name, callback) ->
 			name = getEventName name
@@ -195,18 +215,87 @@ do ($ = jQuery) ->
 		# --- 
 		
 		setValue: (value) ->
+			if @_prevValue is value then return
+				
+			@_prevValue = @_value
 			@_value = value
+			@triggerScopeEvent 'change',
+				value: @_value
+				prevValue: @_prevValue
+			@triggerDataEvent 'change', 
+				value		: @_value
+				prevValue	: @_prevValue
+
 			@render()
 
 		getValue: ->
 			@_value
 
+		updateValue: ->
+			@setValue @getValueFromContent()
+
+		getValueFromContent: ->
+			return ''
+
 		# --- 
 		
-		setDataName: (@_dataName) ->
+		setDataName: (dataName) ->
+			getName = (dataName) ->
+				dataName.split('.').slice(-1)[0]
+
+			getNamespace = (dataName) ->
+				start = if dataName[0] is '\\' then 1 else 0
+				dataName.slice start, dataName.lastIndexOf('.')
+
+			getElementScope = =>
+				scopeDataName = @editor.getAttr 'scope'
+				cleanUpScopeName = (name) ->
+					if name[0] is '\\' then name.slice 1 else name
+				crawlDom = ($el, currentScope) ->
+					$scopeEl = $el.closest "[data-#{scopeDataName}]"
+					if $scopeEl.length
+						scopeName = $scopeEl.data scopeDataName
+						currentScope = scopeName + currentScope
+
+						if scopeName[0] isnt '\\'
+							currentScope = crawlDom $scopeEl.parent(), '.' + currentScope
+						else 
+							return cleanUpScopeName currentScope
+					# found a complete stack
+					else if currentScope[0] is '\\'
+						return cleanUpScopeName currentScope
+
+					# couldn't find a complete stack
+					else
+						throw new Error "Couldn't find a complete scope for #{getName(dataName)}. Maybe you forgot to add a Backslash at the beginning of your stack? \Foo.Bar.FooBar"
+
+				crawlDom @element, ''
+
+			# ---
+
+			if not dataName
+				throw new Error 'Please add a data-' + @editor.getAttr('name') + ' attribute'
+
+			console.log 'setDataName: ' + dataName
+
+			if dataName[0] is '\\' 
+				scope = getNamespace dataName# else getElementScope() + getNamespace
+			else
+				scope = getElementScope()
+
+			name = getName dataName
+			@_dataScope = scope
+			@_dataName = name
+
 		setOptions: (@_options) ->
 
 		# ---
+
+		getDataScope: ->
+			@_dataScope
+
+		getDataFullName: ->
+			"#{@_dataScope}.#{@_dataName}"
 
 		getDataName: ->
 			@_dataName
@@ -223,7 +312,7 @@ do ($ = jQuery) ->
 	###
 	 # Abstract Popover Class
 	###
-	class PopoverEditable extends Editable
+	class JJPopoverEditable extends JJEditable
 
 		_popoverContent: ''
 
@@ -235,6 +324,8 @@ do ($ = jQuery) ->
 
 		init: (element) ->
 			super element
+
+			#console.log @getDataName()
 
 			element.qtip
 				content: 
@@ -288,6 +379,8 @@ do ($ = jQuery) ->
 			else
 				@open()
 
+		#getValueFromContent: ->
+
 		getPopoverContent: ->
 			types = @contentTypes.join ', '
 			return if @_popoverContent then @_popoverContent else "<h1>#{types} Editor</h1>"
@@ -304,7 +397,7 @@ do ($ = jQuery) ->
 	###
 	 #
 	###
-	class InlineEditable extends Editable
+	class InlineEditable extends JJEditable
 
 		contentTypes: ['inline']
 
@@ -313,14 +406,20 @@ do ($ = jQuery) ->
 
 			element
 				.attr('contenteditable', true)
+				.on('keyup', (e) =>
+					@updateValue()
+				)
 				.on 'click focus', =>
 					@trigger 'editor.closepopovers'
+
+		getValueFromContent: ->
+			@element.text()
 
 
 	###
 	 # Date Component
 	###
-	class DateEditable extends PopoverEditable
+	class DateEditable extends JJPopoverEditable
 
 		contentTypes: ['date']
 
@@ -329,16 +428,24 @@ do ($ = jQuery) ->
 		init: (element) ->
 			super element
 
-			@setPopoverContent $('<input type="text">')
+			$input = $ '<input type="text">'
+			$input.on 'keyup', (e) =>
+				@updateValue()
+
+			@setPopoverContent $input
+
+		getValueFromContent: ->
+			@element.val()
 
 
 	###
 	 # Markdown Component
 	###
-	class MarkdownEditable extends PopoverEditable
+	class MarkdownEditable extends JJPopoverEditable
 
 		contentTypes: ['markdown']
 		markdown: null
+		markdownChangeTimeout: null
 
 		previewClass: 'preview'
 
@@ -367,6 +474,14 @@ do ($ = jQuery) ->
 			@markdown = new JJMarkdownEditor $text,
 				preview : element
 				contentGetter: 'val'
+				onChange: (val) =>
+					if @markdownChangeTimeout
+						clearTimeout @markdownChangeTimeout
+
+					@markdownChangeTimeout = setTimeout =>
+						@setValue val
+					, 1000
+
 			
 
 		open: ->
@@ -387,8 +502,8 @@ do ($ = jQuery) ->
 	# publish base
 	window.editorComponents = {}
 
-	window.editorComponents.Editable = Editable
-	window.editorComponents.PopoverEditable = PopoverEditable
+	window.editorComponents.JJEditable = JJEditable
+	window.editorComponents.JJPopoverEditable = JJPopoverEditable
 
 
 	# publish sub classes	
@@ -406,11 +521,25 @@ do ($ = jQuery) ->
 	$(document).on 'dragover drop', (e) ->
 		e.preventDefault()
 
-	window.editor = new Editor [
+	editor = new JJEditor [
 		'InlineEditable'
 		'DateEditable'
 		'MarkdownEditable',
 		'SplitMarkdownEditable'
 	]
+
+	editor.on 'change:My.Fucki.Image', (e) ->
+		console.log "changed #{e.name} from #{e.prevValue} to #{e.value}"
+
+	editor.on 'change:My.Fucki.Image.Title', (e) ->
+		console.log "changed Image.Title from #{e.prevValue} to #{e.value}"
+
+
+
+
+
+	window.editor = editor
+
+
 
 			
