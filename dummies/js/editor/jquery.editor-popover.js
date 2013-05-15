@@ -15,6 +15,8 @@ var __hasProp = {}.hasOwnProperty,
 
     events = {};
 
+    JJEditor.prototype.debug = true;
+
     JJEditor.prototype.attr = {
       _namespace: 'editor-',
       type: 'type',
@@ -26,9 +28,18 @@ var __hasProp = {}.hasOwnProperty,
     function JJEditor(components) {
       var _this = this;
 
+      if (this.debug) {
+        console.group('EDITOR: add Components');
+      }
       $.map(components, function(component) {
+        if (_this.debug) {
+          console.log('- ' + component);
+        }
         return addComponent(component);
       });
+      if (this.debug) {
+        console.groupEnd();
+      }
       init.call(this);
     }
 
@@ -62,7 +73,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditor.prototype.trigger = function(name, eventData) {
-      if (name.indexOf(':' !== -1)) {
+      if (this.debug && name.indexOf(':' !== -1)) {
         console.group('EDITOR: trigger ' + name);
         console.log(eventData);
         console.groupEnd();
@@ -112,7 +123,6 @@ var __hasProp = {}.hasOwnProperty,
       if (!window.editorComponents[name]) {
         throw new ReferenceError("The Component '" + name + "' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?");
       }
-      console.log('add Component: ' + name);
       component = new window.editorComponents[name](this);
       return $.map(component.contentTypes, function(type) {
         return addContentType(type, name);
@@ -340,7 +350,11 @@ var __hasProp = {}.hasOwnProperty,
         var start;
 
         start = dataName[0] === '\\' ? 1 : 0;
-        return dataName.slice(start, dataName.lastIndexOf('.'));
+        if (dataName.lastIndexOf('.') !== -1) {
+          return '.' + dataName.slice(start, dataName.lastIndexOf('.'));
+        } else {
+          return '';
+        }
       };
       getElementScope = function() {
         var cleanUpScopeName, crawlDom, scopeDataName;
@@ -371,12 +385,11 @@ var __hasProp = {}.hasOwnProperty,
             throw new Error("Couldn't find a complete scope for " + (getName(dataName)) + ". Maybe you forgot to add a Backslash at the beginning of your stack? \Foo.Bar.FooBar");
           }
         };
-        return crawlDom(_this.element, '');
+        return crawlDom(_this.element, getNamespace(dataName));
       };
       if (!dataName) {
         throw new Error('Please add a data-' + this.editor.getAttr('name') + ' attribute');
       }
-      console.log('setDataName: ' + dataName);
       if (dataName[0] === '\\') {
         scope = getNamespace(dataName);
       } else {

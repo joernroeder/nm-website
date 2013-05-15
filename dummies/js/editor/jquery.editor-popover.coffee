@@ -7,6 +7,8 @@ do ($ = jQuery) ->
 		_components = {}
 		events = {}
 
+		debug: true
+
 		attr:
 			_namespace: 'editor-'
 			type: 'type'
@@ -15,8 +17,11 @@ do ($ = jQuery) ->
 			options: 'options'
 		
 		constructor: (components) ->
+			if @debug then console.group 'EDITOR: add Components'
 			$.map components, (component) =>
+				if @debug then console.log '- ' + component
 				addComponent component
+			if @debug then console.groupEnd()
 
 			init.call @
 
@@ -40,7 +45,7 @@ do ($ = jQuery) ->
 			events[name].remove callback
 
 		trigger: (name, eventData) ->
-			if name.indexOf ':' isnt -1
+			if @debug and name.indexOf ':' isnt -1
 				console.group 'EDITOR: trigger ' + name
 				console.log eventData
 				console.groupEnd()
@@ -75,7 +80,6 @@ do ($ = jQuery) ->
 			if not window.editorComponents[name]
 				throw new ReferenceError "The Component '#{name}' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?"
 
-			console.log 'add Component: ' + name
 			component = new window.editorComponents[name](@)
 			$.map component.contentTypes, (type) =>
 				addContentType type, name
@@ -245,7 +249,7 @@ do ($ = jQuery) ->
 
 			getNamespace = (dataName) ->
 				start = if dataName[0] is '\\' then 1 else 0
-				dataName.slice start, dataName.lastIndexOf('.')
+				if dataName.lastIndexOf('.') isnt -1 then '.' + dataName.slice start, dataName.lastIndexOf('.') else ''
 
 			getElementScope = =>
 				scopeDataName = @editor.getAttr 'scope'
@@ -269,14 +273,12 @@ do ($ = jQuery) ->
 					else
 						throw new Error "Couldn't find a complete scope for #{getName(dataName)}. Maybe you forgot to add a Backslash at the beginning of your stack? \Foo.Bar.FooBar"
 
-				crawlDom @element, ''
+				crawlDom @element, getNamespace(dataName)
 
 			# ---
 
 			if not dataName
 				throw new Error 'Please add a data-' + @editor.getAttr('name') + ' attribute'
-
-			console.log 'setDataName: ' + dataName
 
 			if dataName[0] is '\\' 
 				scope = getNamespace dataName# else getElementScope() + getNamespace
