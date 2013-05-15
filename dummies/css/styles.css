@@ -1548,20 +1548,16 @@ x:-o-prefocus,
 .editor-sidebar input[type="search"]:focus:-moz-placeholder {
   color: #787878;
 }
-.editor-sidebar .image-list {
-  list-style: none;
-  -webkit-column-count: 1;
-  column-count: 1;
-  -moz-column-count: 1;
-  -webkit-column-gap: 10px;
-  -moz-column-gap: 10px;
-  column-gap: 10px;
+.editor-sidebar .editor-sidebar-content > section {
   opacity: 0;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -o-transition: opacity .2s ease-in-out;
   -ms-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
+}
+.editor-sidebar .image-list {
+  list-style: none;
   /**
 	 * For modern browsers
 	 * 1. The space content is one way to avoid an Opera bug when the
@@ -1578,18 +1574,12 @@ x:-o-prefocus,
 	 */
 
   *zoom: 1;
-}
-.editor-sidebar .image-list:before,
-.editor-sidebar .image-list:after {
-  content: " ";
-  /* 1 */
-
-  display: table;
-  /* 2 */
-
-}
-.editor-sidebar .image-list:after {
-  clear: both;
+  -webkit-column-count: 1;
+  column-count: 1;
+  -moz-column-count: 1;
+  -webkit-column-gap: 10px;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
 }
 .editor-sidebar .image-list:before,
 .editor-sidebar .image-list:after {
@@ -1641,7 +1631,7 @@ x:-o-prefocus,
   width: 100%;
   height: auto;
 }
-.editor-sidebar[class*="columns-"]:not(.open) .image-list {
+.editor-sidebar[class*="columns-"]:not(.open) .editor-sidebar-content > section {
   opacity: 0;
   -webkit-transition: none;
   -moz-transition: none;
@@ -1649,7 +1639,7 @@ x:-o-prefocus,
   -ms-transition: none;
   transition: none;
 }
-.editor-sidebar[class*="columns-"] .image-list {
+.editor-sidebar[class*="columns-"] .editor-sidebar-content > section {
   opacity: 1;
 }
 .editor-sidebar.columns-2 .image-list {
