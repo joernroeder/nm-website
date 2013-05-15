@@ -284,7 +284,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditable.prototype.triggerScopeEvent = function(type, eventData) {
-      var scope;
+      var currScope, i, prefix, scope, scopeName, scopeNames, _results;
 
       if (eventData == null) {
         eventData = {};
@@ -293,7 +293,19 @@ var __hasProp = {}.hasOwnProperty,
       eventData['name'] = this.getDataName();
       eventData['scope'] = scope;
       eventData['senderId'] = this.id;
-      return this.editor.trigger(type + ':' + scope, eventData);
+      scopeNames = scope.split('.');
+      console.log(scopeNames);
+      _results = [];
+      for (i in scopeNames) {
+        scopeName = scopeNames[i];
+        prefix = scopeNames.slice(0, i).join('.');
+        if (prefix) {
+          prefix += '.';
+        }
+        currScope = prefix + scopeName;
+        _results.push(this.editor.trigger(type + ':' + currScope, eventData));
+      }
+      return _results;
     };
 
     JJEditable.prototype.triggerDataEvent = function(type, eventData) {
@@ -328,7 +340,9 @@ var __hasProp = {}.hasOwnProperty,
         value: this._value,
         prevValue: this._prevValue
       });
-      return this.render();
+      if (typeof value === 'string') {
+        return this.render();
+      }
     };
 
     JJEditable.prototype.getValue = function() {
@@ -589,19 +603,19 @@ var __hasProp = {}.hasOwnProperty,
     DateEditable.prototype.format = 'Y';
 
     DateEditable.prototype.init = function(element) {
-      var $input,
-        _this = this;
+      var _this = this;
 
       DateEditable.__super__.init.call(this, element);
-      $input = $('<input type="text">');
-      $input.on('keyup', function(e) {
+      this.$input = $('<input type="text">');
+      this.$input.on('keyup', function(e) {
+        console.log('updateValue');
         return _this.updateValue();
       });
-      return this.setPopoverContent($input);
+      return this.setPopoverContent(this.$input);
     };
 
     DateEditable.prototype.getValueFromContent = function() {
-      return this.element.val();
+      return this.$input.val();
     };
 
     return DateEditable;

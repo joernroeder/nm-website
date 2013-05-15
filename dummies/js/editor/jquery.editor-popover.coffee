@@ -204,7 +204,19 @@ do ($ = jQuery) ->
 			eventData['name'] = @getDataName()
 			eventData['scope'] = scope
 			eventData['senderId'] = @id
-			@editor.trigger type + ':' + scope, eventData
+			scopeNames = scope.split '.'
+			console.log scopeNames
+
+			for i, scopeName of scopeNames
+				prefix = scopeNames.slice(0, i).join '.'
+				prefix += '.' if prefix
+
+				currScope = prefix + scopeName
+				#console.log scopeNames
+				#console.log 'trigger ' + name
+				#console.log i
+				#console.log scopeName
+				@editor.trigger type + ':' + currScope, eventData
 
 		triggerDataEvent: (type, eventData = {}) ->
 			eventData['senderId'] = @id
@@ -232,7 +244,8 @@ do ($ = jQuery) ->
 				value		: @_value
 				prevValue	: @_prevValue
 
-			@render()
+			if typeof value is 'string'
+				@render()
 
 		getValue: ->
 			@_value
@@ -438,15 +451,16 @@ do ($ = jQuery) ->
 
 		init: (element) ->
 			super element
+			@.$input = $ '<input type="text">'
 
-			$input = $ '<input type="text">'
-			$input.on 'keyup', (e) =>
+			@.$input.on 'keyup', (e) =>
+				console.log 'updateValue'
 				@updateValue()
 
-			@setPopoverContent $input
+			@setPopoverContent @.$input
 
 		getValueFromContent: ->
-			@element.val()
+			@.$input.val()
 
 
 	###
@@ -492,7 +506,6 @@ do ($ = jQuery) ->
 					@markdownChangeTimeout = setTimeout =>
 						@setValue val
 					, 1000
-
 			
 
 		open: ->
