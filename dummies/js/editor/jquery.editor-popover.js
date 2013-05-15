@@ -7,11 +7,13 @@ var __hasProp = {}.hasOwnProperty,
   var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, editor, _ref, _ref1, _ref2, _ref3;
 
   JJEditor = (function() {
-    var addComponent, addContentType, createComponent, events, getComponentByContentType, init, _components, _contentTypes;
+    var addComponent, addContentType, createComponent, events, getComponentByContentType, init, _components, _contentTypes, _storage;
 
     _contentTypes = {};
 
     _components = {};
+
+    _storage = {};
 
     events = {};
 
@@ -22,6 +24,7 @@ var __hasProp = {}.hasOwnProperty,
       type: 'type',
       name: 'name',
       scope: 'scope',
+      placeholder: 'placeholder',
       options: 'options'
     };
 
@@ -87,6 +90,30 @@ var __hasProp = {}.hasOwnProperty,
       return '';
     };
 
+    JJEditor.prototype.extractScope = function(o) {
+      var k, key, oo, part, parts, t;
+
+      oo = {};
+      t = void 0;
+      parts = void 0;
+      part = void 0;
+      for (k in o) {
+        t = oo;
+        parts = k.split(".");
+        key = parts.pop();
+        while (parts.length) {
+          part = parts.shift();
+          t = t[part] = t[part] || {};
+        }
+        t[key] = o[k];
+      }
+      return oo;
+    };
+
+    JJEditor.prototype.getState = function() {
+      return this._storage;
+    };
+
     /*
     		 # @private
     */
@@ -95,6 +122,22 @@ var __hasProp = {}.hasOwnProperty,
     init = function() {
       var _this = this;
 
+      this.on('change:\\', function(e) {
+        var obj;
+
+        if (_this.debug) {
+          console.group('EDITOR BINDINGS:');
+        }
+        obj = {};
+        obj[e.fullName] = e.value;
+        _this._storage = $.extend(_this._storage, _this.extractScope(obj));
+        if (_this.debug) {
+          console.log(_this._storage);
+        }
+        if (_this.debug) {
+          return console.groupEnd();
+        }
+      });
       return $('[data-' + this.getAttr('type') + ']').each(function(i, el) {
         var $el, component, contentType;
 
@@ -224,23 +267,6 @@ var __hasProp = {}.hasOwnProperty,
 
     JJEditable.prototype.contentTypes = [];
 
-    JJEditable.prototype.extractName = function(o) {
-      var k, key, oo, part, parts, t;
-
-      oo = {};
-      for (k in o) {
-        t = oo;
-        parts = k.split(".");
-        key = parts.pop();
-        while (parts.length) {
-          part = parts.shift();
-          t = t[part] = t[part] || {};
-        }
-        t[key] = o[k];
-      }
-      return oo;
-    };
-
     function JJEditable(editor) {
       this.editor = editor;
       this.name = this.constructor.name.toLowerCase();
@@ -290,11 +316,15 @@ var __hasProp = {}.hasOwnProperty,
         eventData = {};
       }
       scope = this.getDataScope();
-      eventData['name'] = this.getDataName();
-      eventData['scope'] = scope;
-      eventData['senderId'] = this.id;
+      scope;
+      $.extend(eventData, {
+        name: this.getDataName(),
+        scope: scope,
+        fullName: this.getDataFullName(),
+        senderId: this.id
+      });
       scopeNames = scope.split('.');
-      console.log(scopeNames);
+      scopeNames.unshift('\\');
       _results = [];
       for (i in scopeNames) {
         scopeName = scopeNames[i];
@@ -303,6 +333,7 @@ var __hasProp = {}.hasOwnProperty,
           prefix += '.';
         }
         currScope = prefix + scopeName;
+        currScope = currScope.replace('\\.', '');
         _results.push(this.editor.trigger(type + ':' + currScope, eventData));
       }
       return _results;
@@ -357,6 +388,29 @@ var __hasProp = {}.hasOwnProperty,
       return '';
     };
 
+    JJEditable.prototype.getPlaceholder = function() {
+      var placeholder;
+
+      placeholder = this.element.attr(this.editor.getAttr('placeholder'));
+      if (placeholder) {
+        return placeholder;
+      } else {
+        return 'foo';
+      }
+    };
+
+    JJEditable.prototype.getValueOrPlaceholder = function() {
+      var value;
+
+      value = this.getValue();
+      console.log('value or placeholder: ' + value);
+      if (value) {
+        return value;
+      } else {
+        return this.getPlaceholder();
+      }
+    };
+
     JJEditable.prototype.setDataName = function(dataName) {
       var getElementScope, getName, getNamespace, name, scope,
         _this = this;
@@ -365,15 +419,15 @@ var __hasProp = {}.hasOwnProperty,
         return dataName.split('.').slice(-1)[0];
       };
       getNamespace = function(dataName) {
-        var appendix;
+        var prefix;
 
-        appendix = '.';
+        prefix = '.';
         if (dataName[0] === '\\') {
-          appendix = '';
+          prefix = '';
           dataName = dataName.slice(1);
         }
         if (dataName.lastIndexOf('.') !== -1) {
-          return appendix + dataName.slice(0, dataName.lastIndexOf('.'));
+          return prefix + dataName.slice(0, dataName.lastIndexOf('.'));
         } else {
           return '';
         }
@@ -444,7 +498,7 @@ var __hasProp = {}.hasOwnProperty,
 
     JJEditable.prototype.render = function() {
       if (this.element) {
-        return this.element.html(this.getValue());
+        return this.element.html(this.getValueOrPlaceholder());
       }
     };
 
@@ -608,7 +662,6 @@ var __hasProp = {}.hasOwnProperty,
       DateEditable.__super__.init.call(this, element);
       this.$input = $('<input type="text">');
       this.$input.on('keyup', function(e) {
-        console.log('updateValue');
         return _this.updateValue();
       });
       return this.setPopoverContent(this.$input);
@@ -670,7 +723,10 @@ var __hasProp = {}.hasOwnProperty,
             clearTimeout(_this.markdownChangeTimeout);
           }
           return _this.markdownChangeTimeout = setTimeout(function() {
-            return _this.setValue(val);
+            _this.setValue(val);
+            if (!val.raw) {
+              return _this.element.html(_this.getPlaceholder());
+            }
           }, 1000);
         }
       });

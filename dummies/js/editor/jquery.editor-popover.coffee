@@ -5,6 +5,7 @@ do ($ = jQuery) ->
 	class JJEditor
 		_contentTypes = {}
 		_components = {}
+		_storage = {}
 		events = {}
 
 		debug: true
@@ -14,6 +15,7 @@ do ($ = jQuery) ->
 			type: 'type'
 			name: 'name'
 			scope: 'scope'
+			placeholder: 'placeholder'
 			options: 'options'
 		
 		constructor: (components) ->
@@ -55,10 +57,41 @@ do ($ = jQuery) ->
 		triggerScope: (type, scope, eventData) ->
 			return ''
 
+		extractScope: (o) ->
+			oo = {}
+			t = undefined
+			parts = undefined
+			part = undefined
+			
+			for k of o
+				t = oo
+				parts = k.split(".")
+				key = parts.pop()
+				while parts.length
+					part = parts.shift()
+					t = t[part] = t[part] or {}
+				t[key] = o[k]
+			oo
+
+		getState: ->
+			@_storage
+
 		###
 		 # @private
 		###
 		init = ->
+			# global bindings
+			
+			@.on 'change:\\', (e) =>
+				if @debug then console.group 'EDITOR BINDINGS:'
+				obj = {}
+				obj[e.fullName] = e.value				
+				@_storage = $.extend @_storage, @extractScope(obj)
+				
+				if @debug then console.log @_storage
+				if @debug then console.groupEnd()
+
+			# create component instances
 			$('[data-' + @getAttr('type') + ']').each (i, el) =>
 				$el = $ el
 				contentType = $el.data @getAttr('type')
@@ -148,18 +181,6 @@ do ($ = jQuery) ->
 
 		contentTypes: []
 
-		extractName: (o) ->
-			oo = {}
-			for k of o
-				t = oo
-				parts = k.split(".")
-				key = parts.pop()
-				while parts.length
-					part = parts.shift()
-					t = t[part] = t[part] or {}
-				t[key] = o[k]
-			oo
-
 		constructor: (@editor) ->
 			@name = @.constructor.name.toLowerCase()
 			#@setValue @name
@@ -178,12 +199,6 @@ do ($ = jQuery) ->
 			@setDataName element.data @editor.getAttr('name') 
 			@setOptions element.data @editor.getAttr('options')
 
-			#obj = {}
-			#obj[@getDataFullName()] = @getValue()
-
-			#console.log @extractName(obj)
-			#console.warn 'subclass this method to run your custom code'
-
 		###
 		 # returns a namespaced event name
 		 # 
@@ -196,26 +211,32 @@ do ($ = jQuery) ->
 		trigger: (name, eventData = {}) ->
 			eventData['senderId'] = @id
 			name = getEventName name
-			#console.log name
+
 			@editor.trigger name, eventData
 
 		triggerScopeEvent: (type, eventData = {}) ->
-			scope = @getDataScope();
-			eventData['name'] = @getDataName()
-			eventData['scope'] = scope
-			eventData['senderId'] = @id
-			scopeNames = scope.split '.'
-			console.log scopeNames
+			scope = @getDataScope()
+			scope
+			$.extend eventData, 
+				name: @getDataName()
+				scope: scope
+				fullName: @getDataFullName()
+				senderId: @id
+			
+			scopeNames = scope.split('.')
 
+			# add global scope
+			scopeNames.unshift '\\'
+
+			# crawl down the scope and fire events
 			for i, scopeName of scopeNames
 				prefix = scopeNames.slice(0, i).join '.'
 				prefix += '.' if prefix
-
 				currScope = prefix + scopeName
-				#console.log scopeNames
-				#console.log 'trigger ' + name
-				#console.log i
-				#console.log scopeName
+
+				currScope = currScope.replace '\\.', ''
+
+				# trigger
 				@editor.trigger type + ':' + currScope, eventData
 
 		triggerDataEvent: (type, eventData = {}) ->
@@ -256,6 +277,15 @@ do ($ = jQuery) ->
 		getValueFromContent: ->
 			return ''
 
+		getPlaceholder: ->
+			placeholder = @element.attr @editor.getAttr 'placeholder'
+			if placeholder then placeholder else 'foo'
+
+		getValueOrPlaceholder: ->
+			value = @getValue()
+			console.log 'value or placeholder: ' + value
+			if value then value else @getPlaceholder()
+
 		# --- 
 		
 		setDataName: (dataName) ->
@@ -263,13 +293,13 @@ do ($ = jQuery) ->
 				dataName.split('.').slice(-1)[0]
 
 			getNamespace = (dataName) ->
-				appendix = '.'
+				prefix = '.'
 				if dataName[0] is '\\'
-					appendix = ''
+					prefix = ''
 					dataName = dataName.slice 1
 
 				if dataName.lastIndexOf('.') isnt -1
-					return appendix + dataName.slice 0, dataName.lastIndexOf('.')
+					return prefix + dataName.slice 0, dataName.lastIndexOf('.')
 				else
 					return ''
 
@@ -287,6 +317,7 @@ do ($ = jQuery) ->
 							currentScope = crawlDom $scopeEl.parent(), '.' + currentScope
 						else 
 							return cleanUpScopeName currentScope
+					
 					# found a complete stack
 					else if currentScope[0] is '\\'
 						return cleanUpScopeName currentScope
@@ -329,7 +360,7 @@ do ($ = jQuery) ->
 
 		render: ->
 			if @element
-				@element.html @getValue()
+				@element.html @getValueOrPlaceholder()
 
 
 
@@ -348,8 +379,6 @@ do ($ = jQuery) ->
 
 		init: (element) ->
 			super element
-
-			#console.log @getDataName()
 
 			element.qtip
 				content: 
@@ -454,7 +483,6 @@ do ($ = jQuery) ->
 			@.$input = $ '<input type="text">'
 
 			@.$input.on 'keyup', (e) =>
-				console.log 'updateValue'
 				@updateValue()
 
 			@setPopoverContent @.$input
@@ -505,6 +533,8 @@ do ($ = jQuery) ->
 
 					@markdownChangeTimeout = setTimeout =>
 						@setValue val
+						if not val.raw
+							@element.html @getPlaceholder()
 					, 1000
 			
 
