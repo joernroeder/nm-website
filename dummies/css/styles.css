@@ -1413,12 +1413,6 @@ x:-o-prefocus,
 .editor-sidebar .editor-sidebar-content section {
   margin-bottom: 3em;
 }
-.editor-sidebar .editor-sidebar-content section.active {
-  background: red;
-}
-.editor-sidebar .editor-sidebar-content section.active ~ section {
-  background: blue;
-}
 .editor-sidebar .scrollbox {
   position: relative;
   overflow: auto;
