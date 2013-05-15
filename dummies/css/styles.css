@@ -1388,6 +1388,7 @@ x:-o-prefocus,
 }
 .editor-sidebar .editor-sidebar-content.filtered section:not(.active) {
   height: 0;
+  overflow: hidden;
   margin: 0;
 }
 .editor-sidebar .editor-sidebar-content header {
