@@ -21,4 +21,5 @@ $ ->
 		afterRender: ->
 			window.picturefill()
 		onChange: (data) ->
+			console.log data
 			

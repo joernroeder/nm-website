@@ -21,6 +21,8 @@ $(function() {
     afterRender: function() {
       return window.picturefill();
     },
-    onChange: function(data) {}
+    onChange: function(data) {
+      return console.log(data);
+    }
   });
 });

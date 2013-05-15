@@ -165,7 +165,9 @@ do ($ = jQuery) ->
 				@.inlineDragAndDropSetup()
 
 				if @.options.afterRender then @.options.afterRender()
-				if @.options.onChange then @.options.onChange raw
+				data = { raw:raw }
+				if @.customParsers.SingleImgMarkdownParser then data.images = @.customParsers.SingleImgMarkdownParser.returnIds()
+				if @.options.onChange then @.options.onChange data
 
 		# this sets up the drag and drop for files
 		dragAndDropSetup : ->

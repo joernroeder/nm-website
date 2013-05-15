@@ -183,6 +183,8 @@ var __hasProp = {}.hasOwnProperty,
         }
       });
       return $.when.apply($, seeds).then(function() {
+        var data;
+
         _this.pendingAjax = [];
         $.each(_this.customParsers, function(i, parser) {
           return markdown = parser.parseMarkdown(markdown);
@@ -193,8 +195,14 @@ var __hasProp = {}.hasOwnProperty,
         if (_this.options.afterRender) {
           _this.options.afterRender();
         }
+        data = {
+          raw: raw
+        };
+        if (_this.customParsers.SingleImgMarkdownParser) {
+          data.images = _this.customParsers.SingleImgMarkdownParser.returnIds();
+        }
         if (_this.options.onChange) {
-          return _this.options.onChange(raw);
+          return _this.options.onChange(data);
         }
       });
     };
