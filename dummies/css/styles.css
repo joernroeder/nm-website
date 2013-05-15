@@ -1384,7 +1384,29 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 1.5em 1.5em;
+  padding: 0 1.5em 1.5em;
+}
+.editor-sidebar .editor-sidebar-content header {
+  background: #d9df20;
+  padding: 0.375em 1.5em;
+  margin: 0 -1.5em 1.5em;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.editor-sidebar .editor-sidebar-content header h2 {
+  font-variant: small-caps;
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  color: #919191;
+  color: #262626;
+  margin: 0;
+}
+.editor-sidebar .editor-sidebar-content header h2 a {
+  color: #919191;
+}
+.editor-sidebar .editor-sidebar-content section {
+  margin-bottom: 3em;
 }
 .editor-sidebar .scrollbox {
   position: relative;
@@ -1454,6 +1476,13 @@ x:-o-prefocus,
 .editor-sidebar a:active,
 .editor-sidebar a.active {
   color: #d9df20;
+}
+.editor-sidebar select.choose-project {
+  width: 100%;
+  margin: 0.75em 0;
+}
+.editor-sidebar > header {
+  border-bottom: 1px solid #919191;
 }
 .editor-sidebar input[type="search"] {
   outline: none;

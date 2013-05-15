@@ -142,7 +142,7 @@ MarkdownedTeaser
 								</li>
 
 								<li>
-									<a href="#foo">Switch</a>
+									<a href="#foo">Switch View</a>
 								</li>
 
 								<li>
@@ -152,14 +152,27 @@ MarkdownedTeaser
 						</nav>
 						<header>
 							<h1>Images</h1>
-							<input type="search" id="sidebar-search" placeholder="Find by Caption">
+							<select class="choose-project">
+								<option value="">Choose Project</option>
+								<?php for ($j = 0; $j < 20; $j++) : ?>
+									<option>Option <?php echo $j; ?></option>
+								<?php endfor; ?>
+							</select>
+							<!--<input type="search" id="sidebar-search" placeholder="Find by Caption">-->
 						</header>
 						<section class="editor-sidebar-content scrollbox">
-							<ul class="image-list">
-								<?php for ($i = 0; $i < 100; $i++) : ?>
-									<li><a href="#"><img src="_http://placedog.com/100/100" alt=""></a></li>
+							<?php for ($k = 0; $k < 3; $k++) : ?>
+									<section>
+										<header>
+											<h2>Project <?php echo $k; ?></h2>
+										</header>
+										<ul class="image-list">
+											<?php for ($i = 0; $i < 30; $i++) : ?>
+												<li><a href="#"><img src="_http://placedog.com/100/100" alt=""></a></li>
+											<?php endfor; ?>
+										</ul>
+									</section>
 								<?php endfor; ?>
-							</ul>
 						</section>
 					</section>
 

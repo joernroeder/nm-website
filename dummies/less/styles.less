@@ -814,10 +814,27 @@ x:-o-prefocus, .qtip .qtip-tip{
 		//position: fixed;
 		overflow: scroll;
 		.box-sizing(border-box);
-		padding: (@line / @em) (@line / @em);
+		padding: 0 (@line / @em) (@line / @em);
 
 		&> *:nth-child(2) {
 			//margin-top: @line * 5 / @em;
+		}
+
+		header {
+			background: @nmColor;
+			padding: (@line / 4 / @em) (@line / @em);
+			margin: 0 (-@line / @em) (@line / @em);
+			.box-sizing(content-box);
+
+			h2 {
+				.big-caps;
+				color: @black;
+				margin: 0;
+			}
+		}
+
+		section {
+			margin-bottom: @line * 2 / @em;
 		}
 	}
 
@@ -868,6 +885,15 @@ x:-o-prefocus, .qtip .qtip-tip{
 	a {
 		.link();
 		color: #fff;
+	}
+
+	select.choose-project {
+		width: 100%;
+		margin: @line / 2 / @em 0;
+	}
+
+	&> header {
+		border-bottom: 1px solid @gray;
 	}
 
 	input[type="search"] {
