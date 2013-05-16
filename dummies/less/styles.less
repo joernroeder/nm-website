@@ -796,6 +796,17 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 // ! --- Editables ----------------------------------------
 
+*[data-editor-type][editor-handled-by] {
+	cursor: pointer;
+	.transition(~"background-color .2s ease-in-out");
+	background: lighten(@nmColor, 25%);
+
+	&:hover {
+		background: @nmColor;
+		color: @black;
+	}
+}
+
 .editor-popover {
 
 	&.markdown .qtip-content {
@@ -824,6 +835,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 }
+
 
 // ! --- Editor Sidebar -----------------------------------
 

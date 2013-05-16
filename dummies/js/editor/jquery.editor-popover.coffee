@@ -78,6 +78,7 @@ do ($ = jQuery) ->
 			scope: 'scope'
 			placeholder: 'placeholder'
 			options: 'options'
+			handledBy: 'handled-by'
 		
 		constructor: (components) ->
 			if @debug then console.group 'EDITOR: add Components'
@@ -259,6 +260,7 @@ do ($ = jQuery) ->
 		init: (@element) ->
 			@setDataName element.data @editor.getAttr('name') 
 			@setOptions element.data @editor.getAttr('options')
+			element.attr @editor.getAttr('handledBy'), @id
 
 		###
 		 # returns a namespaced event name

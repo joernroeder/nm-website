@@ -113,7 +113,8 @@ var __hasProp = {}.hasOwnProperty,
       name: 'name',
       scope: 'scope',
       placeholder: 'placeholder',
-      options: 'options'
+      options: 'options',
+      handledBy: 'handled-by'
     };
 
     function JJEditor(components) {
@@ -373,7 +374,8 @@ var __hasProp = {}.hasOwnProperty,
     JJEditable.prototype.init = function(element) {
       this.element = element;
       this.setDataName(element.data(this.editor.getAttr('name')));
-      return this.setOptions(element.data(this.editor.getAttr('options')));
+      this.setOptions(element.data(this.editor.getAttr('options')));
+      return element.attr(this.editor.getAttr('handledBy'), this.id);
     };
 
     /*

@@ -1360,6 +1360,19 @@ x:-o-prefocus,
 .editor .overview article > :first-child:not(:last-child) {
   margin-right: 1.5em;
 }
+*[data-editor-type][editor-handled-by] {
+  cursor: pointer;
+  -webkit-transition: background-color .2s ease-in-out;
+  -moz-transition: background-color .2s ease-in-out;
+  -o-transition: background-color .2s ease-in-out;
+  -ms-transition: background-color .2s ease-in-out;
+  transition: background-color .2s ease-in-out;
+  background: #ecef90;
+}
+*[data-editor-type][editor-handled-by]:hover {
+  background: #d9df20;
+  color: #262626;
+}
 .editor-popover.markdown .qtip-content {
   padding: 0.75em;
 }
