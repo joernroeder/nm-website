@@ -1,5 +1,40 @@
 "use strict"
 
+###
+ # --- jQuery outer-click Plugin --------------------------
+ # 
+ # @see https://gist.github.com/kkosuge/3669605
+ # 
+ #  指定した要素以外のクリックでイベントを発火させる
+ #  例： $("#notification-list").outerClick(function (event) { ... });
+###
+  check = (event) ->
+    i = 0
+    l = elements.length
+    target = event.target
+    el = undefined
+
+      el = elements[i]
+      $.event.trigger OUTER_CLICK, event, el  if el isnt target and not ((if el.contains then el.contains(target) else (if el.compareDocumentPosition then el.compareDocumentPosition(target) & 16 else 1)))
+      i++
+  $.event.special[OUTER_CLICK] =
+      i = elements.length
+      $.event.add document, "click", check  unless i
+      elements[i] = this  if $.inArray(this, elements) < 0
+
+      i = $.inArray(this, elements)
+      if i >= 0
+        elements.splice i, 1
+        jQuery(this).unbind "click", check  unless elements.length
+
+  $.fn[OUTER_CLICK] = (fn) ->
+    (if fn then @bind(OUTER_CLICK, fn) else @trigger(OUTER_CLICK))
+
+
+
+# =========================================================
+
+
 do ($ = jQuery) ->
 
 	class JJEditor
