@@ -8,20 +8,24 @@
  #  指定した要素以外のクリックでイベントを発火させる
  #  例： $("#notification-list").outerClick(function (event) { ... });
 ###
+(($, elements, OUTER_CLICK) ->
   check = (event) ->
     i = 0
     l = elements.length
     target = event.target
     el = undefined
 
+    while i < l
       el = elements[i]
       $.event.trigger OUTER_CLICK, event, el  if el isnt target and not ((if el.contains then el.contains(target) else (if el.compareDocumentPosition then el.compareDocumentPosition(target) & 16 else 1)))
       i++
   $.event.special[OUTER_CLICK] =
+    setup: ->
       i = elements.length
       $.event.add document, "click", check  unless i
       elements[i] = this  if $.inArray(this, elements) < 0
 
+    teardown: ->
       i = $.inArray(this, elements)
       if i >= 0
         elements.splice i, 1
@@ -29,6 +33,7 @@
 
   $.fn[OUTER_CLICK] = (fn) ->
     (if fn then @bind(OUTER_CLICK, fn) else @trigger(OUTER_CLICK))
+) jQuery, [], "outerClick"
 
 
 
@@ -40,9 +45,11 @@ do ($ = jQuery) ->
 	# ! --- jQuery Helper Methods -------------------------
 	
 	###
+	 # select ranges within input fields
 	 #
 	 # @param int start
 	 # @param int end
+	###
 	$.fn.selectRange = (start, end) ->
 		end = start unless end
 		@each ->
@@ -459,8 +466,8 @@ do ($ = jQuery) ->
 					title: ''
 
 				position:
-					at: 'right center'
-					my: 'left center'
+					at: @position.at
+					my: @position.my
 				
 					adjust:
 						x: 10
@@ -551,6 +558,10 @@ do ($ = jQuery) ->
 	class DateEditable extends JJPopoverEditable
 
 		contentTypes: ['date']
+		
+		position:
+			at: 'top left'
+			my: 'bottom left'
 
 		format: 'Y'
 
@@ -605,6 +616,7 @@ do ($ = jQuery) ->
 				preview : element
 				contentGetter: 'val'
 				onChange: (val) =>
+					console.log 'changed'
 					if @markdownChangeTimeout
 						clearTimeout @markdownChangeTimeout
 
@@ -612,7 +624,7 @@ do ($ = jQuery) ->
 						@setValue val
 						if not val.raw
 							@element.html @getPlaceholder()
-					, 1000
+					, 500
 			
 
 		open: ->
