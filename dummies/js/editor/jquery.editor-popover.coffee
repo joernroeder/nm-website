@@ -37,6 +37,25 @@
 
 do ($ = jQuery) ->
 
+	# ! --- jQuery Helper Methods -------------------------
+	
+	###
+	 #
+	 # @param int start
+	 # @param int end
+	$.fn.selectRange = (start, end) ->
+		end = start unless end
+		@each ->
+			if @setSelectionRange
+				@focus()
+				@setSelectionRange start, end
+			else if @createTextRange
+				range = @createTextRange()
+				range.collapse true
+				range.moveEnd "character", end
+				range.moveStart "character", start
+				range.select()
+
 	class JJEditor
 		_contentTypes = {}
 		_components = {}
