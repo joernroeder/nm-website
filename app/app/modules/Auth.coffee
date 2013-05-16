@@ -5,6 +5,7 @@ define [
 
 		###*
 		 * This module handles all authentication stuff like login/logout, logged_in-ping
+		 * if someone can edit a project etc.
 		 * 
 		###
 
@@ -15,6 +16,7 @@ define [
 
 		Auth.loginUrl = 'api/v2/Auth/login'
 		Auth.logoutUrl = 'api/v2/Auth/logout'
+		Auth.canEditUrl = 'api/v2/Auth/canEdit'
 
 		Auth.Cache =
 			userWidget: null
@@ -55,6 +57,15 @@ define [
 
 		Auth.performLoginCheck = ->
 			$.getJSON(@.ping.url).done(Auth.handleUserServerResponse).promise()
+
+		Auth.canEdit = (data) ->
+			att = '?'
+			for i, d of data
+				att += i + '=' + d
+			$.getJSON(@.canEditUrl + att)
+			.pipe (res) ->
+				if res.allowed then return res else return $.Deferred().reject
+			.promse()
 
 		Auth.kickOffLoginPing = ->
 			@.cancelLoginPing

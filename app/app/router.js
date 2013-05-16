@@ -76,6 +76,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       'calendar/:urlHash/': 'showCalendarDetailed',
       'login/': 'showLoginForm',
       'logout/': 'doLogout',
+      'secured/edit/:uglyHash/': 'showEditProjectPage',
       '*url/': 'catchAllRoute'
     },
     index: function(hash) {
@@ -214,7 +215,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         _this = this;
 
       mainDfd = this.rejectAndHandle();
-      classType = app.Config.ClassEnc[uglyHash.substr(0, 1)];
+      classType = app.resolveClassTypeByUglyHash(uglyHash);
       if (classType) {
         DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
           return mainDfd.resolve(model);
@@ -311,6 +312,15 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       } else {
         return dfd.resolve();
       }
+    },
+    showEditProjectPage: function(uglyHash) {
+      var _this = this;
+
+      return Auth.canEditProject(uglyHash).fail(function() {
+        return _this.fourOhFour();
+      }).done(function() {
+        return console.log('You are allowed');
+      });
     },
     catchAllRoute: function(url) {
       return console.log('catch all route');

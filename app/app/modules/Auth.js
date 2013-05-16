@@ -2,6 +2,7 @@
 define(['app'], function(app) {
   /**
   		 * This module handles all authentication stuff like login/logout, logged_in-ping
+  		 * if someone can edit a project etc.
   		 *
   */
 
@@ -14,6 +15,7 @@ define(['app'], function(app) {
   };
   Auth.loginUrl = 'api/v2/Auth/login';
   Auth.logoutUrl = 'api/v2/Auth/logout';
+  Auth.canEditUrl = 'api/v2/Auth/canEdit';
   Auth.Cache = {
     userWidget: null
   };
@@ -54,6 +56,22 @@ define(['app'], function(app) {
   };
   Auth.performLoginCheck = function() {
     return $.getJSON(this.ping.url).done(Auth.handleUserServerResponse).promise();
+  };
+  Auth.canEdit = function(data) {
+    var att, d, i;
+
+    att = '?';
+    for (i in data) {
+      d = data[i];
+      att += i + '=' + d;
+    }
+    return $.getJSON(this.canEditUrl + att).pipe(function(res) {
+      if (res.allowed) {
+        return res;
+      } else {
+        return $.Deferred().reject;
+      }
+    }).promse();
   };
   Auth.kickOffLoginPing = function() {
     var _this = this;

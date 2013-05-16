@@ -81,6 +81,7 @@ define [
 			'calendar/:urlHash/'						: 'showCalendarDetailed' 	# show a detailed calendar event
 			'login/'									: 'showLoginForm'			# show the login form or redirect
 			'logout/'									: 'doLogout'				# logout or redirect
+			'secured/edit/:uglyHash/'					: 'showEditProjectPage'		# Editing of a project type
 			'*url/'										: 'catchAllRoute'			# for example: "Impressum", else 404 error page
 
 		# ! ROUTE CATCHING
@@ -197,7 +198,7 @@ define [
 
 			# if `isPersonPage`, there's a check for a custom template'
 			# the first digit of uglyHash points to its class -> get it!
-			classType = app.Config.ClassEnc[uglyHash.substr(0,1)]
+			classType = app.resolveClassTypeByUglyHash uglyHash
 			if classType
 				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) =>
 					mainDfd.resolve model
@@ -256,6 +257,17 @@ define [
 				layout.setViewAndRenderMaybe '', new Auth.Views.Logout()
 				dfd = Auth.logout()
 			else dfd.resolve()
+
+		# ! Member area
+		
+		showEditProjectPage: (uglyHash) ->
+			Auth.canEditProject(uglyHash)
+				.fail =>
+					return @.fourOhFour()
+				.done =>
+					console.log 'You are allowed'
+
+
 				
 
 		catchAllRoute: (url) ->

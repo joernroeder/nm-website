@@ -27,6 +27,7 @@ class MemberPersonExtension extends DataExtension {
 			'Person',
 			Person::get()->map('ID', 'FullName')
         );
+        
         $dropDownField->setHasEmptyDefault(true);
         $dropDownField->setEmptyString('(none)');
 

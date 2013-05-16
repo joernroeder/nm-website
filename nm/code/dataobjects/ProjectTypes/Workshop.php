@@ -74,7 +74,8 @@ class Workshop extends DataObject {
 		'UglyHashExtension',
 		'HyphenatedTextExtension',
 		'MarkdownDataExtension',
-		'MarkdownedTextExtension'
+		'MarkdownedTextExtension',
+		'EditorsExtension'
 	);
 
 

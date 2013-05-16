@@ -239,6 +239,13 @@ class Person extends DataObject {
 		return $this->MarkdownHyphenated('Bio');
 	}
 
+	public function getFullName() {
+		$name = '';
+		$name .= $this->FirstName ? $this->FirstName . ' ' : '';
+		$name .= $this->Surname ? $this->Surname : '';
+		return $name;
+	}
+
 	public function onBeforeWrite() {
 		if (!$this->UrlSlug) {
 			$this->UrlSlug = Convert::raw2url($this->getTitle());

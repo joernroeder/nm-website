@@ -15,29 +15,31 @@
  */
 
 /**
- * Project Object
- *
- * {@todo: `RelatedProjects()` that merges ParentProjects and ChildProjects}
+ * Excursion Object
+ * 
+ * @todo: check if this object has a relationshop witz itself
  */
-class Project extends DataObject {
+class Excursion extends DataObject {
 
 	// ! Singular und Plural ---------------
 
-	private static $singular_name = 'Project';
-	private static $plural_name = 'Projects';
+	private static $singular_name = 'Excursion';
+	private static $plural_name = 'Excursions';
 
 	// ! Datenbank und Beziehungen ---------
 
 	private static $db = array(
-		'Title'				=> 'Varchar(255)',			// Projekt Titel
-		'TeaserText'		=> 'Varchar(156)',			// Teaser Text
-		'Date'				=> 'Date',					// Projekt-Datum: Hierbei werden nur Monat und Jahr berücksichtigt.
-		'Text'				=> 'Text',					// Text des Projekts (Markdown formatiert)
-		'Code'				=> 'Text',					// Code, der teil des Projektes ist und auf der Projektseite ausgeführt wird
+		'Title'				=> 'Varchar(255)',				// Titel der Exkursion
+		'TeaserText'		=> 'Varchar(156)',				// Teaser Text
+		'StartDate'			=> 'Date',						// Start-Datum
+		'EndDate'			=> 'Date',						// End-Datum
+		'Space'				=> 'Varchar(255)',				// Veranstaltungs-Ort (z.B. TOCA-ME)
+		'Location'			=> 'Varchar(255)',				// Ort (Stadt, Land)
+		'Text'				=> 'Text',						// Beschreibungstext (Markdown formatiert)
 
-		'IsPortfolio'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
-		'IsFeatured'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
-		'UglyHash'			=> 'Varchar'				// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
+		'IsPortfolio'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
+		'IsFeatured'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
+		'UglyHash'			=> 'Varchar'					// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 
 	private static $has_one = array(
@@ -45,22 +47,19 @@ class Project extends DataObject {
 	);
 
 	private static $has_many = array(
-		'Rankings' 		=> 'Ranking'				// Sortierungssystem {@see Ranking}
+		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
 	);
 
 	private static $many_many = array(
-		'ChildProjects'		=> 'Project',			// Verknüpfte "Kind"-Projekte, die zugehörig zu diesem Projekt sind 
-		'Categories'		=> 'Category',			// Kategorie (z.B. Installation)
-		'Images'			=> 'DocImage'			// Bilder
+		'Workshops'		=> 'Workshop',				// Workshops
+		'Exhibitions'	=> 'Exhibition',			// Ausstellungen
+		'Projects'		=> 'Project',				// Projekte
+		'Images'		=> 'DocImage'				// Bilder
 	);
 
 	private static $belongs_many_many = array(
 		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
-		'ParentProjects'	=> 'Project',			// "Eltern"-Projekte, die mit diesem Projekt verknüpft sind.
-		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
-		'Workshops'			=> 'Workshop',			// Workshops
-		'Excursions'		=> 'Excursion',			// Exkursionen
-		'Persons'			=> 'Person'				// Projekt-Teilnehmer
+		'Persons'			=> 'Person'				// Personen
 	);
 
 	// ! Indizes ---------------------------
@@ -80,30 +79,33 @@ class Project extends DataObject {
 		'UglyHashExtension',
 		'HyphenatedTextExtension',
 		'MarkdownDataExtension',
-		'MarkdownedTextExtension'
+		'MarkdownedTextExtension',
+		'EditorsExtension'
 	);
 
 	// ! Such-Felder -----------------------
 
 	private static $searchable_fields = array(
 		'Title',
-		'Text',
-		'IsPortfolio',
-		'IsFeatured'
+		'StartDate',
+		'EndDate',
+		'Space',
+		'Location',
+		'Text'
 	);
 
-	private static $date_format = 'F, Y';				// Format des Datums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
-	private static $frontend_date_format = 'M Y';
+	private static $start_date_format = 'd.m.Y';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $end_date_format = 'd.m.Y';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
 
 	// ! Admin -----------------------------
 
 	// Felder für die Listen/Übersichten im Admin
 	private static $summary_fields = array(
 		'Title',
-		'FormattedDate',							// ruft $this->FormattedDate() auf {@see: StartEndDateExtension.php}
-		'Summary',									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
-		'IsPortfolio',
-		'IsFeatured'
+		'Date',										// ruft $this->getDate() auf {@see: StartEndDateExtension.php}
+		'Space',
+		'Location',
+		'Summary'									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
 	);
 
 
@@ -115,13 +117,17 @@ class Project extends DataObject {
 			'UglyHash',
 			'Title',
 			'TeaserText',
-			'FrontendDate',
+			'StartDate',
+			'EndDate',
+			'DateRangeNice',
 			'Text',
 			'MarkdownedText',
 			'MarkdownedTeaser',
-			'Code',
 			'IsPortfolio',
 			'IsFeatured',
+
+			'Space',
+			'Location',
 
 			'PreviewImage.Urls',
 			'Images.Urls',
@@ -134,18 +140,13 @@ class Project extends DataObject {
 			'Persons.Templates.Url',
 			'Persons.Templates.IsDetail',
 
-			'Categories.Title',
-
 			'CalendarEntries.DateRangeNice',
 			'CalendarEntries.Title',
 			'CalendarEntries.UrlHash',
 
-			'ParentProjects.Title',
-			'ParentProjects.UglyHash',
-			'ParentProjects.IsPortfolio',
-			'ChildProjects.Title',
-			'ChildProjects.UglyHash',
-			'ChildProjects.IsPortfolio',
+			'Projects.Title',
+			'Projects.UglyHash',
+			'Projects.IsPortfolio',
 
 			'Exhibitions.Title',
 			'Exhibitions.UglyHash',
@@ -163,7 +164,7 @@ class Project extends DataObject {
 			'ClassName',
 			'UglyHash',
 			'Title',
-			'FrontendDate',
+			'DateRangeNice',
 			'TeaserText',
 			'MarkdownedTeaser',
 			'IsFeatured',
@@ -177,7 +178,7 @@ class Project extends DataObject {
 		)
 	);
 
-	private static $api_searchable_fields = array(
+	private static $searchable_api_fields = array(
 		'Title',
 		'IsFeatured',
 		'UglyHash'	=> 'ExactMatchFilter'

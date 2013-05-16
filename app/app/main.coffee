@@ -228,6 +228,10 @@ require [
 		@.$body.removeClass('isLoading')
 		@.$main.removeClass('loading')
 
+
+	app.resolveClassTypeByHash = (uglyHash) ->
+		@.Config.ClassEnc[uglyHash.substr(0,1)]
+
 	app.bindListeners()
 
 	# ! KICK OFF

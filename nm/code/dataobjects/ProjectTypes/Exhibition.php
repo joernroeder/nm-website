@@ -15,26 +15,26 @@
  */
 
 /**
- * Excursion Object
- * 
+ * Exhibition Object
+ *
  * @todo: check if this object has a relationshop witz itself
  */
-class Excursion extends DataObject {
+class Exhibition extends DataObject {
 
 	// ! Singular und Plural ---------------
 
-	private static $singular_name = 'Excursion';
-	private static $plural_name = 'Excursions';
+	private static $singular_name = 'Exhibition';
+	private static $plural_name = 'Exhibitions';
 
 	// ! Datenbank und Beziehungen ---------
 
 	private static $db = array(
-		'Title'				=> 'Varchar(255)',				// Titel der Exkursion
+		'Title'				=> 'Varchar(255)',				// Ausstellungs-Titel
 		'TeaserText'		=> 'Varchar(156)',				// Teaser Text
 		'StartDate'			=> 'Date',						// Start-Datum
 		'EndDate'			=> 'Date',						// End-Datum
-		'Space'				=> 'Varchar(255)',				// Veranstaltungs-Ort (z.B. TOCA-ME)
-		'Location'			=> 'Varchar(255)',				// Ort (Stadt, Land)
+		'Space'				=> 'Varchar(255)',				// Veranstaltungs-Ort (Galerie)
+		'Location'			=> 'Varchar(255)',				// Ort des Workshops (Stadt, Land)
 		'Text'				=> 'Text',						// Beschreibungstext (Markdown formatiert)
 
 		'IsPortfolio'		=> 'Boolean',					// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
@@ -51,15 +51,16 @@ class Excursion extends DataObject {
 	);
 
 	private static $many_many = array(
-		'Workshops'		=> 'Workshop',				// Workshops
-		'Exhibitions'	=> 'Exhibition',			// Ausstellungen
-		'Projects'		=> 'Project',				// Projekte
+		'Websites'	=> 'Website',					// Webseite
+		'Projects'	=> 'Project',					// Projekte
 		'Images'		=> 'DocImage'				// Bilder
 	);
 
 	private static $belongs_many_many = array(
 		'CalendarEntries'	=> 'CalendarEntry',		// Kalendereinträge
-		'Persons'			=> 'Person'				// Personen
+		'Persons'	=> 'Person',					// Personen
+		'Workshops'	=> 'Workshop',					// Workshops
+		'Excursions'	=> 'Excursion'				// Exkursionen
 	);
 
 	// ! Indizes ---------------------------
@@ -79,7 +80,8 @@ class Excursion extends DataObject {
 		'UglyHashExtension',
 		'HyphenatedTextExtension',
 		'MarkdownDataExtension',
-		'MarkdownedTextExtension'
+		'MarkdownedTextExtension',
+		'EditorsExtension'
 	);
 
 	// ! Such-Felder -----------------------
@@ -107,8 +109,7 @@ class Excursion extends DataObject {
 		'Summary'									// ruft $this->getSummary() auf {@see: DataObjectHasSummaryExtension.php}
 	);
 
-
-	// ! API -------------------------------
+		// ! API -------------------------------
 
 	private static $api_access = array(
 		'view' => array(
@@ -143,18 +144,17 @@ class Excursion extends DataObject {
 			'CalendarEntries.Title',
 			'CalendarEntries.UrlHash',
 
+			'Websites.Title',
+			'Websites.Link',
+
 			'Projects.Title',
 			'Projects.UglyHash',
 			'Projects.IsPortfolio',
 
-			'Exhibitions.Title',
-			'Exhibitions.UglyHash',
-			'Exhibitions.IsPortfolio',
-
 			'Workshops.Title',
 			'Workshops.UglyHash',
 			'Workshops.IsPortfolio',
-
+			
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
@@ -186,6 +186,5 @@ class Excursion extends DataObject {
 	public function canView($member = null) {
 		return true;
 	}
-
 }
 

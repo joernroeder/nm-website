@@ -281,6 +281,9 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     this.$body.removeClass('isLoading');
     return this.$main.removeClass('loading');
   };
+  app.resolveClassTypeByHash = function(uglyHash) {
+    return this.Config.ClassEnc[uglyHash.substr(0, 1)];
+  };
   app.bindListeners();
   $(function() {
     app.setupSpinner();
