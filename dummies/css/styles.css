@@ -1360,6 +1360,34 @@ x:-o-prefocus,
 .editor .overview article > :first-child:not(:last-child) {
   margin-right: 1.5em;
 }
+.editor-popover.markdown .qtip-content {
+  padding: 0.75em;
+}
+.editor-popover textarea.preview {
+  font-family: 'AllerLight', 'Helvetica', sans-serif;
+  font-weight: normal;
+  background: transparent;
+  padding: 0.75em;
+  border: none;
+  resize: none;
+  outline: none;
+  color: #fff;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 400px;
+  -webkit-transition: background-color .2s .1s ease-in-out;
+  -moz-transition: background-color .2s .1s ease-in-out;
+  -o-transition: background-color .2s .1s ease-in-out;
+  -ms-transition: background-color .2s .1s ease-in-out;
+  transition: background-color .2s .1s ease-in-out;
+  cursor: pointer;
+}
+.editor-popover textarea.preview:focus {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: auto;
+}
 .editor-sidebar {
   position: fixed;
   top: 0;

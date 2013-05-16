@@ -793,6 +793,40 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 }
 
+
+// ! --- Editables ----------------------------------------
+
+.editor-popover {
+
+	&.markdown .qtip-content {
+		padding: @line / 2 / @em;
+	}
+
+	textarea.preview {
+		.aller-light;
+		background: transparent;
+		padding: @line / 2 / @em;
+		border: none;
+		resize:none;
+		outline: none;
+
+		color: #fff;
+		.box-sizing(border-box);
+		width: 100%;
+		min-height: 400px;
+
+		.transition(~"background-color .2s .1s ease-in-out");
+		cursor: pointer;
+
+		&:focus {
+			background: rgba(255, 255, 255, .2);
+			cursor: auto;
+		}
+	}
+}
+
+// ! --- Editor Sidebar -----------------------------------
+
 .editor-sidebar {
 	position: fixed;
 	top: 0;
