@@ -61,11 +61,11 @@ define [
 		Auth.canEdit = (data) ->
 			att = '?'
 			for i, d of data
-				att += i + '=' + d
+				att += i + '=' + d + '&'
 			$.getJSON(@.canEditUrl + att)
 			.pipe (res) ->
-				if res.allowed then return res else return $.Deferred().reject
-			.promse()
+				if res.allowed then return res else return $.Deferred().reject()
+			.promise()
 
 		Auth.kickOffLoginPing = ->
 			@.cancelLoginPing

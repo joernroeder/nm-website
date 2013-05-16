@@ -59,4 +59,21 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 		));
 	}
 
+	public function canEdit() {
+		if (!Director::is_ajax() || !$this->request->isGET()) return $this->methodNotAllowed();
+		
+		$className = $this->request->getVar('className');
+
+		if (in_array($className, array('Project', 'Exhibition', 'Workshop', 'Excursion'))) {
+			$uglyHash = $this->request->getVar('UglyHash');
+			if ($uglyHash) {
+				$uglyHash = Convert::raw2sql($uglyHash);
+				$obj = DataObject::get_one(Convert::raw2sql($className), "UglyHash='$uglyHash'");
+				return json_encode(array(
+					'allowed'	=> $obj->canEdit()
+				));
+			}
+		}
+	}
+
 }

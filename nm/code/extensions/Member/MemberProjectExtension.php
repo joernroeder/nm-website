@@ -24,6 +24,20 @@ class ProjectEditorsExtension extends DataExtension {
 		'BlockedEditors'	=> 'Member'
 	);
 
+	public function canEdit($member = null) {
+		$person = $member->Person();
+
+		// check if Person is attached to this project
+		$attachedPersons = $this->owner->Persons();
+		if (!$attachedPersons->exists() || !$attachedPersons->byID($person->ID)) return false;
+
+		// check if Member is a blocked editor
+		$blockedEditors = $this->owner->BlockedEditors();
+		if ($blockedEditors->exists() && $blockedEditors->byID($member->ID)) return false;
+
+		return true;
+	}
+
 }
 
 /**
@@ -48,6 +62,12 @@ class EditorsExtension extends DataExtension {
 			if ($current_member) $this->owner->Editors()->add($current_member);
 		}
 		parent::onBeforeWrite();
+	}
+
+	public function canEdit($member = null) {
+		$editors = $this->owner->Editors();
+		if ($editors->exists() && $editors->byID($member->ID)) return true;
+		return false;
 	}
 
 }

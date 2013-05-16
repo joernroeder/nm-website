@@ -186,5 +186,24 @@ class Exhibition extends DataObject {
 	public function canView($member = null) {
 		return true;
 	}
+
+	public function canEdit($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+		
+		// admin can always edit
+		if (Permission::check('ADMIN', 'any', $member)) return true;
+		
+		// extended access checks
+		$results = $this->extend('canEdit', $member);
+		if($results && is_array($results)) {
+			if(!min($results)) return false;
+			else return true;
+		}
+
+		return false;
+	}
 }
 

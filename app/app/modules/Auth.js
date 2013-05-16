@@ -63,15 +63,15 @@ define(['app'], function(app) {
     att = '?';
     for (i in data) {
       d = data[i];
-      att += i + '=' + d;
+      att += i + '=' + d + '&';
     }
     return $.getJSON(this.canEditUrl + att).pipe(function(res) {
       if (res.allowed) {
         return res;
       } else {
-        return $.Deferred().reject;
+        return $.Deferred().reject();
       }
-    }).promse();
+    }).promise();
   };
   Auth.kickOffLoginPing = function() {
     var _this = this;

@@ -215,7 +215,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         _this = this;
 
       mainDfd = this.rejectAndHandle();
-      classType = app.resolveClassTypeByUglyHash(uglyHash);
+      classType = app.resolveClassTypeByHash(uglyHash);
       if (classType) {
         DataRetrieval.forDetailedObject(classType, uglyHash).done(function(model) {
           return mainDfd.resolve(model);
@@ -316,8 +316,11 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
     showEditProjectPage: function(uglyHash) {
       var _this = this;
 
-      return Auth.canEditProject(uglyHash).fail(function() {
-        return _this.fourOhFour();
+      return Auth.canEdit({
+        className: app.resolveClassTypeByHash(uglyHash),
+        UglyHash: uglyHash
+      }).fail(function() {
+        return console.log('Auth failed');
       }).done(function() {
         return console.log('You are allowed');
       });

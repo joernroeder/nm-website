@@ -198,7 +198,7 @@ define [
 
 			# if `isPersonPage`, there's a check for a custom template'
 			# the first digit of uglyHash points to its class -> get it!
-			classType = app.resolveClassTypeByUglyHash uglyHash
+			classType = app.resolveClassTypeByHash uglyHash
 			if classType
 				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) =>
 					mainDfd.resolve model
@@ -261,9 +261,9 @@ define [
 		# ! Member area
 		
 		showEditProjectPage: (uglyHash) ->
-			Auth.canEditProject(uglyHash)
+			Auth.canEdit({className: app.resolveClassTypeByHash(uglyHash), UglyHash: uglyHash})
 				.fail =>
-					return @.fourOhFour()
+					console.log 'Auth failed'
 				.done =>
 					console.log 'You are allowed'
 
