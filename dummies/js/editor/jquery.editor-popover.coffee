@@ -424,6 +424,13 @@ do ($ = jQuery) ->
 	class JJPopoverEditable extends JJEditable
 
 		_popoverContent: ''
+		popoverClasses: []
+
+		closeOnOuterClick: true
+		
+		position:
+			at: 'right center'
+			my: 'left center'
 
 		constructor: (@editor) ->
 			if @.constructor.name is 'PopoverEditable'
@@ -435,6 +442,17 @@ do ($ = jQuery) ->
 			super element
 
 			element.qtip
+				events:
+					visible: (event, api) =>
+						# set cursor to the end of the first input or textarea element
+						$input = $('input, textarea', @api.tooltip).eq 0
+						$input.selectRange $input.val().length
+
+						# bind outer click to close the popup
+						if @closeOnOuterClick
+							element.one 'outerClick', =>
+								@close()
+				
 				content: 
 					text: =>
 						@getPopoverContent()
@@ -459,7 +477,7 @@ do ($ = jQuery) ->
 					fixed: true
 
 				style: 
-					classes: 'editor-popover'
+					classes: @getPopOverClasses()
 					tip:
 						width: 20
 						height: 10
@@ -478,6 +496,7 @@ do ($ = jQuery) ->
 			@api.show()
 
 		close: ->
+			@element.unbind 'outerClick'
 			@api.hide()
 
 		toggle: ->
@@ -487,6 +506,9 @@ do ($ = jQuery) ->
 				@open()
 
 		#getValueFromContent: ->
+
+		getPopOverClasses: ->
+			(['editor-popover']).concat([@name], @popoverClasses).join ' '
 
 		getPopoverContent: ->
 			types = @contentTypes.join ', '
@@ -555,6 +577,7 @@ do ($ = jQuery) ->
 		markdownChangeTimeout: null
 
 		previewClass: 'preview'
+		popoverClasses: ['markdown']
 
 		init: (element) ->
 			super element
