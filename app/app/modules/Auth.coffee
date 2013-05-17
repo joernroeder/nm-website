@@ -1,7 +1,8 @@
 define [
 		'app'
+		'modules/UserSidebar'
 	],
-	(app) ->
+	(app, UserSidebar) ->
 
 		###*
 		 * This module handles all authentication stuff like login/logout, logged_in-ping
@@ -12,7 +13,7 @@ define [
 		Auth = app.module()
 		Auth.ping = 
 			url: JJRestApi.setObjectUrl 'User'
-			interval: 20000
+			interval: 200000
 
 		Auth.loginUrl = 'api/v2/Auth/login'
 		Auth.logoutUrl = 'api/v2/Auth/logout'
@@ -81,7 +82,7 @@ define [
 				delete @.loginPing
 
 		Auth.updateUserWidget = ->
-			widget = @.Cache.userWidget = @.Cache.userWidget || new Auth.Views.Widget()
+			widget = @.Cache.userWidget = @.Cache.userWidget || UserSidebar.construct()
 			widget.render()
 
 		# this function gets the current member's person object (detail)
@@ -155,13 +156,5 @@ define [
 			template: 'security/logging-out'
 			serialize: ->
 				return app.CurrentMember
-
-		Auth.Views.Widget = Backbone.View.extend
-			tagName: 'section'
-			el: $('#user-widget')
-			template: 'security/user-widget'
-			serialize: ->
-				person = if app.CurrentMemberPerson then app.CurrentMemberPerson.toJSON()
-				{ Member: app.CurrentMember, Person: person }
 
 		Auth

@@ -332,7 +332,10 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       return mainDfd.fail(function() {
         return console.log('Auth failed');
       }).done(function(model) {
-        return console.log(model);
+        var layout;
+
+        layout = app.useLayout('editor');
+        return Auth.updateUserWidget();
       });
     },
     catchAllRoute: function(url) {

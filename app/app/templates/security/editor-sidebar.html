@@ -1,0 +1,27 @@
+<nav>
+	<ul>
+		<li>
+			<a href="#" data-editor-sidebar-content="user">User</a>
+		</li>
+		<li>
+			<a href="#">Logout</a>
+		</li>
+	</ul>
+	{{#if isEditor}}
+		<ul>
+			<li>
+				<a href="#" data-editor-sidebar-content="gallery">Editor</a>
+			</li>
+			<li>
+				<a href="#">Switch view</a>
+			</li>
+			<li>
+				<a href="#">Publish</a>
+			</li>
+		</ul>
+	{{/if}}
+</nav>
+
+<div id="editor-sidebar-container">
+
+</div>

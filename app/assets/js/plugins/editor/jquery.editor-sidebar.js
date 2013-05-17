@@ -82,7 +82,6 @@
 
     EditorSidebar.prototype.initToggleBtn = function() {
       var _this = this;
-
       return $('#toggle-editor-sidebar').on('click', function(e) {
         e.preventDefault();
         console.log(e);

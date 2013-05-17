@@ -29,6 +29,7 @@ require.config({
     'responsiveimage/picturefill': ['responsiveimage/external/matchmedia'],
     'plugins/misc/spin.min': ['jquery'],
     'plugins/misc/misc': ['jquery'],
+    'plugins/editor/jquery.editor-sidebar': ['plugins/misc/misc'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone']

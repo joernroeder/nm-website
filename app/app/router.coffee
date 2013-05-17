@@ -277,7 +277,8 @@ define [
 			mainDfd.fail ->
 				console.log 'Auth failed'
 			.done (model) ->
-				console.log model
+				layout = app.useLayout 'editor'
+				Auth.updateUserWidget()
 
 
 				

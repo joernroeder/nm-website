@@ -51,13 +51,13 @@
 
 		</div>
 
+		<!-- our user widget with basic links to dashboard and logout -->
+		<div id="editor-sidebar" class="editor-sidebar"></div>
+
 		<div id="spinner-target">
 
 		</div>
 	</div>
-
-	<!-- our user widget with basic links to dashboard and logout -->
-	<div id="user-widget"></div>
 
 	<!-- Application source. -->
 	<script data-main="/app/app/config" src="/app/assets/js/libs/require.js"></script>
