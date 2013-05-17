@@ -33,7 +33,9 @@ require [
 	app.Cache = {}
 	app.Cache.UserGallery =
 		fetched: false
-		images: []
+		images:
+			Person: []
+			Projects: []
 
 	# auth
 	app.CurrentMember = {}
@@ -57,6 +59,7 @@ require [
 			'1': 'Excursion'
 			'2': 'Exhibition'
 			'3': 'Workshop'
+		GalleryUrl: 'api/v2/Auth/gallery'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'

@@ -118,7 +118,7 @@ define [
 				if existModel
 					if existModel._isCompletelyFetched then resolve = true
 					if checkForLoggedIn and not existModel._isFetchedWhenLoggedIn then resolve = false
-					
+
 					if resolve
 						dfd.resolve existModel
 					else
@@ -153,6 +153,21 @@ define [
 						dfd.resolve getRandom()
 				else
 					dfd.resolve getRandom()
+				dfd.promise()
+
+			# getting the user gallery
+			forUserGallery: ->
+				userGallery = app.Cache.UserGallery
+				dfd = new $.Deferred()
+				if userGallery.fetched
+					dfd.resolve userGallery.images
+				else
+					$.getJSON(app.Config.GalleryUrl)
+						.done (data) ->
+							userGallery.images = data
+							userGallery.fetched = true
+							dfd.resolve userGallery
+
 				dfd.promise()
 
 			# abstract function that calls `fetch` on a model and then calls back

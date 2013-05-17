@@ -20,6 +20,10 @@ class PersonImage extends SubdomainResponsiveImage {
 		'Person'	=> 'Person'
 	);
 
+	private static $has_one = array(
+		'Owner'		=> 'Member'
+	);
+
 	private static $api_access = array(
 		'view' => array(
 			'Title',

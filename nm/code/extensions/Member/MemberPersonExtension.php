@@ -17,7 +17,11 @@
 class MemberPersonExtension extends DataExtension {
 
 	private static $has_one = array(
-		'Person'	=> 'Person'		// Personenobjekt
+		'Person'		=> 'Person'		// Personenobjekt
+	);
+
+	private static $has_many = array(
+		'PersonImages'	=> 'PersonImage'
 	);
 
 	public function updateCMSFields(FieldList $fields) {

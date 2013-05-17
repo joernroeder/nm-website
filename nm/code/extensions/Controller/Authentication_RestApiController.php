@@ -76,4 +76,44 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 		}
 	}
 
+	public function gallery() {
+		$gallery = array(
+			'Person'	=> array(),
+			'Projects'	=> array()
+		);
+		$member = $this->currentUser;
+		if ($member && $person = $member->Person()) {
+			// get the person images
+			foreach ($member->PersonImages() as $img) {
+				$gallery['Person'][] = $this->croppedImage($img);
+			}
+
+			// get the project images
+			foreach (array('Projects', 'Exhibitions', 'Workshops', 'Excursions') as $projectTypes) {
+				foreach ($person->$projectTypes() as $project) {
+					$title = $project->Title;
+					$gallery['Projects'][$title] = array();
+
+					if ($project->canEdit($member)) {
+						foreach ($project->Images() as $img) {
+							$gallery['Projects'][$title] = $this->croppedImage($img);
+						}
+					}
+				}
+			}
+		}
+
+
+		return json_encode($gallery);
+	}
+
+	private function croppedImage($img) {
+		$square = $img->getClosestImage(150)->CroppedImage(150,150);
+
+		return array(
+			'id'	=> $img->ID,
+			'url'	=> $square->getURL()
+		);
+	}
+
 }

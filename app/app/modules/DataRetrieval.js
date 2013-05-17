@@ -174,6 +174,22 @@ define(['app'], function(app) {
       }
       return dfd.promise();
     },
+    forUserGallery: function() {
+      var dfd, userGallery;
+
+      userGallery = app.Cache.UserGallery;
+      dfd = new $.Deferred();
+      if (userGallery.fetched) {
+        dfd.resolve(userGallery.images);
+      } else {
+        $.getJSON(app.Config.GalleryUrl).done(function(data) {
+          userGallery.images = data;
+          userGallery.fetched = true;
+          return dfd.resolve(userGallery);
+        });
+      }
+      return dfd.promise();
+    },
     fetchExistingModelCompletely: function(existModel) {
       var dfd;
 

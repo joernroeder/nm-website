@@ -8,7 +8,10 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   app.Cache = {};
   app.Cache.UserGallery = {
     fetched: false,
-    images: []
+    images: {
+      Person: [],
+      Projects: []
+    }
   };
   app.CurrentMember = {};
   app.CurrentMemberPerson = null;
@@ -23,6 +26,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       '2': 'Exhibition',
       '3': 'Workshop'
     },
+    GalleryUrl: 'api/v2/Auth/gallery',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
     },
