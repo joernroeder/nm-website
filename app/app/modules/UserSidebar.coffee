@@ -95,8 +95,10 @@ define [
 
 		UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend
 			tagName: 'div'
-
-
+			beforeRender: ->
+				DataRetrieval.forUserGallery().done (items) ->
+					console.log 'user gallery fetched. Items:'
+					console.log items
 
 
 

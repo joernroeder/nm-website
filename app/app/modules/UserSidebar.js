@@ -98,7 +98,13 @@ define(['app'], function(app) {
     }
   });
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
-    tagName: 'div'
+    tagName: 'div',
+    beforeRender: function() {
+      return DataRetrieval.forUserGallery().done(function(items) {
+        console.log('user gallery fetched. Items:');
+        return console.log(items);
+      });
+    }
   });
   return UserSidebar;
 });

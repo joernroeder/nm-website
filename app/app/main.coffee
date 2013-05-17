@@ -31,7 +31,9 @@ require [
 
 	# out app cache where we store specific searches/collection items
 	app.Cache = {}
-	app.Cache.UserGallery = {}
+	app.Cache.UserGallery =
+		fetched: false
+		images: []
 
 	# auth
 	app.CurrentMember = {}
