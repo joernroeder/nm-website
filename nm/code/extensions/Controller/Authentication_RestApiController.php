@@ -91,14 +91,19 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 			// get the project images
 			foreach (array('Projects', 'Exhibitions', 'Workshops', 'Excursions') as $projectTypes) {
 				foreach ($person->$projectTypes() as $project) {
-					$title = $project->Title;
-					$gallery['Projects'][$title] = array();
+					$projectData = array(
+						'FilterID' => Convert::raw2att($project->class . '-' . $project->ID),
+						'Title' => $project->Title
+					);
 
 					if ($project->canEdit($member)) {
+						$projectData['Images'] = array();
 						foreach ($project->Images() as $img) {
-							$gallery['Projects'][$title] = $this->croppedImage($img);
+							$projectData['Images'][] = $this->croppedImage($img);
 						}
 					}
+
+					$gallery['Projects'][] = $projectData;
 				}
 			}
 		}

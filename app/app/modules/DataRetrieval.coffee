@@ -160,7 +160,7 @@ define [
 				userGallery = app.Cache.UserGallery
 				dfd = new $.Deferred()
 				if userGallery.fetched
-					dfd.resolve userGallery.images
+					dfd.resolve userGallery
 				else
 					$.getJSON(app.Config.GalleryUrl)
 						.done (data) ->

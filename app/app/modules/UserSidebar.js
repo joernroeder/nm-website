@@ -9,7 +9,11 @@ define(['app', 'modules/DataRetrieval'], function(app, DataRetrieval) {
   UserSidebar.Views.Main = Backbone.View.extend({
     el: $('#editor-sidebar'),
     template: 'security/editor-sidebar',
-    currentContainerContent: null,
+    availableSubViews: {
+      'user': 'UserSidebar',
+      'gallery': 'GallerySidebar'
+    },
+    subView: null,
     events: {
       'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
     },
@@ -23,36 +27,62 @@ define(['app', 'modules/DataRetrieval'], function(app, DataRetrieval) {
       return json;
     },
     toggleSidebarCheck: function(e) {
-      var toShow;
+      var $target, subViewName, toShow;
 
-      toShow = $(e.target).data('editor-sidebar-content');
-      console.log(this);
-      if (this.currentContainer === toShow) {
+      $target = $(e.target);
+      toShow = $target.data('editor-sidebar-content');
+      subViewName = this.getSubviewName(toShow);
+      if (this.subViewName === subViewName) {
+        $target.toggleClass('active');
         this.toggle();
-      } else {
-        this.setSubview(toShow, true);
-        this.open();
+      } else if (subViewName) {
+        $target.parents('nav').find('.active').removeClass('active').end().end().addClass('active');
+        this.setSubview(subViewName, true);
+        this.open(true);
       }
       return false;
     },
-    setSubview: function(toShow, doRender) {
-      var view;
+    triggerSubview: function(method) {
+      var args, methodName;
 
-      view = toShow === 'user' ? new UserSidebar.Views.UserSidebar() : new UserSidebar.Views.GallerySidebar();
-      this.setView('#editor-sidebar-container', view);
-      if (doRender) {
-        return view.render();
+      args = Array.prototype.slice.call(arguments);
+      methodName = 'on' + method.charAt(0).toUpperCase() + method.slice(1);
+      if (this.subView) {
+        if (this.subView[methodName]) {
+          return this.subView[methodName].apply(this.subView, args.slice(1));
+        }
       }
     },
-    open: function() {
+    getSubviewName: function(toShow) {
+      if (this.availableSubViews[toShow]) {
+        return this.availableSubViews[toShow];
+      } else {
+        return false;
+      }
+    },
+    setSubview: function(subViewName, doRender) {
+      if (subViewName) {
+        this.subViewName = subViewName;
+        this.subView = new UserSidebar.Views[subViewName]();
+        this.setView('#editor-sidebar-container', this.subView);
+        if (doRender) {
+          return this.subView.render();
+        }
+      } else {
+        return this.subView = null;
+      }
+    },
+    open: function(switched) {
       var _this = this;
 
       this.$el.addClass('open');
       return setTimeout(function() {
+        _this.triggerSubview('opened', switched);
         return _this.$el.addClass('opened');
       }, 300);
     },
     close: function() {
+      this.triggerSubview('close');
       return this.$el.removeClass('open opened');
     },
     toggle: function() {
@@ -66,6 +96,8 @@ define(['app', 'modules/DataRetrieval'], function(app, DataRetrieval) {
   UserSidebar.Views.SidebarContainer = Backbone.View.extend({
     $sidebarHeader: null,
     $sidebarContent: null,
+    className: 'editor-sidebar-container',
+    galleryData: {},
     initSidebar: _.once(function() {
       var _this = this;
 
@@ -99,11 +131,104 @@ define(['app', 'modules/DataRetrieval'], function(app, DataRetrieval) {
   });
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
-    beforeRender: function() {
+    template: 'security/editor-sidebar-gallery',
+    columnsPrefix: 'columns-',
+    $sidebarContent: null,
+    getColumnsCount: function() {
+      return this.$sidebarContent.data('columns');
+    },
+    setColumnCount: function() {
+      var columnsCount, prefColumnsCount, width;
+
+      if (!this.$sidebarContent) {
+        return;
+      }
+      width = parseInt(this.$sidebarContent.width(), 10);
+      prefColumnsCount = this.getColumnsCount();
+      columnsCount = Math.floor(width / 75);
+      if (columnsCount) {
+        return this.$sidebarContent.removeClass(this.columnsPrefix + prefColumnsCount).addClass(this.columnsPrefix + columnsCount).data('columns', columnsCount);
+      }
+    },
+    initImageList: function() {
+      if (!this.$imageList) {
+        this.$imageList = $('.image-list', this.$el);
+      }
+      if (this.$imageList.length) {
+        $('a', this.$imageList).on('click', function(e) {
+          e.preventDefault();
+          $('.selected', this.$imageList).not(this).removeClass('selected');
+          return $(this).blur().toggleClass('selected');
+        });
+        return false;
+      }
+    },
+    initFilter: function() {
+      var _this = this;
+
+      if (!this.$filter) {
+        this.$filter = $('select.filter', this.$el);
+      }
+      if (this.$filter.length) {
+        return this.$filter.on('change', function(e) {
+          var $filtered, val;
+
+          val = $(e.target).blur().val();
+          if (val) {
+            $filtered = $("[data-filter-id=" + val + "]", _this.$sidebarContent);
+            if ($filtered.length) {
+              _this.$sidebarContent.addClass('filtered');
+              return $filtered.addClass('active').siblings().removeClass('active');
+            }
+          } else {
+            return _this.$sidebarContent.removeClass('filtered').find('.active').removeClass('active');
+          }
+        });
+      }
+    },
+    onOpened: function(switched) {
+      var delay,
+        _this = this;
+
+      delay = switched ? 0 : 300;
+      return setTimeout(function() {
+        return _this.setColumnCount();
+      }, delay);
+    },
+    onClose: function() {
+      var prefColumnsCount,
+        _this = this;
+
+      prefColumnsCount = this.getColumnsCount();
+      return setTimeout(function() {
+        return _this.$sidebarContent.removeClass(_this.columnsPrefix + prefColumnsCount);
+      }, 300);
+    },
+    render: function(template, context) {
+      var done,
+        _this = this;
+
+      if (context == null) {
+        context = {};
+      }
+      done = this.async();
       return DataRetrieval.forUserGallery().done(function(gallery) {
-        console.log('user gallery fetched. Gallery:');
-        return console.log(gallery);
+        if (gallery.fetched) {
+          context.Projects = gallery.images.Projects;
+        }
+        return done(template(context));
       });
+    },
+    afterRender: function() {
+      var _this = this;
+
+      this._afterRender();
+      this.setColumnCount();
+      this.initFilter();
+      this.initImageList();
+      return (_.once(function() {
+        return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+      }))();
     }
   });
   return UserSidebar;

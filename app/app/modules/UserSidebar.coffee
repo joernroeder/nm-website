@@ -13,7 +13,11 @@ define [
 			el: $('#editor-sidebar')
 			template: 'security/editor-sidebar'
 
-			currentContainerContent: null
+			availableSubViews:
+				'user'		: 'UserSidebar'
+				'gallery'	: 'GallerySidebar'
+
+			subView: null
 
 			events:
 				'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
@@ -30,29 +34,52 @@ define [
 			# !- Custom
 			
 			toggleSidebarCheck: (e) ->
-				toShow = $(e.target).data('editor-sidebar-content')
-				console.log @
-				if @.currentContainer is toShow 
+				$target = $ e.target
+				toShow = $target.data 'editor-sidebar-content'
+				subViewName = @.getSubviewName toShow
+
+				if @.subViewName is subViewName
+					$target.toggleClass 'active'
 					@.toggle()
-				else
-					@.setSubview toShow, true
-					@.open()
+				else if subViewName
+						$target.parents('nav').find('.active').removeClass('active').end().end().addClass 'active'
+						@.setSubview subViewName, true # doRender = true
+						@.open true # switched = true
 
 				false
 
-			setSubview: (toShow, doRender) ->
-				view = if toShow is 'user' then new UserSidebar.Views.UserSidebar() else new UserSidebar.Views.GallerySidebar()
-				@.setView '#editor-sidebar-container', view
-				if doRender then view.render()
+			triggerSubview: (method) ->
+				args = Array.prototype.slice.call arguments
+				methodName = 'on' + method.charAt(0).toUpperCase() + method.slice 1
 
-			open: ->
+				if @.subView
+					if @.subView[methodName]
+						@.subView[methodName].apply @.subView, args.slice(1)
+
+			getSubviewName: (toShow) ->
+				if @.availableSubViews[toShow] then @.availableSubViews[toShow] else false
+
+			setSubview: (subViewName, doRender) ->
+				if subViewName
+					@.subViewName = subViewName
+					@.subView = new UserSidebar.Views[subViewName]()
+
+					@.setView '#editor-sidebar-container', @.subView
+					if doRender then @.subView.render()
+				else 
+					# @todo proper cleanup
+					@.subView = null
+
+			open: (switched) ->
 				@.$el.addClass 'open'
 
 				setTimeout =>
+					@.triggerSubview 'opened', switched
 					@.$el.addClass 'opened'
 				, 300
 
 			close: ->
+				@.triggerSubview 'close'
 				@.$el.removeClass 'open opened'
 
 			toggle: ->
@@ -66,6 +93,9 @@ define [
 		UserSidebar.Views.SidebarContainer = Backbone.View.extend
 			$sidebarHeader: null
 			$sidebarContent: null
+			className: 'editor-sidebar-container'
+
+			galleryData: {}
 
 			initSidebar: _.once ->
 				@.$sidebarHeader = $ '> header', @.$el
@@ -90,19 +120,100 @@ define [
 			tagName: 'div'
 			template: 'security/editor-sidebar-user'
 
+					#@.$el.html(@.serialize())
+					#@.render()
+					#@.PersonImage = if gallery.fetched then gallery.images.Projects
+					#@.Projects = if gallery.fetched then gallery.images.Projects
+					#console.log gallery
+
 			afterRender: ->
 				# do stuff
 				@._afterRender()
 
 		UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend
 			tagName: 'div'
-			beforeRender: ->
-				DataRetrieval.forUserGallery().done (gallery) ->
-					console.log 'user gallery fetched. Gallery:'
-					console.log gallery
+			template: 'security/editor-sidebar-gallery'
 
+			columnsPrefix: 'columns-'
 
+			$sidebarContent: null
 
+			getColumnsCount: ->
+				@.$sidebarContent.data 'columns'
 
+			setColumnCount: ->
+				if not @.$sidebarContent then return
+
+				width = parseInt @.$sidebarContent.width(), 10
+
+				prefColumnsCount = @getColumnsCount()
+				columnsCount = Math.floor width / 75
+
+				if columnsCount
+					@.$sidebarContent
+						.removeClass(@columnsPrefix + prefColumnsCount)
+						.addClass(@columnsPrefix + columnsCount)
+						.data('columns', columnsCount)
+
+			initImageList: ->
+				@.$imageList = $ '.image-list', @.$el unless @.$imageList
+
+				if @.$imageList.length
+					$('a', @.$imageList).on 'click', (e) ->
+						e.preventDefault()
+						$('.selected', @.$imageList).not(@).removeClass 'selected'
+
+						$(@).blur().toggleClass 'selected'
+
+					false
+
+			initFilter: ->
+				@.$filter = $ 'select.filter', @.$el unless @.$filter
+
+				if @.$filter.length
+					@.$filter.on 'change', (e) =>
+						val = $(e.target).blur().val()
+						if val
+							$filtered = $ "[data-filter-id=#{val}]", @.$sidebarContent
+							if $filtered.length
+								@.$sidebarContent.addClass 'filtered'
+								$filtered.addClass('active').siblings().removeClass 'active'
+						else
+							@.$sidebarContent
+								.removeClass('filtered')
+								.find('.active')
+								.removeClass('active')
+
+			onOpened: (switched) ->
+				delay = if switched then 0 else 300
+
+				setTimeout =>
+					@setColumnCount()
+				, delay
+
+			onClose: ->
+				prefColumnsCount = @getColumnsCount()
+				setTimeout =>
+					@.$sidebarContent.removeClass @columnsPrefix + prefColumnsCount
+				, 300
+
+			render: (template, context = {}) ->
+				done =  @.async()
+
+				DataRetrieval.forUserGallery().done (gallery) =>
+					if gallery.fetched
+						context.Projects = gallery.images.Projects
+					
+					done template(context)
+
+			afterRender: ->
+				@._afterRender()
+				@.setColumnCount()
+				@.initFilter()
+				@.initImageList()
+
+				do (_.once =>
+					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
+				)
 
 		UserSidebar

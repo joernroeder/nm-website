@@ -1,0 +1,32 @@
+<header class="editor-header">
+	<h1>Images</h1>
+	
+	{{#if Projects}}
+		<select class="filter">
+			<option value="">--- Choose Project ---</option>
+			{{#each Projects}}
+				<option value="{{FilterID}}">{{Title}}</option>
+			{{/each}}
+		</select>
+	{{/if}}
+</header>
+<section class="editor-sidebar-content scrollbox">
+	{{#if Projects}}
+		{{#each Projects}}
+			<section data-filter-id="{{FilterID}}">
+				<header>
+					<h2>{{Title}}</h2>
+				</header>
+				{{#if Images}}
+					<ul class="image-list">
+						{{#each Images}}
+							<li><a href="#" data-bypass><img src="{{url}}" alt="" data-id="{{id}}"></a></li>
+						{{/each}}
+					</ul>
+					{{!-- Drop Zone --}}
+
+				{{/if}}
+			</section>
+		{{/each}}
+	{{/if}}
+</section>

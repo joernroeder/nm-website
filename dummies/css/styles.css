@@ -1536,7 +1536,7 @@ x:-o-prefocus,
   float: left;
   color: #919191;
 }
-.editor-sidebar header.editor-header.hideable {
+.editor-sidebar header.editor-header {
   opacity: 0;
   -webkit-transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
@@ -1756,8 +1756,8 @@ x:-o-prefocus,
   width: 100%;
   height: auto;
 }
-.editor-sidebar[class*="columns-"]:not(.open) header.editor-header.hideable,
-.editor-sidebar[class*="columns-"]:not(.open) .editor-sidebar-content > section {
+.editor-sidebar:not(.open) .editor-sidebar-content[class*="columns-"] header.editor-header.hideable,
+.editor-sidebar:not(.open) .editor-sidebar-content[class*="columns-"] > section {
   opacity: 0;
   -webkit-transition: none;
   -moz-transition: none;
@@ -1765,41 +1765,41 @@ x:-o-prefocus,
   -ms-transition: none;
   transition: none;
 }
-.editor-sidebar[class*="columns-"] header.editor-header.hideable,
-.editor-sidebar[class*="columns-"] .editor-sidebar-content > section {
+.editor-sidebar.open header.editor-header,
+.editor-sidebar.open .editor-sidebar-content[class*="columns-"] > section {
   opacity: 1;
 }
-.editor-sidebar.columns-2 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-2 .image-list {
   column-count: 2;
   -webkit-column-count: 2;
   -moz-column-count: 2;
 }
-.editor-sidebar.columns-3 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-3 .image-list {
   column-count: 3;
   -webkit-column-count: 3;
   -moz-column-count: 3;
 }
-.editor-sidebar.columns-4 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-4 .image-list {
   column-count: 4;
   -webkit-column-count: 4;
   -moz-column-count: 4;
 }
-.editor-sidebar.columns-5 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-5 .image-list {
   column-count: 5;
   -webkit-column-count: 5;
   -moz-column-count: 5;
 }
-.editor-sidebar.columns-6 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-6 .image-list {
   column-count: 6;
   -webkit-column-count: 6;
   -moz-column-count: 6;
 }
-.editor-sidebar.columns-7 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-7 .image-list {
   column-count: 7;
   -webkit-column-count: 7;
   -moz-column-count: 7;
 }
-.editor-sidebar.columns-8 .image-list {
+.editor-sidebar .editor-sidebar-content.columns-8 .image-list {
   column-count: 8;
   -webkit-column-count: 8;
   -moz-column-count: 8;
@@ -1816,6 +1816,11 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: height .5s ease-in-out;
+  -moz-transition: height .5s ease-in-out;
+  -o-transition: height .5s ease-in-out;
+  -ms-transition: height .5s ease-in-out;
+  transition: height .5s ease-in-out;
 }
 .editor-sidebar > nav ul {
   margin: 0;
