@@ -671,7 +671,7 @@ var __hasProp = {}.hasOwnProperty,
       });
       this.api = element.qtip('api');
       this.on('editor.closepopovers', function(eventData) {
-        if (eventData.sender !== _this.id) {
+        if (eventData.senderId !== _this.id) {
           return _this.close();
         }
       });
@@ -681,11 +681,13 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJPopoverEditable.prototype.open = function() {
+      this.element.addClass('active');
       this.trigger('editor.closepopovers');
       return this.api.show();
     };
 
     JJPopoverEditable.prototype.close = function() {
+      this.element.removeClass('active');
       this.element.unbind('outerClick');
       return this.api.hide();
     };

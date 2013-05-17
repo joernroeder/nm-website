@@ -494,17 +494,19 @@ do ($ = jQuery) ->
 			@api = element.qtip 'api'
 
 			@on 'editor.closepopovers', (eventData) =>
-				if eventData.sender isnt @id
+				if eventData.senderId isnt @id
 					@close()
 
 			element.on 'click', =>
 				@toggle()
 
 		open: ->
+			@element.addClass 'active'
 			@trigger 'editor.closepopovers'
 			@api.show()
 
 		close: ->
+			@element.removeClass 'active'
 			@element.unbind 'outerClick'
 			@api.hide()
 
