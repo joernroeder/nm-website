@@ -93,10 +93,8 @@ define [
 				# do stuff
 				@._afterRender()
 
-		UserSidebar.Views.GallerySidebar = UserSidebar.Views.GallerySidebar
+		UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend
 			tagName: 'div'
-			_galleryFetched: false
-			
 
 
 

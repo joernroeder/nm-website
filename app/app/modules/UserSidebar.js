@@ -97,9 +97,8 @@ define(['app'], function(app) {
       return this._afterRender();
     }
   });
-  UserSidebar.Views.GallerySidebar = UserSidebar.Views.GallerySidebar({
-    tagName: 'div',
-    _galleryFetched: false
+  UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
+    tagName: 'div'
   });
   return UserSidebar;
 });

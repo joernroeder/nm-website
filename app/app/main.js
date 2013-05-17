@@ -6,6 +6,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   app.PageInfos = {};
   app.Collections = {};
   app.Cache = {};
+  app.Cache.UserGallery = {};
   app.CurrentMember = {};
   app.CurrentMemberPerson = null;
   app.origin = window.location.origin ? window.location.origin : window.location.protocol + '//' + window.location.host;
