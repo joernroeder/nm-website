@@ -13,6 +13,7 @@ do ($ = jQuery) ->
 		columnsPrefix: 'columns-'
 
 		constructor: ->
+			console.log 'Hey! I\'m the Sidebar!'
 			@.$editorSidebar = $ '.editor-sidebar'
 			@.$sidebarHeader = $ '> header', @.$editorSidebar
 			@.$sidebarContent = $ 'section.editor-sidebar-content', @.$editorSidebar
@@ -74,8 +75,10 @@ do ($ = jQuery) ->
 					.data('columns', columnsCount)
 
 		initToggleBtn: ->
-			$('#toggle-editor-sidebar').on 'click', (el) =>
-				$(el).blur().toggleClass 'active'
+			$('#toggle-editor-sidebar').on 'click', (e) =>
+				e.preventDefault()
+				console.log e
+				$(e.target).blur().toggleClass 'active'
 				@toggle()
 
 				false

@@ -16,6 +16,7 @@
     function EditorSidebar() {
       var _this = this;
 
+      console.log('Hey! I\'m the Sidebar!');
       this.$editorSidebar = $('.editor-sidebar');
       this.$sidebarHeader = $('> header', this.$editorSidebar);
       this.$sidebarContent = $('section.editor-sidebar-content', this.$editorSidebar);
@@ -82,8 +83,10 @@
     EditorSidebar.prototype.initToggleBtn = function() {
       var _this = this;
 
-      return $('#toggle-editor-sidebar').on('click', function(el) {
-        $(el).blur().toggleClass('active');
+      return $('#toggle-editor-sidebar').on('click', function(e) {
+        e.preventDefault();
+        console.log(e);
+        $(e.target).blur().toggleClass('active');
         _this.toggle();
         return false;
       });
