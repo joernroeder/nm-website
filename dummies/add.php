@@ -143,7 +143,7 @@ MarkdownedTeaser
 				<nav>
 					<ul>
 						<li>
-							<a href="#">User</a>
+							<a href="#" data-editor-sidebar-content="user">User</a>
 						</li>
 						<li>
 							<a href="#">Log out</a>
@@ -164,44 +164,49 @@ MarkdownedTeaser
 					</ul>
 				</nav>
 
-				<header class="editor-header hideable">
-					<div class="img">
-					</div>
-					<hgroup>
-						<h1>Foo Bar</h1>
-						<p>joernroeder@gmail.com</p>
-					</hgroup>
-				</header>
-				<section class="editor-sidebar-content scrollbox">
-					<section>
-						<h2>Foo</h2>
+				<div class="editor-sidebar-container">
+					<!-- User -->
+					<header class="editor-header hideable">
+						<div class="img">
+						</div>
+						<hgroup>
+							<h1>Foo Bar</h1>
+							<p>joernroeder@gmail.com</p>
+						</hgroup>
+					</header>
+					<section class="editor-sidebar-content scrollbox">
+						<section>
+							<h2>Foo</h2>
+						</section>
 					</section>
-				</section>
-				<!--
-				<header class="editor-header">
-					<h1>Images</h1>
-					<select class="filter">
-						<option value="">Choose Project</option>
-						<?php for ($j = 0; $j < $projects; $j++) : ?>
-							<option value="<?php echo $j; ?>">Option <?php echo $j; ?></option>
-						<?php endfor; ?>
-					</select>
-				</header>
-				<section class="editor-sidebar-content scrollbox">
-					<?php for ($k = 0; $k < $projects; $k++) : ?>
-							<section data-filter-id="<?php echo $k; ?>">
-								<header>
-									<h2>Project <?php echo $k; ?></h2>
-								</header>
-								<ul class="image-list">
-									<?php for ($i = 0; $i < 30; $i++) : ?>
-										<li><a href="#"><img src="_http://placedog.com/100/100" alt=""></a></li>
-									<?php endfor; ?>
-								</ul>
-							</section>
-						<?php endfor; ?>
-				</section>
-				-->	
+
+					<!-- Gallery -->
+					<!--
+					<header class="editor-header">
+						<h1>Images</h1>
+						<select class="filter">
+							<option value="">Choose Project</option>
+							<?php for ($j = 0; $j < $projects; $j++) : ?>
+								<option value="<?php echo $j; ?>">Option <?php echo $j; ?></option>
+							<?php endfor; ?>
+						</select>
+					</header>
+					<section class="editor-sidebar-content scrollbox">
+						<?php for ($k = 0; $k < $projects; $k++) : ?>
+								<section data-filter-id="<?php echo $k; ?>">
+									<header>
+										<h2>Project <?php echo $k; ?></h2>
+									</header>
+									<ul class="image-list">
+										<?php for ($i = 0; $i < 30; $i++) : ?>
+											<li><a href="#"><img src="_http://placedog.com/100/100" alt=""></a></li>
+										<?php endfor; ?>
+									</ul>
+								</section>
+							<?php endfor; ?>
+					</section>
+					-->
+				</div>
 			</section>
 		</div>
 
