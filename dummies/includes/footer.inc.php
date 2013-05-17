@@ -1,6 +1,4 @@
-				</div>
-			</div>
-		</div>
+		
 	<!-- Demo code ends -->
 
 		<!-- Libs -->
