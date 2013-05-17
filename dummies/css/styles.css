@@ -1369,6 +1369,7 @@ x:-o-prefocus,
   transition: background-color .2s ease-in-out;
   background: #ecef90;
 }
+*[data-editor-type][editor-handled-by].active,
 *[data-editor-type][editor-handled-by]:hover {
   background: #d9df20;
   color: #262626;
@@ -1492,6 +1493,56 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.editor-sidebar header.editor-header {
+  /**
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
+
+  /**
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
+
+  *zoom: 1;
+}
+.editor-sidebar header.editor-header:before,
+.editor-sidebar header.editor-header:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.editor-sidebar header.editor-header:after {
+  clear: both;
+}
+.editor-sidebar header.editor-header .img {
+  background: #111111;
+  display: block;
+  width: 3.75em;
+  height: 3.75em;
+  float: left;
+  margin: 0 0.75em 1.5em 0;
+}
+.editor-sidebar header.editor-header hgroup {
+  float: left;
+  color: #919191;
+}
+.editor-sidebar header.editor-header.hideable {
+  opacity: 0;
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
 }
 .editor-sidebar h1,
 .editor-sidebar h2,
@@ -1705,6 +1756,7 @@ x:-o-prefocus,
   width: 100%;
   height: auto;
 }
+.editor-sidebar[class*="columns-"]:not(.open) header.editor-header.hideable,
 .editor-sidebar[class*="columns-"]:not(.open) .editor-sidebar-content > section {
   opacity: 0;
   -webkit-transition: none;
@@ -1713,6 +1765,7 @@ x:-o-prefocus,
   -ms-transition: none;
   transition: none;
 }
+.editor-sidebar[class*="columns-"] header.editor-header.hideable,
 .editor-sidebar[class*="columns-"] .editor-sidebar-content > section {
   opacity: 1;
 }

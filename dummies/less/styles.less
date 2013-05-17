@@ -801,6 +801,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	.transition(~"background-color .2s ease-in-out");
 	background: lighten(@nmColor, 25%);
 
+	&.active,
 	&:hover {
 		background: @nmColor;
 		color: @black;
@@ -933,6 +934,29 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.box-sizing(border-box);
 	}
 
+	header.editor-header {
+		.clearfix;
+
+		.img {
+			@dim: @line * 2.5 / @em;
+			background: darken(@gray, 50%);
+			display: block;
+			width: @dim;
+			height: @dim;
+			float: left;
+			margin: 0 (@line / 2 / @em) (@line / @em) 0;
+		}
+		hgroup {
+			float: left;
+			color: @gray;
+		}
+	}
+
+	header.editor-header.hideable {
+		opacity: 0;
+		.transition(~"opacity .2s ease-in-out");
+	}
+
 	h1, h2, h3 {
 		color: #fff;
 	}
@@ -1045,12 +1069,14 @@ x:-o-prefocus, .qtip .qtip-tip{
 	&[class*="columns-"] {
 
 		&:not(.open) {
+			header.editor-header.hideable,
 			.editor-sidebar-content > section {
 				opacity: 0;
 				.transition(none);
 			}
 		}
 
+		header.editor-header.hideable,
 		.editor-sidebar-content > section {
 			opacity: 1;
 		}

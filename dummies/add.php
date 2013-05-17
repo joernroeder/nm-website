@@ -151,7 +151,7 @@ MarkdownedTeaser
 					</ul>
 					<ul>
 						<li>
-							<a href="#" id="show-editor-sidebar">Editor</a>
+							<a href="#" id="toggle-editor-sidebar">Editor</a>
 						</li>
 
 						<li>
@@ -163,7 +163,22 @@ MarkdownedTeaser
 						</li>
 					</ul>
 				</nav>
-				<header>
+
+				<header class="editor-header hideable">
+					<div class="img">
+					</div>
+					<hgroup>
+						<h1>Foo Bar</h1>
+						<p>joernroeder@gmail.com</p>
+					</hgroup>
+				</header>
+				<section class="editor-sidebar-content scrollbox">
+					<section>
+						<h2>Foo</h2>
+					</section>
+				</section>
+				<!--
+				<header class="editor-header">
 					<h1>Images</h1>
 					<select class="filter">
 						<option value="">Choose Project</option>
@@ -171,7 +186,6 @@ MarkdownedTeaser
 							<option value="<?php echo $j; ?>">Option <?php echo $j; ?></option>
 						<?php endfor; ?>
 					</select>
-					<!--<input type="search" id="sidebar-search" placeholder="Find by Caption">-->
 				</header>
 				<section class="editor-sidebar-content scrollbox">
 					<?php for ($k = 0; $k < $projects; $k++) : ?>
@@ -187,6 +201,7 @@ MarkdownedTeaser
 							</section>
 						<?php endfor; ?>
 				</section>
+				-->	
 			</section>
 		</div>
 

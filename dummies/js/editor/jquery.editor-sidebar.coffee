@@ -32,16 +32,16 @@ do ($ = jQuery) ->
 
 
 		open: ->
-			@.$editorSidebar.addClass('open');
+			@.$editorSidebar.addClass 'open'
 
 			setTimeout =>
+				@.$editorSidebar.addClass 'opened'
 				@setColumnCount()
 			, 300
 
 		close: ->
 			prefColumnsCount = @getColumnsCount()
-			@.$editorSidebar
-				.removeClass('open')
+			@.$editorSidebar.removeClass 'open opened'
 			
 			setTimeout =>
 					@.$editorSidebar.removeClass @columnsPrefix + prefColumnsCount
@@ -74,7 +74,7 @@ do ($ = jQuery) ->
 					.data('columns', columnsCount)
 
 		initToggleBtn: ->
-			$('#show-editor-sidebar').on 'click', (el) =>
+			$('#toggle-editor-sidebar').on 'click', (el) =>
 				$(el).blur().toggleClass 'active'
 				@toggle()
 

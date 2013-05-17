@@ -34,6 +34,7 @@
 
       this.$editorSidebar.addClass('open');
       return setTimeout(function() {
+        _this.$editorSidebar.addClass('opened');
         return _this.setColumnCount();
       }, 300);
     };
@@ -43,7 +44,7 @@
         _this = this;
 
       prefColumnsCount = this.getColumnsCount();
-      this.$editorSidebar.removeClass('open');
+      this.$editorSidebar.removeClass('open opened');
       return setTimeout(function() {
         return _this.$editorSidebar.removeClass(_this.columnsPrefix + prefColumnsCount);
       }, 300);
@@ -81,7 +82,7 @@
     EditorSidebar.prototype.initToggleBtn = function() {
       var _this = this;
 
-      return $('#show-editor-sidebar').on('click', function(el) {
+      return $('#toggle-editor-sidebar').on('click', function(el) {
         $(el).blur().toggleClass('active');
         _this.toggle();
         return false;
