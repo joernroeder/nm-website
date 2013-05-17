@@ -158,6 +158,9 @@ class Exhibition extends DataObject {
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
+
+			// secure
+			'Editors.FullName'
 		),
 		'view.portfolio_init' => array(
 			'ClassName',
@@ -185,6 +188,13 @@ class Exhibition extends DataObject {
 
 	public function canView($member = null) {
 		return true;
+	}
+
+	public function canViewContext($fields) {
+		// only editors can see Editors
+		if (!$this->canEdit()) unset($fields['Editors']);
+	
+		return $fields;
 	}
 
 	public function canEdit($member = null) {
