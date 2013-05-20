@@ -26,7 +26,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       '2': 'Exhibition',
       '3': 'Workshop'
     },
-    GalleryUrl: 'api/v2/Auth/gallery',
+    GalleryUrl: 'imagery/gallery',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
     },

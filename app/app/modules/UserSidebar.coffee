@@ -196,7 +196,7 @@ define [
 				setTimeout =>
 					@.$sidebarContent.removeClass @columnsPrefix + prefColumnsCount
 				, 300
-
+			
 			render: (template, context = {}) ->
 				done =  @.async()
 
@@ -205,7 +205,7 @@ define [
 						context.Projects = gallery.images.Projects
 					
 					done template(context)
-
+			
 			afterRender: ->
 				@._afterRender()
 				@.setColumnCount()

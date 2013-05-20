@@ -59,7 +59,7 @@ require [
 			'1': 'Excursion'
 			'2': 'Exhibition'
 			'3': 'Workshop'
-		GalleryUrl: 'api/v2/Auth/gallery'
+		GalleryUrl: 'imagery/gallery'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'

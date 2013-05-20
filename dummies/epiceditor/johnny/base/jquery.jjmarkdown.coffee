@@ -35,7 +35,7 @@ do ($ = jQuery) ->
 			customParserOptions	: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
 			afterRender			: null														# Method to call after the markdown rendering has been done
 			onChange			: null														# Function to pass the data to, after the parsing has been done
-			imageUrl			: '/_md_/images/docimage'									# URL to post the images to
+			imageUrl			: '/imagery/images/docimage'								# URL to post the images to
 
 		$input : null
 		$preview: null
@@ -287,7 +287,7 @@ do ($ = jQuery) ->
 								imgParser.cache = imgParser.cache.concat data
 
 								# trigger that there's new data which has been uploaded
-								@.trigger 'newData', { className: imgParser.className, data: data }
+								#$.trigger 'newData', { className: imgParser.className, data: data }
 
 							rawMd = ''
 							for obj in data
@@ -435,7 +435,7 @@ do ($ = jQuery) ->
 	class SingleImgMarkdownParser extends CustomMarkdownParser
 		className: 'DocImage'
 		rule: /\[img\s{1,}(.*?)\]/gi
-		url: '/_md_/images/docimage'
+		url: '/imagery/images/docimage'
 		parseFound: (data) ->
 			parseInt data
 

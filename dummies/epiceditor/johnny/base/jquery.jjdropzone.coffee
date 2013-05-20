@@ -2,11 +2,21 @@
 
 do ($ = jQuery) ->
 
+	###
+	class JJSimpleImagesUploadZone extends JJDropzone
+		defaults :
+			url : null
+			errorMsg: 'Sorry, but there has been an error.'
+			className: null
+	###
+
+
 	class JJDropzone
 		defaults :
 			url						: null														# URL to post the files to
 			errorMsg 				: 'Sorry, but there has been an error.' 					# Default error message
 			className 				: null
+			dragFromDocument		: false
 
 		$dropzone: null
 		fileMatch: null
@@ -17,6 +27,8 @@ do ($ = jQuery) ->
 			if @.options.doneHandler then @.doneHandler = @.options.doneHandler
 			@.$dropzone = if selector instanceof jQuery then selector else $(selector)
 			@.dragAndDropSetup()
+
+
 
 		dragAndDropSetup : ->
 			$dropzone = @.$dropzone
@@ -29,8 +41,8 @@ do ($ = jQuery) ->
 
 			$dropzone.on 'drop', (e) =>
 				# Drag and drop from within the document
-				
-				if JJMarkdownEditor._activeDraggable and (id = @.parseDraggableTag(JJMarkdownEditor._activeDraggable))
+				# @todo: give JJDropzone its own draggables
+				if @.options.dragFromDocument and JJMarkdownEditor._activeDraggable and (id = @.parseDraggableTag(JJMarkdownEditor._activeDraggable))
 					dfd = new $.Deferred()
 					found = false
 					$.each @.cache, (i, obj) =>

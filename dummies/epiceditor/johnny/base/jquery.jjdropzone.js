@@ -4,13 +4,22 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($) {
+  /*
+  	class JJSimpleImagesUploadZone extends JJDropzone
+  		defaults :
+  			url : null
+  			errorMsg: 'Sorry, but there has been an error.'
+  			className: null
+  */
+
   var JJDropzone, JJImageDropzone, _ref;
 
   JJDropzone = (function() {
     JJDropzone.prototype.defaults = {
       url: null,
       errorMsg: 'Sorry, but there has been an error.',
-      className: null
+      className: null,
+      dragFromDocument: false
     };
 
     JJDropzone.prototype.$dropzone = null;
@@ -42,7 +51,7 @@ var __hasProp = {}.hasOwnProperty,
       return $dropzone.on('drop', function(e) {
         var dfd, found, id, uploadDfd, url;
 
-        if (JJMarkdownEditor._activeDraggable && (id = _this.parseDraggableTag(JJMarkdownEditor._activeDraggable))) {
+        if (_this.options.dragFromDocument && JJMarkdownEditor._activeDraggable && (id = _this.parseDraggableTag(JJMarkdownEditor._activeDraggable))) {
           dfd = new $.Deferred();
           found = false;
           $.each(_this.cache, function(i, obj) {

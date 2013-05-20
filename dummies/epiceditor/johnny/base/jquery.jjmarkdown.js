@@ -41,7 +41,7 @@ var __hasProp = {}.hasOwnProperty,
       customParserOptions: {},
       afterRender: null,
       onChange: null,
-      imageUrl: '/_md_/images/docimage'
+      imageUrl: '/imagery/images/docimage'
     };
 
     JJMarkdownEditor.prototype.$input = null;
@@ -309,10 +309,6 @@ var __hasProp = {}.hasOwnProperty,
               data = $.parseJSON(data);
               if (imgParser = _this.customParsers.SingleImgMarkdownParser) {
                 imgParser.cache = imgParser.cache.concat(data);
-                _this.trigger('newData', {
-                  className: imgParser.className,
-                  data: data
-                });
               }
               rawMd = '';
               for (_i = 0, _len = data.length; _i < _len; _i++) {
@@ -516,7 +512,7 @@ var __hasProp = {}.hasOwnProperty,
 
     SingleImgMarkdownParser.prototype.rule = /\[img\s{1,}(.*?)\]/gi;
 
-    SingleImgMarkdownParser.prototype.url = '/_md_/images/docimage';
+    SingleImgMarkdownParser.prototype.url = '/imagery/images/docimage';
 
     SingleImgMarkdownParser.prototype.parseFound = function(data) {
       return parseInt(data);
