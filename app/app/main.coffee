@@ -40,11 +40,12 @@ require [
 	# auth
 	app.CurrentMember = {}
 	app.CurrentMemberPerson = null
+	app.CurrentlyEditingProject = null
 
 	# base url
 	app.origin = if window.location.origin then window.location.origin else window.location.protocol + '//' + window.location.host
 
-	console.log app.origin
+	console.log app
 
 	# basic config with flags to check whether specific data is already present or not
 	# also serves as the expression interface between SilverStripe and Backbone. Put hardcoded string in there
@@ -60,6 +61,8 @@ require [
 			'2': 'Exhibition'
 			'3': 'Workshop'
 		GalleryUrl: 'imagery/gallery'
+		DocImageUrl: 'imagery/images/docimage'
+		PersonImageUrl: 'imagery/images/personimage'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'
@@ -208,6 +211,20 @@ require [
 			$a.removeClass 'active'
 			if $a.attr('href') is frag then $a.addClass 'active'
 
+	app.updateGalleryCache = (dataArray) ->
+		addTo = (array, obj) ->
+			array.push {id: obj.id, tag: obj.tag, url: obj.url}
+
+		_.each dataArray, (obj) =>
+			if className = obj.UploadedToClass
+				if className is 'DocImage'
+					_.each @.Cache.UserGallery.images.Projects, (project) =>
+						if project.FilterID is obj.FilterID
+							addTo project.Images, obj
+
+			else
+				# this is no upload, instead update any existing data
+
 	app.initialLoggedInCheck = ->
 		JJRestApi.getFromDomOrApi('current-member', {noAjax: true}).done (data) ->
 			Auth.handleUserServerResponse(data)
@@ -246,6 +263,13 @@ require [
 	# Inside this function, kick-off all initialization, everything up to this
 	# point should be definitions.
 	$ ->
+		# init file transfer
+		jQuery.event.props.push 'dataTransfer'
+		
+		# disable drag'n'drop for whole document
+		$(document).on 'dragover drop', (e) ->
+			e.preventDefault()
+
 		app.setupSpinner()
 
 		# Hook CSRF ajax token

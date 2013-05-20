@@ -12,8 +12,69 @@ var __hasProp = {}.hasOwnProperty,
   			className: null
   */
 
-  var JJDropzone, JJImageDropzone, _ref;
+  var JJDropzone, JJImageDropzone, JJSimpleImagesUploadZone, _ref;
 
+  JJSimpleImagesUploadZone = (function() {
+    JJSimpleImagesUploadZone.prototype.fileMatch = 'image.*';
+
+    JJSimpleImagesUploadZone.prototype.cache = null;
+
+    JJSimpleImagesUploadZone.prototype.defaults = {
+      url: null,
+      errorMsg: 'Sorry, but there has been an error.',
+      className: null,
+      dragFromDocument: false,
+      responseHandler: function(data) {
+        console.log('UPLOAD DATA');
+        return console.log(data);
+      }
+    };
+
+    JJSimpleImagesUploadZone.prototype.$dropzone = null;
+
+    JJSimpleImagesUploadZone.prototype.maxAllowed = null;
+
+    function JJSimpleImagesUploadZone(selector, opts) {
+      var cache;
+
+      cache = opts.cache ? opts.cache : {
+        data: []
+      };
+      this.options = $.extend({}, this.defaults, opts);
+      if (this.options.doneHandler) {
+        this.doneHandler = this.options.doneHandler;
+      }
+      this.$dropzone = selector instanceof jQuery ? selector : $(selector);
+      this.dragAndDropSetup();
+    }
+
+    JJSimpleImagesUploadZone.prototype.dragAndDropSetup = function() {
+      var $dropzone,
+        _this = this;
+
+      $dropzone = this.$dropzone;
+      $dropzone.on('dragenter', function(e) {
+        return $(this).addClass('dragactive');
+      });
+      $dropzone.on('dragleave drop', function(e) {
+        return $(this).removeClass('dragactive');
+      });
+      return $dropzone.on('drop', function(e) {
+        var uploadDfd;
+
+        if (e.dataTransfer.files.length) {
+          uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.url, _this.options.errorMsg, _this.fileMatch, _this.maxAllowed);
+          return uploadDfd.done(function(data) {
+            data = $.parseJSON(data);
+            return _this.options.responseHandler(data);
+          });
+        }
+      });
+    };
+
+    return JJSimpleImagesUploadZone;
+
+  })();
   JJDropzone = (function() {
     JJDropzone.prototype.defaults = {
       url: null,
@@ -72,16 +133,8 @@ var __hasProp = {}.hasOwnProperty,
         } else if (e.dataTransfer.files.length) {
           uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.url, _this.options.errorMsg, _this.fileMatch, _this.maxAllowed);
           return uploadDfd.done(function(data) {
-            var className;
-
             data = $.parseJSON(data);
             _this.addToCache(data);
-            if (className = _this.options.className) {
-              _this.trigger('newData', {
-                className: className,
-                data: data
-              });
-            }
             return _this.doneHandler(data);
           });
         }

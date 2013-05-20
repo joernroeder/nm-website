@@ -15,8 +15,9 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   };
   app.CurrentMember = {};
   app.CurrentMemberPerson = null;
+  app.CurrentlyEditingProject = null;
   app.origin = window.location.origin ? window.location.origin : window.location.protocol + '//' + window.location.host;
-  console.log(app.origin);
+  console.log(app);
   app.Config = {
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
     StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry'],
@@ -27,6 +28,8 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       '3': 'Workshop'
     },
     GalleryUrl: 'imagery/gallery',
+    DocImageUrl: 'imagery/images/docimage',
+    PersonImageUrl: 'imagery/images/personimage',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
     },
@@ -252,6 +255,33 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       }
     });
   };
+  app.updateGalleryCache = function(dataArray) {
+    var addTo,
+      _this = this;
+
+    addTo = function(array, obj) {
+      return array.push({
+        id: obj.id,
+        tag: obj.tag,
+        url: obj.url
+      });
+    };
+    return _.each(dataArray, function(obj) {
+      var className;
+
+      if (className = obj.UploadedToClass) {
+        if (className === 'DocImage') {
+          return _.each(_this.Cache.UserGallery.images.Projects, function(project) {
+            if (project.FilterID === obj.FilterID) {
+              return addTo(project.Images, obj);
+            }
+          });
+        }
+      } else {
+
+      }
+    });
+  };
   app.initialLoggedInCheck = function() {
     return JJRestApi.getFromDomOrApi('current-member', {
       noAjax: true
@@ -294,6 +324,10 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   };
   app.bindListeners();
   $(function() {
+    jQuery.event.props.push('dataTransfer');
+    $(document).on('dragover drop', function(e) {
+      return e.preventDefault();
+    });
     app.setupSpinner();
     JJRestApi.hookSecurityToken();
     return JJRestApi.bootstrapWithStructure().done(function() {

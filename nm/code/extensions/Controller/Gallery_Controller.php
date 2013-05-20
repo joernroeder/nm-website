@@ -35,7 +35,7 @@ class Gallery_Controller extends Controller {
 		if ($member && $person = $member->Person()) {
 			// get the person images
 			foreach ($member->PersonImages() as $img) {
-				$gallery['Person'][] = $this->croppedImage($img);
+				$gallery['Person'][] = $this->imageAsGalleryItem($img);
 			}
 
 			// get the project images
@@ -49,7 +49,7 @@ class Gallery_Controller extends Controller {
 					if ($project->canEdit($member)) {
 						$projectData['Images'] = array();
 						foreach ($project->Images() as $img) {
-							$projectData['Images'][] = $this->croppedImage($img);
+							$projectData['Images'][] = $this->imageAsGalleryItem($img);
 						}
 					}
 
@@ -76,9 +76,6 @@ class Gallery_Controller extends Controller {
 
 
 		if ($this->request->isPOST()) {
-			/**
-			 * @todo: check for the current project and if the user may edit that anyway
-			 */
 			return $this->handleImageUpload();
 		} else
 		if ($this->request->isGET()) {
@@ -108,9 +105,22 @@ class Gallery_Controller extends Controller {
 		$postVars = $this->request->postVars();
 		if (!$postVars || empty($postVars) || !$this->imageType) return $this->notFound();
 
+		if ($this->imageType == 'DocImage') {
+			$authenticated = false;
+
+			// check if project may be edited
+			$projectId = (int) $postVars['projectId'];
+			$projectClass = $postVars['projectClass'];
+			if (class_exists($projectClass)) {
+				$project = DataObject::get_by_id($projectClass, $projectId);
+				if ($project && $project->canEdit($this->currentUser)) $authenticated = true;
+			}
+			if (!$authenticated) return $this->methodNotAllowed();
+		}
+
 		foreach ($postVars as $key => $fileRequest) {
-			if ( !is_array($fileRequest) || !$fileRequest['tmp_name'] || $fileRequest['error'] ) return $this->methodFailed();
-			if (strpos($fileRequest['type'], 'image') === false) return $this->unsupportedMediaType();
+			if ( !is_array($fileRequest) || !$fileRequest['tmp_name'] || $fileRequest['error'] ) continue;
+			if (strpos($fileRequest['type'], 'image') === false) continue;
 
 			// change the name to make it really unique
 			$fileRequest['name'] = md5(time()) . '-' . $fileRequest['name'];
@@ -127,11 +137,18 @@ class Gallery_Controller extends Controller {
 			$image->ResponsiveID = $imgObj->ID;
 			$image->write();
 
+			$galleryItem = $this->imageAsGalleryItem($imgObj, true);
+			
+			$galleryItem['UploadedToClass'] = $this->imageType;
 
-			$response[] = array(
-				'tag'	=> $imgObj->forTemplate(),
-				'id'	=> $imgObj->ID
-			);
+			// handle uploads to a project
+			if ($project) {
+				$project->Images()->add($imgObj);
+				$project->write();
+				$galleryItem['FilterID'] = Convert::raw2att($project->class . '-' . $project->ID);	
+			}
+			
+			$response[] = $galleryItem;
 		}
 
 		return json_encode($response);
@@ -147,13 +164,14 @@ class Gallery_Controller extends Controller {
 		return explode(',', $ids);
 	}
 
-	private function croppedImage($img) {
+	private function imageAsGalleryItem($img, $includeTag = false) {
 		$square = $img->getClosestImage(150)->CroppedImage(150,150);
-
-		return array(
+		$a = array(
 			'id'	=> $img->ID,
 			'url'	=> $square->getURL()
 		);
+		if ($includeTag) $a['tag'] = $img->forTemplate();
+		return $a;
 	}
 
 	protected function methodNotAllowed() {

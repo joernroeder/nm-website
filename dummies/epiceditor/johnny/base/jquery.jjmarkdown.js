@@ -302,13 +302,13 @@ var __hasProp = {}.hasOwnProperty,
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
           } else if (e.dataTransfer.files.length) {
-            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.errorMsg, 'image.*');
+            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, null, _this.options.errorMsg, 'image.*');
             return uploadDfd.done(function(data) {
               var imgParser, nl, obj, rawMd, _i, _len;
 
               data = $.parseJSON(data);
               if (imgParser = _this.customParsers.SingleImgMarkdownParser) {
-                imgParser.cache = imgParser.cache.concat(data);
+                imgParser.updateCache(data);
               }
               rawMd = '';
               for (_i = 0, _len = data.length; _i < _len; _i++) {
@@ -385,7 +385,7 @@ var __hasProp = {}.hasOwnProperty,
 
     CustomMarkdownParser.prototype.url = '';
 
-    CustomMarkdownParser.prototype.cache = [];
+    CustomMarkdownParser.prototype.defaultCache = [];
 
     CustomMarkdownParser.prototype.usedIds = [];
 
@@ -403,6 +403,22 @@ var __hasProp = {}.hasOwnProperty,
         }
       }
     }
+
+    CustomMarkdownParser.prototype.updateCache = function(data) {
+      return this.defaultCache = this.defaultCache.concat(data);
+    };
+
+    CustomMarkdownParser.prototype.fromCache = function(id) {
+      var found;
+
+      found = null;
+      $.each(this.defaultCache, function(j, obj) {
+        if (obj.id === id) {
+          found = obj;
+        }
+      });
+      return found;
+    };
 
     CustomMarkdownParser.prototype.requestData = function(raw) {
       var cap, dfd, found, founds, replacements, reqIds, url,
@@ -423,17 +439,10 @@ var __hasProp = {}.hasOwnProperty,
       _this = this;
       reqIds = [];
       $.each(founds, function(i, id) {
-        return (function(id) {
-          found = false;
-          $.each(_this.cache, function(j, obj) {
-            if (obj.id === id) {
-              return found = true;
-            }
-          });
-          if (!found) {
-            return reqIds.push(id);
-          }
-        })(id);
+        found = _this.fromCache(id);
+        if (!found) {
+          return reqIds.push(id);
+        }
       });
       if (!reqIds.length) {
         dfd.resolve();
@@ -442,31 +451,29 @@ var __hasProp = {}.hasOwnProperty,
       url = this.url + '?ids=' + reqIds.join(',');
       return $.getJSON(url).done(function(data) {
         if ($.isArray(data)) {
-          return _this.cache = _this.cache.concat(data);
+          return _this.updateCache(data);
         }
       });
     };
 
     CustomMarkdownParser.prototype.parseMarkdown = function(md) {
-      var cache, patternsUsed, raw, usedIds,
+      var patternsUsed, raw, usedIds,
         _this = this;
 
       patternsUsed = [];
       raw = this._raw;
-      cache = this.cache;
       usedIds = [];
       $.each(this._tempReplacements, function(i, replace) {
-        return $.each(cache, function(j, obj) {
-          var pattern, tag;
+        var obj, pattern, tag;
 
-          if (obj.id === _this.parseFound(replace[1])) {
-            usedIds.push(obj.id);
-            pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
-            tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
-            tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
-            return md = md.replace(replace[0], tag);
-          }
-        });
+        obj = _this.fromCache(_this.parseFound(replace[1]));
+        if (obj) {
+          usedIds.push(obj.id);
+          pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
+          tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
+          tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
+          return md = md.replace(replace[0], tag);
+        }
       });
       this._raw = null;
       this._tempReplacements = null;

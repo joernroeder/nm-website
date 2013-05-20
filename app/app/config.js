@@ -30,6 +30,7 @@ require.config({
     'plugins/misc/spin.min': ['jquery'],
     'plugins/misc/misc': ['jquery'],
     'plugins/editor/jquery.editor-sidebar': ['plugins/misc/misc'],
+    'plugins/editor/jquery.jjdropzone': ['plugins/editor/jquery.jjfileupload'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone']

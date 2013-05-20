@@ -278,6 +278,7 @@ define [
 				console.log 'Auth failed'
 			.done (model) ->
 				layout = app.useLayout 'editor'
+				app.CurrentlyEditingProject = model
 				Auth.updateUserWidget()
 
 

@@ -335,6 +335,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         var layout;
 
         layout = app.useLayout('editor');
+        app.CurrentlyEditingProject = model;
         return Auth.updateUserWidget();
       });
     },

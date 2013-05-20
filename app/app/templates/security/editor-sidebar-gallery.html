@@ -1,6 +1,6 @@
 <header class="editor-header">
 	<h1>Images</h1>
-	
+	<div id="uploadzone" style="width: 100px;height: 100px;border: 1px solid white;text-align:center;"></div>
 	{{#if Projects}}
 		<select class="filter">
 			<option value="">--- Choose Project ---</option>
@@ -17,15 +17,8 @@
 				<header>
 					<h2>{{Title}}</h2>
 				</header>
-				{{#if Images}}
-					<ul class="image-list">
-						{{#each Images}}
-							<li><a href="#" data-bypass><img src="{{url}}" alt="" data-id="{{id}}"></a></li>
-						{{/each}}
-					</ul>
+				<ul class="image-list"></ul>
 					{{!-- Drop Zone --}}
-
-				{{/if}}
 			</section>
 		{{/each}}
 	{{/if}}

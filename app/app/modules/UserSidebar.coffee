@@ -1,6 +1,7 @@
 define [
 		'app'
 		'modules/DataRetrieval'
+		'plugins/editor/jquery.jjdropzone'
 	],
 	(app, DataRetrieval) ->
 
@@ -138,6 +139,9 @@ define [
 
 			$sidebarContent: null
 
+			cleanup: ->
+				@.uploadZone.cleanup()
+
 			getColumnsCount: ->
 				@.$sidebarContent.data 'columns'
 
@@ -156,6 +160,7 @@ define [
 						.data('columns', columnsCount)
 
 			initImageList: ->
+				###
 				@.$imageList = $ '.image-list', @.$el unless @.$imageList
 
 				if @.$imageList.length
@@ -165,7 +170,18 @@ define [
 
 						$(@).blur().toggleClass 'selected'
 
+
 					false
+				###
+				_.each app.Cache.UserGallery.images.Projects, (proj) =>
+					_.each proj.Images, (img) =>
+						@.insertGalleryImage proj.FilterID, img
+						
+
+			insertGalleryImage: (filterID, img) ->
+				view = new UserSidebar.Views.GalleryImage({model: img})
+				@.insertView '[data-filter-id="' + filterID + '"] .image-list', view
+				view.render()
 
 			initFilter: ->
 				@.$filter = $ 'select.filter', @.$el unless @.$filter
@@ -183,6 +199,19 @@ define [
 								.removeClass('filtered')
 								.find('.active')
 								.removeClass('active')
+
+			initDropzone: ->
+				@.uploadZone = new JJSimpleImagesUploadZone '#uploadzone',
+					url: app.Config.DocImageUrl
+					additionalData: 
+						projectId: app.CurrentlyEditingProject.id
+						projectClass: app.CurrentlyEditingProject.get 'ClassName'
+					responseHandler: (data) =>
+						app.updateGalleryCache data
+						_.each data, (img) =>
+							@.insertGalleryImage img.FilterID, img
+
+
 
 			onOpened: (switched) ->
 				delay = if switched then 0 else 300
@@ -210,10 +239,18 @@ define [
 				@._afterRender()
 				@.setColumnCount()
 				@.initFilter()
+				@.initDropzone()
 				@.initImageList()
 
 				do (_.once =>
 					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
 				)
+
+		UserSidebar.Views.GalleryImage = Backbone.View.extend
+			tagName: 'li'
+			template: 'security/editor-sidebar-gallery-image'
+			serialize: ->
+				@.model
+
 
 		UserSidebar

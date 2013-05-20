@@ -276,7 +276,7 @@ do ($ = jQuery) ->
 						dfdParse.resolve()
 					# upload
 					else if e.dataTransfer.files.length
-						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, @.options.errorMsg, 'image.*'
+						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, null, @.options.errorMsg, 'image.*'
 
 						uploadDfd.done (data) =>
 					
@@ -284,7 +284,7 @@ do ($ = jQuery) ->
 							
 							# add to our image cache, if existing
 							if imgParser = @.customParsers.SingleImgMarkdownParser
-								imgParser.cache = imgParser.cache.concat data
+								imgParser.updateCache data
 
 								# trigger that there's new data which has been uploaded
 								#$.trigger 'newData', { className: imgParser.className, data: data }
@@ -356,7 +356,7 @@ do ($ = jQuery) ->
 	class CustomMarkdownParser
 		rule: null
 		url: ''
-		cache: []
+		defaultCache: []
 		usedIds: []
 		_tempReplacements: null
 		_raw : null
@@ -365,6 +365,17 @@ do ($ = jQuery) ->
 			if opts
 				for a, b of opts
 					@[a] = b
+
+		updateCache: (data) ->
+			@.defaultCache = @.defaultCache.concat data
+
+		fromCache: (id) ->
+			found = null
+			$.each @.defaultCache, (j, obj) ->
+				if obj.id is id then found = obj
+				return
+			found
+
 
 		requestData: (raw) ->
 			@._raw = raw
@@ -382,12 +393,9 @@ do ($ = jQuery) ->
 			dfd = new $.Deferred()
 			_this = @
 			reqIds = []
-			$.each founds, (i, id) ->
-				do (id) ->
-					found = false
-					$.each _this.cache, (j, obj) ->
-						if obj.id is id then found = true
-					if not found then reqIds.push id
+			$.each founds, (i, id) =>
+				found = @.fromCache id
+				if not found then reqIds.push id
 
 			# get the missing images from the server
 			if not reqIds.length
@@ -398,22 +406,22 @@ do ($ = jQuery) ->
 			$.getJSON(url)
 				.done (data) =>
 					if $.isArray(data)
-						@.cache = @.cache.concat data
+						@.updateCache data
 
 		parseMarkdown: (md) ->
 			patternsUsed = []
 			raw = @._raw
-			cache = @.cache
+	
 			usedIds = []
 			$.each @._tempReplacements, (i, replace) =>
-				$.each cache, (j, obj) =>
-					if obj.id is @.parseFound(replace[1])
-						usedIds.push obj.id
-						# replace and insert the position within the editor
-						pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
-						tag = @.insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
-						tag = @.insertDataIntoRawTag tag, 'md-tag', pattern
-						md = md.replace replace[0], tag
+				obj = @.fromCache(@.parseFound(replace[1]))
+				if obj
+					usedIds.push obj.id
+					# replace and insert the position within the editor
+					pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
+					tag = @.insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
+					tag = @.insertDataIntoRawTag tag, 'md-tag', pattern
+					md = md.replace replace[0], tag
 
 			@._raw = null
 			@._tempReplacements = null
