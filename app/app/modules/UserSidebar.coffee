@@ -81,7 +81,10 @@ define [
 
 			close: ->
 				@.triggerSubview 'close'
-				@.$el.removeClass 'open opened'
+				@.$el.removeClass 'open'
+				setTimeout =>
+					@.$el.removeClass 'opened'
+				, 300
 
 			toggle: ->
 				if @.$el.hasClass 'open'
@@ -127,7 +130,22 @@ define [
 					#@.Projects = if gallery.fetched then gallery.images.Projects
 					#console.log gallery
 
+			onOpened: (switched) ->
+				delay = if switched then 0 else 300
+
+				setTimeout =>
+					@.$sidebarContent.addClass 'test'
+				, delay
+
+			onClose: ->
+				setTimeout =>
+					@.$sidebarContent.removeClass 'test'
+				, 300
+
 			afterRender: ->
+				do (_.once =>
+					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
+				)
 				# do stuff
 				@._afterRender()
 

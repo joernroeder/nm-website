@@ -82,8 +82,13 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       }, 300);
     },
     close: function() {
+      var _this = this;
+
       this.triggerSubview('close');
-      return this.$el.removeClass('open opened');
+      this.$el.removeClass('open');
+      return setTimeout(function() {
+        return _this.$el.removeClass('opened');
+      }, 300);
     },
     toggle: function() {
       if (this.$el.hasClass('open')) {
@@ -125,7 +130,28 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
   UserSidebar.Views.UserSidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
     template: 'security/editor-sidebar-user',
+    onOpened: function(switched) {
+      var delay,
+        _this = this;
+
+      delay = switched ? 0 : 300;
+      return setTimeout(function() {
+        return _this.$sidebarContent.addClass('test');
+      }, delay);
+    },
+    onClose: function() {
+      var _this = this;
+
+      return setTimeout(function() {
+        return _this.$sidebarContent.removeClass('test');
+      }, 300);
+    },
     afterRender: function() {
+      var _this = this;
+
+      (_.once(function() {
+        return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+      }))();
       return this._afterRender();
     }
   });

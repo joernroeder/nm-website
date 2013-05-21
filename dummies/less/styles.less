@@ -1066,6 +1066,15 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	&:not(.open) {
+		&.opened {
+			.editor-sidebar-container {
+				&> header.hideable,
+				.editor-sidebar-content {
+					opacity: 0;
+					.transition(none);
+				}
+			}
+		}
 		.editor-sidebar-content {
 			&[class*="columns-"] {
 				header.editor-header.hideable,
@@ -1081,6 +1090,13 @@ x:-o-prefocus, .qtip .qtip-tip{
 		header.editor-header,
 		.editor-sidebar-content[class*="columns-"] > section {
 			opacity: 1;
+		}
+		
+		&.opened {
+			&> header.hideable,
+			.editor-sidebar-content section {
+				opacity: 1;
+			}
 		}
 	}
 
