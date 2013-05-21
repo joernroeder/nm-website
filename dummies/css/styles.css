@@ -1532,6 +1532,10 @@ x:-o-prefocus,
   float: left;
   margin: 0 0.75em 1.5em 0;
 }
+.editor-sidebar header.editor-header .img img {
+  max-width: 100%;
+  height: auto;
+}
 .editor-sidebar header.editor-header hgroup {
   float: left;
   color: #919191;
