@@ -138,7 +138,12 @@ define [
 					context.PersonImages = gallery.images.Person
 					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
+					# get current image
+					_.each context.PersonImages, (img) ->
+						if img.id is context.Person.Image.ID then context.CurrentImage = img
 
+
+					console.log context
 					done template(context)
 
 			onOpened: (switched) ->

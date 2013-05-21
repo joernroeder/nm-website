@@ -141,6 +141,12 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         context.PersonImages = gallery.images.Person;
         context.Person = app.CurrentMemberPerson.toJSON();
         context.Member = app.CurrentMember;
+        _.each(context.PersonImages, function(img) {
+          if (img.id === context.Person.Image.ID) {
+            return context.CurrentImage = img;
+          }
+        });
+        console.log(context);
         return done(template(context));
       });
     },
