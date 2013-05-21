@@ -13,16 +13,34 @@
 	</hgroup>
 </header>
 <section class="editor-sidebar-content scrollbox">
+	<header>
+		<h2>Person Images</h2>
+	</header>
 	<section>
-		<h2>Images</h2>
 		<ul class="image-list">
 		</ul>
 	</section>
-	<section>
+
+	<header>
 		<h2>Projects</h2>
+	</header>
+	<section>
 		<ul class="project-list">
 			<li><a href="#" data-bypass>Project Title</a></li>
 			<li><a href="#" data-bypass>Project Title</a></li>
 		</ul>
+	</section>
+
+	<header>
+		<h2>Settings</h2>
+	</header>
+	<section>
+		<form>
+			<input type="email" placeholder="Email" value="{{Member.Email}}">
+			<input type="password" placeholder="Password">
+			<input type="password" placeholder="Confirm Password">
+
+			<button class="btn" type="submit">Update Settings</button>
+		</form>
 	</section>
 </section>

@@ -1434,19 +1434,20 @@ x:-o-prefocus,
   margin: 0;
 }
 .editor-sidebar .editor-sidebar-content header {
-  background: #d9df20;
+  background: #191919;
   padding: 0.375em 1.5em;
   margin: 0 -1.5em 1.5em;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
+  border-bottom: 1px solid #57590d;
 }
 .editor-sidebar .editor-sidebar-content header h2 {
   font-variant: small-caps;
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
-  color: #262626;
+  color: #fff;
   margin: 0;
 }
 .editor-sidebar .editor-sidebar-content header h2 a {
@@ -1685,6 +1686,30 @@ x:-o-prefocus,
 .editor-sidebar .editor-sidebar-content > section:after {
   clear: both;
 }
+.editor-sidebar .project-list {
+  list-style: none;
+  margin: 0;
+  font-size: 0.875em;
+}
+.editor-sidebar .project-list li:last-child a {
+  border-bottom: none;
+}
+.editor-sidebar .project-list li a {
+  color: #cccccc;
+  display: block;
+  padding: 0.375em 0.75em;
+  margin: 0 -0.75em;
+  border-bottom: 1px dashed #454545;
+  -webkit-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  -moz-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  -o-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  -ms-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  transition: color .2s ease-in-out, background-color .2s ease-in-out;
+}
+.editor-sidebar .project-list li a:hover {
+  color: #d9df20;
+  background: #1e1e1e;
+}
 .editor-sidebar .image-list {
   list-style: none;
   /**
@@ -1723,7 +1748,6 @@ x:-o-prefocus,
   clear: both;
 }
 .editor-sidebar .image-list li {
-  float: left;
   display: inline-block;
   width: 100%;
   margin-bottom: 10px;
@@ -1851,6 +1875,91 @@ x:-o-prefocus,
 }
 .editor-sidebar > nav li {
   padding: 0.625em;
+}
+.editor-sidebar input[type="text"],
+.editor-sidebar input[type="email"],
+.editor-sidebar input[type="password"] {
+  font-size: 0.875em;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #191919;
+  padding: 0.375em;
+  border: none;
+  margin-bottom: 0.75em;
+  color: #fff;
+  -webkit-transition: color .2s ease-in-out, background .2s ease-in-out;
+  -moz-transition: color .2s ease-in-out, background .2s ease-in-out;
+  -o-transition: color .2s ease-in-out, background .2s ease-in-out;
+  -ms-transition: color .2s ease-in-out, background .2s ease-in-out;
+  transition: color .2s ease-in-out, background .2s ease-in-out;
+}
+.editor-sidebar input[type="text"]:focus,
+.editor-sidebar input[type="email"]:focus,
+.editor-sidebar input[type="password"]:focus {
+  color: #fff;
+  outline: none;
+  background: #57590d;
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+}
+.editor-sidebar input[type="text"]:focus::-webkit-input-placeholder,
+.editor-sidebar input[type="email"]:focus::-webkit-input-placeholder,
+.editor-sidebar input[type="password"]:focus::-webkit-input-placeholder {
+  color: #262626;
+}
+.editor-sidebar input[type="text"]:focus::-moz-placeholder,
+.editor-sidebar input[type="email"]:focus::-moz-placeholder,
+.editor-sidebar input[type="password"]:focus::-moz-placeholder {
+  color: #262626;
+}
+.editor-sidebar input[type="text"]:focus:-ms-input-placeholder,
+.editor-sidebar input[type="email"]:focus:-ms-input-placeholder,
+.editor-sidebar input[type="password"]:focus:-ms-input-placeholder {
+  color: #262626;
+}
+.editor-sidebar input[type="text"]:focus:-moz-placeholder,
+.editor-sidebar input[type="email"]:focus:-moz-placeholder,
+.editor-sidebar input[type="password"]:focus:-moz-placeholder {
+  color: #262626;
+}
+.editor-sidebar input[type="password"] {
+  margin-top: 0.75em;
+}
+.editor-sidebar input[type="password"] + input[type="password"] {
+  margin-top: 0;
+}
+.editor-sidebar #pw-forceable {
+  color: #919191;
+}
+.editor-sidebar button.btn {
+  margin-top: 0.375em;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #fff;
+  outline: none;
+}
+.editor-sidebar button.btn:after {
+  color: #e6e6e6;
+}
+.editor-sidebar button.btn:hover,
+.editor-sidebar button.btn:focus,
+.editor-sidebar button.btn:active {
+  color: #d9df20;
+}
+.editor-sidebar button.btn:hover:after,
+.editor-sidebar button.btn:focus:after,
+.editor-sidebar button.btn:active:after {
+  color: #d9df20;
 }
 .project-type-list {
   position: absolute;

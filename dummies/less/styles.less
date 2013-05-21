@@ -877,14 +877,15 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 
 		header {
-			background: @nmColor;
+			background: darken(@black, 5%);
 			padding: (@line / 4 / @em) (@line / @em);
 			margin: 0 (-@line / @em) (@line / @em);
 			.box-sizing(content-box);
+			border-bottom: 1px solid darken(@nmColor, 30%);
 
 			h2 {
 				.big-caps;
-				color: @black;
+				color: #fff;
 				margin: 0;
 			}
 		}
@@ -1015,6 +1016,33 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.transition(~"height 1s ease-in-out, opacity .2s ease-in-out");
 	}
 
+	.project-list {
+		list-style: none;
+		margin: 0;
+		font-size: 14 / @em;
+
+		li {
+			&:last-child a {
+				border-bottom: none;
+			}
+
+			a {
+				color: darken(#fff, 20%);
+				display: block;
+				padding: (@line / 4 / @em) (@line / 2 / @em);
+				margin: 0 -(@line / 2 / @em);
+				border-bottom: 1px dashed darken(@gray, 30%);
+
+				.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
+
+				&:hover {
+					color: @nmColor;
+					background: darken(@black, 3%);
+				}
+			}
+		}
+	}
+
 	.image-list {
 		@gap: 10px;
 
@@ -1029,7 +1057,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		column-gap					: @gap;
 
 		li {
-			float: left;
+			//float: left;
 			display: inline-block;
 			width: 100%;
 			margin-bottom: 10px;
@@ -1196,6 +1224,65 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		li {
 			padding: 10 / @em;
+		}
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="password"] {
+		font-size: 14 / @em;
+		width: 100%;
+		.box-sizing(border-box);
+		background: darken(@black, 5%);
+		padding: @line / 4 / @em;
+		border: none;
+		margin-bottom: @line / 2 / @em;
+		color: #fff;
+
+		.transition(~"color .2s ease-in-out, background .2s ease-in-out");
+
+		&:focus {
+			color: #fff;
+			outline: none;
+			background: darken(@nmColor, 30%);
+			.placeholder(@black);
+		}
+	}
+
+	input[type="password"] {
+		margin-top: @line / 2 / @em;
+	}
+
+	input[type="password"] + input[type="password"] {
+		margin-top: 0;
+	}
+
+	#pw-forceable {
+		color: @gray;
+	}
+
+	button.btn {
+		margin-top: @line / 4 / @em;
+		background: transparent;
+		border: none;
+		padding: 0;
+
+		color: #fff;
+		outline: none;
+
+		&:after {
+			color: darken(#fff, 10%);
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: @nmColor;
+			//border-bottom: 1px solid @btnColor;
+
+			&:after {
+				color: @nmColor;
+			}
 		}
 	}
 }
