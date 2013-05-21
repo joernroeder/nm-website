@@ -27,35 +27,38 @@ class Gallery_Controller extends Controller {
 	 * 
 	 */
 	public function gallery() {
-		$gallery = array(
-			'Person'	=> array(),
-			'Projects'	=> array()
-		);
+		$gallery = array();
+		$type = isset($this->urlParams['OtherAction']) ? $this->urlParams['OtherAction'] : null;
+
 		$member = $this->currentUser;
+
+
 		if ($member && $person = $member->Person()) {
-			// get the person images
-			foreach ($member->PersonImages() as $img) {
-				$gallery['Person'][] = $this->imageAsGalleryItem($img);
-			}
-
-			// get the project images
-			foreach (array('Projects', 'Exhibitions', 'Workshops', 'Excursions') as $projectTypes) {
-				foreach ($person->$projectTypes() as $project) {
-					$projectData = array(
-						'FilterID' => Convert::raw2att($project->class . '-' . $project->ID),
-						'Title' => $project->Title
-					);
-
-					if ($project->canEdit($member)) {
-						$projectData['Images'] = array();
-						foreach ($project->Images() as $img) {
-							$projectData['Images'][] = $this->imageAsGalleryItem($img);
+			if ($type === 'Person') {
+				// get the person images
+				foreach ($member->PersonImages() as $img) {
+					$gallery[] = $this->imageAsGalleryItem($img);
+				}	
+			} 
+			else if ($type === 'Projects') {
+				// get the project images
+				foreach (array('Projects', 'Exhibitions', 'Workshops', 'Excursions') as $projectTypes) {
+					foreach ($person->$projectTypes() as $project) {
+						$projectData = array(
+							'FilterID' => Convert::raw2att($project->class . '-' . $project->ID),
+							'Title' => $project->Title
+						);
+						if ($project->canEdit($member)) {
+							$projectData['Images'] = array();
+							foreach ($project->Images() as $img) {
+								$projectData['Images'][] = $this->imageAsGalleryItem($img);
+							}
 						}
+						$gallery[] = $projectData;
 					}
-
-					$gallery['Projects'][] = $projectData;
 				}
 			}
+			
 		}
 
 

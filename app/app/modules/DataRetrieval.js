@@ -174,17 +174,17 @@ define(['app'], function(app) {
       }
       return dfd.promise();
     },
-    forUserGallery: function() {
+    forUserGallery: function(type) {
       var dfd, userGallery;
 
       userGallery = app.Cache.UserGallery;
       dfd = new $.Deferred();
-      if (userGallery.fetched) {
+      if (userGallery.fetched[type]) {
         dfd.resolve(userGallery);
       } else {
-        $.getJSON(app.Config.GalleryUrl).done(function(data) {
-          userGallery.images = data;
-          userGallery.fetched = true;
+        $.getJSON(app.Config.GalleryUrl + type).done(function(data) {
+          userGallery.images[type] = data;
+          userGallery.fetched[type] = true;
           return dfd.resolve(userGallery);
         });
       }

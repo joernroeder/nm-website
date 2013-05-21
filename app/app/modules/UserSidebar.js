@@ -125,6 +125,18 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
   UserSidebar.Views.UserSidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
     template: 'security/editor-sidebar-user',
+    render: function(template, context) {
+      if (context == null) {
+        context = {};
+      }
+      this.async();
+      return DataRetrieval.forUserGallery('Project').done(function(gallery) {
+        context.PersonImages = gallery.Images.Person;
+        context.Person = app.CurrentMemberPerson;
+        context.Member = app.CurrentMember;
+        return done(template(context));
+      });
+    },
     afterRender: function() {
       return this._afterRender();
     }
@@ -251,10 +263,8 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         context = {};
       }
       done = this.async();
-      return DataRetrieval.forUserGallery().done(function(gallery) {
-        if (gallery.fetched) {
-          context.Projects = gallery.images.Projects;
-        }
+      return DataRetrieval.forUserGallery('Projects').done(function(gallery) {
+        context.Projects = gallery.images.Projects;
         return done(template(context));
       });
     },

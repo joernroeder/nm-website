@@ -7,7 +7,10 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   app.Collections = {};
   app.Cache = {};
   app.Cache.UserGallery = {
-    fetched: false,
+    fetched: {
+      Projects: false,
+      Person: false
+    },
     images: {
       Person: [],
       Projects: []
@@ -27,7 +30,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       '2': 'Exhibition',
       '3': 'Workshop'
     },
-    GalleryUrl: 'imagery/gallery',
+    GalleryUrl: 'imagery/gallery/',
     DocImageUrl: 'imagery/images/docimage',
     PersonImageUrl: 'imagery/images/personimage',
     UrlSuffixes: {

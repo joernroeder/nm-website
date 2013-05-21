@@ -156,16 +156,16 @@ define [
 				dfd.promise()
 
 			# getting the user gallery
-			forUserGallery: ->
+			forUserGallery: (type) ->
 				userGallery = app.Cache.UserGallery
 				dfd = new $.Deferred()
-				if userGallery.fetched
+				if userGallery.fetched[type]
 					dfd.resolve userGallery
 				else
-					$.getJSON(app.Config.GalleryUrl)
+					$.getJSON(app.Config.GalleryUrl + type)
 						.done (data) ->
-							userGallery.images = data
-							userGallery.fetched = true
+							userGallery.images[type] = data
+							userGallery.fetched[type] = true
 							dfd.resolve userGallery
 
 				dfd.promise()

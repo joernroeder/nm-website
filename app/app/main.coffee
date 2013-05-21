@@ -32,7 +32,9 @@ require [
 	# out app cache where we store specific searches/collection items
 	app.Cache = {}
 	app.Cache.UserGallery =
-		fetched: false
+		fetched: 
+			Projects: false
+			Person: false
 		images:
 			Person: []
 			Projects: []
@@ -60,7 +62,7 @@ require [
 			'1': 'Excursion'
 			'2': 'Exhibition'
 			'3': 'Workshop'
-		GalleryUrl: 'imagery/gallery'
+		GalleryUrl: 'imagery/gallery/'
 		DocImageUrl: 'imagery/images/docimage'
 		PersonImageUrl: 'imagery/images/personimage'
 		UrlSuffixes:

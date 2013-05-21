@@ -127,6 +127,16 @@ define [
 					#@.Projects = if gallery.fetched then gallery.images.Projects
 					#console.log gallery
 
+			render: (template, context = {}) ->
+				@.async()
+
+				DataRetrieval.forUserGallery('Project').done (gallery) ->
+					context.PersonImages = gallery.Images.Person
+					context.Person = app.CurrentMemberPerson
+					context.Member = app.CurrentMember
+
+					done template(context)
+
 			afterRender: ->
 				# do stuff
 				@._afterRender()
@@ -229,9 +239,8 @@ define [
 			render: (template, context = {}) ->
 				done =  @.async()
 
-				DataRetrieval.forUserGallery().done (gallery) =>
-					if gallery.fetched
-						context.Projects = gallery.images.Projects
+				DataRetrieval.forUserGallery('Projects').done (gallery) =>
+					context.Projects = gallery.images.Projects
 					
 					done template(context)
 			
