@@ -1086,18 +1086,20 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
-	&.open {	
+	&.open.opened {	
 		header.editor-header,
 		.editor-sidebar-content[class*="columns-"] > section {
 			opacity: 1;
 		}
 		
-		&.opened {
+		.editor-sidebar-content {
+		//&.opened {
 			&> header.hideable,
-			.editor-sidebar-content section {
+			&> section {
 				opacity: 1;
 			}
 		}
+		//}
 	}
 
 	.editor-sidebar-content {

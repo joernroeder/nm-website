@@ -1774,12 +1774,12 @@ x:-o-prefocus,
   -ms-transition: none;
   transition: none;
 }
-.editor-sidebar.open header.editor-header,
-.editor-sidebar.open .editor-sidebar-content[class*="columns-"] > section {
+.editor-sidebar.open.opened header.editor-header,
+.editor-sidebar.open.opened .editor-sidebar-content[class*="columns-"] > section {
   opacity: 1;
 }
-.editor-sidebar.open.opened > header.hideable,
-.editor-sidebar.open.opened .editor-sidebar-content section {
+.editor-sidebar.open.opened .editor-sidebar-content > header.hideable,
+.editor-sidebar.open.opened .editor-sidebar-content > section {
   opacity: 1;
 }
 .editor-sidebar .editor-sidebar-content.columns-2 .image-list {
