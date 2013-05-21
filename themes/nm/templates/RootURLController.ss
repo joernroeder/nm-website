@@ -52,7 +52,7 @@
 		</div>
 
 		<!-- our user widget with basic links to dashboard and logout -->
-		<div id="editor-sidebar" class="editor-sidebar"></div>
+		<div id="editor-sidebar"></div>
 
 		<div id="spinner-target">
 

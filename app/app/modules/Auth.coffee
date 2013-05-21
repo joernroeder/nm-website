@@ -82,8 +82,9 @@ define [
 				delete @.loginPing
 
 		Auth.updateUserWidget = ->
-			widget = @.Cache.userWidget = @.Cache.userWidget || UserSidebar.construct()
-			widget.render()
+			if app.CurrentMember
+				widget = @.Cache.userWidget = @.Cache.userWidget || UserSidebar.construct()
+				widget.toggleEditorClass app.isEditor
 
 		# this function gets the current member's person object (detail)
 		Auth.fetchMembersPerson = ->

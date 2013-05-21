@@ -8,10 +8,15 @@ define [
 		UserSidebar = app.module()
 
 		UserSidebar.construct = ->
-			new UserSidebar.Views.Main()
+			view = new UserSidebar.Views.Main()
+			view.$el.appendTo '#editor-sidebar'
+			view.render()
+			view
 
 		UserSidebar.Views.Main = Backbone.View.extend
-			el: $('#editor-sidebar')
+			tagName: 'div'
+			className: 'editor-sidebar'
+			#el: $('#editor-sidebar')
 			template: 'security/editor-sidebar'
 
 			availableSubViews:
@@ -22,15 +27,6 @@ define [
 
 			events:
 				'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
-
-			# !- Backbone native methods
-
-			serialize: ->
-				json = {}
-				if app.currentLayoutName is 'editor' then json.isEditor = true
-				json
-				#person = if app.CurrentMemberPerson then app.CurrentMemberPerson.toJSON()
-				# { Member: app.CurrentMember, Person: person }
 			
 			# !- Custom
 			
@@ -48,6 +44,13 @@ define [
 						@.open true # switched = true
 
 				false
+
+			toggleEditorClass: (isEditor) ->
+				method = if isEditor then 'addClass' else 'removeClass'
+				if method is 'removeClass' and @.$el.hasClass('is-editor')
+					@.close()
+				@.$el[method]('is-editor')
+
 
 			triggerSubview: (method) ->
 				args = Array.prototype.slice.call arguments

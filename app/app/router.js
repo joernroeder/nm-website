@@ -41,6 +41,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       var deferred,
         _this = this;
 
+      app.isEditor = false;
       options = options || {};
       app.handleLinks();
       if (!options.noFadeOut) {
@@ -59,6 +60,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       this.pending = [];
       this.mainDeferred = $.Deferred();
       return this.mainDeferred.done(function() {
+        Auth.updateUserWidget();
         _this.mainDeferred = null;
         app.removeLoadingClasses();
         return app.stopSpinner();
@@ -318,6 +320,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         _this = this;
 
       mainDfd = this.rejectAndHandle();
+      app.isEditor = true;
       className = app.resolveClassTypeByHash(uglyHash);
       Auth.canEdit({
         className: className,
@@ -335,8 +338,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         var layout;
 
         layout = app.useLayout('editor');
-        app.CurrentlyEditingProject = model;
-        return Auth.updateUserWidget();
+        return app.CurrentlyEditingProject = model;
       });
     },
     catchAllRoute: function(url) {

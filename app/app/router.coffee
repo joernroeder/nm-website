@@ -48,6 +48,8 @@ define [
 		 * @return {$.Deferred}
 		###
 		rejectAndHandle: (options) ->
+			app.isEditor = false
+
 			options = options || {}
 			app.handleLinks()
 
@@ -66,6 +68,7 @@ define [
 			@.pending = []
 			@.mainDeferred = $.Deferred()
 			@.mainDeferred.done =>
+				Auth.updateUserWidget()
 				@.mainDeferred = null
 				app.removeLoadingClasses()
 				app.stopSpinner()
@@ -263,6 +266,7 @@ define [
 		
 		showEditProjectPage: (uglyHash) ->
 			mainDfd = @.rejectAndHandle()
+			app.isEditor = true
 
 			className = app.resolveClassTypeByHash(uglyHash)
 			Auth.canEdit({className: className, UglyHash: uglyHash})
@@ -279,7 +283,6 @@ define [
 			.done (model) ->
 				layout = app.useLayout 'editor'
 				app.CurrentlyEditingProject = model
-				Auth.updateUserWidget()
 
 
 				

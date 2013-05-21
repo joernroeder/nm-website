@@ -10,6 +10,13 @@ class Gallery_Controller extends Controller {
 		'personimage'	=> 'PersonImage'
 	);
 
+	protected static $project_types = array(
+		'Projects',
+		'Exhibitions',
+		'Workshops',
+		'Excursions'
+	);
+
 	private static $url_handlers = array(
 		'$Action/$OtherAction'	=> 'handleAction'
 	);
@@ -42,7 +49,7 @@ class Gallery_Controller extends Controller {
 			} 
 			else if ($type === 'Projects') {
 				// get the project images
-				foreach (array('Projects', 'Exhibitions', 'Workshops', 'Excursions') as $projectTypes) {
+				foreach (self::$project_types as $projectTypes) {
 					foreach ($person->$projectTypes() as $project) {
 						$projectData = array(
 							'FilterID' => Convert::raw2att($project->class . '-' . $project->ID),
@@ -82,16 +89,30 @@ class Gallery_Controller extends Controller {
 			return $this->handleImageUpload();
 		} else
 		if ($this->request->isGET()) {
+
 			$out = array();
 			$ids = $this->getIds();
 
 			$list = DataList::create($this->imageType)->byIDs($ids);
 	
 			foreach ($list as $image) {
-				/**
-				 * @todo : check if member may get that image anyway
-				 * 
-				 */
+				if ($image->class == 'PersonImage') {
+					// check if PersonImage can be viewed
+					if (!$this->currentUser->PersonImages()->byID($image->ID)) continue;
+				} else if ($image->class == 'DocImage') {
+					$canView = false;
+					foreach (self::$project_types as $projectTypes) {
+						foreach ($image->$projectTypes() as $p) {
+							if ($p->canEdit($this->currentUser)) {
+								$canView = true;
+							}
+						}
+						if ($canView) break;
+					}
+					if (!$canView) continue;
+				}
+
+
 				$out[] = array(
 					'tag'	=> $image->forTemplate(),
 					'id'	=> $image->ID

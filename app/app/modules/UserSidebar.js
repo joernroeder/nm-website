@@ -4,10 +4,16 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
 
   UserSidebar = app.module();
   UserSidebar.construct = function() {
-    return new UserSidebar.Views.Main();
+    var view;
+
+    view = new UserSidebar.Views.Main();
+    view.$el.appendTo('#editor-sidebar');
+    view.render();
+    return view;
   };
   UserSidebar.Views.Main = Backbone.View.extend({
-    el: $('#editor-sidebar'),
+    tagName: 'div',
+    className: 'editor-sidebar',
     template: 'security/editor-sidebar',
     availableSubViews: {
       'user': 'UserSidebar',
@@ -16,15 +22,6 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     subView: null,
     events: {
       'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
-    },
-    serialize: function() {
-      var json;
-
-      json = {};
-      if (app.currentLayoutName === 'editor') {
-        json.isEditor = true;
-      }
-      return json;
     },
     toggleSidebarCheck: function(e) {
       var $target, subViewName, toShow;
@@ -41,6 +38,15 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         this.open(true);
       }
       return false;
+    },
+    toggleEditorClass: function(isEditor) {
+      var method;
+
+      method = isEditor ? 'addClass' : 'removeClass';
+      if (method === 'removeClass' && this.$el.hasClass('is-editor')) {
+        this.close();
+      }
+      return this.$el[method]('is-editor');
     },
     triggerSubview: function(method) {
       var args, methodName;

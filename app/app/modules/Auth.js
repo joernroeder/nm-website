@@ -94,8 +94,10 @@ define(['app', 'modules/UserSidebar'], function(app, UserSidebar) {
   Auth.updateUserWidget = function() {
     var widget;
 
-    widget = this.Cache.userWidget = this.Cache.userWidget || UserSidebar.construct();
-    return widget.render();
+    if (app.CurrentMember) {
+      widget = this.Cache.userWidget = this.Cache.userWidget || UserSidebar.construct();
+      return widget.toggleEditorClass(app.isEditor);
+    }
   };
   Auth.fetchMembersPerson = function() {
     var dfd, existModel, id;
