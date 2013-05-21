@@ -1,22 +1,22 @@
 <nav>
 	<ul>
 		<li>
-			<a href="#" data-editor-sidebar-content="user">User</a>
+			<a href="#" data-editor-sidebar-content="user" class="icon-user"><span>User</span></a>
 		</li>
 		<li>
-			<a href="#">Logout</a>
+			<a href="#" class="icon-logout"><span>Logout</span></a>
 		</li>
 	</ul>
 	{{#if isEditor}}
 		<ul>
 			<li>
-				<a href="#" data-editor-sidebar-content="gallery">Editor</a>
+				<a href="#" data-editor-sidebar-content="gallery" class="icon-editor"><span>Editor</span></a>
 			</li>
 			<li>
-				<a href="#">Switch view</a>
+				<a href="#" class="icon-switch"><span>Switch view</span></a>
 			</li>
 			<li>
-				<a href="#">Publish</a>
+				<a href="#" class="icon-publish"><span>Publish</span></a>
 			</li>
 		</ul>
 	{{/if}}

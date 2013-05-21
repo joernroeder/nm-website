@@ -1194,7 +1194,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	> nav {
-		@width: 90;
+		@width: 60;
 
 		position: absolute;
 		left: -@width / @em;
@@ -1207,15 +1207,14 @@ x:-o-prefocus, .qtip .qtip-tip{
 		padding-left: @line / 2 / @em;
 		.box-sizing(border-box);
 
-		.transition(~"height .5s ease-in-out");
-
 		ul {
 			margin: 0;
 			padding: 0;
 			list-style: none;
 
 			color: #fff;
-			border-bottom: 1px solid @gray;
+
+			.transition(~"height .5s ease-in-out");
 
 			&:last-child {
 				border: none;
@@ -1223,7 +1222,23 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 
 		li {
-			padding: 10 / @em;
+			display: block;
+		}
+
+		a {
+			margin: @line / 2 / @em;
+			height: 30 / @em;
+			color: transparent;
+			//font-size: 1px;
+			//text-indent: -99999999999em;
+			display: block;
+			background-repeat: no-repeat;
+			background-position: 0 50%;
+			background-size: 100%;
+
+			span {
+				display: none;
+			}
 		}
 	}
 
@@ -1231,6 +1246,16 @@ x:-o-prefocus, .qtip .qtip-tip{
 		&> nav {
 			margin-left: -1px;
 		}
+	}
+	&:not(.is-editor) > nav ul + ul {
+		opacity: 0;
+		height: 0; 
+	}
+
+	&.is-editor > nav ul + ul {
+		opacity: 1;
+		height: auto;
+		border-top: 1px solid @gray;
 	}
 
 	input[type="text"],
