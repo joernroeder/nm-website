@@ -1876,6 +1876,9 @@ x:-o-prefocus,
 .editor-sidebar > nav li {
   padding: 0.625em;
 }
+.editor-sidebar.open > nav {
+  margin-left: -1px;
+}
 .editor-sidebar input[type="text"],
 .editor-sidebar input[type="email"],
 .editor-sidebar input[type="password"] {
