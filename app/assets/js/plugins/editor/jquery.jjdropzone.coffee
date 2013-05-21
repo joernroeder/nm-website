@@ -2,9 +2,8 @@
 
 do ($ = jQuery) ->
 
-	class JJSimpleImagesUploadZone
+	class JJUploadZone
 		fileMatch: 'image.*'
-		cache: null
 
 		defaults :
 			url						: null					
@@ -19,30 +18,80 @@ do ($ = jQuery) ->
 		maxAllowed: null
 
 		constructor: (selector, opts) ->
-
 			@.options = $.extend {}, @.defaults, opts
 			@.$dropzone = if selector instanceof jQuery then selector else $(selector)
-			@.dragAndDropSetup()
 
 		cleanup : ->
 			@.$dropzone.off 'dragenter dragleave drop'
+
+		deferredUpload: (e) ->
+			uploadDfd = JJFileUpload.do e, @.$dropzone, @.options.url, @.options.additionalData, @.options.errorMsg, @.fileMatch, @.maxAllowed
+			uploadDfd.done (data) =>
+				data = $.parseJSON data
+				@.options.responseHandler data
+
+
+	class JJSimpleImagesUploadZone extends JJUploadZone
+
+		constructor: (selector, opts) ->
+			super(arguments)
+			@.dragAndDropSetup()
 
 		dragAndDropSetup : ->
 			$dropzone = @.$dropzone
 
 			$dropzone.on 'dragenter', (e) ->
-				console.log 'dragging into it'
 				$(@).addClass 'dragactive'
 
 			$dropzone.on 'dragleave drop', (e) ->
 				$(@).removeClass 'dragactive'
 
 			$dropzone.on 'drop', (e) =>
-				console.log 'dropping'
-				if e.dataTransfer.files.length
-					uploadDfd = JJFileUpload.do e, $dropzone, @.options.url, @.options.additionalData, @.options.errorMsg, @.fileMatch, @.maxAllowed
-					uploadDfd.done (data) =>
-						data = $.parseJSON data
-						@.options.responseHandler data
+				@.deferredUpload e
+
+
+	class JJSingleImageUploadZone extends JJUploadZone
+
+		constructor: (selector, opts) ->
+			super(selector, opts)
+			@.dragAndDropSetup()
+
+		setAsActiveDraggable : (e) ->
+			if e.type is 'dragstart' then @._activeDraggableId = $(e.target).data('id') else @._activeDraggableId = null
+
+		setAsDraggable: ($el) ->
+			if not @.draggables then @.draggables = []
+			if $el.length
+				@.draggables.push $el
+				$el.on 'dragstart dragend', (e) =>
+					@.setAsActiveDraggable e
+
+		cleanup: ->
+			super()
+			if @.draggables 
+				for $draggable in @.draggables
+					$draggable.off 'dragstart dragend'
+
+		dragAndDropSetup: ->
+			$dropzone = @.$dropzone
+
+			$dropzone.on 'dragenter', (e) ->
+				$(@).addClass 'dragactive'
+
+			$dropzone.on 'dragleave drop', (e) ->
+				$(@).removeClass 'dragactive'
+
+			$dropzone.on 'drop', (e) =>
+				if id = @._activeDraggableId
+					@._activeDraggableId = null
+					data = @.options.getFromCache id
+					@.options.responseHandler data
+				else if e.dataTransfer.files.length
+					@.deferredUpload e
+
+
+
+
 
 	window.JJSimpleImagesUploadZone = JJSimpleImagesUploadZone
+	window.JJSingleImageUploadZone = JJSingleImageUploadZone

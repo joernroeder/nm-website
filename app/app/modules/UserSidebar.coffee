@@ -157,18 +157,36 @@ define [
 					@.insertPersonImage image
 
 			insertPersonImage: (image) ->
+				uploadZone = @.uploadZone
 				view = new UserSidebar.Views.PersonImage {model: image}
 				@.insertView '.editor-sidebar-content .image-list', view
+				view.afterRender = ->
+					uploadZone.setAsDraggable @.$el.find('[data-id]')
 				view.render()
 
 			initDropzone: ->
-				console.log 'initializing dropzone'
+				@.uploadZone = new JJSingleImageUploadZone '#current-person-image',
+					url: app.Config.PersonImageUrl
+					getFromCache: (id) =>
+						result = null
+						_.each app.Cache.UserGallery.images.Person, (image) =>
+							if image.id is id then result = image
+						[result]
+
+					responseHandler: (data) =>
+						img = data[0]
+						if img.UploadedToClass
+							app.updateGalleryCache data
+							@.insertPersonImage img
+						if img.id
+							@.uploadZone.$dropzone.html '<img src="' + img.url + '">'
+							# @todo: set as PersonImage and trigger save on Person
 
 			afterRender: ->
 				@._afterRender()
 
-				@.initPersonImageList()
 				@.initDropzone()
+				@.initPersonImageList()
 
 				do (_.once =>
 					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
@@ -300,9 +318,12 @@ define [
 
 		UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend
 			template: 'security/editor-sidebar-gallery-image'
+			afterRender: ->
+				# JJMarkdownEditor.setAsDraggable @.$el.find '[data-md-tag]'
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend
 			template: 'security/editor-sidebar-person-image'
+
 
 
 		UserSidebar

@@ -274,11 +274,14 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
 
       if (className = obj.UploadedToClass) {
         if (className === 'DocImage') {
-          return _.each(_this.Cache.UserGallery.images.Projects, function(project) {
+          _.each(_this.Cache.UserGallery.images.Projects, function(project) {
             if (project.FilterID === obj.FilterID) {
               return addTo(project.Images, obj);
             }
           });
+        }
+        if (className === 'PersonImage') {
+          return addTo(_this.Cache.UserGallery.images.Person, obj);
         }
       } else {
 

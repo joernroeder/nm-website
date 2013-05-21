@@ -108,6 +108,7 @@ class Gallery_Controller extends Controller {
 		$postVars = $this->request->postVars();
 		if (!$postVars || empty($postVars) || !$this->imageType) return $this->notFound();
 
+		$project = null;
 		if ($this->imageType == 'DocImage') {
 			$authenticated = false;
 
@@ -130,6 +131,10 @@ class Gallery_Controller extends Controller {
 
 			// make the ResponsiveImage subclass
 			$imgObj = new $this->imageType();
+
+			// add the OwnerID, if a PersonImage is uploaded
+			if ($this->imageType == 'PersonImage') $imgObj->OwnerID = $this->currentUser->ID;
+
 			$imgObj->write();
 
 			// make the image

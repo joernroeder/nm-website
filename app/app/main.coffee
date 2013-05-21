@@ -223,6 +223,8 @@ require [
 					_.each @.Cache.UserGallery.images.Projects, (project) =>
 						if project.FilterID is obj.FilterID
 							addTo project.Images, obj
+				if className is 'PersonImage'
+					addTo @.Cache.UserGallery.images.Person, obj
 
 			else
 				# this is no upload, instead update any existing data

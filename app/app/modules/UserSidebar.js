@@ -166,23 +166,54 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       });
     },
     insertPersonImage: function(image) {
-      var view;
+      var uploadZone, view;
 
+      uploadZone = this.uploadZone;
       view = new UserSidebar.Views.PersonImage({
         model: image
       });
       this.insertView('.editor-sidebar-content .image-list', view);
+      view.afterRender = function() {
+        return uploadZone.setAsDraggable(this.$el.find('[data-id]'));
+      };
       return view.render();
     },
     initDropzone: function() {
-      return console.log('initializing dropzone');
+      var _this = this;
+
+      return this.uploadZone = new JJSingleImageUploadZone('#current-person-image', {
+        url: app.Config.PersonImageUrl,
+        getFromCache: function(id) {
+          var result;
+
+          result = null;
+          _.each(app.Cache.UserGallery.images.Person, function(image) {
+            if (image.id === id) {
+              return result = image;
+            }
+          });
+          return [result];
+        },
+        responseHandler: function(data) {
+          var img;
+
+          img = data[0];
+          if (img.UploadedToClass) {
+            app.updateGalleryCache(data);
+            _this.insertPersonImage(img);
+          }
+          if (img.id) {
+            return _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
+          }
+        }
+      });
     },
     afterRender: function() {
       var _this = this;
 
       this._afterRender();
-      this.initPersonImageList();
       this.initDropzone();
+      this.initPersonImageList();
       return (_.once(function() {
         return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
       }))();
@@ -342,7 +373,8 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     }
   });
   UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend({
-    template: 'security/editor-sidebar-gallery-image'
+    template: 'security/editor-sidebar-gallery-image',
+    afterRender: function() {}
   });
   UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend({
     template: 'security/editor-sidebar-person-image'
