@@ -1,13 +1,15 @@
 <header class="editor-header hideable">
-	{{#with CurrentImage}}
-		<div class="img" id="current-person-image" data-current-image-id="{{id}}">
-			<img src="{{url}}">
-		</div>
-	{{/with}}
+	{{#if CurrentImage}}
+		{{#with CurrentImage}}
+			<div class="img" id="current-person-image" data-current-image-id="{{id}}">
+				<img src="{{url}}">
+			</div>
+		{{/with}}
+	{{/if}}
 	<hgroup>
-		<h1>{{#with Person}}{{FirstName}} {{Surname}}{{/with}}</h1>
+		{{#if Person}}<h1>{{#with Person}}{{FirstName}} {{Surname}}{{/with}}</h1>{{/if}}
 
-		<p>{{Member.Email}}</p>
+		{{#if Member}}<p>{{Member.Email}}</p>{{/if}}
 	</hgroup>
 </header>
 <section class="editor-sidebar-content scrollbox">
