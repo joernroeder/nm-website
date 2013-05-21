@@ -165,10 +165,11 @@ class Gallery_Controller extends Controller {
 	}
 
 	private function imageAsGalleryItem($img, $includeTag = false) {
-		$square = $img->getClosestImage(150)->CroppedImage(150,150);
+		$closest = $img->getClosestImage(150);
+		$url = $closest ? $closest->CroppedImage(150,150)->getURL() : null;
 		$a = array(
 			'id'	=> $img->ID,
-			'url'	=> $square->getURL()
+			'url'	=> $url
 		);
 		if ($includeTag) $a['tag'] = $img->forTemplate();
 		return $a;
