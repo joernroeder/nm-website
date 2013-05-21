@@ -146,42 +146,46 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
             return context.CurrentImage = img;
           }
         });
-        console.log(context);
         return done(template(context));
       });
     },
     onOpened: function(switched) {
-      var delay,
-        _this = this;
+      var delay;
 
       delay = switched ? 0 : 300;
-      this.isOpen = true;
-      return setTimeout(function() {
-        if (_this.$sidebarContent) {
-          return _this.$sidebarContent.addClass('test');
-        }
-      }, delay);
+      return this.isOpen = true;
     },
     onClose: function() {
+      return this.isOpen = false;
+    },
+    initPersonImageList: function() {
       var _this = this;
 
-      this.isOpen = false;
-      return setTimeout(function() {
-        if (_this.$sidebarContent) {
-          return _this.$sidebarContent.removeClass('test');
-        }
-      }, 300);
+      return _.each(app.Cache.UserGallery.images.Person, function(image) {
+        return _this.insertPersonImage(image);
+      });
+    },
+    insertPersonImage: function(image) {
+      var view;
+
+      view = new UserSidebar.Views.PersonImage({
+        model: image
+      });
+      this.insertView('.editor-sidebar-content .image-list', view);
+      return view.render();
+    },
+    initDropzone: function() {
+      return console.log('initializing dropzone');
     },
     afterRender: function() {
       var _this = this;
 
-      (_.once(function() {
-        _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
-        if (_this.$sidebarContent) {
-          return _this.$sidebarContent.addClass('test');
-        }
+      this._afterRender();
+      this.initPersonImageList();
+      this.initDropzone();
+      return (_.once(function() {
+        return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
       }))();
-      return this._afterRender();
     }
   });
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
@@ -331,12 +335,17 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       }))();
     }
   });
-  UserSidebar.Views.GalleryImage = Backbone.View.extend({
+  UserSidebar.Views.ImageItem = Backbone.View.extend({
     tagName: 'li',
-    template: 'security/editor-sidebar-gallery-image',
     serialize: function() {
       return this.model;
     }
+  });
+  UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend({
+    template: 'security/editor-sidebar-gallery-image'
+  });
+  UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend({
+    template: 'security/editor-sidebar-person-image'
   });
   return UserSidebar;
 });

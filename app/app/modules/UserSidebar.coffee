@@ -138,35 +138,42 @@ define [
 					context.PersonImages = gallery.images.Person
 					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
+
 					# get current image
 					_.each context.PersonImages, (img) ->
 						if img.id is context.Person.Image.ID then context.CurrentImage = img
 
-
-					console.log context
 					done template(context)
 
 			onOpened: (switched) ->
 				delay = if switched then 0 else 300
 				@.isOpen = true
-				setTimeout =>
-					@.$sidebarContent.addClass 'test' if @.$sidebarContent
-				, delay
 
 			onClose: ->
 				@.isOpen = false
-				setTimeout =>
-					@.$sidebarContent.removeClass 'test' if @.$sidebarContent
-				, 300
+
+			initPersonImageList: ->
+				_.each app.Cache.UserGallery.images.Person, (image) =>
+					@.insertPersonImage image
+
+			insertPersonImage: (image) ->
+				view = new UserSidebar.Views.PersonImage {model: image}
+				@.insertView '.editor-sidebar-content .image-list', view
+				view.render()
+
+			initDropzone: ->
+				console.log 'initializing dropzone'
 
 			afterRender: ->
+				@._afterRender()
+
+				@.initPersonImageList()
+				@.initDropzone()
+
 				do (_.once =>
 					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
-					if @.$sidebarContent
-						@.$sidebarContent.addClass 'test'
 				)
 				# do stuff
-				@._afterRender()
 
 		UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend
 			tagName: 'div'
@@ -285,11 +292,17 @@ define [
 						@.setColumnCount()
 				)
 
-		UserSidebar.Views.GalleryImage = Backbone.View.extend
+
+		UserSidebar.Views.ImageItem = Backbone.View.extend
 			tagName: 'li'
-			template: 'security/editor-sidebar-gallery-image'
 			serialize: ->
 				@.model
+
+		UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend
+			template: 'security/editor-sidebar-gallery-image'
+
+		UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend
+			template: 'security/editor-sidebar-person-image'
 
 
 		UserSidebar
