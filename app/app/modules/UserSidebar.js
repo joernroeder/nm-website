@@ -91,7 +91,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       var _this = this;
 
       this.triggerSubview('close');
-      this.$el.removeClass('open');
+      this.$el.removeClass('open').find('nav .active').removeClass('active');
       return setTimeout(function() {
         return _this.$el.removeClass('opened');
       }, 300);

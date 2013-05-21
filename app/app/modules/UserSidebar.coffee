@@ -84,7 +84,7 @@ define [
 
 			close: ->
 				@.triggerSubview 'close'
-				@.$el.removeClass 'open'
+				@.$el.removeClass('open').find('nav .active').removeClass('active')
 				setTimeout =>
 					@.$el.removeClass 'opened'
 				, 300
