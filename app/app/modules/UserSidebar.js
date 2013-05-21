@@ -131,13 +131,15 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     tagName: 'div',
     template: 'security/editor-sidebar-user',
     render: function(template, context) {
+      var done;
+
       if (context == null) {
         context = {};
       }
-      this.async();
-      return DataRetrieval.forUserGallery('Project').done(function(gallery) {
-        context.PersonImages = gallery.Images.Person;
-        context.Person = app.CurrentMemberPerson;
+      done = this.async();
+      return DataRetrieval.forUserGallery('Person').done(function(gallery) {
+        context.PersonImages = gallery.images.Person;
+        context.Person = app.CurrentMemberPerson.toJSON();
         context.Member = app.CurrentMember;
         return done(template(context));
       });
@@ -147,22 +149,31 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         _this = this;
 
       delay = switched ? 0 : 300;
+      this.isOpen = true;
       return setTimeout(function() {
-        return _this.$sidebarContent.addClass('test');
+        if (_this.$sidebarContent) {
+          return _this.$sidebarContent.addClass('test');
+        }
       }, delay);
     },
     onClose: function() {
       var _this = this;
 
+      this.isOpen = false;
       return setTimeout(function() {
-        return _this.$sidebarContent.removeClass('test');
+        if (_this.$sidebarContent) {
+          return _this.$sidebarContent.removeClass('test');
+        }
       }, 300);
     },
     afterRender: function() {
       var _this = this;
 
       (_.once(function() {
-        return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+        _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+        if (_this.$sidebarContent) {
+          return _this.$sidebarContent.addClass('test');
+        }
       }))();
       return this._afterRender();
     }
@@ -268,6 +279,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         _this = this;
 
       delay = switched ? 0 : 300;
+      this.isOpen = true;
       return setTimeout(function() {
         return _this.setColumnCount();
       }, delay);
@@ -276,9 +288,12 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       var prefColumnsCount,
         _this = this;
 
+      this.isOpen = false;
       prefColumnsCount = this.getColumnsCount();
       return setTimeout(function() {
-        return _this.$sidebarContent.removeClass(_this.columnsPrefix + prefColumnsCount);
+        if (_this.$sidebarContent) {
+          return _this.$sidebarContent.removeClass(_this.columnsPrefix + prefColumnsCount);
+        }
       }, 300);
     },
     render: function(template, context) {
@@ -303,7 +318,10 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       this.initDropzone();
       this.initImageList();
       return (_.once(function() {
-        return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+        _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+        if (_this.isOpen) {
+          return _this.setColumnCount();
+        }
       }))();
     }
   });

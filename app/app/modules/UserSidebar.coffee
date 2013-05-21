@@ -132,30 +132,33 @@ define [
 
 
 			render: (template, context = {}) ->
-				@.async()
+				done = @.async()
 
-				DataRetrieval.forUserGallery('Project').done (gallery) ->
-					context.PersonImages = gallery.Images.Person
-					context.Person = app.CurrentMemberPerson
+				DataRetrieval.forUserGallery('Person').done (gallery) ->
+					context.PersonImages = gallery.images.Person
+					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
 
 					done template(context)
 
 			onOpened: (switched) ->
 				delay = if switched then 0 else 300
-
+				@.isOpen = true
 				setTimeout =>
-					@.$sidebarContent.addClass 'test'
+					@.$sidebarContent.addClass 'test' if @.$sidebarContent
 				, delay
 
 			onClose: ->
+				@.isOpen = false
 				setTimeout =>
-					@.$sidebarContent.removeClass 'test'
+					@.$sidebarContent.removeClass 'test' if @.$sidebarContent
 				, 300
 
 			afterRender: ->
 				do (_.once =>
 					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
+					if @.$sidebarContent
+						@.$sidebarContent.addClass 'test'
 				)
 				# do stuff
 				@._afterRender()
@@ -244,15 +247,16 @@ define [
 
 			onOpened: (switched) ->
 				delay = if switched then 0 else 300
-
+				@.isOpen = true
 				setTimeout =>
 					@setColumnCount()
 				, delay
 
 			onClose: ->
+				@.isOpen = false
 				prefColumnsCount = @getColumnsCount()
 				setTimeout =>
-					@.$sidebarContent.removeClass @columnsPrefix + prefColumnsCount
+					@.$sidebarContent.removeClass @columnsPrefix + prefColumnsCount  if @.$sidebarContent
 				, 300
 			
 			render: (template, context = {}) ->
@@ -272,6 +276,8 @@ define [
 
 				do (_.once =>
 					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
+					if @.isOpen
+						@.setColumnCount()
 				)
 
 		UserSidebar.Views.GalleryImage = Backbone.View.extend
