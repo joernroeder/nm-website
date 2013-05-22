@@ -135,14 +135,12 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     _setColumnCount: function() {
       var columnsCount, prefColumnsCount, width;
 
-      console.log(this.$sidebarContent);
       if (!this.$sidebarContent) {
         return;
       }
       width = parseInt(this.$sidebarContent.width(), 10);
       prefColumnsCount = this._getColumnsCount();
       columnsCount = Math.floor(width / 75);
-      console.log(columnsCount);
       if (columnsCount) {
         return this.$sidebarContent.removeClass(this.columnsPrefix + prefColumnsCount).addClass(this.columnsPrefix + columnsCount).data('columns', columnsCount);
       }

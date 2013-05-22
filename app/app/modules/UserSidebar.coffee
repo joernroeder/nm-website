@@ -126,16 +126,13 @@ define [
 			_getColumnsCount: ->
 				@.$sidebarContent.data 'columns'
 
-			_setColumnCount: ->
-				console.log @.$sidebarContent
+			_setColumnCount: ->				
 				if not @.$sidebarContent then return
 
 				width = parseInt @.$sidebarContent.width(), 10
 
 				prefColumnsCount = @._getColumnsCount()
 				columnsCount = Math.floor width / 75
-
-				console.log columnsCount
 
 				if columnsCount
 					@.$sidebarContent
