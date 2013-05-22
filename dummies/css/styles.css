@@ -1760,22 +1760,7 @@ x:-o-prefocus,
 }
 .editor-sidebar .image-list {
   list-style: none;
-  /**
-	 * For modern browsers
-	 * 1. The space content is one way to avoid an Opera bug when the
-	 *    contenteditable attribute is included anywhere else in the document.
-	 *    Otherwise it causes space to appear at the top and bottom of elements
-	 *    that are clearfixed.
-	 * 2. The use of `table` rather than `block` is only necessary if using
-	 *    `:before` to contain the top-margins of child elements.
-	 */
-
-  /**
-	 * For IE 6/7 only
-	 * Include this rule to trigger hasLayout and contain floats.
-	 */
-
-  *zoom: 1;
+  clear: both;
   -webkit-column-count: 1;
   column-count: 1;
   -moz-column-count: 1;
@@ -1783,22 +1768,16 @@ x:-o-prefocus,
   -moz-column-gap: 10px;
   column-gap: 10px;
 }
-.editor-sidebar .image-list:before,
-.editor-sidebar .image-list:after {
-  content: " ";
-  /* 1 */
-
-  display: table;
-  /* 2 */
-
-}
-.editor-sidebar .image-list:after {
-  clear: both;
-}
 .editor-sidebar .image-list li {
-  display: inline-block;
+  float: left;
   width: 100%;
   margin-bottom: 10px;
+  -webkit-column-break-before: always;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  -o-column-break-inside: avoid;
+  -ms-column-break-inside: avoid;
+  column-break-inside: avoid;
 }
 .editor-sidebar .image-list a {
   background: gray;

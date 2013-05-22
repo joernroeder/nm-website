@@ -102,22 +102,73 @@ define [
 			$sidebarContent: null
 			className: 'editor-sidebar-container'
 
+			columnsPrefix: 'columns-'
+
 			galleryData: {}
 
-			initSidebar: _.once ->
+			initSidebar: ->
 				@.$sidebarHeader = $ '> header', @.$el
 				@.$sidebarContent = $ 'section.editor-sidebar-content', @.$el
-				@setSidebarHeight()
+				@.setSidebarHeight()
 				# register window events
-				$.addOnWindowResize 'editor.sidebar.height', =>
-					@setSidebarHeight()
+				do (_.once =>
+					$.addOnWindowResize 'editor.sidebar.height', =>
+						@setSidebarHeight()
+				)
 
 			setSidebarHeight: ->
 				@.$sidebarContent.css
 					'height': $(window).height() - @.$sidebarHeader.outerHeight()
 
+			_getColumnsCount: ->
+				@.$sidebarContent.data 'columns'
+
+			_setColumnCount: ->
+				if not @.$sidebarContent then return
+
+				width = parseInt @.$sidebarContent.width(), 10
+
+				prefColumnsCount = @._getColumnsCount()
+				columnsCount = Math.floor width / 75
+
+				if columnsCount
+					@.$sidebarContent
+						.removeClass(@columnsPrefix + prefColumnsCount)
+						.addClass(@columnsPrefix + columnsCount)
+						.data('columns', columnsCount)
+
 			_afterRender: ->
 				@.initSidebar()
+				#@.setSidebarHeight();
+
+				do (_.once =>
+					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
+					if @.isOpen
+						@._setColumnCount()
+				)
+
+				if @.isOpen
+					@._setColumnCount()
+
+			_onOpened: (switched) ->
+				delay = if switched then 0 else 300
+				@.isOpen = true
+				setTimeout =>
+					@._setColumnCount()
+				, delay
+
+			onOpened: (switched) ->
+				@._onOpened switched
+
+			_onClose: ->
+				@.isOpen = false
+				prefColumnsCount = @._getColumnsCount()
+				setTimeout =>
+					@.$sidebarContent.removeClass @.columnsPrefix + prefColumnsCount  if @.$sidebarContent
+				, 300
+
+			onClose: ->
+				@._onClose()
 
 		###*
 		 * @todo : cleanup function!
@@ -154,13 +205,6 @@ define [
 
 					done template(context)
 
-			onOpened: (switched) ->
-				delay = if switched then 0 else 300
-				@.isOpen = true
-
-			onClose: ->
-				@.isOpen = false
-
 			initPersonImageList: ->
 				_.each app.Cache.UserGallery.images.Person, (image) =>
 					@.insertPersonImage image
@@ -196,10 +240,6 @@ define [
 
 				@.initDropzone()
 				@.initPersonImageList()
-
-				do (_.once =>
-					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
-				)
 				# do stuff
 			
 			# ! Events
@@ -228,30 +268,11 @@ define [
 			tagName: 'div'
 			template: 'security/editor-sidebar-gallery'
 
-			columnsPrefix: 'columns-'
-
 			$sidebarContent: null
 
 			cleanup: ->
 				@.uploadZone.cleanup()
 				@.$el.parent().off 'dragenter'
-
-			getColumnsCount: ->
-				@.$sidebarContent.data 'columns'
-
-			setColumnCount: ->
-				if not @.$sidebarContent then return
-
-				width = parseInt @.$sidebarContent.width(), 10
-
-				prefColumnsCount = @getColumnsCount()
-				columnsCount = Math.floor width / 75
-
-				if columnsCount
-					@.$sidebarContent
-						.removeClass(@columnsPrefix + prefColumnsCount)
-						.addClass(@columnsPrefix + columnsCount)
-						.data('columns', columnsCount)
 
 			initImageList: ->
 				###
@@ -309,21 +330,6 @@ define [
 					@.uploadZone.$dropzone.addClass 'dragover'
 
 
-
-			onOpened: (switched) ->
-				delay = if switched then 0 else 300
-				@.isOpen = true
-				setTimeout =>
-					@setColumnCount()
-				, delay
-
-			onClose: ->
-				@.isOpen = false
-				prefColumnsCount = @getColumnsCount()
-				setTimeout =>
-					@.$sidebarContent.removeClass @columnsPrefix + prefColumnsCount  if @.$sidebarContent
-				, 300
-			
 			render: (template, context = {}) ->
 				done =  @.async()
 
@@ -334,16 +340,9 @@ define [
 			
 			afterRender: ->
 				@._afterRender()
-				@.setColumnCount()
 				@.initFilter()
 				@.initDropzone()
 				@.initImageList()
-
-				do (_.once =>
-					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
-					if @.isOpen
-						@.setColumnCount()
-				)
 
 
 		UserSidebar.Views.ImageItem = Backbone.View.extend
