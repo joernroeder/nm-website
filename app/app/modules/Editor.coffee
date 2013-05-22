@@ -32,7 +32,11 @@ define [
 				if person = app.CurrentMemberPerson
 					m = JJRestApi.Model @.projectType
 					model = new m {Title: title, Persons: person}
-					model.save()
+					model.save null,
+						success: ->
+							model._isCompletelyFetched = true
+							model._isFetchedWhenLoggedIn = true
+							Backbone.history.navigate '/secured/edit/' + model.get('UglyHash') + '/', true
 			false
 
 	Editor

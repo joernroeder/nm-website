@@ -41,7 +41,13 @@ define(['app'], function(app) {
             Title: title,
             Persons: person
           });
-          model.save();
+          model.save(null, {
+            success: function() {
+              model._isCompletelyFetched = true;
+              model._isFetchedWhenLoggedIn = true;
+              return Backbone.history.navigate('/secured/edit/' + model.get('UglyHash') + '/', true);
+            }
+          });
         }
       }
       return false;
