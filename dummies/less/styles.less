@@ -1318,6 +1318,26 @@ x:-o-prefocus, .qtip .qtip-tip{
 			}
 		}
 	}
+
+	#uploadzone {
+		display: none;
+		position: absolute;
+		background: darken(@editorSidebarBg, 5%);
+		border: @line / @em solid @editorSidebarBg;
+		.box-sizing(border-box);
+		z-index:1000;
+		height:100%;
+		width:100%;
+
+		&.dragover {
+			display: block;
+			background: darken(@nmColor, 30%);
+		}
+	}
+}
+
+body.dragover #uploadzone {
+	display: block !important;
 }
 
 .project-type-list {

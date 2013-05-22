@@ -2009,6 +2009,25 @@ x:-o-prefocus,
 .editor-sidebar button.btn:active:after {
   color: #d9df20;
 }
+.editor-sidebar #uploadzone {
+  display: none;
+  position: absolute;
+  background: #191919;
+  border: 1.5em solid #262626;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+}
+.editor-sidebar #uploadzone.dragover {
+  display: block;
+  background: #57590d;
+}
+body.dragover #uploadzone {
+  display: block !important;
+}
 .project-type-list {
   position: absolute;
   top: 50%;

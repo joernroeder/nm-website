@@ -5,6 +5,8 @@ define [
 	],
 	(app, DataRetrieval) ->
 
+		"use strict"
+
 		UserSidebar = app.module()
 
 		UserSidebar.construct = ->
