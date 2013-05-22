@@ -111,10 +111,13 @@ define [
 				@.$sidebarContent = $ 'section.editor-sidebar-content', @.$el
 				@.setSidebarHeight()
 				# register window events
-				do (_.once =>
-					$.addOnWindowResize 'editor.sidebar.height', =>
-						@setSidebarHeight()
-				)
+				
+				$.addOnWindowResize 'editor.sidebar.height', =>
+					@.setSidebarHeight()
+					@._setColumnCount()
+
+			_cleanup: ->
+				$.removeOnWindowResize 'editor.sidebar.height'
 
 			setSidebarHeight: ->
 				@.$sidebarContent.css
@@ -124,12 +127,15 @@ define [
 				@.$sidebarContent.data 'columns'
 
 			_setColumnCount: ->
+				console.log @.$sidebarContent
 				if not @.$sidebarContent then return
 
 				width = parseInt @.$sidebarContent.width(), 10
 
 				prefColumnsCount = @._getColumnsCount()
 				columnsCount = Math.floor width / 75
+
+				console.log columnsCount
 
 				if columnsCount
 					@.$sidebarContent
@@ -188,6 +194,7 @@ define [
 					#console.log gallery
 			
 			cleanup: ->
+				@._cleanup()
 				@.uploadZone.cleanup()
 
 
@@ -271,6 +278,7 @@ define [
 			$sidebarContent: null
 
 			cleanup: ->
+				@._cleanup()
 				@.uploadZone.cleanup()
 				@.$el.parent().off 'dragenter'
 

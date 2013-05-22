@@ -1769,10 +1769,9 @@ x:-o-prefocus,
   column-gap: 10px;
 }
 .editor-sidebar .image-list li {
-  float: left;
+  display: inline-block;
   width: 100%;
   margin-bottom: 10px;
-  -webkit-column-break-before: always;
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
   -o-column-break-inside: avoid;

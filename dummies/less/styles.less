@@ -1047,7 +1047,6 @@ x:-o-prefocus, .qtip .qtip-tip{
 		@gap: 10px;
 
 		list-style: none;
-		//.clearfix;
 		clear: both;
 
 		-webkit-column-count		: 1;
@@ -1058,14 +1057,10 @@ x:-o-prefocus, .qtip .qtip-tip{
 		column-gap					: @gap;
 
 		li {
-			float: left;
-			//display: inline-block;
+//			float: left;
+			display: inline-block;
 			width: 100%;
 			margin-bottom: 10px;
-			//break-inside: avoid-column;
-			//-webkit-column-break-inside: avoid;
-			//float: left;
-			-webkit-column-break-before: always;
 			-webkit-column-break-inside	:avoid;
 			-moz-column-break-inside	:avoid;
 			-o-column-break-inside		:avoid;

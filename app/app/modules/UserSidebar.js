@@ -116,11 +116,13 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       this.$sidebarHeader = $('> header', this.$el);
       this.$sidebarContent = $('section.editor-sidebar-content', this.$el);
       this.setSidebarHeight();
-      return (_.once(function() {
-        return $.addOnWindowResize('editor.sidebar.height', function() {
-          return _this.setSidebarHeight();
-        });
-      }))();
+      return $.addOnWindowResize('editor.sidebar.height', function() {
+        _this.setSidebarHeight();
+        return _this._setColumnCount();
+      });
+    },
+    _cleanup: function() {
+      return $.removeOnWindowResize('editor.sidebar.height');
     },
     setSidebarHeight: function() {
       return this.$sidebarContent.css({
@@ -133,12 +135,14 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     _setColumnCount: function() {
       var columnsCount, prefColumnsCount, width;
 
+      console.log(this.$sidebarContent);
       if (!this.$sidebarContent) {
         return;
       }
       width = parseInt(this.$sidebarContent.width(), 10);
       prefColumnsCount = this._getColumnsCount();
       columnsCount = Math.floor(width / 75);
+      console.log(columnsCount);
       if (columnsCount) {
         return this.$sidebarContent.removeClass(this.columnsPrefix + prefColumnsCount).addClass(this.columnsPrefix + columnsCount).data('columns', columnsCount);
       }
@@ -198,6 +202,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       'submit form.user-settings': 'changeUserCredentials'
     },
     cleanup: function() {
+      this._cleanup();
       return this.uploadZone.cleanup();
     },
     render: function(template, context) {
@@ -306,6 +311,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     template: 'security/editor-sidebar-gallery',
     $sidebarContent: null,
     cleanup: function() {
+      this._cleanup();
       this.uploadZone.cleanup();
       return this.$el.parent().off('dragenter');
     },
