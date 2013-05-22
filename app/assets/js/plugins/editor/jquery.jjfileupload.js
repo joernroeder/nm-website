@@ -25,12 +25,15 @@
 
 
     JJFileUpload["do"] = function(e, $dropzone, postUrl, additionalData, defaultErrorMsg, filematch, maxAllowed) {
-      var $progress, a, b, errorMsg, files, formData, req,
+      var $progress, $progressText, a, b, errorMsg, files, formData, req,
         _this = this;
 
       errorMsg = null;
       $progress = $('<div />', {
         "class": 'progress'
+      }).height(0).appendTo($dropzone);
+      $progressText = $('<div />', {
+        "class": 'progress-text'
       }).appendTo($dropzone);
       files = e.dataTransfer.files;
       formData = new FormData();
@@ -73,7 +76,8 @@
 
               if (evt.lengthComputable) {
                 completed = (evt.loaded / evt.total) * 100;
-                return $progress.html(completed + '%');
+                $progressText.html(completed + '%');
+                return $progress.height(completed + '%');
               }
             };
             return xhr;
@@ -90,7 +94,8 @@
         return $dropzone.append('<p>' + defaultErrorMsg + '</p>');
       }).always(function() {
         $dropzone.removeClass('uploading');
-        return $progress.remove();
+        $progress.height(0);
+        return $progressText.remove();
       });
     };
 

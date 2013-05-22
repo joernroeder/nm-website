@@ -24,9 +24,16 @@ do ($ = jQuery) ->
 			errorMsg = null
 
 			# ! - Progress bar shit
-			$progress = $('<div />',
-					class: 'progress')
-				.appendTo $dropzone
+			$progress = $('<div />', 
+				class: 'progress'
+			)
+			.height(0)
+			.appendTo $dropzone
+
+			$progressText = $('<div />',
+				class: 'progress-text'
+			)
+			.appendTo $dropzone
 
 			files = e.dataTransfer.files
 			formData = new FormData()
@@ -61,7 +68,8 @@ do ($ = jQuery) ->
 						xhr.upload.onprogress = (evt) ->
 							if evt.lengthComputable
 								completed = (evt.loaded / evt.total) * 100 # floating point between 0 and 1
-								$progress.html(completed + '%')
+								$progressText.html(completed + '%')
+								$progress.height completed + '%'
 						xhr
 			req.pipe (res) ->
 				if not res.error then return res else return $.Deferred().reject res
@@ -70,6 +78,7 @@ do ($ = jQuery) ->
 				$dropzone.append '<p>' + defaultErrorMsg + '</p>'
 			.always =>
 				$dropzone.removeClass 'uploading'
-				$progress.remove()
+				$progress.height 0
+				$progressText.remove()
 
 	window.JJFileUpload = JJFileUpload

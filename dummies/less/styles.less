@@ -1320,19 +1320,39 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	#uploadzone {
-		display: none;
 		position: absolute;
-		background: darken(@editorSidebarBg, 5%);
+		background: @editorSidebarBg;
 		border: @line / @em solid @editorSidebarBg;
 		.box-sizing(border-box);
-		z-index:1000;
-		height:100%;
-		width:100%;
+	}
+}
 
-		&.dragover {
-			display: block;
-			background: darken(@nmColor, 30%);
+.dropzone {
+	position: relative;
+	display: none;
+	z-index:1000;
+	height:100%;
+	width:100%;
+
+	&.dragover,
+	&.uploading {
+		&> *:not(.progress):not(.progress-text) {
+			opacity: 0;
 		}
+	}
+
+	&.dragover {
+		display: block;
+		background-color: darken(@nmColor, 30%) !important;
+	}
+
+	.progress {
+		position: absolute;
+		bottom: 0;
+		background: darken(@nmColor, 10%);
+		border: 0;
+		width: 100%;
+		height: 0;
 	}
 }
 

@@ -2010,20 +2010,35 @@ x:-o-prefocus,
   color: #d9df20;
 }
 .editor-sidebar #uploadzone {
-  display: none;
   position: absolute;
-  background: #191919;
+  background: #262626;
   border: 1.5em solid #262626;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+.dropzone {
+  position: relative;
+  display: none;
   z-index: 1000;
   height: 100%;
   width: 100%;
 }
-.editor-sidebar #uploadzone.dragover {
+.dropzone.dragover > *:not(.progress):not(.progress-text),
+.dropzone.uploading > *:not(.progress):not(.progress-text) {
+  opacity: 0;
+}
+.dropzone.dragover {
   display: block;
-  background: #57590d;
+  background-color: #57590d !important;
+}
+.dropzone .progress {
+  position: absolute;
+  bottom: 0;
+  background: #aeb21a;
+  border: 0;
+  width: 100%;
+  height: 0;
 }
 body.dragover #uploadzone {
   display: block !important;

@@ -26,6 +26,7 @@ var __hasProp = {}.hasOwnProperty,
     function JJUploadZone(selector, opts) {
       this.options = $.extend({}, this.defaults, opts);
       this.$dropzone = selector instanceof jQuery ? selector : $(selector);
+      this.$dropzone.addClass('dropzone');
     }
 
     JJUploadZone.prototype.cleanup = function() {
@@ -85,7 +86,10 @@ var __hasProp = {}.hasOwnProperty,
 
     JJSingleImageUploadZone.prototype.setAsActiveDraggable = function(e) {
       if (e.type === 'dragstart') {
-        return this._activeDraggableId = $(e.target).data('id');
+        this._activeDraggableId = $(e.target).data('id');
+        if (!this._activeDraggableId) {
+          return this._activeDraggableId = $(e.target).parent().data('id');
+        }
       } else {
         return this._activeDraggableId = null;
       }
@@ -134,9 +138,12 @@ var __hasProp = {}.hasOwnProperty,
       return $dropzone.on('drop', function(e) {
         var data, id;
 
+        console.log(e);
+        console.log(_this._activeDraggableId);
         if (id = _this._activeDraggableId) {
           _this._activeDraggableId = null;
           data = _this.options.getFromCache(id);
+          console.log(data);
           return _this.options.responseHandler(data);
         } else if (e.dataTransfer.files.length) {
           return _this.deferredUpload(e);

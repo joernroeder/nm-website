@@ -20,6 +20,7 @@ do ($ = jQuery) ->
 		constructor: (selector, opts) ->
 			@.options = $.extend {}, @.defaults, opts
 			@.$dropzone = if selector instanceof jQuery then selector else $(selector)
+			@.$dropzone.addClass 'dropzone'
 
 		cleanup : ->
 			@.$dropzone.off 'dragenter dragleave drop'
@@ -60,7 +61,12 @@ do ($ = jQuery) ->
 			@.dragAndDropSetup()
 
 		setAsActiveDraggable : (e) ->
-			if e.type is 'dragstart' then @._activeDraggableId = $(e.target).data('id') else @._activeDraggableId = null
+			if e.type is 'dragstart' 
+				@._activeDraggableId = $(e.target).data('id')
+				if not @._activeDraggableId
+					@._activeDraggableId = $(e.target).parent().data 'id'
+
+			else @._activeDraggableId = null
 
 		setAsDraggable: ($el) ->
 			if not @.draggables then @.draggables = []
@@ -85,9 +91,12 @@ do ($ = jQuery) ->
 				$(@).removeClass 'dragover'
 
 			$dropzone.on 'drop', (e) =>
+				console.log e
+				console.log @._activeDraggableId
 				if id = @._activeDraggableId
 					@._activeDraggableId = null
 					data = @.options.getFromCache id
+					console.log data
 					@.options.responseHandler data
 				else if e.dataTransfer.files.length
 					@.deferredUpload e
