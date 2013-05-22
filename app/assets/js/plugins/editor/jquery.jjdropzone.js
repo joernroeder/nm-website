@@ -50,7 +50,7 @@ var __hasProp = {}.hasOwnProperty,
     __extends(JJSimpleImagesUploadZone, _super);
 
     function JJSimpleImagesUploadZone(selector, opts) {
-      JJSimpleImagesUploadZone.__super__.constructor.call(this, arguments);
+      JJSimpleImagesUploadZone.__super__.constructor.call(this, selector, opts);
       this.dragAndDropSetup();
     }
 
@@ -60,13 +60,15 @@ var __hasProp = {}.hasOwnProperty,
 
       $dropzone = this.$dropzone;
       $dropzone.on('dragenter', function(e) {
-        return $(this).addClass('dragactive');
+        return $(this).addClass('dragover');
       });
-      $dropzone.on('dragleave drop', function(e) {
-        return $(this).removeClass('dragactive');
+      $dropzone.on('dragleave', function(e) {
+        return $(this).removeClass('dragover');
       });
       return $dropzone.on('drop', function(e) {
-        return _this.deferredUpload(e);
+        return _this.deferredUpload(e).always(function() {
+          return $dropzone.removeClass('dragover');
+        });
       });
     };
 
@@ -124,10 +126,10 @@ var __hasProp = {}.hasOwnProperty,
 
       $dropzone = this.$dropzone;
       $dropzone.on('dragenter', function(e) {
-        return $(this).addClass('dragactive');
+        return $(this).addClass('dragover');
       });
       $dropzone.on('dragleave drop', function(e) {
-        return $(this).removeClass('dragactive');
+        return $(this).removeClass('dragover');
       });
       return $dropzone.on('drop', function(e) {
         var data, id;

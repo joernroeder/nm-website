@@ -234,6 +234,7 @@ define [
 
 			cleanup: ->
 				@.uploadZone.cleanup()
+				@.$el.parent().off 'dragenter'
 
 			getColumnsCount: ->
 				@.$sidebarContent.data 'columns'
@@ -303,6 +304,9 @@ define [
 						app.updateGalleryCache data
 						_.each data, (img) =>
 							@.insertGalleryImage img.FilterID, img
+
+				@.$el.parent().on 'dragenter', (e) =>
+					@.uploadZone.$dropzone.addClass 'dragover'
 
 
 

@@ -263,7 +263,8 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     columnsPrefix: 'columns-',
     $sidebarContent: null,
     cleanup: function() {
-      return this.uploadZone.cleanup();
+      this.uploadZone.cleanup();
+      return this.$el.parent().off('dragenter');
     },
     getColumnsCount: function() {
       return this.$sidebarContent.data('columns');
@@ -339,7 +340,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     initDropzone: function() {
       var _this = this;
 
-      return this.uploadZone = new JJSimpleImagesUploadZone('#uploadzone', {
+      this.uploadZone = new JJSimpleImagesUploadZone('#uploadzone', {
         url: app.Config.DocImageUrl,
         additionalData: {
           projectId: app.CurrentlyEditingProject.id,
@@ -351,6 +352,9 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
             return _this.insertGalleryImage(img.FilterID, img);
           });
         }
+      });
+      return this.$el.parent().on('dragenter', function(e) {
+        return _this.uploadZone.$dropzone.addClass('dragover');
       });
     },
     onOpened: function(switched) {

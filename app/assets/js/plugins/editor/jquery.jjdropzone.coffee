@@ -34,20 +34,22 @@ do ($ = jQuery) ->
 	class JJSimpleImagesUploadZone extends JJUploadZone
 
 		constructor: (selector, opts) ->
-			super(arguments)
+			super(selector, opts)
 			@.dragAndDropSetup()
 
 		dragAndDropSetup : ->
 			$dropzone = @.$dropzone
 
 			$dropzone.on 'dragenter', (e) ->
-				$(@).addClass 'dragactive'
+				$(@).addClass 'dragover'
 
-			$dropzone.on 'dragleave drop', (e) ->
-				$(@).removeClass 'dragactive'
+			$dropzone.on 'dragleave', (e) ->
+				$(@).removeClass 'dragover'
 
 			$dropzone.on 'drop', (e) =>
-				@.deferredUpload e
+				@.deferredUpload(e)
+					.always ->
+						$dropzone.removeClass 'dragover'
 
 
 	class JJSingleImageUploadZone extends JJUploadZone
@@ -76,10 +78,10 @@ do ($ = jQuery) ->
 			$dropzone = @.$dropzone
 
 			$dropzone.on 'dragenter', (e) ->
-				$(@).addClass 'dragactive'
+				$(@).addClass 'dragover'
 
 			$dropzone.on 'dragleave drop', (e) ->
-				$(@).removeClass 'dragactive'
+				$(@).removeClass 'dragover'
 
 			$dropzone.on 'drop', (e) =>
 				if id = @._activeDraggableId

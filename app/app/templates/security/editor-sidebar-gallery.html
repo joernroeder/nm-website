@@ -1,6 +1,16 @@
+<style type="text/css">
+	#uploadzone.dragover {
+		position: absolute;
+		background: #000;
+		z-index:1000;
+		height:100%;
+		width:100%;
+	}
+</style>
+
+<div id="uploadzone"></div>
 <header class="editor-header">
 	<h1>Images</h1>
-	<div id="uploadzone" style="width: 100px;height: 100px;border: 1px solid white;text-align:center;"></div>
 	{{#if Projects}}
 		<select class="filter">
 			<option value="">--- Choose Project ---</option>
