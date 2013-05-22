@@ -127,11 +127,17 @@ define [
 			tagName: 'div'
 			template: 'security/editor-sidebar-user'
 
+			events:
+				'submit form.user-settings': 'changeUserCredentials'
+
 					#@.$el.html(@.serialize())
 					#@.render()
 					#@.PersonImage = if gallery.fetched then gallery.images.Projects
 					#@.Projects = if gallery.fetched then gallery.images.Projects
 					#console.log gallery
+			
+			cleanup: ->
+				@.uploadZone.cleanup()
 
 
 			render: (template, context = {}) ->
@@ -195,6 +201,28 @@ define [
 					@.$sidebarContent = $ '.editor-sidebar-content', @.$el
 				)
 				# do stuff
+			
+			# ! Events
+			changeUserCredentials: (e) ->
+				e.preventDefault()
+				$form = $(e.target)
+				data = $form.serialize()
+
+				dfd = $.ajax
+					url: app.Config.ChangeCredentialsUrl
+					data: data
+					type: 'POST'
+
+				dfd.done (res) =>
+					if res.email
+						# update email at appropriate places
+						$form.find('[name="email"]').val res.email
+						@.$el.find('.editor-header .email').text res.email
+						app.CurrentMember.Email = res.email
+					if msg = res.msg
+						@.showMessageAt msg.text, $form.parent(), msg.type
+
+				false
 
 		UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend
 			tagName: 'div'

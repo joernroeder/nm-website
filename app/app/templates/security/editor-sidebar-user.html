@@ -9,7 +9,7 @@
 	<hgroup>
 		{{#if Person}}<h1>{{#with Person}}{{FirstName}} {{Surname}}{{/with}}</h1>{{/if}}
 
-		{{#if Member}}<p>{{Member.Email}}</p>{{/if}}
+		{{#if Member}}<p class="email">{{Member.Email}}</p>{{/if}}
 	</hgroup>
 </header>
 <section class="editor-sidebar-content scrollbox">
@@ -35,10 +35,10 @@
 		<h2>Settings</h2>
 	</header>
 	<section>
-		<form>
-			<input type="email" placeholder="Email" value="{{Member.Email}}">
-			<input type="password" placeholder="Password">
-			<input type="password" placeholder="Confirm Password">
+		<form class="user-settings">
+			<input name="email" type="email" placeholder="Email" value="{{Member.Email}}" required>
+			<input name="password" type="password" placeholder="Password">
+			<input name="passwordconfirmed" type="password" placeholder="Confirm Password">
 
 			<button class="btn" type="submit">Update Settings</button>
 		</form>

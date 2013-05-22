@@ -33,6 +33,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     GalleryUrl: 'imagery/gallery/',
     DocImageUrl: 'imagery/images/docimage',
     PersonImageUrl: 'imagery/images/personimage',
+    ChangeCredentialsUrl: 'api/v2/Auth/credentials',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
     },
@@ -329,6 +330,15 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     return this.Config.ClassEnc[uglyHash.substr(0, 1)];
   };
   app.bindListeners();
+  Backbone.View.prototype.showMessageAt = function(msg, $appendTo, className) {
+    var $el;
+
+    $el = $('<p class="' + className + '">' + msg + '</p>');
+    $el.appendTo($appendTo);
+    return setTimeout(function() {
+      return $el.fadeOut().remove();
+    }, 2000);
+  };
   $(function() {
     jQuery.event.props.push('dataTransfer');
     $(document).on('dragover drop', function(e) {

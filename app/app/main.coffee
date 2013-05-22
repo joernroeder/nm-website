@@ -65,6 +65,7 @@ require [
 		GalleryUrl: 'imagery/gallery/'
 		DocImageUrl: 'imagery/images/docimage'
 		PersonImageUrl: 'imagery/images/personimage'
+		ChangeCredentialsUrl: 'api/v2/Auth/credentials'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'
@@ -260,6 +261,15 @@ require [
 		@.Config.ClassEnc[uglyHash.substr(0,1)]
 
 	app.bindListeners()
+
+
+	# few Bacbkone extra functions
+	Backbone.View.prototype.showMessageAt = (msg, $appendTo, className) ->
+		$el = $('<p class="' + className + '">' + msg + '</p>')
+		$el.appendTo $appendTo
+		setTimeout ->
+			$el.fadeOut().remove()
+		, 2000
 
 	# ! KICK OFF
 

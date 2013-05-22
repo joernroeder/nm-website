@@ -136,6 +136,12 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
   UserSidebar.Views.UserSidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
     template: 'security/editor-sidebar-user',
+    events: {
+      'submit form.user-settings': 'changeUserCredentials'
+    },
+    cleanup: function() {
+      return this.uploadZone.cleanup();
+    },
     render: function(template, context) {
       var done;
 
@@ -223,6 +229,32 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       return (_.once(function() {
         return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
       }))();
+    },
+    changeUserCredentials: function(e) {
+      var $form, data, dfd,
+        _this = this;
+
+      e.preventDefault();
+      $form = $(e.target);
+      data = $form.serialize();
+      dfd = $.ajax({
+        url: app.Config.ChangeCredentialsUrl,
+        data: data,
+        type: 'POST'
+      });
+      dfd.done(function(res) {
+        var msg;
+
+        if (res.email) {
+          $form.find('[name="email"]').val(res.email);
+          _this.$el.find('.editor-header .email').text(res.email);
+          app.CurrentMember.Email = res.email;
+        }
+        if (msg = res.msg) {
+          return _this.showMessageAt(msg.text, $form.parent(), msg.type);
+        }
+      });
+      return false;
     }
   });
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({

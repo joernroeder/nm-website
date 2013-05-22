@@ -59,6 +59,44 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 		));
 	}
 
+	public function credentials() {
+		$out = array();
+
+		if (!Director::is_ajax() || !$this->request->isPOST() || !$this->currentUser) return $this->methodNotAllowed();
+		$email = (string) Convert::raw2sql($this->request->postVar('email'));
+		$password = (string) $this->request->postVar('password');
+		$passwordconfirmed = (string) $this->request->postVar('passwordconfirmed');
+
+		$error = null;
+
+		if ($email && $email !== $this->currentUser->Email) {
+			// check if there's a user with the changed email
+			if (DataList::create('Member')->where("Email='$email'")->exists()) {
+				$error = 'Email already exists.';
+			} else {
+				$this->currentUser->Email = $email;
+				$this->currentUser->write();
+				$out['email'] = $this->currentUser->Email;
+			}
+		}
+
+		if ($password) {
+			if ($password === $passwordconfirmed) {
+				$this->currentUser->changePassword($password);
+			} else {
+				$error = "'Password' and 'Confirm Password' do not match.";
+			}
+		}
+
+		$out['msg'] = array(
+			'text' => $error ? $error : 'Credentials successfully changed.',
+			'type' => $error ? 'error' : 'success'
+		);
+
+		return json_encode($out);
+
+	}
+
 	public function canEdit() {
 		if (!Director::is_ajax() || !$this->request->isGET()) return $this->methodNotAllowed();
 		
