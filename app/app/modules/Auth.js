@@ -94,7 +94,7 @@ define(['app', 'modules/UserSidebar'], function(app, UserSidebar) {
   Auth.updateUserWidget = function() {
     var widget;
 
-    if (app.CurrentMember) {
+    if (app.CurrentMember.Email) {
       widget = this.Cache.userWidget = this.Cache.userWidget || UserSidebar.construct();
       return widget.toggleEditorClass(app.isEditor);
     }

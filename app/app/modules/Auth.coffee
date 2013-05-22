@@ -82,7 +82,7 @@ define [
 				delete @.loginPing
 
 		Auth.updateUserWidget = ->
-			if app.CurrentMember
+			if app.CurrentMember.Email
 				widget = @.Cache.userWidget = @.Cache.userWidget || UserSidebar.construct()
 				widget.toggleEditorClass app.isEditor
 
