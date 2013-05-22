@@ -23,6 +23,9 @@ do ($ = jQuery) ->
 		@do: (e, $dropzone, postUrl, additionalData, defaultErrorMsg, filematch, maxAllowed) ->
 			errorMsg = null
 
+			$dropzone.removeClass 'failed done'
+			$('.progress-text, .progress', $dropzone).remove()
+
 			# ! - Progress bar shit
 			$progress = $('<div />', 
 				class: 'progress'
@@ -74,11 +77,15 @@ do ($ = jQuery) ->
 			req.pipe (res) ->
 				if not res.error then return res else return $.Deferred().reject res
 			.fail (res) =>
+				$dropzone.addClass 'failed'
 				#msg = res.error || @.options.errorMsg
-				$dropzone.append '<p>' + defaultErrorMsg + '</p>'
-			.always =>
+				$progressText.text defaultErrorMsg
+			.always ->
+				#$progress.height
 				$dropzone.removeClass 'uploading'
-				$progress.height 0
-				$progressText.remove()
+
+			.done ->
+				$dropzone.addClass 'done'
+				$progressText.clear()
 
 	window.JJFileUpload = JJFileUpload

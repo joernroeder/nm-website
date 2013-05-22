@@ -29,6 +29,8 @@
         _this = this;
 
       errorMsg = null;
+      $dropzone.removeClass('failed done');
+      $('.progress-text, .progress', $dropzone).remove();
       $progress = $('<div />', {
         "class": 'progress'
       }).height(0).appendTo($dropzone);
@@ -91,11 +93,13 @@
           return $.Deferred().reject(res);
         }
       }).fail(function(res) {
-        return $dropzone.append('<p>' + defaultErrorMsg + '</p>');
+        $dropzone.addClass('failed');
+        return $progressText.text(defaultErrorMsg);
       }).always(function() {
-        $dropzone.removeClass('uploading');
-        $progress.height(0);
-        return $progressText.remove();
+        return $dropzone.removeClass('uploading');
+      }).done(function() {
+        $dropzone.addClass('done');
+        return $progressText.clear();
       });
     };
 
