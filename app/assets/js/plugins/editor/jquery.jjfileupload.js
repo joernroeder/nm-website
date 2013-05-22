@@ -99,7 +99,7 @@
         return $dropzone.removeClass('uploading');
       }).done(function() {
         $dropzone.addClass('done');
-        return $progressText.clear();
+        return $progressText.empty();
       });
     };
 

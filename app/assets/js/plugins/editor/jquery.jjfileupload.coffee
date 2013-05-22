@@ -86,6 +86,6 @@ do ($ = jQuery) ->
 
 			.done ->
 				$dropzone.addClass 'done'
-				$progressText.clear()
+				$progressText.empty()
 
 	window.JJFileUpload = JJFileUpload
