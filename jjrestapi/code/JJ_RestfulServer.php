@@ -556,5 +556,441 @@ class JJ_RestfulServer extends RestfulServer {
 		return $result;
 	}
 
+
+	// ! Revisited RestfulServer Methods
+
+	/**
+	 * Converts either the given HTTP Body into an array
+	 * (based on the DataFormatter instance), or returns
+	 * the POST variables.
+	 * Automatically filters out certain critical fields
+	 * that shouldn't be set by the client (e.g. ID).
+	 *
+	 * @param DataObject $obj
+	 * @param DataFormatter $formatter
+	 * @param Array $data to set
+	 * @param String $className to use
+	 * @return DataObject The passed object
+	 */
+	protected function updateDataObject($obj, $formatter, $data = null, $className = null, $relationName = null) {
+		// set the response formatter to $formatter if not yet existent (for further use)
+		// also set base formatter
+		$this->responseFormatter = $this->responseFormatter ? $this->responseFormatter : $formatter;
+		$this->baseFormatter = $this->baseFormatter ? $this->baseFormatter : new JJ_BaseDataFormatter($formatter);
+
+		// data is not yet set -> this is the usual case
+		if (!$data) {
+			// if neither an http body nor POST data is present, return error
+			$body = $this->request->getBody();
+			if(!$body && !$this->request->postVars()) {
+				$this->getResponse()->setStatusCode(204); // No Content
+				return 'No Content';
+			}
+
+			if(!empty($body)) {
+				$data = $formatter->convertStringToArray($body);
+			} else {
+				// assume application/x-www-form-urlencoded which is automatically parsed by PHP
+				$data = $this->request->postVars();
+			}
+		}
+
+		// if there is no ID yet, write the whole thing, so relationship management won't have any troubles
+		if (!$obj->ID) $obj->write();
+
+		//get the base formatter
+		$baseFormatter = $this->baseFormatter;
+
+		// get the relation keys
+		$relationKeys = $baseFormatter->getRelationKeys($obj);
+		
+		// @todo Disallow editing of certain keys in database
+		$data = array_diff_key($data, array('ID','Created'));
+
+		$className = $className ? $className : $this->urlParams['ClassName'];
+
+		if (!$this->restrictEditFields) {
+			//$apiAccess = singleton($className)->stat('api_access');	
+			$accessFields = $baseFormatter->getFields($obj, 'edit');
+
+			//if(is_array($apiAccess) && isset($apiAccess['edit'])) {
+			if ($accessFields) {
+				$this->restrictEditFields = $this->formatRestrictArray($accessFields, $relationKeys);
+			}
+		}
+
+		$restrictFields = ($relationName && isset($this->restrictEditFields[$relationName])) ? $this->formatRestrictArray($this->restrictEditFields[$relationName], $relationKeys) : $this->restrictEditFields;
+
+		if ($restrictFields && is_array($restrictFields)) {
+			$data = array_intersect_key($data, $restrictFields);
+		}
+
+		foreach ($data as $fieldName => $fieldData) {
+			if (array_key_exists($fieldName, $relationKeys)) {
+				$obj = $this->updateDataObjectRelation($obj, $fieldData, $fieldName, $relationKeys[$fieldName]);
+			}
+		}
+
+		$obj->update($data);
+		$obj->write();
+		
+		return $obj;
+	}
+
+	/**
+	 * Converts the sent data-array and updates the relation accordingly 
+	 * [+] : adds IDs/objects to relation
+	 * [-] : removes IDs/objects to relation
+	 * [=] : sets IDList of relation
+	 * 
+	 * @param DataObject $obj
+	 * @param array $data
+	 * @param String $relationName
+	 * @param array $relationInfo (type (e.g. has_one) & class)
+	 * @return DataObject The passed object
+	 */
+	protected function updateDataObjectRelation($obj, $data, $relationName, $relationInfo) {
+		
+		// 1-to-1 && 1-to-many
+		//
+		if (in_array($relationInfo['Type'], array('has_one', 'belongs_to'))) {
+			// check if mere ID is given either by numeric value or a non-associative array with number
+			$mereID = ($data && is_numeric($data)) ? $data : false;
+			if (!$mereID && is_array($data) && !empty($data) && !ArrayLib::is_associative($data)) {
+				$mereID = is_numeric($data[0]) ? (int) $data[0] : false;
+			}
+
+			if (!$data || (is_array($data) && empty($data))) {
+				$obj = $this->removeAOneToRelation($obj, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+			}
+			else if ($mereID) {
+				$obj = $this->setAOneToRelationByID($obj, $mereID, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+			} else if (is_array($data)) {
+				if (!isset($data['+']) && !isset($data['-']) && !isset($data['='])) {
+					// array should be a newly passed object
+					$obj = $this->addAOneToRelationObject($obj, $data, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+				} else {
+					// iterate through out object
+					foreach ($data as $key => $value) {
+						if ($key == '=' || $key == '+') {
+							if (is_numeric($value)) {
+								// see above
+								$obj = $this->setAOneToRelationByID($obj, $value, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+							} else if (is_array($value)) {
+								if (ArrayLib::is_associative($value)) {
+									// array is a new object
+									$obj = $this->addAOneToRelationObject($obj, $value, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+								} else {
+									// get only the first
+									$value = array_values($value);
+									$value = array_shift($value);
+									
+									if (is_numeric($value)) {
+										// again, mere ID, trivial
+										$obj = $this->setAOneToRelationByID($obj, $value, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+									} else if (is_array($value) && ArrayLib::is_associative($value)) {
+										// array is a new object
+										$obj = $this->addAOneToRelationObject($obj, $value, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+									}
+								}
+							}
+						} else if ($key == '-') {
+							if ($value === 'all') {
+								$obj = $this->removeAOneToRelation($obj, $relationInfo['ClassName'], $relationName, $relationInfo['Type']);
+							} else {
+								$id = is_numeric($value) ? (int) $value : false;	
+								if (is_array($value)) {
+									$value = array_values($value);
+									$value = array_shift($value);
+									$id = is_numeric($value) ? (int) $value : $id;
+								}
+								if ($id) $obj = $this->removeAOneToRelation($obj, $relationInfo['ClassName'], $relationName, $relationInfo['Type'], $id);
+							}
+						}
+					}
+				}
+			}
+
+		} else
+		// Many-to-Many && Many-to-1
+		//
+		if (in_array($relationInfo['Type'], array('many_many', 'has_many')) && is_array($data)) {
+			if (ArrayLib::is_associative($data)) {
+				// +, -, =
+				foreach ($data as $key => $value) {
+					switch ($key) {
+						case '=':
+							if (is_array($value)) $this->setManyRelationByIDList($obj, $relationName, $value);
+							break;
+						case '+':
+							$ids = array();
+							if (is_array($value) && !ArrayLib::is_associative($value)) {
+								foreach ($value as $item) {
+									$ids[] = $this->associativeIDFilter($relationInfo['ClassName'], $item, $relationName);
+								}
+							} else {
+								$ids[] = $this->associativeIDFilter($relationInfo['ClassName'], $value, $relationName);
+							}
+							// add to relation
+							$this->addToManyRelationByIDList($obj, $relationName, $ids);
+							break;
+						case '-':
+							if ($value === 'all') {
+								$relList = $obj->$relationName();
+								if ($relList) $relList->removeAll();
+							} else {
+								$ids = array();
+								if (is_numeric($value)) $ids[] = (int) $value;
+								$ids = is_array($value) ? $value : $ids;
+								$this->removeManyRelationByIDList($obj, $relationName, $ids);
+							}
+							break;
+					}
+				}
+			} else {
+				// Shorthand for = and new objects
+				$ids = array();
+				foreach ($data as $item) {
+					$ids[] = $this->associativeIDFilter($relationInfo['ClassName'], $item, $relationName);
+				}
+				$this->setManyRelationByIDList($obj, $relationName, $ids);
+			}
+		}
+
+		return $obj;
+	}
+
+	/*
+	** @begin Relationship management helper functions
+	*/
+
+	/**
+	 * 
+	 * Sets a Many-Many / Many-to-One relation by ID array
+	 *
+	 * 
+	 * @param DataObject $obj
+	 * @param String $relName
+	 * @param Array $ids
+	 */
+	protected function setManyRelationByIDList($obj, $relName, $array) {
+		$ids = array();
+		foreach ($array as $id) {
+			if (is_numeric($id)) $ids[] = (int) $id;
+		}
+		$relList = $obj->$relName();
+		if ($relList) {
+			$relList->setByIDList($ids);
+		}
+	}
+
+	/**
+	 * 
+	 * Removes an ID array from a Many-Many / Many-to-One relation by ID array
+	 *
+	 * 
+	 * @param DataObject $obj
+	 * @param String $relName
+	 * @param Array $ids
+	 * @return DataObject The passed DataObject
+	 */
+	protected function removeManyRelationByIDList($obj, $relName, $array) {
+		$ids = array();
+		foreach ($array as $id) {
+			if (is_numeric($id)) $ids[] = (int) $id;
+		}
+		$relList = $obj->$relName();
+		if ($relList) {
+			$relList->removeMany($ids);
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * 
+	 * Adds an ID array to a Many-Many / Many-to-One relation
+	 *
+	 * 
+	 * @param DataObject $obj
+	 * @param String $relName
+	 * @param Array $ids
+	 * @return DataObject The passed DataObject
+	 */
+	protected function addToManyRelationByIDList($obj, $relName, $array) {
+		$ids = array();
+		foreach ($array as $id) {
+			if (is_numeric($id)) $ids[] = (int) $id;
+		}
+		$relList = $obj->$relName();
+		if ($relList) {
+			$relList->addMany($ids);
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * 
+	 * Sets a 1-to-1 / 1-to-Many relation by id
+	 *
+	 * 
+	 * @param DataObject $obj
+	 * @param int $relId
+	 * @param String $relClass
+	 * @param String $relName
+	 * @param String $relType
+	 * @return DataObject The passed object
+	 */
+	protected function setAOneToRelationByID($obj, $relId, $relClass, $relName, $relType) {
+		if ($relId == 0) {
+			$obj = $this->removeAOneToRelation($obj, $relClass, $relName, $relType);
+		} else {
+			$relObj = DataObject::get_by_id($relClass, (int) $relId);
+			$relField = $relName . 'ID';
+
+			if ($relType == 'has_one' && $obj->$relField == $relId) return $obj;
+			if ($relObj && $relObj->exists()) {
+				$obj = $this->setRelationFieldByObj($obj, $relObj, $relName, $relType);
+			} else {
+				user_error("DataObject of class '{$relClass}'' with ID {$relId} couldn't be found", E_USER_WARNING);
+			}
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * 
+	 * Removes a 1-to-1 / 1-to-Many relation by setting the appropriate relation field to 0
+	 *
+	 * 
+	 * @param DataObject $obj
+	 * @param String $relClass
+	 * @param String $relName
+	 * @param String $relType
+	 * @param int $relId (not mandatory; if passed, the IDs will be compared first)
+	 * @return DataObject The passed object
+	 */
+	protected function removeAOneToRelation($obj, $relClass, $relName, $relType, $relId = 0) {
+		$relObj = $obj->$relName();
+		if ($relObj && $relObj->exists()) {
+			if ($relId && $relObj->ID != $relId) {
+				return $obj;
+			} else {
+				if ($relType == 'has_one') {
+					$relField = $relName . 'ID';
+					$obj->$relField = 0;
+				} else if ($relType == 'belongs_to') {
+					$remoteField = $obj->getRemoteJoinField($relName, 'belongs_to');
+					$relObj->$remoteField = 0;
+					$relObj->write();
+				}
+			}
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * 
+	 * Creates a new object and sets a 1-to-1 / 1-to-Many relation
+	 *
+	 * 
+	 * @param DataObject $obj
+	 * @param Array $data (for updating new DataObject)
+	 * @param String $relClass
+	 * @param String $relName
+	 * @param String $relType
+	 * @return DataObject The passed object
+	 */
+	protected function addAOneToRelationObject($obj, $data, $relClass, $relName, $relType) {
+		if (($newObj = $this->newDataObject($relClass, $data, $relName)) && $newObj->ID > 0) {
+			$obj = $this->setRelationFieldByObj($obj, $newObj, $relName, $relType);
+		} else {
+			user_error("New instance of '{$relClass}' couldn't be created", E_USER_WARNING);
+		}
+
+		return $obj;
+	}
+
+	/**
+	 * 
+	 * Creates a new object with attributes
+	 *
+	 * 
+	 * @param String $className
+	 * @param Array $data (for updating new DataObject)
+	 * @param String $relationName (for restricting $data)
+	 * @return DataObject The newly created object
+	 */
+	protected function newDataObject($className, $data, $relationName) {
+		/*
+		** @todo check also for unique identifier field DataObject::identifier_field = array('ID','Title')
+		**
+		*/
+		if (class_exists($className) && !isset($data['ID'])) {
+			$obj = new $className();
+			//$obj->write();
+			$obj = $this->updateDataObject($obj, $this->requestFormatter, $data, $className, $relationName);
+			return $obj;
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * Checks if id or associative array and creates new object if necessary
+	 *
+	 * 
+	 * @param String $className
+	 * @param Array $data
+	 * @return Int The ID
+	 */
+	protected function associativeIDFilter($className, $data, $relName) {
+		if (is_numeric($data)) return (int) $data;
+		if (is_array($data) && ArrayLib::is_associative($data)) {
+			if (($newObj = $this->newDataObject($className, $data, $relName)) && $newObj->ID>0) return $newObj->ID;
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * Fills a relation db-field between two objects (1-to-1, 1-to-Many)
+	 * THIS IS ALWAYS FROM THE VIEW OF $obj
+	 * 
+	 * @param DataObject $obj (the object which the relation is viewed from)
+	 * @param DataObject $relObj (the relational DataObject)
+	 * @param String $relName
+	 * @param String $relType
+	 * @return $obj
+	 */
+	protected function setRelationFieldByObj($obj, $relObj, $relName, $relType) {
+		if ($relType == 'has_one') {
+			$relField = $relName . 'ID';
+			$obj->$relField = $relObj->ID;
+		} else if ($relType == 'belongs_to') {
+			$remoteField = $obj->getRemoteJoinField($relName, 'belongs_to');
+			
+			// get all objs with $relObj's ID and set $remoteField to 0
+			if ($formerObjs = DataList::create($relObj->class)->where("$remoteField=$obj->ID")) {
+				foreach ($formerObjs as $o) {
+					$o->$remoteField = 0;
+					$o->write();
+				}
+			}
+			
+			// now set the id to the passed $relObj
+			$relObj->$remoteField = $obj->ID;
+			$relObj->write();
+		}
+		return $obj;
+	}
+
+	/*
+	** @end Relationship management helper functions
+	*/
+
 }
 
