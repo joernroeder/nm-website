@@ -992,5 +992,36 @@ class JJ_RestfulServer extends RestfulServer {
 	** @end Relationship management helper functions
 	*/
 
+	// --------------- Additional RestfulServer Methods -------------------------
+
+	protected function formatRestrictArray($editFields, $relationKeys) {
+		$dbFields = array();
+		$relationFields = array();
+
+		foreach ($editFields as $editField) {
+			$temp = explode('.', $editField);
+
+			if (isset($relationKeys[$temp[0]])) {
+				// is relation
+				$relKey = $temp[0];
+				$relArray = isset($relationFields[$relKey]) ? $relationFields[$relKey] : array();
+				if (isset($relationKeys[$relKey]) && in_array($relationKeys[$relKey]['Type'], array('has_one', 'belongs_to')) && (count($temp) == 2)) {
+					// pair can be used in simple update() function
+					$field = implode('.', $temp);
+					$dbFields[$field] = $field;
+				}
+
+				array_shift($temp);
+				if (!empty($temp)) {
+					$relArray[] = implode('.', $temp);
+				}
+				$relationFields[$relKey] = $relArray;
+			} else {
+				$dbFields[$temp[0]] = $temp[0];
+			}
+		}
+		
+		return array_merge($dbFields, $relationFields);
+	}
 }
 
