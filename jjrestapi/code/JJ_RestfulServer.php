@@ -624,12 +624,14 @@ class JJ_RestfulServer extends RestfulServer {
 		if ($restrictFields && is_array($restrictFields)) {
 			$data = array_intersect_key($data, $restrictFields);
 		}
-
+		
 		foreach ($data as $fieldName => $fieldData) {
 			if (array_key_exists($fieldName, $relationKeys)) {
 				$obj = $this->updateDataObjectRelation($obj, $fieldData, $fieldName, $relationKeys[$fieldName]);
+				unset($data[$fieldName]);
 			}
 		}
+
 
 		$obj->update($data);
 		$obj->write();
@@ -997,8 +999,7 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function formatRestrictArray($editFields, $relationKeys) {
 		$dbFields = array();
 		$relationFields = array();
-
-		foreach ($editFields as $editField) {
+		foreach (array_keys($editFields) as $editField) {
 			$temp = explode('.', $editField);
 
 			if (isset($relationKeys[$temp[0]])) {
