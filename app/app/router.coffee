@@ -14,7 +14,8 @@ define [
 	'modules/About'
 	'modules/ProjectSearch'
 	'modules/DataRetrieval'
-], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch, DataRetrieval) ->
+	'modules/Editor'
+], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch, DataRetrieval, Editor) ->
 
 	###*
 	 *
@@ -86,6 +87,7 @@ define [
 			'login/'									: 'showLoginForm'			# show the login form or redirect
 			'logout/'									: 'doLogout'				# logout or redirect
 			'secured/edit/:uglyHash/'					: 'showEditProjectPage'		# Editing of a project type
+			'secured/new/'								: 'showCreateProjectPage'	# Create a new project
 			'*url/'										: 'catchAllRoute'			# for example: "Impressum", else 404 error page
 
 		# ! ROUTE CATCHING
@@ -264,6 +266,21 @@ define [
 
 		# ! Member area
 		
+
+		# create a new project
+		showCreateProjectPage: ->
+			mainDfd = @.rejectAndHandle()
+			Auth.performLoginCheck().done =>
+				if app.CurrentMember.Email
+					mainDfd.resolve()
+				else
+					@.fourOhFour()
+
+			mainDfd.done ->
+				layout = app.useLayout 'main'
+				layout.setViewAndRenderMaybe '', new Editor.Views.NewProject()
+
+		# editor page of a project
 		showEditProjectPage: (uglyHash) ->
 			mainDfd = @.rejectAndHandle()
 			app.isEditor = true
@@ -285,15 +302,17 @@ define [
 				app.CurrentlyEditingProject = model
 
 
+
 				
 
 		catchAllRoute: (url) ->
 			console.log 'catch all route'
 
 		fourOhFour: () ->
-			layout = app.useLayout 'main'
-			errorView = new PageError.Views.FourOhFour({attributes: {'data-url': window.location.href}})
-			layout.setViewAndRenderMaybe '', errorView
+			@.rejectAndHandle().resolve().done ->
+				layout = app.useLayout 'main'
+				errorView = new PageError.Views.FourOhFour({attributes: {'data-url': window.location.href}})
+				layout.setViewAndRenderMaybe '', errorView
 
 		# !- Repeating helper abstraction
 		
