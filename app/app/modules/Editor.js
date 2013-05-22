@@ -21,10 +21,29 @@ define(['app'], function(app) {
       return false;
     },
     createNewProject: function(e) {
-      var title;
+      var errorMsg, m, model, person, title;
 
       e.preventDefault();
       title = $(e.target).find('[name="title"]').val();
+      errorMsg = null;
+      if (!title) {
+        errorMsg = 'Please fill in a title!';
+      }
+      if (!this.projectType) {
+        errorMsg = 'Please choose the type of your project!';
+      }
+      if (errorMsg) {
+        this.showMessageAt(errorMsg, this.$el, 'error');
+      } else {
+        if (person = app.CurrentMemberPerson) {
+          m = JJRestApi.Model(this.projectType);
+          model = new m({
+            Title: title,
+            Persons: person
+          });
+          model.save();
+        }
+      }
       return false;
     }
   });

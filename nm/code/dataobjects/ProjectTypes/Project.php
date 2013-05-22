@@ -178,6 +178,10 @@ class Project extends DataObject {
 			'Persons.UrlSlug',
 			'Persons.Templates.Url',
 			'Persons.Templates.IsDetail'
+		),
+		'edit'	=> array(
+			'Title',
+			'Persons'
 		)
 	);
 
@@ -186,6 +190,15 @@ class Project extends DataObject {
 		'IsFeatured',
 		'UglyHash'	=> 'ExactMatchFilter'
 	);
+
+	public function canCreate($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+
+		return true;
+	}
 
 	public function canView($member = null) {
 		return true;

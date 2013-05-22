@@ -187,6 +187,15 @@ class Excursion extends DataObject {
 		'UglyHash'	=> 'ExactMatchFilter'
 	);
 
+	public function canCreate($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+
+		return true;
+	}
+
 	public function canView($member = null) {
 		return true;
 	}

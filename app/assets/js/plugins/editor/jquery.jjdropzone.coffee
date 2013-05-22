@@ -49,7 +49,8 @@ do ($ = jQuery) ->
 			$dropzone.on 'drop', (e) =>
 				@.deferredUpload(e)
 					.always ->
-						$dropzone.removeClass 'dragover'
+						$dropzone.add($('body')).removeClass 'dragover'
+
 
 
 	class JJSingleImageUploadZone extends JJUploadZone

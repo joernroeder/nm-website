@@ -67,7 +67,7 @@ var __hasProp = {}.hasOwnProperty,
       });
       return $dropzone.on('drop', function(e) {
         return _this.deferredUpload(e).always(function() {
-          return $dropzone.removeClass('dragover');
+          return $dropzone.add($('body')).removeClass('dragover');
         });
       });
     };

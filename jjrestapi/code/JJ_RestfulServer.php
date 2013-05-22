@@ -602,7 +602,7 @@ class JJ_RestfulServer extends RestfulServer {
 		$baseFormatter = $this->baseFormatter;
 
 		// get the relation keys
-		$relationKeys = $baseFormatter->getRelationKeys($obj);
+		$relationKeys = $obj->getRelationKeys($obj);
 		
 		// @todo Disallow editing of certain keys in database
 		$data = array_diff_key($data, array('ID','Created'));
@@ -611,7 +611,7 @@ class JJ_RestfulServer extends RestfulServer {
 
 		if (!$this->restrictEditFields) {
 			//$apiAccess = singleton($className)->stat('api_access');	
-			$accessFields = $baseFormatter->getFields($obj, 'edit');
+			$accessFields = $obj->getApiFields(null, $obj->getApiContext('edit'));
 
 			//if(is_array($apiAccess) && isset($apiAccess['edit'])) {
 			if ($accessFields) {
