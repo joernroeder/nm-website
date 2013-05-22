@@ -75,13 +75,12 @@
 
 			<!-- Main container. -->
 			<div id="main">
-				<div id="layout" class="layout index">
+				<div id="layout" class="layout editor">
 <!-- END Header inc -->
 
 
 					<!-- Choose Project-Item List -->
 
-					<!--
 					<ul class="project-type-list">
 						<li>
 							<a href="#" class="excursion">Excursion</a>
@@ -99,7 +98,7 @@
 							<a href="#" class="workshop">Workshop</a>
 						</li>
 					</ul>
-					-->
+					
 
 					<!-- Overview -->
 

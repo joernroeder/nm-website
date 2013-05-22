@@ -108,24 +108,82 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
     $sidebarHeader: null,
     $sidebarContent: null,
     className: 'editor-sidebar-container',
+    columnsPrefix: 'columns-',
     galleryData: {},
-    initSidebar: _.once(function() {
+    initSidebar: function() {
       var _this = this;
 
       this.$sidebarHeader = $('> header', this.$el);
       this.$sidebarContent = $('section.editor-sidebar-content', this.$el);
       this.setSidebarHeight();
-      return $.addOnWindowResize('editor.sidebar.height', function() {
-        return _this.setSidebarHeight();
-      });
-    }),
+      return (_.once(function() {
+        return $.addOnWindowResize('editor.sidebar.height', function() {
+          return _this.setSidebarHeight();
+        });
+      }))();
+    },
     setSidebarHeight: function() {
       return this.$sidebarContent.css({
         'height': $(window).height() - this.$sidebarHeader.outerHeight()
       });
     },
+    _getColumnsCount: function() {
+      return this.$sidebarContent.data('columns');
+    },
+    _setColumnCount: function() {
+      var columnsCount, prefColumnsCount, width;
+
+      if (!this.$sidebarContent) {
+        return;
+      }
+      width = parseInt(this.$sidebarContent.width(), 10);
+      prefColumnsCount = this._getColumnsCount();
+      columnsCount = Math.floor(width / 75);
+      if (columnsCount) {
+        return this.$sidebarContent.removeClass(this.columnsPrefix + prefColumnsCount).addClass(this.columnsPrefix + columnsCount).data('columns', columnsCount);
+      }
+    },
     _afterRender: function() {
-      return this.initSidebar();
+      var _this = this;
+
+      this.initSidebar();
+      (_.once(function() {
+        _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
+        if (_this.isOpen) {
+          return _this._setColumnCount();
+        }
+      }))();
+      if (this.isOpen) {
+        return this._setColumnCount();
+      }
+    },
+    _onOpened: function(switched) {
+      var delay,
+        _this = this;
+
+      delay = switched ? 0 : 300;
+      this.isOpen = true;
+      return setTimeout(function() {
+        return _this._setColumnCount();
+      }, delay);
+    },
+    onOpened: function(switched) {
+      return this._onOpened(switched);
+    },
+    _onClose: function() {
+      var prefColumnsCount,
+        _this = this;
+
+      this.isOpen = false;
+      prefColumnsCount = this._getColumnsCount();
+      return setTimeout(function() {
+        if (_this.$sidebarContent) {
+          return _this.$sidebarContent.removeClass(_this.columnsPrefix + prefColumnsCount);
+        }
+      }, 300);
+    },
+    onClose: function() {
+      return this._onClose();
     }
   });
   /**
@@ -160,15 +218,6 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         });
         return done(template(context));
       });
-    },
-    onOpened: function(switched) {
-      var delay;
-
-      delay = switched ? 0 : 300;
-      return this.isOpen = true;
-    },
-    onClose: function() {
-      return this.isOpen = false;
     },
     initPersonImageList: function() {
       var _this = this;
@@ -221,14 +270,9 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       });
     },
     afterRender: function() {
-      var _this = this;
-
       this._afterRender();
       this.initDropzone();
-      this.initPersonImageList();
-      return (_.once(function() {
-        return _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
-      }))();
+      return this.initPersonImageList();
     },
     changeUserCredentials: function(e) {
       var $form, data, dfd,
@@ -260,27 +304,10 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
     template: 'security/editor-sidebar-gallery',
-    columnsPrefix: 'columns-',
     $sidebarContent: null,
     cleanup: function() {
       this.uploadZone.cleanup();
       return this.$el.parent().off('dragenter');
-    },
-    getColumnsCount: function() {
-      return this.$sidebarContent.data('columns');
-    },
-    setColumnCount: function() {
-      var columnsCount, prefColumnsCount, width;
-
-      if (!this.$sidebarContent) {
-        return;
-      }
-      width = parseInt(this.$sidebarContent.width(), 10);
-      prefColumnsCount = this.getColumnsCount();
-      columnsCount = Math.floor(width / 75);
-      if (columnsCount) {
-        return this.$sidebarContent.removeClass(this.columnsPrefix + prefColumnsCount).addClass(this.columnsPrefix + columnsCount).data('columns', columnsCount);
-      }
     },
     initImageList: function() {
       /*
@@ -357,28 +384,6 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         return _this.uploadZone.$dropzone.addClass('dragover');
       });
     },
-    onOpened: function(switched) {
-      var delay,
-        _this = this;
-
-      delay = switched ? 0 : 300;
-      this.isOpen = true;
-      return setTimeout(function() {
-        return _this.setColumnCount();
-      }, delay);
-    },
-    onClose: function() {
-      var prefColumnsCount,
-        _this = this;
-
-      this.isOpen = false;
-      prefColumnsCount = this.getColumnsCount();
-      return setTimeout(function() {
-        if (_this.$sidebarContent) {
-          return _this.$sidebarContent.removeClass(_this.columnsPrefix + prefColumnsCount);
-        }
-      }, 300);
-    },
     render: function(template, context) {
       var done,
         _this = this;
@@ -393,19 +398,10 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
       });
     },
     afterRender: function() {
-      var _this = this;
-
       this._afterRender();
-      this.setColumnCount();
       this.initFilter();
       this.initDropzone();
-      this.initImageList();
-      return (_.once(function() {
-        _this.$sidebarContent = $('.editor-sidebar-content', _this.$el);
-        if (_this.isOpen) {
-          return _this.setColumnCount();
-        }
-      }))();
+      return this.initImageList();
     }
   });
   UserSidebar.Views.ImageItem = Backbone.View.extend({
