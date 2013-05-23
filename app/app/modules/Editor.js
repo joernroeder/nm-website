@@ -17,13 +17,13 @@ define(['app'], function(app) {
     },
     showForm: function() {
       this.$submit.text('Create ' + this.projectType);
-      this.$field.attr('placeholder', this.projectType + ' Title').val('').focus();
+      this.$field.attr('placeholder', this.projectType + ' Title').removeAttr('disabled').val('').focus();
       this.formError('');
       return this.$form.addClass('active');
     },
     formError: function(msg) {
       if (msg) {
-        return this.$error.text(msg).addClass('active');
+        return this.$error.html(msg).addClass('active');
       } else {
         return this.$error.removeClass('active');
       }
@@ -62,7 +62,8 @@ define(['app'], function(app) {
       });
     },
     createNewProject: function(e) {
-      var errorMsg, m, model, person, title;
+      var errorMsg, m, model, person, title,
+        _this = this;
 
       e.preventDefault();
       title = this.$field.val();
@@ -78,6 +79,7 @@ define(['app'], function(app) {
         this.$field.focus();
       } else {
         if (person = app.CurrentMemberPerson) {
+          this.$field.attr('disabled', 'disabled');
           m = JJRestApi.Model(this.projectType);
           model = new m({
             Title: title,
@@ -85,9 +87,17 @@ define(['app'], function(app) {
           });
           model.save(null, {
             success: function() {
+              _this.$field.removeAttr('disabled');
               model._isCompletelyFetched = true;
               model._isFetchedWhenLoggedIn = true;
               return Backbone.history.navigate('/secured/edit/' + model.get('UglyHash') + '/', true);
+            },
+            error: function(e) {
+              var msg;
+
+              msg = '<h1>' + e.status + ': ' + e.statusText + '</h1><p>' + e.responseText + '</p>';
+              _this.formError(msg);
+              return _this.$field.removeAttr('disabled');
             }
           });
         }

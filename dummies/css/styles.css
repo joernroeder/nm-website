@@ -2120,6 +2120,29 @@ x:-o-prefocus,
 body.dragover #uploadzone {
   display: block !important;
 }
+body.dragover #uploadzone.uploading,
+body.dragover #uploadzone.dragover {
+  display: block !important;
+}
+body.drag-inline.dragover #uploadzone {
+  display: none !important;
+}
+body.drag-inline.dragover #uploadzone.uploading,
+body.drag-inline.dragover #uploadzone.dragover {
+  display: none !important;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+}
+body.drag-inline.dragover #uploadzone .progress {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -ms-transition: none;
+  transition: none;
+}
 .project-type-list {
   position: absolute;
   top: 50%;
@@ -2240,15 +2263,22 @@ form.create-project input {
   -ms-transition: background-color .3s;
   transition: background-color .3s;
   z-index: 90;
+  cursor: pointer;
 }
 form.create-project input:focus {
   background: #fff;
+  cursor: auto;
+}
+form.create-project input[disabled] {
+  color: #919191;
+  background-color: #e6e6e6;
 }
 form.create-project .form-error {
   position: absolute;
   top: 1.5em;
   left: 1px;
   padding: 0.1875em 0.375em;
+  max-width: 100%;
   background: #d93920;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -2257,6 +2287,7 @@ form.create-project .form-error {
   color: #fff;
   opacity: 0;
   z-index: 80;
+  text-align: left;
   -webkit-transition: all .1s ease-in-out;
   -moz-transition: all .1s ease-in-out;
   -o-transition: all .1s ease-in-out;
@@ -2266,6 +2297,9 @@ form.create-project .form-error {
 form.create-project .form-error.active {
   top: 1.875em;
   opacity: 1;
+}
+form.create-project .form-error h1 + p {
+  margin-top: 1.5em;
 }
 form.create-project button {
   text-align: left;

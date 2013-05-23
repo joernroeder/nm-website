@@ -284,10 +284,6 @@ require [
 		# disable drag'n'drop for whole document
 		$(document).on 'dragover drop', (e) ->
 			e.preventDefault()
-			$('body').addClass 'dragover'
-
-		$(document).on 'dragleave drop', ->
-			$('body').removeClass 'dragover'
 
 		app.setupSpinner()
 

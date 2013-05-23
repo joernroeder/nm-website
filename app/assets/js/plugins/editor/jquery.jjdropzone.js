@@ -6,6 +6,26 @@ var __hasProp = {}.hasOwnProperty,
 (function($) {
   var JJSimpleImagesUploadZone, JJSingleImageUploadZone, JJUploadZone;
 
+  $.globalDragStart = $.Callbacks();
+  $.globalDragEnd = $.Callbacks();
+  $.fireGlobalDragEvent = function(name, target, type) {
+    var eventName;
+
+    if (type == null) {
+      type = 'inline';
+    }
+    eventName = name === 'dragstart' ? 'Start' : 'End';
+    return $['globalDrag' + eventName].fire({
+      type: type,
+      target: target
+    });
+  };
+  $.globalDragStart.add(function(e) {
+    return $('body').addClass('dragover drag-' + e.type);
+  });
+  $.globalDragEnd.add(function(e) {
+    return $('body').removeClass('dragover drag-' + e.type);
+  });
   JJUploadZone = (function() {
     JJUploadZone.prototype.fileMatch = 'image.*';
 
@@ -68,7 +88,8 @@ var __hasProp = {}.hasOwnProperty,
       });
       return $dropzone.on('drop', function(e) {
         return _this.deferredUpload(e).always(function() {
-          return $dropzone.add($('body')).removeClass('dragover');
+          $.fireGlobalDragEvent('End', e.target);
+          return $dropzone.removeClass('dragover');
         });
       });
     };
@@ -104,6 +125,7 @@ var __hasProp = {}.hasOwnProperty,
       if ($el.length) {
         this.draggables.push($el);
         return $el.on('dragstart dragend', function(e) {
+          $.fireGlobalDragEvent(e.type, e.target);
           return _this.setAsActiveDraggable(e);
         });
       }
@@ -138,6 +160,7 @@ var __hasProp = {}.hasOwnProperty,
       return $dropzone.on('drop', function(e) {
         var data, id;
 
+        $.fireGlobalDragEvent(e.type, e.target);
         if (id = _this._activeDraggableId) {
           _this._activeDraggableId = null;
           data = _this.options.getFromCache(id);

@@ -2,6 +2,25 @@
 
 do ($ = jQuery) ->
 
+	$.globalDragStart = $.Callbacks()
+	$.globalDragEnd = $.Callbacks()
+
+	$.fireGlobalDragEvent = (name, target, type = 'inline') ->
+			eventName = if name is 'dragstart' then 'Start' else 'End'
+
+			$['globalDrag' + eventName].fire
+				type: type
+				target: target
+
+	$.globalDragStart.add (e) ->
+		$('body').addClass 'dragover drag-' + e.type
+
+	$.globalDragEnd.add (e) ->
+		$('body').removeClass 'dragover drag-' + e.type
+
+
+	# ! ---
+
 	class JJUploadZone
 		fileMatch: 'image.*'
 
@@ -38,7 +57,7 @@ do ($ = jQuery) ->
 			super(selector, opts)
 			@.dragAndDropSetup()
 
-		dragAndDropSetup : ->
+		dragAndDropSetup: ->
 			$dropzone = @.$dropzone
 
 			$dropzone.on 'dragenter', (e) ->
@@ -50,7 +69,8 @@ do ($ = jQuery) ->
 			$dropzone.on 'drop', (e) =>
 				@.deferredUpload(e)
 					.always ->
-						$dropzone.add($('body')).removeClass 'dragover'
+						$.fireGlobalDragEvent 'End', e.target
+						$dropzone.removeClass 'dragover'
 
 
 
@@ -73,6 +93,7 @@ do ($ = jQuery) ->
 			if $el.length
 				@.draggables.push $el
 				$el.on 'dragstart dragend', (e) =>
+					$.fireGlobalDragEvent e.type, e.target
 					@.setAsActiveDraggable e
 
 		cleanup: ->
@@ -91,6 +112,7 @@ do ($ = jQuery) ->
 				$(@).removeClass 'dragover'
 
 			$dropzone.on 'drop', (e) =>
+				$.fireGlobalDragEvent e.type, e.target
 				if id = @._activeDraggableId
 					@._activeDraggableId = null
 					data = @.options.getFromCache id
