@@ -80,12 +80,15 @@ do ($ = jQuery) ->
 				$dropzone.addClass 'failed'
 				#msg = res.error || @.options.errorMsg
 				$progressText.text defaultErrorMsg
+				setTimeout ->
+					$dropzone.removeClass 'dragover'
+				, 3000
 			.always ->
 				#$progress.height
 				$dropzone.removeClass 'uploading'
 
 			.done ->
 				$dropzone.addClass 'done'
-				$progressText.empty()
+				
 
 	window.JJFileUpload = JJFileUpload

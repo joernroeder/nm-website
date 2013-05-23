@@ -94,12 +94,14 @@
         }
       }).fail(function(res) {
         $dropzone.addClass('failed');
-        return $progressText.text(defaultErrorMsg);
+        $progressText.text(defaultErrorMsg);
+        return setTimeout(function() {
+          return $dropzone.removeClass('dragover');
+        }, 3000);
       }).always(function() {
         return $dropzone.removeClass('uploading');
       }).done(function() {
-        $dropzone.addClass('done');
-        return $progressText.empty();
+        return $dropzone.addClass('done');
       });
     };
 
