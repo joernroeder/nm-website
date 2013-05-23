@@ -281,20 +281,9 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       }
       done = this.async();
       req = DataRetrieval.forUserGallery('Person').done(function(gallery) {
-        var projects, type, _i, _len, _ref;
-
         context.PersonImages = gallery.images.Person;
         context.Person = app.CurrentMemberPerson.toJSON();
         context.Member = app.CurrentMember;
-        projects = [];
-        _ref = ['Projects', 'Exhibitions', 'Excursions', 'Workshops'];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          type = _ref[_i];
-          projects = projects.concat(app.CurrentMemberPerson.get(type).toJSON());
-        }
-        context.Projects = _.sortBy(projects, function(project) {
-          return project.Title.toLowerCase();
-        });
         _.each(context.PersonImages, function(img) {
           if (context.Person.Image && img.id === context.Person.Image.ID) {
             return context.CurrentImage = img;
@@ -303,6 +292,31 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
         return done(template(context));
       });
       return UserSidebar.setPendingReq(req);
+    },
+    initProjectList: function() {
+      var projects, type, _i, _len, _ref,
+        _this = this;
+
+      projects = [];
+      _ref = ['Projects', 'Exhibitions', 'Excursions', 'Workshops'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        type = _ref[_i];
+        projects = projects.concat(app.CurrentMemberPerson.get(type).toJSON());
+      }
+      projects = _.sortBy(projects, function(project) {
+        return project.Title.toLowerCase();
+      });
+      return _.each(projects.reverse(), function(project) {
+        var view;
+
+        if (project.EditableByMember) {
+          view = new UserSidebar.Views.ProjectItem({
+            model: project
+          });
+          _this.insertView('.editor-sidebar-content .project-list', view);
+          return view.render();
+        }
+      });
     },
     initPersonImageList: function() {
       var sortedImgs,
@@ -322,6 +336,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       });
       this.insertView('.editor-sidebar-content .image-list', view);
       view.afterRender = function() {
+        this._afterRender();
         return uploadZone.setAsDraggable(this.$el.find('[data-id]'));
       };
       return view.render();
@@ -363,7 +378,8 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     afterRender: function() {
       this._afterRender();
       this.initDropzone();
-      return this.initPersonImageList();
+      this.initPersonImageList();
+      return this.initProjectList();
     },
     changeUserCredentials: function(e) {
       var $form, data, dfd,
@@ -513,21 +529,28 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       return this.initImageList();
     }
   });
-  UserSidebar.Views.ImageItem = Backbone.View.extend({
+  UserSidebar.Views.ListItem = Backbone.View.extend({
     tagName: 'li',
     serialize: function() {
       return this.model;
     },
     insert: function(root, child) {
       return $(root).prepend(child);
+    },
+    _afterRender: function() {},
+    afterRender: function() {
+      return this._afterRender();
     }
   });
-  UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend({
+  UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-gallery-image',
     afterRender: function() {}
   });
-  UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend({
+  UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-person-image'
+  });
+  UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend({
+    template: 'security/editor-sidebar-project-item'
   });
   return UserSidebar;
 });

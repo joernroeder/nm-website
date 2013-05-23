@@ -266,13 +266,6 @@ define [
 					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
 
-					projects = []
-					for type in ['Projects', 'Exhibitions', 'Excursions', 'Workshops']
-						projects = projects.concat app.CurrentMemberPerson.get(type).toJSON()
-
-					context.Projects = _.sortBy projects, (project) ->
-						return project.Title.toLowerCase()
-
 					# get current image
 					_.each context.PersonImages, (img) ->
 						if context.Person.Image and img.id is context.Person.Image.ID then context.CurrentImage = img
@@ -281,6 +274,21 @@ define [
 
 				# kill and pending requests and replace it with this
 				UserSidebar.setPendingReq req
+
+			initProjectList: ->
+				projects = []
+				for type in ['Projects', 'Exhibitions', 'Excursions', 'Workshops']
+					projects = projects.concat app.CurrentMemberPerson.get(type).toJSON()
+
+				projects = _.sortBy projects, (project) ->
+					return project.Title.toLowerCase()
+
+				_.each projects.reverse(), (project) =>
+					if project.EditableByMember
+						view = new UserSidebar.Views.ProjectItem {model: project}
+						@.insertView '.editor-sidebar-content .project-list', view
+						view.render()
+
 
 			initPersonImageList: ->
 				sortedImgs = _.sortBy app.Cache.UserGallery.images.Person, 'id'
@@ -292,6 +300,7 @@ define [
 				view = new UserSidebar.Views.PersonImage {model: image}
 				@.insertView '.editor-sidebar-content .image-list', view
 				view.afterRender = ->
+					@._afterRender()
 					uploadZone.setAsDraggable @.$el.find('[data-id]')
 				view.render()
 
@@ -323,6 +332,7 @@ define [
 
 				@.initDropzone()
 				@.initPersonImageList()
+				@.initProjectList()
 				# do stuff
 			
 			# ! Events
@@ -446,20 +456,28 @@ define [
 				@.initImageList()
 
 
-		UserSidebar.Views.ImageItem = Backbone.View.extend
+		UserSidebar.Views.ListItem = Backbone.View.extend
 			tagName: 'li'
 			serialize: ->
 				@.model
 			insert: (root, child) ->
 				$(root).prepend child
+			_afterRender: ->
+				# init recyclebility
 
-		UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend
+			afterRender: ->
+				@._afterRender()
+
+		UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-gallery-image'
 			afterRender: ->
 				# JJMarkdownEditor.setAsDraggable @.$el.find '[data-md-tag]'
 
-		UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend
+		UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-person-image'
+
+		UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend
+			template: 'security/editor-sidebar-project-item'
 
 
 
