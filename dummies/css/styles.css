@@ -1837,8 +1837,7 @@ x:-o-prefocus,
 .editor-sidebar.open.opened .editor-sidebar-content[class*="columns-"] > section {
   opacity: 1;
 }
-.editor-sidebar.open.opened .editor-sidebar-content > header.hideable,
-.editor-sidebar.open.opened .editor-sidebar-content > section {
+.editor-sidebar.open.opened .editor-sidebar-content > header.hideable {
   opacity: 1;
 }
 .editor-sidebar .editor-sidebar-content.columns-2 .image-list {
