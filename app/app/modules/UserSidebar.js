@@ -455,7 +455,24 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       }
       done = this.async();
       return DataRetrieval.forUserGallery('Projects').done(function(gallery) {
-        context.Projects = gallery.images.Projects;
+        var currentProj, editFilter, old_i, projects;
+
+        projects = _.sortBy(gallery.images.Projects, function(project) {
+          return project.Title.toLowerCase();
+        });
+        currentProj = app.CurrentlyEditingProject;
+        console.log(currentProj);
+        editFilter = currentProj.get('ClassName') + '-' + currentProj.id;
+        old_i = 0;
+        _.each(projects, function(project, i) {
+          if (project.FilterID === editFilter) {
+            return old_i = i;
+          }
+        });
+        if (old_i) {
+          projects.splice(0, 0, projects.splice(old_i, 1)[0]);
+        }
+        context.Projects = projects;
         return done(template(context));
       });
     },
@@ -470,6 +487,9 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     tagName: 'li',
     serialize: function() {
       return this.model;
+    },
+    insert: function(root, child) {
+      return $(root).prepend(child);
     }
   });
   UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend({
@@ -477,10 +497,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     afterRender: function() {}
   });
   UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend({
-    template: 'security/editor-sidebar-person-image',
-    insert: function(root, child) {
-      return $(root).prepend(child);
-    }
+    template: 'security/editor-sidebar-person-image'
   });
   return UserSidebar;
 });

@@ -398,7 +398,22 @@ define [
 				done =  @.async()
 
 				DataRetrieval.forUserGallery('Projects').done (gallery) =>
-					context.Projects = gallery.images.Projects
+					# sort projects, the currently edited one first
+					projects = _.sortBy gallery.images.Projects, (project) ->
+						return project.Title.toLowerCase()
+					
+					currentProj = app.CurrentlyEditingProject
+					console.log currentProj
+					editFilter = currentProj.get('ClassName') + '-' + currentProj.id
+					old_i = 0
+					_.each projects, (project, i) ->
+						if project.FilterID is editFilter then old_i = i
+
+					if old_i
+						projects.splice(0, 0, projects.splice(old_i, 1)[0])
+
+					context.Projects = projects
+
 					
 					done template(context)
 			
@@ -413,6 +428,8 @@ define [
 			tagName: 'li'
 			serialize: ->
 				@.model
+			insert: (root, child) ->
+				$(root).prepend child
 
 		UserSidebar.Views.GalleryImage = UserSidebar.Views.ImageItem.extend
 			template: 'security/editor-sidebar-gallery-image'
@@ -421,8 +438,6 @@ define [
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend
 			template: 'security/editor-sidebar-person-image'
-			insert: (root, child) ->
-				$(root).prepend child
 
 
 

@@ -11,6 +11,7 @@ require [
 	'plugins/misc/spin.min',
 	'plugins/misc/misc'
 ], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner, misc) ->
+
 	
 	# ! JJRELATIONAL CONFIG
 
