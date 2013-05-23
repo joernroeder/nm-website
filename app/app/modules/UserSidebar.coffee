@@ -207,7 +207,7 @@ define [
 
 					# get current image
 					_.each context.PersonImages, (img) ->
-						if img.id is context.Person.Image.ID then context.CurrentImage = img
+						if context.Person.Image and img.id is context.Person.Image.ID then context.CurrentImage = img
 
 					done template(context)
 
@@ -240,10 +240,10 @@ define [
 						if id = img.id
 							@.uploadZone.$dropzone.html '<img src="' + img.url + '">'
 							personImg = app.CurrentMemberPerson.get 'Image'
-							if id isnt personImg and id isnt personImg.id
+							if id isnt personImg and (not personImg or id isnt personImg.id)
 								# new image
-								app.CurrentMemberPerson.set 'Image', id
-								app.CurrentMemberPerson.fetchByIdQueue 'Image'
+								app.CurrentMemberPerson.save 'Image', id
+								#app.CurrentMemberPerson.fetchByIdQueue 'Image'
 
 
 			afterRender: ->

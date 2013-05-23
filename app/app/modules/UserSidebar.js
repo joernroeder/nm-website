@@ -216,7 +216,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
         context.Person = app.CurrentMemberPerson.toJSON();
         context.Member = app.CurrentMember;
         _.each(context.PersonImages, function(img) {
-          if (img.id === context.Person.Image.ID) {
+          if (context.Person.Image && img.id === context.Person.Image.ID) {
             return context.CurrentImage = img;
           }
         });
@@ -270,9 +270,8 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
           if (id = img.id) {
             _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
             personImg = app.CurrentMemberPerson.get('Image');
-            if (id !== personImg && id !== personImg.id) {
-              app.CurrentMemberPerson.set('Image', id);
-              return app.CurrentMemberPerson.fetchByIdQueue('Image');
+            if (id !== personImg && (!personImg || id !== personImg.id)) {
+              return app.CurrentMemberPerson.save('Image', id);
             }
           }
         }

@@ -207,16 +207,29 @@ class Person extends DataObject {
 			'IsStudent',
 			'IsAlumni'
 		),
-		/*'view.secure'		=> array(
-			'FirstName',
-			'Surname',
-			'Phone'
-		)*/
+		'edit'	=> array(
+			'Image'
+		)
 	);
 
 
 	public function canView($member = null) {
 		return true;
+	}
+
+	public function canEdit($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+
+		// check if member's person is $this
+		if ($member->Person() && $member->Person()->ID == $this->ID) return true;
+		
+		// admin can always edit
+		if (Permission::check('ADMIN', 'any', $member)) return true;
+
+		return false;
 	}
 
 	public function canViewContext($fields) {

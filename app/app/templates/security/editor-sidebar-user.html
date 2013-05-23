@@ -1,11 +1,7 @@
 <header class="editor-header hideable">
-	{{#if CurrentImage}}
-		{{#with CurrentImage}}
-			<div class="img" id="current-person-image" data-current-image-id="{{id}}">
-				<img src="{{url}}">
-			</div>
-		{{/with}}
-	{{/if}}
+	<div class="img" id="current-person-image">
+		{{#if CurrentImage}}<img src="{{CurrentImage.url}}">{{/if}}
+	</div>
 	<hgroup>
 		{{#if Person}}<h1>{{#with Person}}{{FirstName}} {{Surname}}{{/with}}</h1>{{/if}}
 
