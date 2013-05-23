@@ -162,13 +162,14 @@ define [
 				if userGallery.fetched[type]
 					dfd.resolve userGallery
 				else
-					$.getJSON(app.Config.GalleryUrl + type)
+					req = $.getJSON(app.Config.GalleryUrl + type)
 						.done (data) ->
 							userGallery.images[type] = data
 							userGallery.fetched[type] = true
 							dfd.resolve userGallery
-
-				dfd.promise()
+					dfd.fail ->
+						if req.readyState isnt 4 then req.abort()
+				dfd
 
 			# abstract function that calls `fetch` on a model and then calls back
 			fetchExistingModelCompletely : (existModel) ->

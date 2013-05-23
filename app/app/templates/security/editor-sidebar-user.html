@@ -22,8 +22,11 @@
 	</header>
 	<section>
 		<ul class="project-list">
-			<li><a href="#" data-bypass>Project Title</a></li>
-			<li><a href="#" data-bypass>Project Title</a></li>
+			{{#if Projects}}
+				{{#each Projects}}
+					<li><a href="/secured/edit/{{UglyHash}}/">{{Title}}</a></li>
+				{{/each}}
+			{{/if}}
 		</ul>
 	</section>
 

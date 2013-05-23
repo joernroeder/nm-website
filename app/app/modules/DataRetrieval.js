@@ -175,20 +175,25 @@ define(['app'], function(app) {
       return dfd.promise();
     },
     forUserGallery: function(type) {
-      var dfd, userGallery;
+      var dfd, req, userGallery;
 
       userGallery = app.Cache.UserGallery;
       dfd = new $.Deferred();
       if (userGallery.fetched[type]) {
         dfd.resolve(userGallery);
       } else {
-        $.getJSON(app.Config.GalleryUrl + type).done(function(data) {
+        req = $.getJSON(app.Config.GalleryUrl + type).done(function(data) {
           userGallery.images[type] = data;
           userGallery.fetched[type] = true;
           return dfd.resolve(userGallery);
         });
+        dfd.fail(function() {
+          if (req.readyState !== 4) {
+            return req.abort();
+          }
+        });
       }
-      return dfd.promise();
+      return dfd;
     },
     fetchExistingModelCompletely: function(existModel) {
       var dfd;

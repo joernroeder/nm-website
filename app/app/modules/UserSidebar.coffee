@@ -39,6 +39,13 @@ define [
 			view.render()
 			view
 
+		UserSidebar.setPendingReq = (req) ->
+			if @.pendingRequest
+				@.pendingRequest.reject()
+			@.pendingRequest = req
+			@.pendingRequest.always =>
+				@.pendingRequest = null
+
 		UserSidebar.Views.Main = Backbone.View.extend
 			tagName: 'div'
 			className: 'editor-sidebar'
@@ -75,6 +82,7 @@ define [
 				method = if isEditor then 'addClass' else 'removeClass'
 				if method is 'removeClass' and @.$el.hasClass('is-editor')
 					@.close()
+					@.setSubview()
 				@.$el[method]('is-editor')
 
 
@@ -99,8 +107,10 @@ define [
 					@.setView '#editor-sidebar-container', @.subView
 					if doRender then @.subView.render()
 				else 
-					# @todo proper cleanup
+					# remove current subview
+					if @.subView then @.subView.remove()
 					@.subView = null
+					@.subViewName = null
 
 			open: (switched) ->
 				@.$el.addClass 'open'
@@ -168,6 +178,7 @@ define [
 					@.parentView.stopSpinner()
 
 			_cleanup: ->
+				if @.uploadZone then @.uploadZone.cleanup()
 				$.removeOnWindowResize 'editor.sidebar.height'
 
 			setSidebarHeight: ->
@@ -244,23 +255,27 @@ define [
 			
 			cleanup: ->
 				@._cleanup()
-				@.uploadZone.cleanup()
 
 
 			render: (template, context = {}) ->
 				done = @.async()
 
-				DataRetrieval.forUserGallery('Person').done (gallery) ->
+				req = DataRetrieval.forUserGallery('Person').done (gallery) ->
 					context.PersonImages = gallery.images.Person
 
 					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
+					context.Projects = _.sortBy app.CurrentMemberPerson.get('Projects').toJSON(), (project) ->
+						return project.Title.toLowerCase()
 
 					# get current image
 					_.each context.PersonImages, (img) ->
 						if context.Person.Image and img.id is context.Person.Image.ID then context.CurrentImage = img
 
 					done template(context)
+
+				# kill and pending requests and replace it with this
+				UserSidebar.setPendingReq req
 
 			initPersonImageList: ->
 				sortedImgs = _.sortBy app.Cache.UserGallery.images.Person, 'id'
@@ -335,7 +350,6 @@ define [
 
 			cleanup: ->
 				@._cleanup()
-				@.uploadZone.cleanup()
 				@.$el.parent().off 'dragenter'
 
 			initImageList: ->
@@ -397,7 +411,8 @@ define [
 			render: (template, context = {}) ->
 				done =  @.async()
 
-				DataRetrieval.forUserGallery('Projects').done (gallery) =>
+				req = DataRetrieval.forUserGallery('Projects').done (gallery) =>
+
 					# sort projects, the currently edited one first
 					projects = _.sortBy gallery.images.Projects, (project) ->
 						return project.Title.toLowerCase()
@@ -413,9 +428,11 @@ define [
 						projects.splice(0, 0, projects.splice(old_i, 1)[0])
 
 					context.Projects = projects
-
 					
 					done template(context)
+
+				# kill and pending requests and replace it with this
+				UserSidebar.setPendingReq req
 			
 			afterRender: ->
 				@._afterRender()

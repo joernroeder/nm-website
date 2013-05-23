@@ -31,6 +31,17 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     view.render();
     return view;
   };
+  UserSidebar.setPendingReq = function(req) {
+    var _this = this;
+
+    if (this.pendingRequest) {
+      this.pendingRequest.reject();
+    }
+    this.pendingRequest = req;
+    return this.pendingRequest.always(function() {
+      return _this.pendingRequest = null;
+    });
+  };
   UserSidebar.Views.Main = Backbone.View.extend({
     tagName: 'div',
     className: 'editor-sidebar',
@@ -65,6 +76,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       method = isEditor ? 'addClass' : 'removeClass';
       if (method === 'removeClass' && this.$el.hasClass('is-editor')) {
         this.close();
+        this.setSubview();
       }
       return this.$el[method]('is-editor');
     },
@@ -97,7 +109,11 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
           return this.subView.render();
         }
       } else {
-        return this.subView = null;
+        if (this.subView) {
+          this.subView.remove();
+        }
+        this.subView = null;
+        return this.subViewName = null;
       }
     },
     open: function(switched) {
@@ -173,6 +189,9 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       }
     },
     _cleanup: function() {
+      if (this.uploadZone) {
+        this.uploadZone.cleanup();
+      }
       return $.removeOnWindowResize('editor.sidebar.height');
     },
     setSidebarHeight: function() {
@@ -252,20 +271,22 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       'submit form.user-settings': 'changeUserCredentials'
     },
     cleanup: function() {
-      this._cleanup();
-      return this.uploadZone.cleanup();
+      return this._cleanup();
     },
     render: function(template, context) {
-      var done;
+      var done, req;
 
       if (context == null) {
         context = {};
       }
       done = this.async();
-      return DataRetrieval.forUserGallery('Person').done(function(gallery) {
+      req = DataRetrieval.forUserGallery('Person').done(function(gallery) {
         context.PersonImages = gallery.images.Person;
         context.Person = app.CurrentMemberPerson.toJSON();
         context.Member = app.CurrentMember;
+        context.Projects = _.sortBy(app.CurrentMemberPerson.get('Projects').toJSON(), function(project) {
+          return project.Title.toLowerCase();
+        });
         _.each(context.PersonImages, function(img) {
           if (context.Person.Image && img.id === context.Person.Image.ID) {
             return context.CurrentImage = img;
@@ -273,6 +294,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
         });
         return done(template(context));
       });
+      return UserSidebar.setPendingReq(req);
     },
     initPersonImageList: function() {
       var sortedImgs,
@@ -368,7 +390,6 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     $sidebarContent: null,
     cleanup: function() {
       this._cleanup();
-      this.uploadZone.cleanup();
       return this.$el.parent().off('dragenter');
     },
     initImageList: function() {
@@ -447,14 +468,14 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       });
     },
     render: function(template, context) {
-      var done,
+      var done, req,
         _this = this;
 
       if (context == null) {
         context = {};
       }
       done = this.async();
-      return DataRetrieval.forUserGallery('Projects').done(function(gallery) {
+      req = DataRetrieval.forUserGallery('Projects').done(function(gallery) {
         var currentProj, editFilter, old_i, projects;
 
         projects = _.sortBy(gallery.images.Projects, function(project) {
@@ -475,6 +496,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
         context.Projects = projects;
         return done(template(context));
       });
+      return UserSidebar.setPendingReq(req);
     },
     afterRender: function() {
       this._afterRender();
