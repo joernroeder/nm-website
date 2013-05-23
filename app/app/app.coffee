@@ -17,6 +17,7 @@ define [
 
 		app =
 			root: '/'
+			pendingTemplateReqs: {}
 		JST = window.JST = window.JST || {}
 
 		Backbone.NMLayout = Backbone.Layout.extend
@@ -32,6 +33,8 @@ define [
 
 			prefix: 'app/app/templates/'
 
+			pendingAjaxRequests: {}
+
 			fetch: (path) ->
 				done = undefined
 
@@ -45,11 +48,21 @@ define [
 				# If the template has not been loaded yet, then load.
 				unless JST[path]
 					done = @.async()
-					return $.ajax(url: app.root + path).then((contents) ->
-						JST[path] = Handlebars.compile contents
-						JST[path].__compiled__ = true
-						done JST[path]
-					)
+
+					# check if there's already a pending ajax requests with the same template
+					if dfd = app.pendingTemplateReqs[path]
+						dfd.then ->
+							done JST[path]
+					else
+						dfd = $.ajax(url: app.root + path)
+						app.pendingTemplateReqs[path] = dfd
+						dfd.then (contents) ->
+							JST[path] = Handlebars.compile contents
+							JST[path].__compiled__ = true
+							delete app.pendingTemplateReqs[path]
+							done JST[path]
+
+					return dfd
 
 				# If the template hasn't been compiled yet, then compile.
 				unless JST[path].__compiled__
