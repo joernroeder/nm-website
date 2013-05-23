@@ -150,6 +150,7 @@ class Person extends DataObject {
 			'Projects.PreviewImage.Title',
 			'Projects.PreviewImage.Caption',
 			'Projects.PreviewImage.Urls',
+			'Projects.EditableByMember',
 
 			'Workshops.ClassName',
 			'Workshops.UglyHash',
@@ -161,6 +162,7 @@ class Person extends DataObject {
 			'Workshops.PreviewImage.Title',
 			'Workshops.PreviewImage.Caption',
 			'Workshops.PreviewImage.Urls',
+			'Workshops.EditableByMember',
 
 			'Exhibitions.ClassName',
 			'Exhibitions.UglyHash',
@@ -172,6 +174,7 @@ class Person extends DataObject {
 			'Exhibitions.PreviewImage.Title',
 			'Exhibitions.PreviewImage.Caption',
 			'Exhibitions.PreviewImage.Urls',
+			'Exhibitions.EditableByMember',
 
 			'Excursions.ClassName',
 			'Excursions.UglyHash',
@@ -183,6 +186,7 @@ class Person extends DataObject {
 			'Excursions.PreviewImage.Title',
 			'Excursions.PreviewImage.Caption',
 			'Excursions.PreviewImage.Urls',
+			'Excursions.EditableByMember',
 
 			'Templates.IsDetail',
 			'Templates.Url',
@@ -237,7 +241,7 @@ class Person extends DataObject {
 		$owner = $this->Member();
 		if ($currentMemberID && $owner && $owner->ID == $currentMemberID) return $fields;
 		
-		unset($fields['Phone']);
+		unset($fields['Phone'],$fields['Excursions.EditableByMember'],$fields['Workshops.EditableByMember'],$fields['Exhibitions.EditableByMember'],$fields['Projects.EditableByMember']);
 		return $fields;
 	}
 

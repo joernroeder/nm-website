@@ -24,7 +24,9 @@
 		<ul class="project-list">
 			{{#if Projects}}
 				{{#each Projects}}
-					<li><a href="/secured/edit/{{UglyHash}}/">{{Title}}</a></li>
+					{{#if EditableByMember}}
+						<li><a href="/secured/edit/{{UglyHash}}/">{{Title}}</a></li>
+					{{/if}}
 				{{/each}}
 			{{/if}}
 		</ul>

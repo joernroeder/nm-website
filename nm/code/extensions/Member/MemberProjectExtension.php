@@ -38,6 +38,10 @@ class ProjectEditorsExtension extends DataExtension {
 		return true;
 	}
 
+	public function getEditableByMember() {
+		return $this->owner->canEdit();
+	}
+
 }
 
 /**
@@ -68,6 +72,10 @@ class EditorsExtension extends DataExtension {
 		$editors = $this->owner->Editors();
 		if ($editors->exists() && $editors->byID($member->ID)) return true;
 		return false;
+	}
+
+	public function getEditableByMember() {
+		return $this->owner->canEdit();
 	}
 
 }
