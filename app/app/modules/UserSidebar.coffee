@@ -1,11 +1,12 @@
 define [
 		'app'
 		'modules/DataRetrieval'
+		'modules/RecycleBin'
 		'plugins/misc/spin.min'
 		'plugins/editor/jquery.jjdropzone'
 		'plugins/editor/jquery.jjmarkdown'
 	],
-	(app, DataRetrieval, Spinner) ->
+	(app, DataRetrieval, RecycleBin, Spinner) ->
 
 		"use strict"
 
@@ -470,22 +471,8 @@ define [
 			insert: (root, child) ->
 				$(root).prepend child
 			_afterRender: ->
-				# setup as recyclable
-				data = 
-					view: @
-					model: @.model
-
-				if @.className then data.className = @.className
-				#@.$el.data 'recyclable', data
-
-				@.$el.on 'dragstart dragend', (e) ->
-					if e.type is 'dragstart' 
-						method = 'addClass'
-						app.activeRecycleDrag = data
-					else 
-						app.activeRecycleDrag = null
-						method = 'removeClass'
-					$('#recycle-bin')[method]('active')
+				# uses listeners on 'dragstart and dragend'
+				RecycleBin.setViewAsRecyclable @
 
 			afterRender: ->
 				@._afterRender()

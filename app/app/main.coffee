@@ -8,9 +8,10 @@ require [
 	'modules/Workshop',
 	'modules/Exhibition',
 	'modules/CalendarEntry'
+	'modules/RecycleBin'
 	'plugins/misc/spin.min',
 	'plugins/misc/misc'
-], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, Spinner, misc) ->
+], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, RecycleBin, Spinner, misc) ->
 
 	
 	# ! JJRELATIONAL CONFIG
@@ -289,10 +290,7 @@ require [
 			e.preventDefault()
 
 		# drag'n'drop for recyclebin
-		$('#recycle-bin').on 'drop', ->
-			if app.activeRecycleDrag
-				console.log 'Delete: '
-				console.log app.activeRecycleDrag
+		RecycleBin.setup()
 
 		app.setupSpinner()
 
