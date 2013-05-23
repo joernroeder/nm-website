@@ -21,6 +21,7 @@ define [
 			@.$submit.text 'Create ' + @.projectType
 			@.$field
 				.attr('placeholder', @.projectType + ' Title')
+				.removeAttr('disabled')
 				.val('')
 				.focus()
 			@.formError ''
@@ -28,7 +29,7 @@ define [
 
 		formError: (msg) ->
 			if msg
-				@.$error.text(msg).addClass 'active'
+				@.$error.html(msg).addClass 'active'
 			else
 				@.$error.removeClass 'active'
 
@@ -84,13 +85,21 @@ define [
 				#@.showMessageAt errorMsg, @.$el, 'error'
 			else
 				if person = app.CurrentMemberPerson
+					@.$field.attr 'disabled', 'disabled'
 					m = JJRestApi.Model @.projectType
 					model = new m {Title: title, Persons: person}
 					model.save null,
-						success: ->
+						success: =>
+							@.$field.removeAttr 'disabled'
 							model._isCompletelyFetched = true
 							model._isFetchedWhenLoggedIn = true
 							Backbone.history.navigate '/secured/edit/' + model.get('UglyHash') + '/', true
+						
+						error: (e) =>
+							msg = '<h1>' + e.status + ': '+ e.statusText + '</h1><p>' + e.responseText + '</p>'
+							@.formError msg
+							@.$field.removeAttr 'disabled'
+
 			false
 
 	Editor

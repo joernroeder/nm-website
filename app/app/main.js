@@ -342,11 +342,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   $(function() {
     jQuery.event.props.push('dataTransfer');
     $(document).on('dragover drop', function(e) {
-      e.preventDefault();
-      return $('body').addClass('dragover');
-    });
-    $(document).on('dragleave drop', function() {
-      return $('body').removeClass('dragover');
+      return e.preventDefault();
     });
     $('#recycle-bin').on('drop', function() {
       if (app.activeRecycleDrag) {

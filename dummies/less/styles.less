@@ -1418,6 +1418,25 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 body.dragover #uploadzone {
 	display: block !important;
+
+	&.uploading,
+	&.dragover {
+		display: block !important;
+	}
+}
+
+body.drag-inline.dragover #uploadzone {
+	display: none !important;
+
+	&.uploading,
+	&.dragover {
+		display: none !important;
+		.transition(none) !important;
+	}
+
+	.progress {
+		.transition(none) !important;
+	}
 }
 
 .project-type-list {
@@ -1528,9 +1547,16 @@ form.create-project {
 		.box-sizing(border-box);
 		.transition(~"background-color .3s");
 		z-index: 90;
+		cursor: pointer;
 
 		&:focus {
 			background: #fff;
+			cursor: auto;
+		}
+
+		&[disabled] {
+			color: @gray;
+			background-color: @bgColor;
 		}
 	}
 
@@ -1539,13 +1565,14 @@ form.create-project {
 		top: @line / @em;
 		left: 1px;
 		padding: (@line / 8 / @em) (@line / 4 / @em);
-		//width: 60%;
+		max-width: 100%;
 		background: @errorColor;
 		.box-sizing(border-box);
 		margin: @line / 2 / @em;
 		color: #fff;
 		opacity: 0;
 		z-index: 80;
+		text-align: left;
 
 		.transition(~"all .1s ease-in-out");
 
@@ -1553,6 +1580,10 @@ form.create-project {
 		&.active {
 			top: @line * 1.25 / @em;
 			opacity: 1;
+		}
+
+		h1 + p {
+			margin-top: @line / @em;
 		}
 	}
 	button {
