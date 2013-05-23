@@ -91,12 +91,9 @@ do ($ = jQuery) ->
 				$(@).removeClass 'dragover'
 
 			$dropzone.on 'drop', (e) =>
-				console.log e
-				console.log @._activeDraggableId
 				if id = @._activeDraggableId
 					@._activeDraggableId = null
 					data = @.options.getFromCache id
-					console.log data
 					@.options.responseHandler data
 				else if e.dataTransfer.files.length
 					@.deferredUpload e

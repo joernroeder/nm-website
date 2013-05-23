@@ -138,12 +138,9 @@ var __hasProp = {}.hasOwnProperty,
       return $dropzone.on('drop', function(e) {
         var data, id;
 
-        console.log(e);
-        console.log(_this._activeDraggableId);
         if (id = _this._activeDraggableId) {
           _this._activeDraggableId = null;
           data = _this.options.getFromCache(id);
-          console.log(data);
           return _this.options.responseHandler(data);
         } else if (e.dataTransfer.files.length) {
           return _this.deferredUpload(e);
