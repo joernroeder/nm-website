@@ -281,10 +281,18 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       }
       done = this.async();
       req = DataRetrieval.forUserGallery('Person').done(function(gallery) {
+        var projects, type, _i, _len, _ref;
+
         context.PersonImages = gallery.images.Person;
         context.Person = app.CurrentMemberPerson.toJSON();
         context.Member = app.CurrentMember;
-        context.Projects = _.sortBy(app.CurrentMemberPerson.get('Projects').toJSON(), function(project) {
+        projects = [];
+        _ref = ['Projects', 'Exhibitions', 'Excursions', 'Workshops'];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          type = _ref[_i];
+          projects = projects.concat(app.CurrentMemberPerson.get(type).toJSON());
+        }
+        context.Projects = _.sortBy(projects, function(project) {
           return project.Title.toLowerCase();
         });
         _.each(context.PersonImages, function(img) {

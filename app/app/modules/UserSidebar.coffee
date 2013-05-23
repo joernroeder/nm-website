@@ -265,7 +265,12 @@ define [
 
 					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
-					context.Projects = _.sortBy app.CurrentMemberPerson.get('Projects').toJSON(), (project) ->
+
+					projects = []
+					for type in ['Projects', 'Exhibitions', 'Excursions', 'Workshops']
+						projects = projects.concat app.CurrentMemberPerson.get(type).toJSON()
+
+					context.Projects = _.sortBy projects, (project) ->
 						return project.Title.toLowerCase()
 
 					# get current image
