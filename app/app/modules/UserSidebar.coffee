@@ -237,9 +237,14 @@ define [
 						if img.UploadedToClass
 							app.updateGalleryCache data
 							@.insertPersonImage img
-						if img.id
+						if id = img.id
 							@.uploadZone.$dropzone.html '<img src="' + img.url + '">'
-							# @todo: set as PersonImage and trigger save on Person
+							personImg = app.CurrentMemberPerson.get 'Image'
+							if id isnt personImg and id isnt personImg.id
+								# new image
+								app.CurrentMemberPerson.set 'Image', id
+								app.CurrentMemberPerson.fetchByIdQueue 'Image'
+
 
 			afterRender: ->
 				@._afterRender()

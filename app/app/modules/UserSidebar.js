@@ -260,15 +260,20 @@ define(['app', 'modules/DataRetrieval', 'plugins/editor/jquery.jjdropzone'], fun
           return [result];
         },
         responseHandler: function(data) {
-          var img;
+          var id, img, personImg;
 
           img = data[0];
           if (img.UploadedToClass) {
             app.updateGalleryCache(data);
             _this.insertPersonImage(img);
           }
-          if (img.id) {
-            return _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
+          if (id = img.id) {
+            _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
+            personImg = app.CurrentMemberPerson.get('Image');
+            if (id !== personImg && id !== personImg.id) {
+              app.CurrentMemberPerson.set('Image', id);
+              return app.CurrentMemberPerson.fetchByIdQueue('Image');
+            }
           }
         }
       });
