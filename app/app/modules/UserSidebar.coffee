@@ -202,6 +202,7 @@ define [
 
 				DataRetrieval.forUserGallery('Person').done (gallery) ->
 					context.PersonImages = gallery.images.Person
+
 					context.Person = app.CurrentMemberPerson.toJSON()
 					context.Member = app.CurrentMember
 
@@ -212,7 +213,8 @@ define [
 					done template(context)
 
 			initPersonImageList: ->
-				_.each app.Cache.UserGallery.images.Person, (image) =>
+				sortedImgs = _.sortBy app.Cache.UserGallery.images.Person, 'id'
+				_.each sortedImgs, (image) =>
 					@.insertPersonImage image
 
 			insertPersonImage: (image) ->
@@ -369,6 +371,8 @@ define [
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend
 			template: 'security/editor-sidebar-person-image'
+			insert: (root, child) ->
+				$(root).prepend child
 
 
 
