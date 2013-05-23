@@ -3,6 +3,7 @@ define [
 		'modules/DataRetrieval'
 		'plugins/misc/spin.min'
 		'plugins/editor/jquery.jjdropzone'
+		'plugins/editor/jquery.jjmarkdown'
 	],
 	(app, DataRetrieval, Spinner) ->
 
@@ -471,7 +472,7 @@ define [
 		UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-gallery-image'
 			afterRender: ->
-				# JJMarkdownEditor.setAsDraggable @.$el.find '[data-md-tag]'
+				JJMarkdownEditor.setAsDraggable @.$el.find '[data-md-tag]'
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-person-image'
