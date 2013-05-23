@@ -6,11 +6,11 @@ do ($ = jQuery) ->
 	$.globalDragEnd = $.Callbacks()
 
 	$.fireGlobalDragEvent = (name, target, type = 'inline') ->
-			eventName = if name is 'dragstart' then 'Start' else 'End'
+		eventName = if name is 'dragstart' then 'Start' else 'End'
 
-			$['globalDrag' + eventName].fire
-				type: type
-				target: target
+		$['globalDrag' + eventName].fire
+			type: type
+			target: target
 
 	$.globalDragStart.add (e) ->
 		$('body').addClass 'dragover drag-' + e.type

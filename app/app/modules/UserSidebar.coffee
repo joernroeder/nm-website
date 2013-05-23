@@ -493,7 +493,7 @@ define [
 			className: 'DocImage'
 			afterRender: ->
 				@._afterRender()
-				JJMarkdownEditor.setAsDraggable @.$el.find '[data-md-tag]'
+				JJMarkdownEditor.setAsDraggable @.$el.find('[data-md-tag]')
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-person-image'

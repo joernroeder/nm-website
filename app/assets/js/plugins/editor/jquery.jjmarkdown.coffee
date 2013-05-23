@@ -69,6 +69,7 @@ do ($ = jQuery) ->
 				set = set.replace('\\[', '[').replace('\\]', ']')
 			else
 				set = null
+			$.fireGlobalDragEvent e.type, e.target
 			JJMarkdownEditor._activeDraggable = set
 
 		@setAsDraggable : ($els) ->

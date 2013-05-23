@@ -87,6 +87,7 @@ var __hasProp = {}.hasOwnProperty,
       } else {
         set = null;
       }
+      $.fireGlobalDragEvent(e.type, e.target);
       return JJMarkdownEditor._activeDraggable = set;
     };
 
