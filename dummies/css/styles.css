@@ -1450,6 +1450,11 @@ x:-o-prefocus,
   background: rgba(255, 255, 255, 0.2);
   cursor: auto;
 }
+#editor-sidebar-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
 .editor-sidebar {
   position: fixed;
   top: 0;

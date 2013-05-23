@@ -13,7 +13,7 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     corners: 1,
     rotate: 0,
     direction: 1,
-    color: '#262626',
+    color: '#fff',
     speed: 1,
     trail: 70,
     shadow: false,
