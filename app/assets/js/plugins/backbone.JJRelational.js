@@ -644,7 +644,7 @@
                   });
                 }
               } else {
-                json[relation.key] = _.indexOf(include, 'id') >= 0 ? relValue : null;
+                json[relation.key] = _.indexOf(include, relation.relatedModel.prototype.idAttribute) >= 0 ? relValue : null;
               }
             } else {
               json[relation.key] = null;

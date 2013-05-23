@@ -345,8 +345,9 @@ do () ->
 				# generate JSON
 				# use `includeInJSON` for relations
 				if not options.contentType then options.contentType = 'application/json'
+				
 				if not options.data then options.data = JSON.stringify(@.toJSON({isSave: true}))
-
+				
 				done = false
 				options.success = (resp, status, xhr) =>
 					done = true
@@ -554,7 +555,7 @@ do () ->
 									json[relation.key] = relValue.toJSON {isSave: true, scaffold:include}
 							else
 								# only id is present. check if 'id' is specified in includeInJSON
-								json[relation.key] = if ( _.indexOf(include, 'id') >=0 ) then relValue else null
+								json[relation.key] = if ( _.indexOf(include, relation.relatedModel.prototype.idAttribute) >=0 ) then relValue else null
 						else
 							json[relation.key] = null
 					else if isManyType relation
