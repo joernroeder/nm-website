@@ -2026,11 +2026,38 @@ x:-o-prefocus,
 }
 .dropzone.dragover > *:not(.progress):not(.progress-text),
 .dropzone.uploading > *:not(.progress):not(.progress-text) {
-  opacity: 0;
+  display: none;
 }
+.dropzone.uploading,
 .dropzone.dragover {
   display: block;
   background-color: #57590d !important;
+}
+.dropzone.failed {
+  background-color: #54160c !important;
+}
+.dropzone.failed .progress {
+  background: #d93920;
+}
+.dropzone.done .progress {
+  height: 100%;
+}
+.dropzone.done .progress-text {
+  width: 5em;
+  height: 5em;
+  line-height: 5em;
+  margin: -2.5em 0 0 -2.5em;
+  -webkit-border-radius: 5em;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5em;
+  -moz-background-clip: padding;
+  border-radius: 5em;
+  background-clip: padding-box;
+}
+.dropzone > * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .dropzone .progress {
   position: absolute;
@@ -2044,6 +2071,39 @@ x:-o-prefocus,
   -o-transition: height .2s linear;
   -ms-transition: height .2s linear;
   transition: height .2s linear;
+}
+.dropzone .progress-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  text-align: center;
+  width: 4.0625em;
+  height: 4.0625em;
+  line-height: 4.0625em;
+  margin: -2.03125em 0 0 -2.03125em;
+  -webkit-border-radius: 4.0625em;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 4.0625em;
+  -moz-background-clip: padding;
+  border-radius: 4.0625em;
+  background-clip: padding-box;
+  font-size: 1.3em;
+  font-style: italic;
+  background: #262626;
+  color: #fff;
+  -webkit-transition-property: all;
+  -moz-transition-property: all;
+  -o-transition-property: all;
+  -ms-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.675, -0.17, 0.41, 1.65);
+  -moz-transition-timing-function: cubic-bezier(0.675, -0.17, 0.41, 1.65);
+  -o-transition-timing-function: cubic-bezier(0.675, -0.17, 0.41, 1.65);
+  transition-timing-function: cubic-bezier(0.675, -0.17, 0.41, 1.65);
 }
 body.dragover #uploadzone {
   display: block !important;
