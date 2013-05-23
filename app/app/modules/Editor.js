@@ -10,22 +10,63 @@ define(['app'], function(app) {
       'submit form.create-project': 'createNewProject',
       'click .project-type-list a': 'setProjectType'
     },
+    hideForm: function() {
+      this.$field.blur();
+      this.formError('');
+      return this.$form.removeClass('active');
+    },
+    showForm: function() {
+      this.$submit.text('Create ' + this.projectType);
+      this.$field.attr('placeholder', this.projectType + ' Title').val('').focus();
+      this.formError('');
+      return this.$form.addClass('active');
+    },
+    formError: function(msg) {
+      if (msg) {
+        return this.$error.text(msg).addClass('active');
+      } else {
+        return this.$error.removeClass('active');
+      }
+    },
     setProjectType: function(e) {
-      var type;
+      var $link, type;
 
-      e.preventDefault();
-      type = $(e.currentTarget).data('type');
-      if (type) {
-        this.projectType = type;
+      $link = $(e.target);
+      $link.closest('ul').find('.active').not($link).removeClass('active').end().end().end().toggleClass('active');
+      if ($link.hasClass('active')) {
+        this.$list.addClass('active');
+        type = $(e.currentTarget).data('type');
+        if (type) {
+          this.projectType = type;
+        }
+        this.showForm();
+      } else {
+        this.$list.removeClass('active');
+        this.projectType = null;
+        this.hideForm();
       }
       return false;
+    },
+    afterRender: function() {
+      var _this = this;
+
+      this.$list = $('ul.project-type-list');
+      this.$form = $('form.create-project');
+      this.$field = $('input', this.$form);
+      this.$error = $('.form-error', this.$form);
+      this.$submit = $('button[type=submit]', this.$form);
+      return this.$field.on('keyup', function() {
+        if (_this.$error.hasClass('active') && _this.$field.val()) {
+          return _this.formError('');
+        }
+      });
     },
     createNewProject: function(e) {
       var errorMsg, m, model, person, title;
 
       e.preventDefault();
-      title = $(e.target).find('[name="title"]').val();
-      errorMsg = null;
+      title = this.$field.val();
+      errorMsg = '';
       if (!title) {
         errorMsg = 'Please fill in a title!';
       }
@@ -33,7 +74,8 @@ define(['app'], function(app) {
         errorMsg = 'Please choose the type of your project!';
       }
       if (errorMsg) {
-        this.showMessageAt(errorMsg, this.$el, 'error');
+        this.formError(errorMsg);
+        this.$field.focus();
       } else {
         if (person = app.CurrentMemberPerson) {
           m = JJRestApi.Model(this.projectType);

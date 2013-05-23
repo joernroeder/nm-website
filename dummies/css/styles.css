@@ -180,6 +180,12 @@
 .btn:active:after {
   color: #525252;
 }
+button.btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+}
 /**
  * Liste
  *
@@ -2000,11 +2006,7 @@ x:-o-prefocus,
 }
 .editor-sidebar button.btn {
   margin-top: 0.375em;
-  background: transparent;
-  border: none;
-  padding: 0;
   color: #fff;
-  outline: none;
 }
 .editor-sidebar button.btn:after {
   color: #e6e6e6;
@@ -2125,8 +2127,17 @@ body.dragover #uploadzone {
   width: 50%;
   list-style: none;
   margin-left: -25%;
-  margin-top: -4.5em;
+  margin-top: -3.75em;
   overflow: hidden;
+  z-index: 100;
+  -webkit-transition: margin .15s ease-in-out;
+  -moz-transition: margin .15s ease-in-out;
+  -o-transition: margin .15s ease-in-out;
+  -ms-transition: margin .15s ease-in-out;
+  transition: margin .15s ease-in-out;
+}
+.project-type-list.active {
+  margin-top: -8.25em;
 }
 .project-type-list li {
   display: block;
@@ -2140,6 +2151,9 @@ body.dragover #uploadzone {
   font-weight: normal;
   font-variant: small-caps;
   color: #525252;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .project-type-list li a:before {
   display: block;
@@ -2149,11 +2163,13 @@ body.dragover #uploadzone {
   color: #919191;
 }
 .project-type-list li a:hover,
-.project-type-list li a:focus {
+.project-type-list li a:focus,
+.project-type-list li a.active {
   color: #262626;
 }
 .project-type-list li a:hover:before,
-.project-type-list li a:focus:before {
+.project-type-list li a:focus:before,
+.project-type-list li a.active:before {
   color: #d9df20;
 }
 .project-type-list li a.excursion:before {
@@ -2175,6 +2191,88 @@ body.dragover #uploadzone {
   font-family: 'Entypo';
   font-weight: normal;
   content: '\1F3A8';
+}
+form.create-project {
+  background: #d3d3d3;
+  padding: 0.75em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  list-style: none;
+  margin-left: -25%;
+  margin-top: -3.75em;
+  opacity: 0;
+  text-align: center;
+  z-index: 50;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-transition: all .15s ease-in-out;
+  -moz-transition: all .15s ease-in-out;
+  -o-transition: all .15s ease-in-out;
+  -ms-transition: all .15s ease-in-out;
+  transition: all .15s ease-in-out;
+}
+form.create-project.active {
+  margin-top: -2.7em;
+  margin-top: ;
+  opacity: 1;
+  -webkit-transition: opacity .15s .05s ease-in-out;
+  -moz-transition: opacity .15s .05s ease-in-out;
+  -o-transition: opacity .15s .05s ease-in-out;
+  -ms-transition: opacity .15s .05s ease-in-out;
+  transition: opacity .15s .05s ease-in-out;
+}
+form.create-project input {
+  border: none;
+  background: #f3f3f3;
+  width: 60%;
+  padding: 0.375em;
+  margin-right: 5%;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: background-color .3s;
+  -moz-transition: background-color .3s;
+  -o-transition: background-color .3s;
+  -ms-transition: background-color .3s;
+  transition: background-color .3s;
+  z-index: 90;
+}
+form.create-project input:focus {
+  background: #fff;
+}
+form.create-project .form-error {
+  position: absolute;
+  top: 1.5em;
+  left: 1px;
+  padding: 0.1875em 0.375em;
+  background: #d93920;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0.75em;
+  color: #fff;
+  opacity: 0;
+  z-index: 80;
+  -webkit-transition: all .1s ease-in-out;
+  -moz-transition: all .1s ease-in-out;
+  -o-transition: all .1s ease-in-out;
+  -ms-transition: all .1s ease-in-out;
+  transition: all .1s ease-in-out;
+}
+form.create-project .form-error.active {
+  top: 1.875em;
+  opacity: 1;
+}
+form.create-project button {
+  text-align: left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 34%;
 }
 /*
  *
