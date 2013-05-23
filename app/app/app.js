@@ -3,7 +3,8 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
   var JST, app;
 
   app = {
-    root: '/'
+    root: '/',
+    pendingTemplateReqs: {}
   };
   JST = window.JST = window.JST || {};
   Backbone.NMLayout = Backbone.Layout.extend({
@@ -17,8 +18,9 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
   Backbone.Layout.configure({
     manage: true,
     prefix: 'app/app/templates/',
+    pendingAjaxRequests: {},
     fetch: function(path) {
-      var done, replacedPath;
+      var dfd, done, replacedPath;
 
       done = void 0;
       replacedPath = path.replace(Backbone.Layout.prototype.options.prefix, '');
@@ -29,13 +31,23 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
       }
       if (!JST[path]) {
         done = this.async();
-        return $.ajax({
-          url: app.root + path
-        }).then(function(contents) {
-          JST[path] = Handlebars.compile(contents);
-          JST[path].__compiled__ = true;
-          return done(JST[path]);
-        });
+        if (dfd = app.pendingTemplateReqs[path]) {
+          dfd.then(function() {
+            return done(JST[path]);
+          });
+        } else {
+          dfd = $.ajax({
+            url: app.root + path
+          });
+          app.pendingTemplateReqs[path] = dfd;
+          dfd.then(function(contents) {
+            JST[path] = Handlebars.compile(contents);
+            JST[path].__compiled__ = true;
+            delete app.pendingTemplateReqs[path];
+            return done(JST[path]);
+          });
+        }
+        return dfd;
       }
       if (!JST[path].__compiled__) {
         JST[path] = Handlebars.template(JST[path]);

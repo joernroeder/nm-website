@@ -279,9 +279,11 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
       });
     },
     initPersonImageList: function() {
-      var _this = this;
+      var sortedImgs,
+        _this = this;
 
-      return _.each(app.Cache.UserGallery.images.Person, function(image) {
+      sortedImgs = _.sortBy(app.Cache.UserGallery.images.Person, 'id');
+      return _.each(sortedImgs, function(image) {
         return _this.insertPersonImage(image);
       });
     },
@@ -479,7 +481,10 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
     afterRender: function() {}
   });
   UserSidebar.Views.PersonImage = UserSidebar.Views.ImageItem.extend({
-    template: 'security/editor-sidebar-person-image'
+    template: 'security/editor-sidebar-person-image',
+    insert: function(root, child) {
+      return $(root).prepend(child);
+    }
   });
   return UserSidebar;
 });
