@@ -191,6 +191,7 @@ require [
 				Backbone.JJStore.Events.bind 'added:' + storeHook, (model) ->
 					coll = app.Collections[storeHook]
 					if coll then coll.add model
+		
 		true
 			
 	app.handleFetchedModels = (type, data, options) ->
@@ -288,6 +289,12 @@ require [
 
 		$(document).on 'dragleave drop', ->
 			$('body').removeClass 'dragover'
+
+		# drag'n'drop for recyclebin
+		$('#recycle-bin').on 'drop', ->
+			if app.activeRecycleDrag
+				console.log 'Delete: '
+				console.log app.activeRecycleDrag
 
 		app.setupSpinner()
 

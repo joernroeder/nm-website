@@ -348,6 +348,12 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     $(document).on('dragleave drop', function() {
       return $('body').removeClass('dragover');
     });
+    $('#recycle-bin').on('drop', function() {
+      if (app.activeRecycleDrag) {
+        console.log('Delete: ');
+        return console.log(app.activeRecycleDrag);
+      }
+    });
     app.setupSpinner();
     JJRestApi.hookSecurityToken();
     return JJRestApi.bootstrapWithStructure().done(function() {

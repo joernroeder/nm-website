@@ -531,25 +531,54 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
   });
   UserSidebar.Views.ListItem = Backbone.View.extend({
     tagName: 'li',
+    cleanup: function() {
+      this.$el.data('recyclable', null);
+      return this.$el.off('dragstart dragend');
+    },
     serialize: function() {
       return this.model;
     },
     insert: function(root, child) {
       return $(root).prepend(child);
     },
-    _afterRender: function() {},
+    _afterRender: function() {
+      var data;
+
+      data = {
+        view: this,
+        model: this.model
+      };
+      if (this.className) {
+        data.className = this.className;
+      }
+      return this.$el.on('dragstart dragend', function(e) {
+        var method;
+
+        if (e.type === 'dragstart') {
+          method = 'addClass';
+          app.activeRecycleDrag = data;
+        } else {
+          app.activeRecycleDrag = null;
+          method = 'removeClass';
+        }
+        return $('#recycle-bin')[method]('active');
+      });
+    },
     afterRender: function() {
       return this._afterRender();
     }
   });
   UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-gallery-image',
+    className: 'DocImage',
     afterRender: function() {
+      this._afterRender();
       return JJMarkdownEditor.setAsDraggable(this.$el.find('[data-md-tag]'));
     }
   });
   UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend({
-    template: 'security/editor-sidebar-person-image'
+    template: 'security/editor-sidebar-person-image',
+    className: 'PersonImage'
   });
   UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-project-item'

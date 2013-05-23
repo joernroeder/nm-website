@@ -459,23 +459,45 @@ define [
 
 		UserSidebar.Views.ListItem = Backbone.View.extend
 			tagName: 'li'
+
+			cleanup: ->
+				@.$el.data 'recyclable', null
+				@.$el.off 'dragstart dragend'
 			serialize: ->
 				@.model
 			insert: (root, child) ->
 				$(root).prepend child
 			_afterRender: ->
-				# init recyclebility
+				# setup as recyclable
+				data = 
+					view: @
+					model: @.model
+
+				if @.className then data.className = @.className
+				#@.$el.data 'recyclable', data
+
+				@.$el.on 'dragstart dragend', (e) ->
+					if e.type is 'dragstart' 
+						method = 'addClass'
+						app.activeRecycleDrag = data
+					else 
+						app.activeRecycleDrag = null
+						method = 'removeClass'
+					$('#recycle-bin')[method]('active')
 
 			afterRender: ->
 				@._afterRender()
 
 		UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-gallery-image'
+			className: 'DocImage'
 			afterRender: ->
+				@._afterRender()
 				JJMarkdownEditor.setAsDraggable @.$el.find '[data-md-tag]'
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-person-image'
+			className: 'PersonImage'
 
 		UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-project-item'
