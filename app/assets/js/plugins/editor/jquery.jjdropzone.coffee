@@ -69,7 +69,7 @@ do ($ = jQuery) ->
 			$dropzone.on 'drop', (e) =>
 				@.deferredUpload(e)
 					.always ->
-						$.fireGlobalDragEvent 'End', e.target
+						$.fireGlobalDragEvent e.type, e.target
 						$dropzone.removeClass 'dragover'
 
 

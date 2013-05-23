@@ -88,7 +88,7 @@ var __hasProp = {}.hasOwnProperty,
       });
       return $dropzone.on('drop', function(e) {
         return _this.deferredUpload(e).always(function() {
-          $.fireGlobalDragEvent('End', e.target);
+          $.fireGlobalDragEvent(e.type, e.target);
           return $dropzone.removeClass('dragover');
         });
       });
