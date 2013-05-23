@@ -1305,12 +1305,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	button.btn {
 		margin-top: @line / 4 / @em;
-		background: transparent;
-		border: none;
-		padding: 0;
-
 		color: #fff;
-		outline: none;
 
 		&:after {
 			color: darken(#fff, 10%);
@@ -1357,11 +1352,10 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	&.failed {
-		@failedColor: #d93920;
-		background-color: darken(@failedColor, 30%) !important;
+		background-color: darken(@errorColor, 30%) !important;
 
 		.progress {
-			background: @failedColor;
+			background: @errorColor;
 		}
 	}
 
@@ -1433,8 +1427,15 @@ body.dragover #uploadzone {
 	width: 50%;
 	list-style: none;
 	margin-left: -25%;
-	margin-top: -@line * 3 / @em;
+	margin-top: -@line * 2.5 / @em;
 	overflow: hidden;
+	z-index: 100;
+
+	.transition(~"margin .15s ease-in-out");
+
+	&.active {
+		margin-top: -@line * 5.5 / @em;
+	}
 
 	li {
 		display: block;
@@ -1447,6 +1448,7 @@ body.dragover #uploadzone {
 			.aller;
 			.small-caps;
 			color: @btnColor;
+			.user-select(none);
 
 			&:before {
 				display: block;
@@ -1458,7 +1460,8 @@ body.dragover #uploadzone {
 			}
 
 			&:hover,
-			&:focus {
+			&:focus,
+			&.active {
 				color: @btnHover;
 
 				&:before {
@@ -1484,6 +1487,78 @@ body.dragover #uploadzone {
 				.icon-workshop;
 			}
 		}
+	}
+}
+
+form.create-project {
+	background: lighten(@black, 68%);
+	padding: @line / 2 / @em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 50%;
+	list-style: none;
+	margin-left: -25%;
+	margin-top: -@line * 2.5 / @em;
+	opacity: 0;
+	text-align: center;
+	z-index: 50;
+	.user-select(none);
+	//.border-radius(@line / 8 / @em);
+
+	.transition(~"all .15s ease-in-out");
+	//font-size: @font-size * 1.2 / @em;
+	
+
+	&.active {
+		@offset: @line * .7 / @em;
+		margin-top: -@line * 2.5 / @em + @offset;
+		margin-top: ;
+		opacity: 1;
+		.transition(~"opacity .15s .05s ease-in-out");
+	}
+
+	input {
+		border: none;
+		background: lighten(@bgColor, 5%);
+		width: 60%;
+		padding: @line / 4 / @em;
+		margin-right: 5%;
+		outline: none;
+		.box-sizing(border-box);
+		.transition(~"background-color .3s");
+		z-index: 90;
+
+		&:focus {
+			background: #fff;
+		}
+	}
+
+	.form-error {
+		position: absolute;
+		top: @line / @em;
+		left: 1px;
+		padding: (@line / 8 / @em) (@line / 4 / @em);
+		//width: 60%;
+		background: @errorColor;
+		.box-sizing(border-box);
+		margin: @line / 2 / @em;
+		color: #fff;
+		opacity: 0;
+		z-index: 80;
+
+		.transition(~"all .1s ease-in-out");
+
+
+		&.active {
+			top: @line * 1.25 / @em;
+			opacity: 1;
+		}
+	}
+	button {
+		text-align: left;
+		.box-sizing(border-box);
+		width: 34%;
 	}
 }
 
