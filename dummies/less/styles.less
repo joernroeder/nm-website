@@ -1211,9 +1211,11 @@ x:-o-prefocus, .qtip .qtip-tip{
 		margin-top: -@line * 6 / @em;
 
 		background: @editorSidebarBg;
+		border-right: 1px solid transparent;
 		text-align: right;
 		//padding-left: @line / 2 / @em;
 		.box-sizing(border-box);
+		.transition(~"border-color .3s");
 
 		ul {
 			margin: 0;
@@ -1252,7 +1254,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	&.open {
 		&> nav {
-			margin-left: -1px;
+			border-right: 1px solid mix(@bgColor, @editorSidebarBg);
+			//margin-left: -1px;
 		}
 	}
 	&:not(.is-editor) > nav ul + ul {
@@ -1263,7 +1266,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	&.is-editor > nav ul + ul {
 		opacity: 1;
 		height: auto;
-		border-top: 1px solid @gray;
+		border-top: 1px solid mix(@bgColor, @editorSidebarBg);
 	}
 
 	input[type="text"],

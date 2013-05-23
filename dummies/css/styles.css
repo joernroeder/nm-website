@@ -1882,10 +1882,16 @@ x:-o-prefocus,
   width: 3.75em;
   margin-top: -9em;
   background: #262626;
+  border-right: 1px solid transparent;
   text-align: right;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: -webkit-border-color .3s;
+  -moz-transition: -moz-border-color .3s;
+  -o-transition: border-color .3s;
+  -ms-transition: border-color .3s;
+  transition: border-color .3s;
 }
 .editor-sidebar > nav ul {
   margin: 0;
@@ -1917,7 +1923,7 @@ x:-o-prefocus,
   display: none;
 }
 .editor-sidebar.open > nav {
-  margin-left: -1px;
+  border-right: 1px solid #868686;
 }
 .editor-sidebar:not(.is-editor) > nav ul + ul {
   opacity: 0;
@@ -1926,7 +1932,7 @@ x:-o-prefocus,
 .editor-sidebar.is-editor > nav ul + ul {
   opacity: 1;
   height: auto;
-  border-top: 1px solid #919191;
+  border-top: 1px solid #868686;
 }
 .editor-sidebar input[type="text"],
 .editor-sidebar input[type="email"],
