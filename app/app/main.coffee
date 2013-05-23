@@ -284,6 +284,8 @@ require [
 		
 		# disable drag'n'drop for whole document
 		$(document).on 'dragover drop', (e) ->
+			if e.type is 'drop'
+				$.fireGlobalDragEvent 'drop', e.target, 'file'
 			e.preventDefault()
 
 		# drag'n'drop for recyclebin

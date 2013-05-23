@@ -421,7 +421,9 @@ define [
 							@.insertGalleryImage img.FilterID, img
 
 				@.$el.parent().on 'dragenter', (e) =>
-					@.uploadZone.$dropzone.addClass 'dragover'
+					if not $('body').hasClass 'drag-inline'
+						@.uploadZone.$dropzone.addClass 'dragover'
+						$.fireGlobalDragEvent 'dragstart', e.target, 'file'
 
 
 			render: (template, context = {}) ->

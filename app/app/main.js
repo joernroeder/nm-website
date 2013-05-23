@@ -342,6 +342,9 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   $(function() {
     jQuery.event.props.push('dataTransfer');
     $(document).on('dragover drop', function(e) {
+      if (e.type === 'drop') {
+        $.fireGlobalDragEvent('drop', e.target, 'file');
+      }
       return e.preventDefault();
     });
     $('#recycle-bin').on('drop', function() {

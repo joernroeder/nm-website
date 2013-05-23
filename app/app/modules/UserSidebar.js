@@ -488,7 +488,10 @@ define(['app', 'modules/DataRetrieval', 'plugins/misc/spin.min', 'plugins/editor
         }
       });
       return this.$el.parent().on('dragenter', function(e) {
-        return _this.uploadZone.$dropzone.addClass('dragover');
+        if (!$('body').hasClass('drag-inline')) {
+          _this.uploadZone.$dropzone.addClass('dragover');
+          return $.fireGlobalDragEvent('dragstart', e.target, 'file');
+        }
       });
     },
     render: function(template, context) {
