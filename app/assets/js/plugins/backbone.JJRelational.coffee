@@ -1,6 +1,6 @@
 ###*
  * Backbone JJRelational
- * v0.2.4
+ * v0.2.5
  *
  * A relational plugin for Backbone JS that provides one-to-one, one-to-many and many-to-many relations between Backbone models.
  * 
@@ -802,7 +802,8 @@ do () ->
 					# pass this on to collection, it will handle the rest
 					@.get(relation.key).fetchByIdQueue(options)
 				else if isOneType relation
-					if id = @.get relation.key
+					id = @.get relation.key
+					if id and (id instanceof relation.relatedModel is false)
 						relModel = relation.relatedModel
 						if options then options = _.clone(options) else options = {}
 
@@ -820,7 +821,7 @@ do () ->
 							@.setHasOneRelation relation, null, true
 							options.ignoreModel = @
 							model = new relModel relModel.prototype.parse(resp[0]), options
-							@.set relation, model
+							@.set relation.key, model
 							
 							if success then success(model, resp)
 
