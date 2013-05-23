@@ -77,7 +77,7 @@
               var completed;
 
               if (evt.lengthComputable) {
-                completed = (evt.loaded / evt.total) * 100;
+                completed = Math.round((evt.loaded / evt.total) * 100);
                 $progressText.html(completed + '%');
                 return $progress.height(completed + '%');
               }
@@ -101,7 +101,10 @@
       }).always(function() {
         return $dropzone.removeClass('uploading');
       }).done(function() {
-        return $dropzone.addClass('done');
+        $dropzone.addClass('done');
+        return setTimeout(function() {
+          return $dropzone.removeClass('dragover');
+        }, 1000);
       });
     };
 

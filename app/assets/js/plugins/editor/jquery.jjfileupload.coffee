@@ -70,7 +70,7 @@ do ($ = jQuery) ->
 						xhr = new XMLHttpRequest()
 						xhr.upload.onprogress = (evt) ->
 							if evt.lengthComputable
-								completed = (evt.loaded / evt.total) * 100 # floating point between 0 and 1
+								completed = Math.round((evt.loaded / evt.total) * 100) # floating point between 0 and 1
 								$progressText.html(completed + '%')
 								$progress.height completed + '%'
 						xhr
@@ -84,11 +84,14 @@ do ($ = jQuery) ->
 					$dropzone.removeClass 'dragover'
 				, 3000
 			.always ->
-				#$progress.height
 				$dropzone.removeClass 'uploading'
+				#$progress.height
 
 			.done ->
 				$dropzone.addClass 'done'
+				setTimeout ->
+					$dropzone.removeClass 'dragover'
+				, 1000
 				
 
 	window.JJFileUpload = JJFileUpload
