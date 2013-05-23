@@ -10,7 +10,8 @@ define [
 
 		UserSidebar = app.module()
 
-		sidebarSpinnerOpts = 
+		UserSidebar.config = {}
+		UserSidebar.config.spinner = 
 			lines: 13				# The number of lines to draw
 			length: 6				# The length of each line
 			width: 2				# The line thickness
@@ -95,7 +96,6 @@ define [
 					@.subView.parentView = @
 					@.startSpinner()
 
-					debugger
 					@.setView '#editor-sidebar-container', @.subView
 					if doRender then @.subView.render()
 				else 
@@ -124,14 +124,9 @@ define [
 					@open()
 
 			initSpinner: ->
-				#@.$body = $ 'body'
-				#@.$main = $ '#main'
-				console.log 'init spinner'
-				console.log $('#editor-sidebar-spinner', @.$el)[0]
 				@.spinner = 
-					inst: new Spinner sidebarSpinnerOpts
+					inst: new Spinner UserSidebar.config.spinner
 					target: $('#editor-sidebar-spinner', @.$el)[0]
-				console.log @.spinner
 
 			startSpinner: ->
 				spinner = @.spinner
@@ -170,7 +165,6 @@ define [
 
 			hideSpinner: ->
 				if @.parentView
-					console.log @.parentView
 					@.parentView.stopSpinner()
 
 			_cleanup: ->
