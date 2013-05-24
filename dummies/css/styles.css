@@ -2364,7 +2364,6 @@ form.create-project button {
   height: 25px;
   top: 25px;
   left: 84px;
-  z-index: -1;
   background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4wLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSLzIwMDEvUkVDLVNWRy0yMDAxMDkwNC9EVEQvc3ZnMTAuZHRkIj4NCjxzdmcgdmVyc2lvbj0iMS4wIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHdpZHRoPSI1OC40NDlweCIgaGVpZ2h0PSIyMC43MDFweCIgdmlld0JveD0iMCAwIDU4LjQ0OSAyMC43MDEiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDU4LjQ0OSAyMC43MDEiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik01MS45MTYsMTAuOTU2aC05LjU1M1Y2LjE3OWMwLTIuNjM5LTIuMTQzLTQuNzc0LTQuNzc5LTQuNzc0SDIwLjg2N2MtMi42MzksMC00Ljc3OSwyLjEzNy00Ljc3OSw0Ljc3NA0KCQkJdjQuNzc3SDYuNTM1Yy0yLjYzOCwwLTQuNzc3LDIuMTQxLTQuNzc3LDQuNzczdjMuNTY1aDU0LjkzNHYtMy41NjVDNTYuNjg5LDEzLjA5Nyw1NC41NTUsMTAuOTU2LDUxLjkxNiwxMC45NTZ6IE0zNy41ODQsMTAuOTU2DQoJCQlIMjAuODY3VjguNTY4YzAtMS4zMTgsMS4wNjYtMi4zODksMi4zODctMi4zODloMTEuOTQxYzEuMzIsMCwyLjM5LDEuMDY5LDIuMzksMi4zODlMMzcuNTg0LDEwLjk1NkwzNy41ODQsMTAuOTU2eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K");
   background-repeat: no-repeat;
   -webkit-transition: -webkit-transform .15s ease-in-out;
@@ -2373,7 +2372,15 @@ form.create-project button {
   -ms-transition: -ms-transform .15s ease-in-out;
   transition: transform .15s ease-in-out;
   -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -o-transform: rotate(0);
+  -ms-transform: rotate(0);
+  transform: rotate(0);
   -webkit-transform-origin: -5px 20px;
+  -moz-transform-origin: -5px 20px;
+  -o-transform-origin: -5px 20px;
+  -ms-transform-origin: -5px 20px;
+  transform-origin: -5px 20px;
 }
 #recycle-bin.active,
 #recycle-bin.done,
@@ -2385,6 +2392,10 @@ form.create-project button {
 }
 #recycle-bin.dragover:before {
   -webkit-transform: rotate(-80deg);
+  -moz-transform: rotate(-80deg);
+  -o-transform: rotate(-80deg);
+  -ms-transform: rotate(-80deg);
+  transform: rotate(-80deg);
 }
 #recycle-bin.done {
   background-color: #d9df20;

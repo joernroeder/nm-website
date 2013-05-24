@@ -1643,14 +1643,14 @@ form.create-project {
 		height: 25px;
 		top: 25px;
 		left: 84px;
-		z-index: -1;
+		//z-index: -1;
 
 		.icon-recycle-bin;
 		background-repeat: no-repeat;
 		.transition(~"transform .15s ease-in-out");
-		-webkit-transform: rotate(0);
+		.rotate(0);
 		
-		-webkit-transform-origin: -5px 20px;
+		.transform-origin(-5px 20px);
 		//background-color: pink;
 	}
 
@@ -1664,7 +1664,7 @@ form.create-project {
 		background-color: darken(@nmColor, 30%);
 		
 		&:before {
-			-webkit-transform: rotate(-80deg);
+			.rotate(-80deg);
 		}
 	}
 
