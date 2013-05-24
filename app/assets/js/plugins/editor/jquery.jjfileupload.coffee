@@ -85,6 +85,8 @@ do ($ = jQuery) ->
 				, 3000
 			.always ->
 				$dropzone.removeClass 'uploading'
+				$progress.remove()
+				$progressText.remove()
 				#$progress.height
 
 			.done ->

@@ -99,7 +99,9 @@
           return $dropzone.removeClass('dragover');
         }, 3000);
       }).always(function() {
-        return $dropzone.removeClass('uploading');
+        $dropzone.removeClass('uploading');
+        $progress.remove();
+        return $progressText.remove();
       }).done(function() {
         $dropzone.addClass('done');
         return setTimeout(function() {
