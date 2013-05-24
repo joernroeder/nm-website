@@ -164,7 +164,9 @@ var __hasProp = {}.hasOwnProperty,
         if (id = _this._activeDraggableId) {
           _this._activeDraggableId = null;
           data = _this.options.getFromCache(id);
-          return _this.options.responseHandler(data);
+          if (data) {
+            return _this.options.responseHandler(data);
+          }
         } else if (e.dataTransfer.files.length) {
           return _this.deferredUpload(e);
         }

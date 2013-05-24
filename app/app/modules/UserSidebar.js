@@ -557,11 +557,24 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     afterRender: function() {
       this._afterRender();
       return JJMarkdownEditor.setAsDraggable(this.$el.find('[data-md-tag]'));
+    },
+    liveRemoval: function() {
+      return this.$el.find('[data-md-tag]').trigger('dragend');
     }
   });
   UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-person-image',
-    className: 'PersonImage'
+    className: 'PersonImage',
+    liveRemoval: function() {
+      var personImg;
+
+      this.$el.find('[data-id]').trigger('dragend');
+      personImg = app.CurrentMemberPerson.get('Image');
+      if (personImg.id === this.model.id) {
+        $('#current-person-image').empty();
+      }
+      return this.remove();
+    }
   });
   UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-project-item'

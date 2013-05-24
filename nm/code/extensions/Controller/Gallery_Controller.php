@@ -109,6 +109,7 @@ class Gallery_Controller extends Controller {
 						foreach ($image->$projectTypes() as $p) {
 							if ($p->canEdit($this->currentUser)) {
 								$canView = true;
+								break;
 							}
 						}
 						if ($canView) break;

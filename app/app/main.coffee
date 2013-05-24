@@ -232,6 +232,20 @@ require [
 
 			else
 				# this is no upload, instead update any existing data
+	
+	app.removeFromGalleryCache = (className, id) ->
+		if className is 'PersonImage'
+			_.each @.Cache.UserGallery.images.Person, (img, i) =>
+				if img.id is id
+					delete @.Cache.UserGallery.images.Person[i]
+		if className is 'DocImage'
+			_.each @.Cache.UserGallery.images.Projects, (project, i) =>
+				_.each project.Images, (img, j) =>
+					console.log img
+					if img.id is id
+						delete @.Cache.UserGallery.images.Projects[i].Images[j]
+		true
+
 
 	app.initialLoggedInCheck = ->
 		JJRestApi.getFromDomOrApi('current-member', {noAjax: true}).done (data) ->
