@@ -1529,7 +1529,7 @@ x:-o-prefocus,
 .editor-sidebar .editor-sidebar-content section {
   margin-bottom: 3em;
 }
-.editor-sidebar .editor-sidebar-content .ui-list section {
+.editor-sidebar .editor-sidebar-content .ui-list > section {
   padding: 0 1.5em;
 }
 .editor-sidebar .scrollbox {
@@ -1988,21 +1988,33 @@ x:-o-prefocus,
 .editor-sidebar #pw-forceable {
   color: #919191;
 }
-.editor-sidebar button.btn {
+.editor-sidebar h3 {
+  border-bottom: 1px solid #454545;
+  padding-bottom: 0.5em;
+  margin-bottom: 0.5em;
+}
+.editor-sidebar textarea {
+  display: none;
+}
+.editor-sidebar .markdown-editor-preview {
+  font-size: 0.875em;
+  color: #919191;
+}
+.editor-sidebar .btn {
   margin-top: 0.375em;
   color: #fff;
 }
-.editor-sidebar button.btn:after {
+.editor-sidebar .btn:after {
   color: #e6e6e6;
 }
-.editor-sidebar button.btn:hover,
-.editor-sidebar button.btn:focus,
-.editor-sidebar button.btn:active {
+.editor-sidebar .btn:hover,
+.editor-sidebar .btn:focus,
+.editor-sidebar .btn:active {
   color: #d9df20;
 }
-.editor-sidebar button.btn:hover:after,
-.editor-sidebar button.btn:focus:after,
-.editor-sidebar button.btn:active:after {
+.editor-sidebar .btn:hover:after,
+.editor-sidebar .btn:focus:after,
+.editor-sidebar .btn:active:after {
   color: #d9df20;
 }
 .editor-sidebar #uploadzone {

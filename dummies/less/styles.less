@@ -911,7 +911,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 			margin-bottom: @line * 2 / @em;
 		}
 
-		.ui-list section {
+		.ui-list > section {
 			padding: 0 (@line / @em);
 		}
 	}
@@ -1310,7 +1310,22 @@ x:-o-prefocus, .qtip .qtip-tip{
 		color: @gray;
 	}
 
-	button.btn {
+	h3 {
+		border-bottom: 1px solid darken(@gray, 30%);
+		padding-bottom: @line / 3 / @em;
+		margin-bottom: @line / 3 / @em;
+	}
+
+	textarea {
+		display: none;
+	}
+
+	.markdown-editor-preview {
+		font-size: 14 / @em;
+		color: @gray;
+	}
+
+	.btn {
 		margin-top: @line / 4 / @em;
 		color: #fff;
 
