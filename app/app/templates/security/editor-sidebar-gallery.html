@@ -13,10 +13,10 @@
 <section class="editor-sidebar-content scrollbox">
 	{{#if Projects}}
 		{{#each Projects}}
+			<header>
+				<h2>{{Title}}</h2>
+			</header>
 			<section data-filter-id="{{FilterID}}">
-				<header>
-					<h2>{{Title}}</h2>
-				</header>
 				<ul class="image-list"></ul>
 					{{!-- Drop Zone --}}
 			</section>

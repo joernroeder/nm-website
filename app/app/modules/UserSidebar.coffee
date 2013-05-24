@@ -3,6 +3,7 @@ define [
 		'modules/DataRetrieval'
 		'modules/RecycleBin'
 		'plugins/misc/spin.min'
+		'plugins/misc/jquery.list'
 		'plugins/editor/jquery.jjdropzone'
 		'plugins/editor/jquery.jjmarkdown'
 	],
@@ -218,6 +219,10 @@ define [
 
 				if @.isOpen
 					@._setColumnCount()
+
+				if @.$sidebarContent.hasClass 'scrollbox'
+					@.$sidebarContent.list
+						headerSelector: 'header'
 
 			_onOpened: (switched) ->
 				delay = if switched then 0 else 300

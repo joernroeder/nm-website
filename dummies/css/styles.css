@@ -1492,14 +1492,22 @@ x:-o-prefocus,
   overflow: hidden;
   margin: 0;
 }
+.editor-sidebar .editor-sidebar-content.scrollbox {
+  padding: 0 0 1.5em;
+}
 .editor-sidebar .editor-sidebar-content header {
   background: #191919;
   padding: 0.375em 1.5em;
+  margin-bottom: 1.5em;
   margin: 0 -1.5em 1.5em;
+  margin-left: 0;
+  border-bottom: 1px solid #57590d;
+}
+.editor-sidebar .editor-sidebar-content header.ui-list-fakeheader {
+  margin-left: 0;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  border-bottom: 1px solid #57590d;
 }
 .editor-sidebar .editor-sidebar-content header h2 {
   font-variant: small-caps;
@@ -1515,11 +1523,17 @@ x:-o-prefocus,
 .editor-sidebar .editor-sidebar-content section {
   margin-bottom: 3em;
 }
+.editor-sidebar .editor-sidebar-content .ui-list section {
+  padding: 0 1.5em;
+}
 .editor-sidebar .scrollbox {
   position: relative;
   overflow: auto;
   width: 100%;
   max-height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   /*
 		background:
 			// Shadow covers
