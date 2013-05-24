@@ -8,22 +8,43 @@ define(['app'], function(app) {
       _this = this;
 
     this.$bin = $bin = $('#recycle-bin');
-    return $bin.on('drop', function() {
-      var model, toRecycle, url;
+    $bin.on('dragenter dragleave drop', function(e) {
+      var method;
+
+      method = e.type === 'dragenter' ? 'addClass' : 'removeClass';
+      return $(e.target)[method]('dragover');
+    });
+    return $bin.on('drop', function(e) {
+      var id, model, req, toRecycle, url;
 
       toRecycle = _this.activeRecycleDrag;
+      _this.activeRecycleDrag = null;
       if (toRecycle && toRecycle.className) {
-        if (model = Backbone.JJStore._byId(toRecycle.className, toRecycle.model.id)) {
+        id = toRecycle.model.ID ? toRecycle.model.ID : toRecycle.model.id;
+        _this.removeViewAndData(toRecycle);
+        if (model = Backbone.JJStore._byId(toRecycle.className, id)) {
           return model.destroy();
         } else {
           url = JJRestApi.setObjectUrl(toRecycle.className, {
-            id: toRecycle.model.id
+            id: id
           });
-          console.log('destroy manually');
-          return console.log(url);
+          return req = $.ajax({
+            url: url,
+            contentType: 'json',
+            type: 'DELETE'
+          });
         }
       }
     });
+  };
+  RecycleBin.removeViewAndData = function(toRecycle) {
+    toRecycle.view.$el.trigger('dragend');
+    if (toRecycle.className === 'PersonImage' || toRecycle.className === 'DocImage') {
+      app.removeFromGalleryCache(toRecycle.className, toRecycle.model.id);
+      return toRecycle.view.liveRemoval();
+    } else {
+      return toRecycle.view.remove();
+    }
   };
   RecycleBin.setViewAsRecyclable = function(view) {
     var data,

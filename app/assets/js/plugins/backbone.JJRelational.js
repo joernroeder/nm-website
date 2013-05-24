@@ -1265,7 +1265,7 @@
     var _this = this;
 
     if (!this._relational) {
-      return this.__remove(model, options);
+      return this.__remove(models, options);
     }
     options || (options = {});
     if (!_.isArray(models)) {

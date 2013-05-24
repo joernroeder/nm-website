@@ -1033,7 +1033,7 @@ do () ->
 	 * @return {Backbone.Collection}
 	###
 	Backbone.Collection.prototype.remove = (models, options) ->
-		if not @._relational then return @.__remove model, options
+		if not @._relational then return @.__remove models, options
 
 		options || (options = {})
 		if not _.isArray models

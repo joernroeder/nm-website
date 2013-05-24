@@ -48,7 +48,30 @@ class DocImage extends SubdomainResponsiveImage {
 		return $urlNames;
 	}*/
 
-	public function canView($member=null) {
+	public function canDelete($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+		
+		// admin can always edit
+		if (Permission::check('ADMIN', 'any', $member)) return true;
+
+		// iterate over project types and check if any of the can be edited by the current member.
+		// if yes, allow deletion
+		$canDelete = false;
+		foreach (Gallery_Controller::$project_types as $projectTypes) {
+			foreach ($this->$projectTypes() as $p) {
+				if ($p->canEdit($member)) $canDelete = true;
+				break;
+			}
+			if ($canDelete) break;
+		}
+
+		return $canDelete;
+	}
+
+	public function canView($member = null) {
 		return true;
 	}
 }

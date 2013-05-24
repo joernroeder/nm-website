@@ -86,7 +86,8 @@ do ($ = jQuery) ->
 				if not @._activeDraggableId
 					@._activeDraggableId = $(e.target).parent().data 'id'
 
-			else @._activeDraggableId = null
+			else
+				@._activeDraggableId = null
 
 		setAsDraggable: ($el) ->
 			if not @.draggables then @.draggables = []
@@ -116,7 +117,7 @@ do ($ = jQuery) ->
 				if id = @._activeDraggableId
 					@._activeDraggableId = null
 					data = @.options.getFromCache id
-					@.options.responseHandler data
+					if data then @.options.responseHandler data
 				else if e.dataTransfer.files.length
 					@.deferredUpload e
 

@@ -483,10 +483,18 @@ define [
 			afterRender: ->
 				@._afterRender()
 				JJMarkdownEditor.setAsDraggable @.$el.find('[data-md-tag]')
+			liveRemoval: ->
+				@.$el.find('[data-md-tag]').trigger 'dragend'
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-person-image'
 			className: 'PersonImage'
+			liveRemoval: ->
+				@.$el.find('[data-id]').trigger 'dragend'
+				personImg = app.CurrentMemberPerson.get 'Image'
+				if personImg.id is @.model.id
+					$('#current-person-image').empty()
+				@.remove()
 
 		UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-project-item'

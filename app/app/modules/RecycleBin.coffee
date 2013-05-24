@@ -6,21 +6,43 @@ define [
 
 	RecycleBin.setup = ->
 		@.$bin = $bin = $('#recycle-bin')
-		$bin.on 'drop', =>
+
+		$bin.on 'dragenter dragleave drop', (e) ->
+			method = if e.type is 'dragenter' then 'addClass' else 'removeClass'
+			$(e.target)[method]('dragover')
+
+		$bin.on 'drop', (e) =>
 			toRecycle = @.activeRecycleDrag
+			@.activeRecycleDrag = null
 			if toRecycle and toRecycle.className
 
-				
-				# @todo: check canDelete on serverside!!!
+				id = if toRecycle.model.ID then toRecycle.model.ID else toRecycle.model.id
+				# @todo: remove views appropriately
+				# @todo: remove images from gallery!
 				# try to get it from Backbone.JJStore and use Backbone's native `destroy` method
-				if model = Backbone.JJStore._byId toRecycle.className, toRecycle.model.id
+				@.removeViewAndData toRecycle
+
+				if model = Backbone.JJStore._byId toRecycle.className, id
 					# destroy it
 					model.destroy()
 				else
 					# not yet present in the store. destroy it manually
-					url = JJRestApi.setObjectUrl(toRecycle.className, {id: toRecycle.model.id})
-					console.log 'destroy manually'
-					console.log url
+					url = JJRestApi.setObjectUrl(toRecycle.className, {id: id})
+					req = $.ajax
+						url: url
+						contentType: 'json'
+						type: 'DELETE'
+	
+	RecycleBin.removeViewAndData = (toRecycle) ->
+		toRecycle.view.$el.trigger 'dragend'
+		# handle gallery
+		if toRecycle.className is 'PersonImage' or toRecycle.className is 'DocImage'
+			app.removeFromGalleryCache toRecycle.className, toRecycle.model.id
+			toRecycle.view.liveRemoval()
+		else
+			toRecycle.view.remove()
+
+
 
 	RecycleBin.setViewAsRecyclable = (view) ->
 		data = 

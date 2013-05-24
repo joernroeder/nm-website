@@ -197,6 +197,10 @@ class Workshop extends DataObject {
 		return $fields;
 	}
 
+	public function canDelete($member = null) {
+		return $this->canEdit($member);
+	}
+
 	public function canEdit($member = null) {
 		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
 

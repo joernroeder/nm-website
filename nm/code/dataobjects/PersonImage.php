@@ -32,7 +32,21 @@ class PersonImage extends SubdomainResponsiveImage {
 		)
 	);
 
-	public function canView($member=null) {
+	public function canDelete($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+		
+		// admin can always edit
+		if (Permission::check('ADMIN', 'any', $member)) return true;
+
+		if ($member->PersonImages()->byID($this->ID)) return true;
+
+		return false;
+	}
+
+	public function canView($member = null) {
 		return true;
 	}
 }

@@ -289,6 +289,28 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       }
     });
   };
+  app.removeFromGalleryCache = function(className, id) {
+    var _this = this;
+
+    if (className === 'PersonImage') {
+      _.each(this.Cache.UserGallery.images.Person, function(img, i) {
+        if (img.id === id) {
+          return delete _this.Cache.UserGallery.images.Person[i];
+        }
+      });
+    }
+    if (className === 'DocImage') {
+      _.each(this.Cache.UserGallery.images.Projects, function(project, i) {
+        return _.each(project.Images, function(img, j) {
+          console.log(img);
+          if (img.id === id) {
+            return delete _this.Cache.UserGallery.images.Projects[i].Images[j];
+          }
+        });
+      });
+    }
+    return true;
+  };
   app.initialLoggedInCheck = function() {
     return JJRestApi.getFromDomOrApi('current-member', {
       noAjax: true
