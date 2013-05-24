@@ -913,6 +913,17 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		.ui-list > section {
 			padding: 0 (@line / @em);
+
+			section {
+				margin-bottom: @line / @em; 
+				border-bottom: 1px solid darken(@gray, 30%);
+				padding-bottom: @line / 3 / @em;
+
+				&:last-child {
+					border-bottom: none;
+					margin-bottom: 0;
+				}
+			}
 		}
 	}
 
@@ -1278,6 +1289,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	input[type="text"],
 	input[type="email"],
+	input[type="tel"],
 	input[type="password"] {
 		font-size: 14 / @em;
 		width: 100%;
@@ -1311,8 +1323,6 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	h3 {
-		border-bottom: 1px solid darken(@gray, 30%);
-		padding-bottom: @line / 3 / @em;
 		margin-bottom: @line / 3 / @em;
 	}
 

@@ -1532,6 +1532,15 @@ x:-o-prefocus,
 .editor-sidebar .editor-sidebar-content .ui-list > section {
   padding: 0 1.5em;
 }
+.editor-sidebar .editor-sidebar-content .ui-list > section section {
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #454545;
+  padding-bottom: 0.5em;
+}
+.editor-sidebar .editor-sidebar-content .ui-list > section section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
 .editor-sidebar .scrollbox {
   position: relative;
   overflow: auto;
@@ -1926,6 +1935,7 @@ x:-o-prefocus,
 }
 .editor-sidebar input[type="text"],
 .editor-sidebar input[type="email"],
+.editor-sidebar input[type="tel"],
 .editor-sidebar input[type="password"] {
   font-size: 0.875em;
   width: 100%;
@@ -1945,6 +1955,7 @@ x:-o-prefocus,
 }
 .editor-sidebar input[type="text"]:focus,
 .editor-sidebar input[type="email"]:focus,
+.editor-sidebar input[type="tel"]:focus,
 .editor-sidebar input[type="password"]:focus {
   color: #fff;
   outline: none;
@@ -1961,21 +1972,25 @@ x:-o-prefocus,
 }
 .editor-sidebar input[type="text"]:focus::-webkit-input-placeholder,
 .editor-sidebar input[type="email"]:focus::-webkit-input-placeholder,
+.editor-sidebar input[type="tel"]:focus::-webkit-input-placeholder,
 .editor-sidebar input[type="password"]:focus::-webkit-input-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="text"]:focus::-moz-placeholder,
 .editor-sidebar input[type="email"]:focus::-moz-placeholder,
+.editor-sidebar input[type="tel"]:focus::-moz-placeholder,
 .editor-sidebar input[type="password"]:focus::-moz-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="text"]:focus:-ms-input-placeholder,
 .editor-sidebar input[type="email"]:focus:-ms-input-placeholder,
+.editor-sidebar input[type="tel"]:focus:-ms-input-placeholder,
 .editor-sidebar input[type="password"]:focus:-ms-input-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="text"]:focus:-moz-placeholder,
 .editor-sidebar input[type="email"]:focus:-moz-placeholder,
+.editor-sidebar input[type="tel"]:focus:-moz-placeholder,
 .editor-sidebar input[type="password"]:focus:-moz-placeholder {
   color: #262626;
 }
@@ -1989,8 +2004,6 @@ x:-o-prefocus,
   color: #919191;
 }
 .editor-sidebar h3 {
-  border-bottom: 1px solid #454545;
-  padding-bottom: 0.5em;
   margin-bottom: 0.5em;
 }
 .editor-sidebar textarea {
