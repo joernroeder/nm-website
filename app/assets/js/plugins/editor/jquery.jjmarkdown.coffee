@@ -93,7 +93,7 @@ do ($ = jQuery) ->
 		cleanup : ->
 			@.$input.remove()
 			@.$preview.remove()
-			@.$dropzone.remove()
+			if @.$dropzone then @.$dropzone.remove()
 
 		initialize : ->
 			

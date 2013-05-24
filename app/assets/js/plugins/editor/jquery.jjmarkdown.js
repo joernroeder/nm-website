@@ -115,7 +115,9 @@ var __hasProp = {}.hasOwnProperty,
     JJMarkdownEditor.prototype.cleanup = function() {
       this.$input.remove();
       this.$preview.remove();
-      return this.$dropzone.remove();
+      if (this.$dropzone) {
+        return this.$dropzone.remove();
+      }
     };
 
     JJMarkdownEditor.prototype.initialize = function() {
