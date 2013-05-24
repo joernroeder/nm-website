@@ -44,7 +44,9 @@ class Gallery_Controller extends Controller {
 			if ($type === 'Person') {
 				// get the person images
 				foreach ($member->PersonImages() as $img) {
-					$gallery[] = $this->imageAsGalleryItem($img);
+					$gItem = $this->imageAsGalleryItem($img);
+					if (!$gItem) continue;
+					$gallery[] = $gItem;
 				}	
 			} 
 			else if ($type === 'Projects') {
@@ -58,7 +60,9 @@ class Gallery_Controller extends Controller {
 						if ($project->canEdit($member)) {
 							$projectData['Images'] = array();
 							foreach ($project->Images() as $img) {
-								$projectData['Images'][] = $this->imageAsGalleryItem($img);
+								$gItem = $this->imageAsGalleryItem($img);
+								if (!$gItem) continue;
+								$projectData['Images'][] = $gItem;
 							}
 						}
 						$gallery[] = $projectData;
@@ -166,7 +170,9 @@ class Gallery_Controller extends Controller {
 			$image->ResponsiveID = $imgObj->ID;
 			$image->write();
 
-			$galleryItem = $this->imageAsGalleryItem($imgObj, true);
+			$gItem = $this->imageAsGalleryItem($imgObj, true);
+			if (!$gItem) continue;
+			$galleryItem = $gItem;
 			
 			$galleryItem['UploadedToClass'] = $this->imageType;
 
@@ -194,7 +200,10 @@ class Gallery_Controller extends Controller {
 	}
 
 	private function imageAsGalleryItem($img, $includeTag = false) {
-		$closest = $img->getClosestImage(150);
+		$closest = $img->getClosestImage(150);#
+		$cropped = $closest ? $closest->CroppedImage(150,150) : null;
+		if (!$cropped) return null;
+		
 		$url = $closest ? $closest->CroppedImage(150,150)->getURL() : null;
 		$a = array(
 			'id'	=> $img->ID,
