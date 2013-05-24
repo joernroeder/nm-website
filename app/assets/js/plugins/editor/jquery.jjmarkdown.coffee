@@ -121,9 +121,6 @@ do ($ = jQuery) ->
 					_this.parseMarkdown()
 				, _this.options.parsingDelay
 
-			if func = @.options.onBlur
-				$input.on 'blur', func
-
 
 			# Setup the scrolling listener
 			$els = $input.add $preview

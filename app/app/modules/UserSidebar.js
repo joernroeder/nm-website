@@ -277,7 +277,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     tagName: 'div',
     template: 'security/editor-sidebar-user',
     events: {
-      'submit form.user-settings': 'changeUserCredentials'
+      'submit form.user-settings': 'changeUserCredentials',
+      'blur .save-on-blur': 'savePerson'
     },
     cleanup: function() {
       this._cleanup();
@@ -394,11 +395,18 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return this.bioEditor = bioEditor = new JJMarkdownEditor($textarea, {
         preview: $preview,
         dragAndDropAllowed: false,
-        customParsers: [],
-        onBlur: function(e) {
-          return console.log($(e.target).val());
-        }
+        customParsers: []
       });
+    },
+    savePerson: function(e) {
+      var $target, attributeName, value;
+
+      $target = $(e.target);
+      attributeName = $target.attr('name');
+      value = $target.val();
+      if (app.CurrentMemberPerson.get(attributeName) !== value) {
+        return app.CurrentMemberPerson.save(attributeName, value);
+      }
     },
     afterRender: function() {
       this._afterRender();
