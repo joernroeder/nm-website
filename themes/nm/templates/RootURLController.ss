@@ -53,21 +53,7 @@
 
 		<!-- our user widget with basic links to dashboard and logout -->
 		<div id="editor-sidebar"></div>
-
-		<div id="spinner-target">
-
-		</div>
-
-		<style type="text/css">
-			#recycle-bin.active {
-				width: 200px;
-				height: 200px;
-				background: black;
-				position: absolute;
-				left: 30%;
-				height: 30%;
-			}
-		</style>
+		<div id="spinner-target"></div>
 		<div id="recycle-bin"></div>
 	</div>
 

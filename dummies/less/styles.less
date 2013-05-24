@@ -1439,6 +1439,8 @@ body.drag-inline.dragover #uploadzone {
 	}
 }
 
+// ! create project
+
 .project-type-list {
 	position: absolute;
 	top: 50%;
@@ -1592,6 +1594,60 @@ form.create-project {
 		width: 34%;
 	}
 }
+
+
+// ! recycle bin
+
+#recycle-bin {
+	background: darken(@black, 5%);
+	width: 250px;
+	height: 200px;
+	position: fixed;
+	top: 50%;
+	left: -250px;
+	height: 20%;
+	border: (@line / @em) solid @editorSidebarBg;
+	.box-sizing(border-box);
+
+	background-image: url('/dummies/svg/bin02.svg');
+	background-repeat: no-repeat;
+	background-position: 85px 45px;
+
+	.transition-property(~"left, background-color");
+	.transition-duration(.3s);
+	.transition-timing-function(cubic-bezier(0.675, -0.170, 0.410, 1.350));
+
+	&:before {
+		content: '';
+		position: absolute;
+		width: 60px;
+		height: 25px;
+		top: 25px;
+		left: 84px;
+		z-index: -1;
+
+		background-image: url('/dummies/svg/bin01.svg');
+		background-repeat: no-repeat;
+		.transition(~"transform .15s ease-in-out");
+		-webkit-transform: rotate(0);
+		
+		-webkit-transform-origin: -5px 20px;
+		//background-color: pink;
+	}
+
+	&.active {
+		left: -50px;
+	}
+
+	&.dragover {
+		background-color: @nmColor;
+		
+		&:before {
+			-webkit-transform: rotate(-80deg);
+		}
+	}
+}
+		
 
 /*
  *

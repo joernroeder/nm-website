@@ -42,8 +42,6 @@ define [
 		else
 			toRecycle.view.remove()
 
-
-
 	RecycleBin.setViewAsRecyclable = (view) ->
 		data = 
 			view: view
@@ -52,6 +50,8 @@ define [
 		data.className = if view.className then view.className else view.model.ClassName
 
 		view.$el.on 'dragstart dragend', (e) =>
+			$.fireGlobalDragEvent e.type, e.target
+
 			if e.type is 'dragstart' 
 				method = 'addClass'
 				@.activeRecycleDrag = data

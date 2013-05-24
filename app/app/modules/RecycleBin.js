@@ -58,6 +58,7 @@ define(['app'], function(app) {
     return view.$el.on('dragstart dragend', function(e) {
       var method;
 
+      $.fireGlobalDragEvent(e.type, e.target);
       if (e.type === 'dragstart') {
         method = 'addClass';
         _this.activeRecycleDrag = data;
