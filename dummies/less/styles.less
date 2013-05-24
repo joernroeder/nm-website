@@ -1599,15 +1599,18 @@ form.create-project {
 // ! recycle bin
 
 #recycle-bin {
+	@width: 250px;
+	@height: 180px;
+
 	background: darken(@black, 5%);
-	width: 250px;
-	height: 200px;
+	width: @width;
+	height: @height;
 	position: fixed;
 	top: 50%;
-	left: -250px;
-	height: 20%;
+	left: -@width;
 	border: (@line / @em) solid @editorSidebarBg;
 	.box-sizing(border-box);
+	margin-top: -@height / 2;
 
 	background-image: url('/dummies/svg/bin02.svg');
 	background-repeat: no-repeat;
@@ -1640,7 +1643,7 @@ form.create-project {
 	}
 
 	&.dragover {
-		background-color: @nmColor;
+		background-color: darken(@nmColor, 30%);
 		
 		&:before {
 			-webkit-transform: rotate(-80deg);

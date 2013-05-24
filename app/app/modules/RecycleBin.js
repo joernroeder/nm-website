@@ -18,15 +18,16 @@ define(['app'], function(app) {
       toRecycle = _this.activeRecycleDrag;
       if (toRecycle && toRecycle.className) {
         if (model = Backbone.JJStore._byId(toRecycle.className, toRecycle.model.id)) {
-          return model.destroy();
+          model.destroy();
         } else {
           url = JJRestApi.setObjectUrl(toRecycle.className, {
             id: toRecycle.model.id
           });
           console.log('destroy manually');
-          return console.log(url);
+          console.log(url);
         }
       }
+      return $bin.removeClass('dragover');
     });
   };
   RecycleBin.setViewAsRecyclable = function(view) {

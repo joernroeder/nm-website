@@ -2311,15 +2311,15 @@ form.create-project button {
 #recycle-bin {
   background: #191919;
   width: 250px;
-  height: 200px;
+  height: 180px;
   position: fixed;
   top: 50%;
   left: -250px;
-  height: 20%;
   border: 1.5em solid #262626;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  margin-top: -90px;
   background-image: url('/dummies/svg/bin02.svg');
   background-repeat: no-repeat;
   background-position: 85px 45px;
@@ -2359,7 +2359,7 @@ form.create-project button {
   left: -50px;
 }
 #recycle-bin.dragover {
-  background-color: #d9df20;
+  background-color: #57590d;
 }
 #recycle-bin.dragover:before {
   -webkit-transform: rotate(-80deg);

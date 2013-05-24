@@ -28,6 +28,8 @@ define [
 						url = JJRestApi.setObjectUrl(toRecycle.className, {id: toRecycle.model.id})
 						console.log 'destroy manually'
 						console.log url
+
+				$bin.removeClass 'dragover'
 			)
 
 	RecycleBin.setViewAsRecyclable = (view) ->
