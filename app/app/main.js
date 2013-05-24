@@ -362,9 +362,11 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   };
   $(function() {
     jQuery.event.props.push('dataTransfer');
-    $(document).on('dragover drop', function(e) {
-      if (e.type === 'drop') {
-        $.fireGlobalDragEvent('drop', e.target, 'file');
+    $(document).on('dragenter dragover dragleave drop', function(e) {
+      if (e.type === 'dragenter' || e.type === 'dragover') {
+        $.fireGlobalDragEvent('dragstart', e.target, 'file');
+      } else {
+        $.fireGlobalDragEvent(e.type, e.target, 'file');
       }
       return e.preventDefault();
     });

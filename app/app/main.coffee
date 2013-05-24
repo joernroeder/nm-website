@@ -297,9 +297,11 @@ require [
 		jQuery.event.props.push 'dataTransfer'
 		
 		# disable drag'n'drop for whole document
-		$(document).on 'dragover drop', (e) ->
-			if e.type is 'drop'
-				$.fireGlobalDragEvent 'drop', e.target, 'file'
+		$(document).on 'dragenter dragover dragleave drop', (e) ->
+			if e.type is 'dragenter' or e.type is 'dragover'
+				$.fireGlobalDragEvent 'dragstart', e.target, 'file'
+			else
+				$.fireGlobalDragEvent e.type, e.target, 'file'
 			e.preventDefault()
 
 		# drag'n'drop for recyclebin
