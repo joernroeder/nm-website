@@ -4,9 +4,15 @@ define(['app'], function(app) {
 
   RecycleBin = {};
   RecycleBin.setup = function() {
-    var $bin,
+    var $bin, doneHandling,
       _this = this;
 
+    doneHandling = function() {
+      $bin.addClass('done');
+      return setTimeout(function() {
+        return $bin.removeClass('done');
+      }, 1000);
+    };
     this.$bin = $bin = $('#recycle-bin').removeClass('done');
     $bin.on('dragenter dragleave drop', function(e) {
       var method;
@@ -20,11 +26,13 @@ define(['app'], function(app) {
       toRecycle = _this.activeRecycleDrag;
       _this.activeRecycleDrag = null;
       if (toRecycle && toRecycle.className) {
-        $bin.addClass('done');
+        $bin.addClass('processing');
         id = toRecycle.model.ID ? toRecycle.model.ID : toRecycle.model.id;
         _this.removeViewAndData(toRecycle);
         if (model = Backbone.JJStore._byId(toRecycle.className, id)) {
           model.destroy();
+          doneHandling();
+          return $bin.removeClass('processing');
         } else {
           url = JJRestApi.setObjectUrl(toRecycle.className, {
             id: id
@@ -34,10 +42,13 @@ define(['app'], function(app) {
             contentType: 'json',
             type: 'DELETE'
           });
+          req.always(function() {
+            return $bin.removeClass('processing');
+          });
+          return req.done(function() {
+            return doneHandling();
+          });
         }
-        return setTimeout(function() {
-          return $bin.removeClass('done');
-        }, 1000);
       }
     });
   };

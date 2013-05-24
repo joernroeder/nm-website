@@ -5,6 +5,12 @@ define [
 	RecycleBin = {}
 
 	RecycleBin.setup = ->
+		doneHandling = ->
+			$bin.addClass 'done'
+			setTimeout ->
+				$bin.removeClass 'done'
+			, 1000
+
 		@.$bin = $bin = $('#recycle-bin').removeClass 'done'
 		$bin.on 'dragenter dragleave drop', (e) ->
 			method = if e.type is 'dragenter' then 'addClass' else 'removeClass'
@@ -14,7 +20,7 @@ define [
 			toRecycle = @.activeRecycleDrag
 			@.activeRecycleDrag = null
 			if toRecycle and toRecycle.className
-				$bin.addClass 'done'
+				$bin.addClass 'processing'
 
 				id = if toRecycle.model.ID then toRecycle.model.ID else toRecycle.model.id
 				# @todo: remove views appropriately
@@ -25,6 +31,8 @@ define [
 				if model = Backbone.JJStore._byId toRecycle.className, id
 					# destroy it
 					model.destroy()
+					doneHandling()
+					$bin.removeClass 'processing'
 				else
 					# not yet present in the store. destroy it manually
 					url = JJRestApi.setObjectUrl(toRecycle.className, {id: id})
@@ -33,9 +41,11 @@ define [
 						contentType: 'json'
 						type: 'DELETE'
 
-				setTimeout ->
-					$bin.removeClass 'done'
-				, 1000
+					req.always =>
+						$bin.removeClass 'processing'
+
+					req.done =>
+						doneHandling()
 
 	
 	RecycleBin.removeViewAndData = (toRecycle) ->
