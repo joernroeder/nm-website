@@ -67,17 +67,20 @@ define [
 			# !- Custom
 			
 			toggleSidebarCheck: (e) ->
+				e.preventDefault()
+
 				$target = $ e.target
 				toShow = $target.data 'editor-sidebar-content'
 				subViewName = @.getSubviewName toShow
 
 				if @.subViewName is subViewName
+					if not @.subView.__manager__.hasRendered then return false
 					$target.toggleClass 'active'
 					@.toggle()
 				else if subViewName
-						$target.parents('nav').find('.active').removeClass('active').end().end().addClass 'active'
-						@.setSubview subViewName, true # doRender = true
-						@.open true # switched = true
+					$target.parents('nav').find('.active').removeClass('active').end().end().addClass 'active'
+					@.setSubview subViewName, true # doRender = true
+					@.open true # switched = true
 
 				false
 
@@ -101,14 +104,15 @@ define [
 				if @.availableSubViews[toShow] then @.availableSubViews[toShow] else false
 
 			setSubview: (subViewName, doRender) ->
-				if subViewName
+				if subViewName 
+					console.log 'setting subview'
 					@.subViewName = subViewName
 					@.subView = new UserSidebar.Views[subViewName]()
 					@.subView.parentView = @
 					@.startSpinner()
 
 					@.setView '#editor-sidebar-container', @.subView
-					console.log @
+		
 					if doRender then @.subView.render()
 				else 
 					# remove current subview

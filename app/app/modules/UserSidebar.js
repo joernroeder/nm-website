@@ -57,10 +57,14 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     toggleSidebarCheck: function(e) {
       var $target, subViewName, toShow;
 
+      e.preventDefault();
       $target = $(e.target);
       toShow = $target.data('editor-sidebar-content');
       subViewName = this.getSubviewName(toShow);
       if (this.subViewName === subViewName) {
+        if (!this.subView.__manager__.hasRendered) {
+          return false;
+        }
         $target.toggleClass('active');
         this.toggle();
       } else if (subViewName) {
@@ -100,12 +104,12 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     },
     setSubview: function(subViewName, doRender) {
       if (subViewName) {
+        console.log('setting subview');
         this.subViewName = subViewName;
         this.subView = new UserSidebar.Views[subViewName]();
         this.subView.parentView = this;
         this.startSpinner();
         this.setView('#editor-sidebar-container', this.subView);
-        console.log(this);
         if (doRender) {
           return this.subView.render();
         }
