@@ -1161,10 +1161,16 @@ marked.inlineLexer = InlineLexer.output;
 
 marked.parse = marked;
 
-if (typeof exports === 'object') {
+/*if (typeof exports === 'object') {
   module.exports = marked;
 } else if (typeof define === 'function' && define.amd) {
   define(function() { return marked; });
+} else {
+  this.marked = marked;
+}*/
+// edit by johnny
+if (typeof exports === 'object') {
+  module.exports = marked;
 } else {
   this.marked = marked;
 }

@@ -34,6 +34,7 @@ var __hasProp = {}.hasOwnProperty,
     JJMarkdownEditor.prototype.defaults = {
       preview: '#preview',
       parsingDelay: 200,
+      dragAndDropAllowed: true,
       hideDropzoneDelay: 1000,
       errorMsg: 'Sorry, but there has been an error.',
       contentGetter: 'val',
@@ -41,6 +42,7 @@ var __hasProp = {}.hasOwnProperty,
       customParserOptions: {},
       afterRender: null,
       onChange: null,
+      onBlur: null,
       imageUrl: '/imagery/images/docimage'
     };
 
@@ -117,7 +119,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJMarkdownEditor.prototype.initialize = function() {
-      var $els, $input, $preview, scrollArea,
+      var $els, $input, $preview, func, scrollArea,
         _this = this;
 
       $.each(this.options.customParsers, function(i, parser) {
@@ -145,6 +147,9 @@ var __hasProp = {}.hasOwnProperty,
           return _this.parseMarkdown();
         }, _this.options.parsingDelay);
       });
+      if (func = this.options.onBlur) {
+        $input.on('blur', func);
+      }
       $els = $input.add($preview);
       scrollArea = null;
       $els.on('scroll', function(e) {
@@ -162,7 +167,9 @@ var __hasProp = {}.hasOwnProperty,
         }, 200);
       });
       _this.parseMarkdown();
-      this.dragAndDropSetup();
+      if (this.options.dragAndDropAllowed) {
+        this.dragAndDropSetup();
+      }
       return this;
     };
 

@@ -28,6 +28,7 @@ do ($ = jQuery) ->
 		defaults :
 			preview 			: '#preview'												# Specifies the preview area: Accepts either CSS-selector or jQuery object
 			parsingDelay	 	: 200														# Interval in which the markdown should be parsed (in ms)
+			dragAndDropAllowed	: true														# Defines whether DragAndDrop is allowed or not
 			hideDropzoneDelay 	: 1000 														# Defines after which time the dropzone within the preview area fades out when the markdown field is left (in ms)
 			errorMsg 			: 'Sorry, but there has been an error.' 					# Default error message
 			contentGetter		: 'val'														# Defines how to retrieve the input area's data. Default is 'val' (thus $input.val())
@@ -35,6 +36,7 @@ do ($ = jQuery) ->
 			customParserOptions	: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
 			afterRender			: null														# Method to call after the markdown rendering has been done
 			onChange			: null														# Function to pass the data to, after the parsing has been done
+			onBlur				: null														# Method to call when the input area loses focus
 			imageUrl			: '/imagery/images/docimage'								# URL to post the images to
 
 		$input : null
@@ -53,6 +55,7 @@ do ($ = jQuery) ->
 			@.$input = if selector instanceof jQuery then selector else $(selector)
 			@.$input._val = @.$input[@.options.contentGetter]
 			@.$preview = if @.options.preview instanceof jQuery then @.options.preview else $(@.options.preview)
+
 			@.initialize()
 
 		###*
@@ -118,6 +121,10 @@ do ($ = jQuery) ->
 					_this.parseMarkdown()
 				, _this.options.parsingDelay
 
+			if func = @.options.onBlur
+				$input.on 'blur', func
+
+
 			# Setup the scrolling listener
 			$els = $input.add $preview
 			scrollArea = null
@@ -139,7 +146,8 @@ do ($ = jQuery) ->
 
 			_this.parseMarkdown()
 
-			@.dragAndDropSetup()
+			if @.options.dragAndDropAllowed
+				@.dragAndDropSetup()
 
 			@
 

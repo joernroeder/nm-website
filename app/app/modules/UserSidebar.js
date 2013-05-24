@@ -104,7 +104,6 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     },
     setSubview: function(subViewName, doRender) {
       if (subViewName) {
-        console.log('setting subview');
         this.subViewName = subViewName;
         this.subView = new UserSidebar.Views[subViewName]();
         this.subView.parentView = this;
@@ -281,7 +280,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       'submit form.user-settings': 'changeUserCredentials'
     },
     cleanup: function() {
-      return this._cleanup();
+      this._cleanup();
+      return this.bioEditor.cleanup();
     },
     render: function(template, context) {
       var done, req;
@@ -385,11 +385,27 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         }
       });
     },
+    initBioEditor: function() {
+      var $bio, $preview, $textarea, bioEditor;
+
+      $bio = this.$el.find('#bio');
+      $textarea = $bio.find('.markdown-editor');
+      $preview = $bio.find('.markdown-editor-preview');
+      return this.bioEditor = bioEditor = new JJMarkdownEditor($textarea, {
+        preview: $preview,
+        dragAndDropAllowed: false,
+        customParsers: [],
+        onBlur: function(e) {
+          return console.log($(e.target).val());
+        }
+      });
+    },
     afterRender: function() {
       this._afterRender();
       this.initDropzone();
       this.initPersonImageList();
-      return this.initProjectList();
+      this.initProjectList();
+      return this.initBioEditor();
     },
     changeUserCredentials: function(e) {
       var $form, data, dfd,

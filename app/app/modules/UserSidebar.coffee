@@ -105,7 +105,6 @@ define [
 
 			setSubview: (subViewName, doRender) ->
 				if subViewName 
-					console.log 'setting subview'
 					@.subViewName = subViewName
 					@.subView = new UserSidebar.Views[subViewName]()
 					@.subView.parentView = @
@@ -267,6 +266,7 @@ define [
 			
 			cleanup: ->
 				@._cleanup()
+				@.bioEditor.cleanup()
 
 
 			render: (template, context = {}) ->
@@ -338,6 +338,17 @@ define [
 								app.CurrentMemberPerson.save 'Image', id
 								#app.CurrentMemberPerson.fetchByIdQueue 'Image'
 
+			initBioEditor: ->
+				$bio = @.$el.find '#bio'
+				$textarea = $bio.find '.markdown-editor'
+				$preview = $bio.find '.markdown-editor-preview'
+				@.bioEditor = bioEditor = new JJMarkdownEditor $textarea,
+					preview: $preview
+					dragAndDropAllowed: false
+					customParsers: []
+					onBlur: (e) ->
+						console.log $(e.target).val()
+
 
 			afterRender: ->
 				@._afterRender()
@@ -345,7 +356,7 @@ define [
 				@.initDropzone()
 				@.initPersonImageList()
 				@.initProjectList()
-				# do stuff
+				@.initBioEditor()
 			
 			# ! Events
 			changeUserCredentials: (e) ->

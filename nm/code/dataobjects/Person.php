@@ -134,7 +134,7 @@ class Person extends DataObject {
 			'IsStudent',
 			'IsAlumni',
 			'Email',
-			//'Bio',
+			'Bio',
 			'MarkdownedBio',
 			'GraduationYear',
 			'MasterYear',
@@ -212,7 +212,8 @@ class Person extends DataObject {
 			'IsAlumni'
 		),
 		'edit'	=> array(
-			'Image'
+			'Image',
+			'Bio'
 		)
 	);
 
