@@ -1620,14 +1620,6 @@ x:-o-prefocus,
   float: left;
   color: #919191;
 }
-.editor-sidebar header.editor-header {
-  opacity: 0;
-  -webkit-transition: opacity .2s ease-in-out;
-  -moz-transition: opacity .2s ease-in-out;
-  -o-transition: opacity .2s ease-in-out;
-  -ms-transition: opacity .2s ease-in-out;
-  transition: opacity .2s ease-in-out;
-}
 .editor-sidebar h1,
 .editor-sidebar h2,
 .editor-sidebar h3 {
@@ -1729,42 +1721,6 @@ x:-o-prefocus,
 .editor-sidebar input[type="search"]:focus:-moz-placeholder {
   color: #787878;
 }
-.editor-sidebar .editor-sidebar-content > section {
-  opacity: 0;
-  /**
-	 * For modern browsers
-	 * 1. The space content is one way to avoid an Opera bug when the
-	 *    contenteditable attribute is included anywhere else in the document.
-	 *    Otherwise it causes space to appear at the top and bottom of elements
-	 *    that are clearfixed.
-	 * 2. The use of `table` rather than `block` is only necessary if using
-	 *    `:before` to contain the top-margins of child elements.
-	 */
-
-  /**
-	 * For IE 6/7 only
-	 * Include this rule to trigger hasLayout and contain floats.
-	 */
-
-  *zoom: 1;
-  -webkit-transition: height 1s ease-in-out, opacity .2s ease-in-out;
-  -moz-transition: height 1s ease-in-out, opacity .2s ease-in-out;
-  -o-transition: height 1s ease-in-out, opacity .2s ease-in-out;
-  -ms-transition: height 1s ease-in-out, opacity .2s ease-in-out;
-  transition: height 1s ease-in-out, opacity .2s ease-in-out;
-}
-.editor-sidebar .editor-sidebar-content > section:before,
-.editor-sidebar .editor-sidebar-content > section:after {
-  content: " ";
-  /* 1 */
-
-  display: table;
-  /* 2 */
-
-}
-.editor-sidebar .editor-sidebar-content > section:after {
-  clear: both;
-}
 .editor-sidebar .project-list {
   list-style: none;
   margin: 0;
@@ -1841,7 +1797,16 @@ x:-o-prefocus,
   width: 100%;
   height: auto;
 }
-.editor-sidebar:not(.open).opened .editor-sidebar-container > header.hideable,
+.editor-sidebar .editor-header.hideable,
+.editor-sidebar .editor-sidebar-content {
+  opacity: 0;
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
+}
+.editor-sidebar:not(.open).opened .editor-sidebar-container > header,
 .editor-sidebar:not(.open).opened .editor-sidebar-container .editor-sidebar-content {
   opacity: 0;
   -webkit-transition: none;
@@ -1850,8 +1815,7 @@ x:-o-prefocus,
   -ms-transition: none;
   transition: none;
 }
-.editor-sidebar:not(.open) .editor-sidebar-content[class*="columns-"] header.editor-header.hideable,
-.editor-sidebar:not(.open) .editor-sidebar-content[class*="columns-"] > section {
+.editor-sidebar:not(.open) .editor-sidebar-content[class*="columns-"] {
   opacity: 0;
   -webkit-transition: none;
   -moz-transition: none;
@@ -1860,10 +1824,10 @@ x:-o-prefocus,
   transition: none;
 }
 .editor-sidebar.open.opened header.editor-header,
-.editor-sidebar.open.opened .editor-sidebar-content[class*="columns-"] > section {
+.editor-sidebar.open.opened .editor-sidebar-content[class*="columns-"] {
   opacity: 1;
 }
-.editor-sidebar.open.opened .editor-sidebar-content > header.hideable {
+.editor-sidebar.open.opened .editor-sidebar-content header.hideable {
   opacity: 1;
 }
 .editor-sidebar .editor-sidebar-content.columns-2 .image-list {
