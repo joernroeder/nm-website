@@ -121,7 +121,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJMarkdownEditor.prototype.initialize = function() {
-      var $els, $input, $preview, func, scrollArea,
+      var $els, $input, $preview, scrollArea,
         _this = this;
 
       $.each(this.options.customParsers, function(i, parser) {
@@ -149,9 +149,6 @@ var __hasProp = {}.hasOwnProperty,
           return _this.parseMarkdown();
         }, _this.options.parsingDelay);
       });
-      if (func = this.options.onBlur) {
-        $input.on('blur', func);
-      }
       $els = $input.add($preview);
       scrollArea = null;
       $els.on('scroll', function(e) {

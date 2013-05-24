@@ -257,6 +257,7 @@ define [
 
 			events:
 				'submit form.user-settings': 'changeUserCredentials'
+				'blur .save-on-blur': 'savePerson'
 
 					#@.$el.html(@.serialize())
 					#@.render()
@@ -346,11 +347,13 @@ define [
 					preview: $preview
 					dragAndDropAllowed: false
 					customParsers: []
-					onBlur: (e) ->
-						newbio = $(e.target).val()
-						oldbio = app.CurrentMemberPerson.get 'Bio'
-						if newbio isnt oldbio
-							app.CurrentMemberPerson.save 'Bio', newbio
+
+			savePerson: (e) ->
+				$target = $ e.target
+				attributeName = $target.attr 'name'
+				value = $target.val()
+				if app.CurrentMemberPerson.get(attributeName) isnt value
+					app.CurrentMemberPerson.save attributeName, value
 
 
 			afterRender: ->
