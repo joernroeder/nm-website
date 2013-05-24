@@ -5,15 +5,16 @@ define [
 	RecycleBin = {}
 
 	RecycleBin.setup = ->
-		@.$bin = $bin = $('#recycle-bin')
+		@.$bin = $bin = $('#recycle-bin').removeClass 'done'
 		$bin.on 'dragenter dragleave drop', (e) ->
 			method = if e.type is 'dragenter' then 'addClass' else 'removeClass'
-			$(e.target)[method]('dragover')
+			$(e.target)[method] 'dragover'
 
 		$bin.on 'drop', (e) =>
 			toRecycle = @.activeRecycleDrag
 			@.activeRecycleDrag = null
 			if toRecycle and toRecycle.className
+				$bin.addClass 'done'
 
 				id = if toRecycle.model.ID then toRecycle.model.ID else toRecycle.model.id
 				# @todo: remove views appropriately
@@ -31,6 +32,11 @@ define [
 						url: url
 						contentType: 'json'
 						type: 'DELETE'
+
+				setTimeout ->
+					$bin.removeClass 'done'
+				, 1000
+
 	
 	RecycleBin.removeViewAndData = (toRecycle) ->
 		toRecycle.view.$el.trigger 'dragend'

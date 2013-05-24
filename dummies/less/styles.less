@@ -1638,7 +1638,9 @@ form.create-project {
 		//background-color: pink;
 	}
 
-	&.active {
+	&.active,
+	&.done,
+	&.processing {
 		left: -50px;
 	}
 
@@ -1648,6 +1650,10 @@ form.create-project {
 		&:before {
 			-webkit-transform: rotate(-80deg);
 		}
+	}
+
+	&.done {
+		background-color: @nmColor;
 	}
 }
 		

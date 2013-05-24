@@ -2355,7 +2355,9 @@ form.create-project button {
   -webkit-transform: rotate(0);
   -webkit-transform-origin: -5px 20px;
 }
-#recycle-bin.active {
+#recycle-bin.active,
+#recycle-bin.done,
+#recycle-bin.processing {
   left: -50px;
 }
 #recycle-bin.dragover {
@@ -2363,6 +2365,9 @@ form.create-project button {
 }
 #recycle-bin.dragover:before {
   -webkit-transform: rotate(-80deg);
+}
+#recycle-bin.done {
+  background-color: #d9df20;
 }
 /*
  *
