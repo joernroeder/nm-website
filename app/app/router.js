@@ -346,14 +346,14 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         className: className,
         UglyHash: uglyHash
       }).fail(function() {
-        return console.log('Auth failed');
+        return Backbone.history.navigate('/login/', true);
       }).done(function() {
         return DataRetrieval.forDetailedObject(className, uglyHash, true).done(function(model) {
           return mainDfd.resolve(model);
         });
       });
       return mainDfd.fail(function() {
-        return console.log('Auth failed');
+        return Backbone.history.navigate('/login/', true);
       }).done(function(model) {
         var layout;
 

@@ -288,7 +288,7 @@ define [
 			className = app.resolveClassTypeByHash(uglyHash)
 			Auth.canEdit({className: className, UglyHash: uglyHash})
 				.fail =>
-					console.log 'Auth failed'
+					Backbone.history.navigate '/login/', true
 				.done =>
 					# get the appropriate object for editing
 					DataRetrieval.forDetailedObject(className, uglyHash, true)
@@ -296,7 +296,7 @@ define [
 							mainDfd.resolve model
 
 			mainDfd.fail ->
-				console.log 'Auth failed'
+				Backbone.history.navigate '/login/', true
 			.done (model) ->
 				layout = app.useLayout 'editor'
 				app.CurrentlyEditingProject = model
