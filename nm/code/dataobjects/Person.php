@@ -213,7 +213,9 @@ class Person extends DataObject {
 		),
 		'edit'	=> array(
 			'Image',
-			'Bio'
+			'Bio',
+			'Phone',
+			'Email'
 		)
 	);
 
