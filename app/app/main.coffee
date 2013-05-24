@@ -241,7 +241,6 @@ require [
 		if className is 'DocImage'
 			_.each @.Cache.UserGallery.images.Projects, (project, i) =>
 				_.each project.Images, (img, j) =>
-					console.log img
 					if img.id is id
 						delete @.Cache.UserGallery.images.Projects[i].Images[j]
 		true

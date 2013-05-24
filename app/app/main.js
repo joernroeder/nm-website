@@ -302,7 +302,6 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     if (className === 'DocImage') {
       _.each(this.Cache.UserGallery.images.Projects, function(project, i) {
         return _.each(project.Images, function(img, j) {
-          console.log(img);
           if (img.id === id) {
             return delete _this.Cache.UserGallery.images.Projects[i].Images[j];
           }

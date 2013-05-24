@@ -105,6 +105,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         this.subView.parentView = this;
         this.startSpinner();
         this.setView('#editor-sidebar-container', this.subView);
+        console.log(this);
         if (doRender) {
           return this.subView.render();
         }
@@ -509,7 +510,6 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
           return project.Title.toLowerCase();
         });
         currentProj = app.CurrentlyEditingProject;
-        console.log(currentProj);
         editFilter = currentProj.get('ClassName') + '-' + currentProj.id;
         old_i = 0;
         _.each(projects, function(project, i) {
@@ -534,9 +534,12 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
   });
   UserSidebar.Views.ListItem = Backbone.View.extend({
     tagName: 'li',
-    cleanup: function() {
+    _cleanup: function() {
       this.$el.data('recyclable', null);
       return this.$el.off('dragstart dragend');
+    },
+    cleanup: function() {
+      return this._cleanup();
     },
     serialize: function() {
       return this.model;
@@ -554,21 +557,37 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
   UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-gallery-image',
     className: 'DocImage',
+    cleanup: function() {
+      this.$el.find('[data-md-tag]').trigger('dragend');
+      return this._cleanup();
+    },
     afterRender: function() {
       this._afterRender();
       return JJMarkdownEditor.setAsDraggable(this.$el.find('[data-md-tag]'));
     },
     liveRemoval: function() {
-      return this.$el.find('[data-md-tag]').trigger('dragend');
+      var _this = this;
+
+      _.each(this.__manager__.parent.views, function(viewGroups) {
+        return _.each(viewGroups, function(view) {
+          if (view.model.id === _this.model.id && view !== _this) {
+            return view.remove();
+          }
+        });
+      });
+      return this.remove();
     }
   });
   UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-person-image',
     className: 'PersonImage',
+    cleanup: function() {
+      this.$el.find('[data-id]').trigger('dragend');
+      return this._cleanup();
+    },
     liveRemoval: function() {
       var personImg;
 
-      this.$el.find('[data-id]').trigger('dragend');
       personImg = app.CurrentMemberPerson.get('Image');
       if (personImg.id === this.model.id) {
         $('#current-person-image').empty();

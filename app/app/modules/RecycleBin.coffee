@@ -27,7 +27,7 @@ define [
 				# @todo: remove images from gallery!
 				# try to get it from Backbone.JJStore and use Backbone's native `destroy` method
 				@.removeViewAndData toRecycle
-
+			
 				if model = Backbone.JJStore._byId toRecycle.className, id
 					# destroy it
 					model.destroy()

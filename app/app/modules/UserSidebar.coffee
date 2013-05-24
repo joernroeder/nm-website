@@ -107,6 +107,7 @@ define [
 					@.startSpinner()
 
 					@.setView '#editor-sidebar-container', @.subView
+					console.log @
 					if doRender then @.subView.render()
 				else 
 					# remove current subview
@@ -437,7 +438,6 @@ define [
 						return project.Title.toLowerCase()
 					
 					currentProj = app.CurrentlyEditingProject
-					console.log currentProj
 					editFilter = currentProj.get('ClassName') + '-' + currentProj.id
 					old_i = 0
 					_.each projects, (project, i) ->
@@ -463,9 +463,11 @@ define [
 		UserSidebar.Views.ListItem = Backbone.View.extend
 			tagName: 'li'
 
-			cleanup: ->
+			_cleanup: ->
 				@.$el.data 'recyclable', null
 				@.$el.off 'dragstart dragend'
+			cleanup: ->
+				@._cleanup()
 			serialize: ->
 				@.model
 			insert: (root, child) ->
@@ -480,17 +482,32 @@ define [
 		UserSidebar.Views.GalleryImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-gallery-image'
 			className: 'DocImage'
+
+			cleanup: ->
+				@.$el.find('[data-md-tag]').trigger 'dragend'
+				@._cleanup()
+
 			afterRender: ->
 				@._afterRender()
 				JJMarkdownEditor.setAsDraggable @.$el.find('[data-md-tag]')
+
 			liveRemoval: ->
-				@.$el.find('[data-md-tag]').trigger 'dragend'
+				# get all gallery item views
+				_.each @.__manager__.parent.views, (viewGroups) =>
+					_.each viewGroups, (view) =>
+						if view.model.id is @.model.id and view isnt @
+							view.remove()
+				@.remove()
 
 		UserSidebar.Views.PersonImage = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-person-image'
 			className: 'PersonImage'
-			liveRemoval: ->
+
+			cleanup: ->
 				@.$el.find('[data-id]').trigger 'dragend'
+				@._cleanup()
+
+			liveRemoval: ->
 				personImg = app.CurrentMemberPerson.get 'Image'
 				if personImg.id is @.model.id
 					$('#current-person-image').empty()
