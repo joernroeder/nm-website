@@ -396,7 +396,13 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         dragAndDropAllowed: false,
         customParsers: [],
         onBlur: function(e) {
-          return console.log($(e.target).val());
+          var newbio, oldbio;
+
+          newbio = $(e.target).val();
+          oldbio = app.CurrentMemberPerson.get('Bio');
+          if (newbio !== oldbio) {
+            return app.CurrentMemberPerson.save('Bio', newbio);
+          }
         }
       });
     },

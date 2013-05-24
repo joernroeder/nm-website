@@ -347,7 +347,10 @@ define [
 					dragAndDropAllowed: false
 					customParsers: []
 					onBlur: (e) ->
-						console.log $(e.target).val()
+						newbio = $(e.target).val()
+						oldbio = app.CurrentMemberPerson.get 'Bio'
+						if newbio isnt oldbio
+							app.CurrentMemberPerson.save 'Bio', newbio
 
 
 			afterRender: ->
