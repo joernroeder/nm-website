@@ -8,7 +8,11 @@ define(['app'], function(app) {
       _this = this;
 
     this.$bin = $bin = $('#recycle-bin');
-    return $bin.on('drop', function() {
+    return $bin.on('dragenter', function() {
+      return $bin.addClass('dragover');
+    }).on('dragleave', function() {
+      return $bin.removeClass('dragover');
+    }).on('drop', function() {
       var model, toRecycle, url;
 
       toRecycle = _this.activeRecycleDrag;
@@ -37,6 +41,7 @@ define(['app'], function(app) {
     return view.$el.on('dragstart dragend', function(e) {
       var method;
 
+      $.fireGlobalDragEvent(e.type, e.target);
       if (e.type === 'dragstart') {
         method = 'addClass';
         _this.activeRecycleDrag = data;
