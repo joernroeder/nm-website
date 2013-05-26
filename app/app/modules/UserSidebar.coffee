@@ -431,6 +431,7 @@ define [
 							if $filtered.length
 								@.$sidebarContent.addClass 'filtered'
 								$filtered.addClass('active').siblings().removeClass 'active'
+								$filtered.prev('header').addClass 'active'
 						else
 							@.$sidebarContent
 								.removeClass('filtered')

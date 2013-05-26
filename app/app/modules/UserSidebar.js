@@ -497,7 +497,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
             $filtered = $("[data-filter-id=" + val + "]", _this.$sidebarContent);
             if ($filtered.length) {
               _this.$sidebarContent.addClass('filtered');
-              return $filtered.addClass('active').siblings().removeClass('active');
+              $filtered.addClass('active').siblings().removeClass('active');
+              return $filtered.prev('header').addClass('active');
             }
           } else {
             return _this.$sidebarContent.removeClass('filtered').find('.active').removeClass('active');

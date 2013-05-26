@@ -855,6 +855,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	max-height: 100%;
 	background: @editorSidebarBg;
 	.transition(~"width @{editorSlideTransition} ease-in-out");
+	z-index: 1;
 
 
 	&:target,
@@ -874,16 +875,17 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 
 		&.filtered {
-			section:not(.active) {
-				height: 0;
-				overflow: hidden;
-				margin: 0;
-
+			header,
+			section {
+				&:not(.active) {
+					height: 0;
+					overflow: hidden;
+					margin: 0;
+					padding: 0;
+					border-color: transparent;
+					background-color: transparent;
+				}
 			}
-		}
-
-		&.scrollbox {
-			padding: 0 0 (@line / @em);
 		}
 
 		header {
@@ -909,6 +911,14 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		section {
 			margin-bottom: @line * 2 / @em;
+		}
+		
+		&.scrollbox {
+			padding: 0;
+
+			.ui-list {
+				padding: 0 0 (@line / @em);
+			}
 		}
 
 		.ui-list > section {
