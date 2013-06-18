@@ -13,7 +13,7 @@
 
 		<!-- Editor -->
 		<script src="/app/assets/js/plugins/misc/misc.js"></script>
-		<script src="/dummies/js/editor/jquery.editor-sidebar.js"></script>
+		<script src="/app/assets/js/plugins/editor/jquery.editor-sidebar.js"></script>
 
 		<!-- JJMarkdown -->
 		<script src="/responsive-image/thirdparty/picturefill/picturefill.js" type="text/javascript"></script>
@@ -23,7 +23,8 @@
 		<script src="/dummies/epiceditor/johnny/base/jquery.jjfileupload.js" type="text/javascript"></script>
 		<script src="/dummies/epiceditor/johnny/base/jquery.jjMarkdown.js" type="text/javascript"></script>
 
-		<script src="/dummies/js/editor/jquery.editor-popover.js"></script>
+		<!--<script src="/dummies/js/editor/jquery.editor-popover.js"></script>-->
+		<script src="/app/assets/js/plugins/editor/jquery.editor-popover.js"></script>
 		
 	</body>
 	
