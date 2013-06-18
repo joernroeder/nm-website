@@ -145,7 +145,7 @@ do ($ = jQuery) ->
 			oo
 
 		getState: ->
-			@_storage
+			_storage
 
 		###
 		 # @private
@@ -157,9 +157,9 @@ do ($ = jQuery) ->
 				if @debug then console.group 'EDITOR BINDINGS:'
 				obj = {}
 				obj[e.fullName] = e.value				
-				@_storage = $.extend @_storage, @extractScope(obj)
+				_storage = $.extend _storage, @extractScope(obj)
 				
-				if @debug then console.log @_storage
+				if @debug then console.log _storage
 				if @debug then console.groupEnd()
 
 			# create component instances
