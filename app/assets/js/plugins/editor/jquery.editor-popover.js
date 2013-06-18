@@ -117,9 +117,14 @@ var __hasProp = {}.hasOwnProperty,
       handledBy: 'handled-by'
     };
 
-    function JJEditor(components) {
+    function JJEditor(scope, components) {
       var _this = this;
 
+      if (components === void 0) {
+        components = scope;
+        scope = $(document);
+      }
+      this.scope = scope instanceof jQuery ? scope : $(scope);
       if (this.debug) {
         console.group('EDITOR: add Components');
       }
@@ -227,7 +232,7 @@ var __hasProp = {}.hasOwnProperty,
           return console.groupEnd();
         }
       });
-      return $('[data-' + this.getAttr('type') + ']').each(function(i, el) {
+      return $('[data-' + this.getAttr('type') + ']', this.scope).each(function(i, el) {
         var $el, component, contentType;
 
         $el = $(el);

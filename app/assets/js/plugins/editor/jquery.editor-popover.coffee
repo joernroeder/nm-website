@@ -63,6 +63,9 @@ do ($ = jQuery) ->
 				range.moveStart "character", start
 				range.select()
 
+
+	# ! --- JJEditor --------------------------------------
+
 	class JJEditor
 		_contentTypes = {}
 		_components = {}
@@ -80,7 +83,13 @@ do ($ = jQuery) ->
 			options: 'options'
 			handledBy: 'handled-by'
 		
-		constructor: (components) ->
+		constructor: (scope, components) ->
+			if components is undefined
+				components = scope
+				scope = $ document
+
+			@scope = if scope instanceof jQuery then scope else $ scope
+
 			if @debug then console.group 'EDITOR: add Components'
 			$.map components, (component) =>
 				if @debug then console.log '- ' + component
@@ -154,7 +163,7 @@ do ($ = jQuery) ->
 				if @debug then console.groupEnd()
 
 			# create component instances
-			$('[data-' + @getAttr('type') + ']').each (i, el) =>
+			$('[data-' + @getAttr('type') + ']', @scope).each (i, el) =>
 				$el = $ el
 				contentType = $el.data @getAttr('type')
 
