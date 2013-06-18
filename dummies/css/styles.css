@@ -551,6 +551,14 @@ body {
   color: #262626;
   width: 100%;
 }
+::selection {
+  color: #d9df20;
+  background: #262626;
+}
+::-moz-selection {
+  color: #d9df20;
+  background: #262626;
+}
 iframe {
   max-width: 100%;
 }
@@ -1950,16 +1958,16 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background: #191919;
+  background-color: #1e1e1e;
   padding: 0.375em;
   border: none;
   margin-bottom: 0.75em;
   color: #fff;
-  -webkit-transition: color .2s ease-in-out, background .2s ease-in-out;
-  -moz-transition: color .2s ease-in-out, background .2s ease-in-out;
-  -o-transition: color .2s ease-in-out, background .2s ease-in-out;
-  -ms-transition: color .2s ease-in-out, background .2s ease-in-out;
-  transition: color .2s ease-in-out, background .2s ease-in-out;
+  -webkit-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  -moz-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  -o-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  -ms-transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  transition: color .2s ease-in-out, background-color .2s ease-in-out;
 }
 .editor-sidebar input[type="text"]:focus,
 .editor-sidebar input[type="email"]:focus,

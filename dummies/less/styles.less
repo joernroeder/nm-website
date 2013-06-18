@@ -30,6 +30,16 @@ body {
 	width: 100%;
 }
 
+::selection {
+	color: @nmColor;
+	background: @black;
+}
+
+::-moz-selection {
+	color: @nmColor;
+	background: @black;
+}
+
 .placeholder(@color) {
 	&::-webkit-input-placeholder { color: @color; }
 	&::-moz-placeholder { color: @color; } /* firefox 19+ */
@@ -1304,13 +1314,13 @@ x:-o-prefocus, .qtip .qtip-tip{
 		font-size: 14 / @em;
 		width: 100%;
 		.box-sizing(border-box);
-		background: darken(@black, 5%);
+		background-color: darken(@black, 3%);
 		padding: @line / 4 / @em;
 		border: none;
 		margin-bottom: @line / 2 / @em;
 		color: #fff;
 
-		.transition(~"color .2s ease-in-out, background .2s ease-in-out");
+		.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
 
 		&:focus {
 			color: #fff;
