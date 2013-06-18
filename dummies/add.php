@@ -81,7 +81,7 @@
 
 					<!-- Choose Project-Item List -->
 
-					<ul class="project-type-list">
+					<!--<ul class="project-type-list">
 						<li>
 							<a href="#" class="excursion">Excursion</a>
 						</li>
@@ -97,7 +97,7 @@
 						<li>
 							<a href="#" class="workshop">Workshop</a>
 						</li>
-					</ul>
+					</ul>-->
 					
 
 					<!-- Overview -->
@@ -127,7 +127,7 @@ MarkdownedTeaser
 									<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Image.Test">{{Test}}</a>
 									<div data-editor-scope="Image">
 										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Test">{{Test}}</a>
-										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Title">{{Title}}</a>
+										<h5 href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Title">{{Title}}</h5>
 									</div>
 								</div>
 							</section>

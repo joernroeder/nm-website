@@ -73,7 +73,7 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, editor, _ref, _ref1, _ref2, _ref3;
+  var $test, DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, editor, _ref, _ref1, _ref2, _ref3;
 
   $.fn.selectRange = function(start, end) {
     if (!end) {
@@ -114,7 +114,8 @@ var __hasProp = {}.hasOwnProperty,
       scope: 'scope',
       placeholder: 'placeholder',
       options: 'options',
-      handledBy: 'handled-by'
+      handledBy: 'handled-by',
+      componentId: 'component-id'
     };
 
     function JJEditor(scope, components) {
@@ -205,7 +206,118 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditor.prototype.getState = function() {
-      return this._storage;
+      return _storage;
+    };
+
+    JJEditor.prototype.addElement = function($el) {
+      var component, contentType;
+
+      contentType = $el.data(this.getAttr('type'));
+      component = false;
+      if ($el.attr(this.getAttr('handledBy'))) {
+        console.log('already handled by the editor!');
+        return component;
+      }
+      if (-1 !== $.inArray(contentType, Object.keys(_contentTypes))) {
+        component = getComponentByContentType.call(this, contentType);
+        $el.data(this.getAttr('componentId'), component.id);
+        component.init($el);
+      }
+      return component;
+    };
+
+    JJEditor.prototype.removeElement = function($el) {
+      var component, componentId;
+
+      console.log('going to remove element: %o', $el);
+      componentId = $el.data(this.getAttr('componentId'));
+      component = this.getComponent(componentId);
+      if (component) {
+        component.destroy();
+        return true;
+      }
+      console.log(this.getState());
+      return false;
+    };
+
+    /*
+    		 # remove element by scope
+    		 #
+    		 # @example editor.removeElementByScope('Foo.Bar.Title');
+    */
+
+
+    JJEditor.prototype.removeElementByScope = function(fullName) {
+      var component, components, i, removed;
+
+      components = this.getComponents();
+      removed = false;
+      for (i in components) {
+        component = components[i];
+        if (fullName === component.getDataFullName()) {
+          component.destroy();
+          removed = true;
+        }
+      }
+      return removed;
+    };
+
+    /*
+    		 # remove elements by scope
+    		 #
+    		 # @example editor.removeElementsByScope('Foo.Bar');
+    		 # @example editor.removeElementsByScope('Foo.Bar', ['Title, Description']);
+    */
+
+
+    JJEditor.prototype.removeElementsByScope = function(scope, names) {
+      var all, component, components, i, removed;
+
+      if (names == null) {
+        names = [];
+      }
+      components = this.getComponents();
+      removed = false;
+      if (!names.length) {
+        all = true;
+      }
+      for (i in components) {
+        component = components[i];
+        if (scope === component.getDataScope()) {
+          if (all || -1 !== $.inArray(component.getDataName(), names)) {
+            component.destroy();
+            removed = true;
+          }
+        }
+      }
+      return removed;
+    };
+
+    JJEditor.prototype.updateElements = function() {
+      var component, handledBy, id, _ref,
+        _this = this;
+
+      handledBy = this.getAttr('handledBy');
+      $('[data-' + this.getAttr('type') + ']', this.scope).each(function(i, el) {
+        var $el;
+
+        $el = $(el);
+        if (!$el.attr(handledBy)) {
+          return _this.addElement($el);
+        }
+      });
+      _ref = this.getComponents();
+      for (id in _ref) {
+        component = _ref[id];
+        if (!component.elementExists()) {
+          component.destroy();
+        }
+      }
+      return null;
+    };
+
+    JJEditor.prototype.detroy = function() {
+      return console.log('going to destroy the editor and remove all');
     };
 
     /*
@@ -224,25 +336,15 @@ var __hasProp = {}.hasOwnProperty,
         }
         obj = {};
         obj[e.fullName] = e.value;
-        _this._storage = $.extend(_this._storage, _this.extractScope(obj));
+        _storage = $.extend(_storage, _this.extractScope(obj));
         if (_this.debug) {
-          console.log(_this._storage);
+          console.log(_storage);
         }
         if (_this.debug) {
           return console.groupEnd();
         }
       });
-      return $('[data-' + this.getAttr('type') + ']', this.scope).each(function(i, el) {
-        var $el, component, contentType;
-
-        $el = $(el);
-        contentType = $el.data(_this.getAttr('type'));
-        if (-1 !== $.inArray(contentType, Object.keys(_contentTypes))) {
-          component = getComponentByContentType.call(_this, contentType);
-          $el.data('editor-component-id', component.id);
-          return component.init($el);
-        }
-      });
+      return this.updateElements();
     };
 
     /*
@@ -331,6 +433,11 @@ var __hasProp = {}.hasOwnProperty,
         return _contentTypes[lowerType] = componentName;
       }
     };
+
+    /*
+    		 # @todo check what's going on here!
+    */
+
 
     JJEditor.prototype.save = function() {
       console.log('save state!!');
@@ -450,6 +557,26 @@ var __hasProp = {}.hasOwnProperty,
     JJEditable.prototype.off = function(name, callback) {
       name = getEventName(name);
       return this.editor.off(name, callback);
+    };
+
+    JJEditable.prototype.getElement = function() {
+      return this.element;
+    };
+
+    /*
+    		 # returns true if the element is still present in the documents DOM
+    		 # @see http://stackoverflow.com/a/4040848/520544
+    		 #
+    		 # @return boolean
+    */
+
+
+    JJEditable.prototype.elementExists = function() {
+      return this.element.closest('body').length > 0;
+    };
+
+    JJEditable.prototype.getId = function() {
+      return this.id;
     };
 
     JJEditable.prototype.setValue = function(value) {
@@ -597,6 +724,10 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
+    JJEditable.prototype.destroy = function() {
+      return console.log('going to remove the Component %s from the editor', this.getDataFullName());
+    };
+
     return JJEditable;
 
   })();
@@ -638,10 +769,11 @@ var __hasProp = {}.hasOwnProperty,
             $input = $('input, textarea', _this.api.tooltip).eq(0);
             $input.selectRange($input.val().length);
             if (_this.closeOnOuterClick) {
-              return element.one('outerClick', function() {
+              _this.api.tooltip.one('outerClick', function() {
                 return _this.close();
               });
             }
+            return _this;
           }
         },
         content: {
@@ -904,5 +1036,15 @@ var __hasProp = {}.hasOwnProperty,
   editor.on('change:My.Fucki.Image.Test', function(e) {
     return console.log("changed Test from " + e.prevValue + " to " + e.value);
   });
+  window.$test = $test = $('<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>');
+  $('.overview').prepend($test);
+  /*
+  	testComponent = editor.addElement $test
+  	console.log testComponent
+  	console.log testComponent.getId()
+  */
+
+  editor.removeElement($('[data-editor-name="Title"]'));
+  editor.removeElementsByScope('Person');
   return window.editor = editor;
 })(jQuery);

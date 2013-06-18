@@ -468,8 +468,10 @@ do ($ = jQuery) ->
 
 						# bind outer click to close the popup
 						if @closeOnOuterClick
-							element.one 'outerClick', =>
+							@api.tooltip.one 'outerClick', =>
 								@close()
+
+						@
 				
 				content: 
 					text: =>
