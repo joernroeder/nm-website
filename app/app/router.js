@@ -295,7 +295,6 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       return mainDfd.done(function() {
         var layout;
 
-        console.log('showing login form');
         layout = app.useLayout('main');
         return layout.setViewAndRenderMaybe('', new Auth.Views.Login());
       });

@@ -249,7 +249,6 @@ define [
 				mainDfd.resolve()
 
 			mainDfd.done ->
-				console.log 'showing login form'
 				layout = app.useLayout 'main'
 				layout.setViewAndRenderMaybe '', new Auth.Views.Login()
 
