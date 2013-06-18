@@ -70,7 +70,7 @@ do ($ = jQuery) ->
 		_contentTypes = {}
 		_components = {}
 		_storage = {}
-		events = {}
+		_events = {}
 
 		debug: true
 
@@ -82,6 +82,7 @@ do ($ = jQuery) ->
 			placeholder: 'placeholder'
 			options: 'options'
 			handledBy: 'handled-by'
+			componentId: 'component-id'
 		
 		constructor: (scope, components) ->
 			if components is undefined
@@ -96,7 +97,23 @@ do ($ = jQuery) ->
 				addComponent component
 			if @debug then console.groupEnd()
 
-			init.call @
+			# global bindings
+			@.on 'change:\\', (e) =>
+				if @debug then console.group 'EDITOR BINDINGS:'
+				obj = {}
+				obj[e.fullName] = e.value				
+				_storage = $.extend _storage, @extractScope(obj)
+				
+				if @debug then console.log _storage
+				if @debug then console.groupEnd()
+
+			@.on 'editor.removeComponent', (e) =>
+				console.log '@todo: remove component from state'
+				console.log @.getState()
+				#console.log e
+
+			# create component instances
+			@updateElements()
 
 		getAttr: (name) ->
 			if @attr[name] then @attr._namespace + @attr[name] else false
@@ -105,17 +122,17 @@ do ($ = jQuery) ->
 		###
 		 # on, off, trigger via $.Callbacks() 
 		 #
-		 # @link http://stackoverflow.com/questions/9099555/jquery-bind-events-on-plain-javascript-objects
+		 # @see http://stackoverflow.com/questions/9099555/jquery-bind-events-on-plain-javascript-objects
 		###
 		on: (name, callback) ->
-			if not events[name]
-				events[name] = $.Callbacks()
+			if not _events[name]
+				_events[name] = $.Callbacks "unique"
 
-			events[name].add callback
+			_events[name].add callback
 
 		off: (name, callback) ->
-			if not events[name] then return
-			events[name].remove callback
+			if not _events[name] then return
+			_events[name].remove callback
 
 		trigger: (name, eventData) ->
 			if @debug and name.indexOf ':' isnt -1
@@ -123,10 +140,7 @@ do ($ = jQuery) ->
 				console.log eventData
 				console.groupEnd()
 
-			if events[name] then events[name].fire eventData
-
-		triggerScope: (type, scope, eventData) ->
-			return ''
+			if _events[name] then _events[name].fire eventData
 
 		extractScope: (o) ->
 			oo = {}
@@ -147,32 +161,131 @@ do ($ = jQuery) ->
 		getState: ->
 			_storage
 
-		###
-		 # @private
-		###
-		init = ->
-			# global bindings
-			
-			@.on 'change:\\', (e) =>
-				if @debug then console.group 'EDITOR BINDINGS:'
-				obj = {}
-				obj[e.fullName] = e.value				
-				_storage = $.extend _storage, @extractScope(obj)
-				
-				if @debug then console.log _storage
-				if @debug then console.groupEnd()
 
-			# create component instances
+		# --- Dynamic Elements ----------------------------
+		
+		###
+		 # adds a new component with the settings of the DOM element to the editor.
+		 #
+		 # @param $el jQuery element
+		 #
+		 # @return JJEditable
+		###
+		addElement: ($el) ->
+			contentType = $el.data @getAttr('type')
+			component = false
+
+			if $el.attr @getAttr('handledBy')
+				console.log 'already handled by the editor!'
+				return component
+
+			if -1 isnt $.inArray(contentType, Object.keys(_contentTypes))
+				component = getComponentByContentType.call @, contentType
+
+				$el.data @getAttr('componentId'), component.id
+				component.init $el	
+				console.log 'add element: %s', component.getDataFullName() if @debug
+
+			component
+
+		###
+		 # removes the component instance associated with the given element
+		###
+		removeElement: ($el) ->
+			console.group 'EDITOR: remove component' if @debug
+			componentId = $el.data @getAttr('componentId')
+			component = @getComponent componentId
+			
+			if component
+				destroyComponent.call @, component
+				console.groupEnd() if @debug 
+				return true
+
+			false
+
+		###
+		 # removes an element by scope
+		 #
+		 # @example editor.removeElementByScope('Foo.Bar.Title');
+		###
+		removeElementByScope: (fullName) ->
+			components = @getComponents()
+			removed = false
+
+			console.group 'EDITOR: remove component by scope: %s', fullName if @debug
+			for i, component of components
+				if fullName is component.getDataFullName()
+					destroyComponent.call @, component
+					removed = true
+
+			console.groupEnd() if @debug
+			removed
+
+		###
+		 # remove elements by scope
+		 #
+		 # @example editor.removeElementsByScope('Foo.Bar');
+		 # @example editor.removeElementsByScope('Foo.Bar', ['Title, Description']);
+		###
+		removeElementsByScope: (scope, names = []) ->
+			components = @getComponents()			
+			removed = false
+
+			all = true unless names.length
+
+			console.group 'EDITOR: remove components by scope: %s, names: %O', scope, names if @debug
+			for i, component of components
+				if scope is component.getDataScope()
+					if all or -1 isnt $.inArray(component.getDataName(), names)
+						destroyComponent.call @, component
+						removed = true
+
+			console.groupEnd() if @debug
+			removed
+
+		###
+		 # syncs the editor components with the current DOM-Structure
+		###
+		updateElements: ->
+			handledBy = @getAttr 'handledBy'
+			console.group 'EDITOR: update Elements' if @debug
+
+			# check for new elements
 			$('[data-' + @getAttr('type') + ']', @scope).each (i, el) =>
 				$el = $ el
-				contentType = $el.data @getAttr('type')
+				if not $el.attr handledBy
+					@addElement $el
 
-				if -1 isnt $.inArray(contentType, Object.keys(_contentTypes))
-					component = getComponentByContentType.call @, contentType
-					#component.setElement $el
-					$el.data 'editor-component-id', component.id
-					component.init $el
+			# check for removed elements
+			for id, component of @getComponents()
+				if not component.elementExists()
+					destroyComponent.call @, component
 
+			console.groupEnd() if @debug
+
+			null
+
+		###
+		 # removes all component bindings and destroys the editor.
+		###
+		detroy: ->
+			console.log 'going to destroy the editor and remove all'
+
+			# destroy components
+			for id, component of @getComponents()
+				destroyComponent.call @, component
+
+			# remove bindings
+			@.off()
+
+			for name, callbacks of _events
+				callbacks.disable()
+				callbacks.empty()
+
+			false
+
+
+		# --- Private Methods -----------------------------
 
 		###
 		 # registers a new component
@@ -209,6 +322,17 @@ do ($ = jQuery) ->
 			else
 				return null
 
+		###
+		 # @private
+		 #
+		###
+		destroyComponent = (component) ->
+			id = component.getId()
+			console.log 'EDITOR: destroy component %s', component.getDataFullName() if @debug
+			component.destroy()
+			_components[id] = null
+			delete _components[id]
+
 		getComponent: (id) ->
 			if _components[id] then _components[id] else null
 
@@ -231,16 +355,24 @@ do ($ = jQuery) ->
 				_contentTypes[lowerType] = componentName
 
 
-		save: ->
-			console.log 'save state!!'
-			@trigger 'saved'
 
+	# end of JJEditor class -------------------------------
 
 
 	###
 	 # Abstract Editable Class
-	 # 
+	 #
 	 # @param [Editor] editor
+	 # 
+	 #
+	 # Custom event names can be easily created and destroyed with the 'getNamespacedEventName' function
+	 # @example
+	 # 		$foo.on(this.getNamespacedEventName('click'), function() {
+	 #			console.log('clicked');
+	 #		});
+	 #
+	 #		$foo.off(this.getNamespacedEventName('click'));
+	 #
 	###
 	class JJEditable 
 
@@ -271,6 +403,8 @@ do ($ = jQuery) ->
 			@setOptions element.data @editor.getAttr('options')
 			element.attr @editor.getAttr('handledBy'), @id
 
+			#@updateValue true
+
 		###
 		 # returns a namespaced event name
 		 # 
@@ -279,11 +413,20 @@ do ($ = jQuery) ->
 		###
 		getEventName = (name) ->
 			name = if -1 isnt name.indexOf '.' then name else @name + '.' + name
+			
+		# add component id to the event name
+		getNamespacedEventName: (name) ->
+			names = name.split ' '
+			eventNames = []
+
+			for n in names
+				eventNames.push "#{n}.#{@id}"
+
+			eventNames.join ' '
 
 		trigger: (name, eventData = {}) ->
 			eventData['senderId'] = @id
-			name = getEventName name
-
+			name = getEventName.call @, name
 			@editor.trigger name, eventData
 
 		triggerScopeEvent: (type, eventData = {}) ->
@@ -316,47 +459,82 @@ do ($ = jQuery) ->
 			@editor.trigger type + ':' + @getDataFullName(), eventData
 
 		on: (name, callback) ->
-			name = getEventName name
-			@editor.on name, callback
+			name = getEventName.call @, name
+			name = @getNamespacedEventName name
+			@editor.on name, callback unless @editor
 
 		off: (name, callback) ->
-			name = getEventName name
-			@editor.off name, callback
+			name = getEventName.call @, name
+			name = @getNamespacedEventName name
+			@editor.off name, callback unless @editor
 
 		# --- 
 		
-		setValue: (value) ->
+		getElement: ->
+			@element
+
+		###
+		 # returns true if the element is still present in the documents DOM
+		 # @see http://stackoverflow.com/a/4040848/520544
+		 #
+		 # @return boolean
+		###
+		elementExists: ->
+			@element.closest('body').length > 0
+		
+		getId: ->
+			@id
+
+		###
+		 # sets the value of the component
+		 #
+		 # @param [object] value
+		 # @param [boolean] silent
+		###
+		setValue: (value, silent) ->
 			if @_prevValue is value then return
 				
 			@_prevValue = @_value
 			@_value = value
-			@triggerScopeEvent 'change',
-				value: @_value
-				prevValue: @_prevValue
-			@triggerDataEvent 'change', 
-				value		: @_value
-				prevValue	: @_prevValue
 
-			if typeof value is 'string'
-				@render()
+			console.log 'set value silent: %s', silent
+			if not silent
+				@triggerScopeEvent 'change',
+					value: @_value
+					prevValue: @_prevValue
+
+				@triggerDataEvent 'change', 
+					value		: @_value
+					prevValue	: @_prevValue
+
+				if typeof value is 'string'
+					@render()
+
+			true
 
 		getValue: ->
 			@_value
 
-		updateValue: ->
-			@setValue @getValueFromContent()
+		###
+		 # use this method if you're going bind an element property to the component value.
+		 #
+		 # @use DateEditable.updateValue as an example
+		 #
+		###
+		updateValue: (silent) ->
+			@setValue @getValueFromContent(), silent
 
 		getValueFromContent: ->
-			return ''
+			null
 
 		getPlaceholder: ->
 			placeholder = @element.attr @editor.getAttr 'placeholder'
-			if placeholder then placeholder else 'foo'
+			if placeholder then placeholder else 'PLACEHOLDER'
 
 		getValueOrPlaceholder: ->
 			value = @getValue()
 			console.log 'value or placeholder: ' + value
-			if value then value else @getPlaceholder()
+			return if value then value else @getPlaceholder()
 
 		# --- 
 		
@@ -434,6 +612,18 @@ do ($ = jQuery) ->
 			if @element
 				@element.html @getValueOrPlaceholder()
 
+		# ---
+		
+		destroy: ->
+			@element.removeAttr @editor.getAttr('handledBy')
+
+			@trigger 'editor.removeComponent', @.getDataFullName()
+
+			#remove all event on the editor bound by this component
+			@editor.off @getNamespacedEventName('editor')
+
+			@editor = null
+
 
 
 	###
@@ -459,6 +649,8 @@ do ($ = jQuery) ->
 		init: (element) ->
 			super element
 
+			#@.setValue element.html(), 
+
 			element.qtip
 				events:
 					visible: (event, api) =>
@@ -468,7 +660,7 @@ do ($ = jQuery) ->
 
 						# bind outer click to close the popup
 						if @closeOnOuterClick
-							@api.tooltip.one 'outerClick', =>
+							@api.tooltip.one @getNamespacedEventName('outerClick'), =>
 								@close()
 
 						@
@@ -508,8 +700,11 @@ do ($ = jQuery) ->
 				if eventData.senderId isnt @id
 					@close()
 
-			element.on 'click', =>
+			element.on @getNamespacedEventName('click'), =>
 				@toggle()
+
+		getValueFromContent: ->
+			@element.html()
 
 		open: ->
 			@element.addClass 'active'
@@ -518,7 +713,7 @@ do ($ = jQuery) ->
 
 		close: ->
 			@element.removeClass 'active'
-			@element.unbind 'outerClick'
+			@api.tooltip.unbind @getNamespacedEventName('outerClick')
 			@api.hide()
 
 		toggle: ->
@@ -526,8 +721,6 @@ do ($ = jQuery) ->
 				@close()
 			else
 				@open()
-
-		#getValueFromContent: ->
 
 		getPopOverClasses: ->
 			(['editor-popover']).concat([@name], @popoverClasses).join ' '
@@ -541,6 +734,12 @@ do ($ = jQuery) ->
 		###
 		setPopoverContent: (value) ->
 			@_popoverContent = value
+
+		destroy: ->
+			@api.tooltip.unbind @getNamespacedEventName('outerClick')
+			@element.off @getNamespacedEventName('click')
+
+			super()
 
 
 	# ! --- Editable Sub-Classes ---
@@ -557,14 +756,20 @@ do ($ = jQuery) ->
 
 			element
 				.attr('contenteditable', true)
-				.on('keyup', (e) =>
+				.on(@getNamespacedEventName('keyup'), (e) =>
 					@updateValue()
 				)
-				.on 'click focus', =>
+				.on @getNamespacedEventName('click focus'), =>
 					@trigger 'editor.closepopovers'
 
 		getValueFromContent: ->
 			@element.text()
+
+		destroy: ->
+			@element.removeAttr('contenteditable')
+			@element.off @getNamespacedEventName('keyup click focus')
+
+			super()
 
 
 	###
@@ -581,16 +786,22 @@ do ($ = jQuery) ->
 		format: 'Y'
 
 		init: (element) ->
-			super element
-			@.$input = $ '<input type="text">'
+			@$input = $ '<input type="text">'
 
-			@.$input.on 'keyup', (e) =>
+			super element
+
+			@$input.on @getNamespacedEventName('keyup'), (e) =>
 				@updateValue()
 
 			@setPopoverContent @.$input
 
 		getValueFromContent: ->
-			@.$input.val()
+			@$input.val()
+
+		destroy: ->
+			@$input.off @getNamespacedEventName('keyup')
+
+			super()
 
 
 	###
@@ -609,29 +820,37 @@ do ($ = jQuery) ->
 			super element
 
 			element
-				#.attr('contenteditable', true)
-				.on('focus', =>
+				.on @getNamespacedEventName('focus'), =>
 					@trigger 'editor.closepopovers'
-				)
-				###
-				.on 'blur', =>
-					@close()
-				###
+				
 			$text = $ '<textarea>',
 				'class': @previewClass
 
-			$text.val(element.text())
+			$text.val element.text()
+			###
+			 # @todo set silent value
+			@setValue
+				images: {}
+				raw: $text.val()
+			###
 
 			$preview = $ '<div>', 
 				'class': @previewClass
 
 			@setPopoverContent $text
 
+			# @todo fix initial change trigger!
+			initialTriggerDone = false
 			@markdown = new JJMarkdownEditor $text,
 				preview : element
 				contentGetter: 'val'
 				onChange: (val) =>
-					console.log 'changed'
+					# dirty fix
+					if not initialTriggerDone
+						initialTriggerDone = true
+						return
+
+					console.log 'markdown changed'
 					if @markdownChangeTimeout
 						clearTimeout @markdownChangeTimeout
 
@@ -640,9 +859,12 @@ do ($ = jQuery) ->
 						if not val.raw
 							@element.html @getPlaceholder()
 					, 500
-			
+		
+		destroy: ->
+			@element.off @getNamespacedEventName('focus')
+			@markdown.cleanup()
+			@markdown = null
 
-		open: ->
 			super()
 
 
@@ -692,10 +914,25 @@ do ($ = jQuery) ->
 	editor.on 'change:My.Fucki.Image.Test', (e) ->
 		console.log "changed Test from #{e.prevValue} to #{e.value}"
 
+	window.$test = $test = $ '<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>'
+	$('.overview').prepend $test
+	editor.updateElements()
 
+	###
+	testComponent = editor.addElement $test
+	console.log testComponent
+	console.log testComponent.getId()
+	###
 
+	# remove element from editor
+	
+	#$('[data-editor-name="Title"]').remove()
+	#editor.updateElements()
+	
+	#editor.removeElement $('[data-editor-name="Title"]')
+	#editor.removeElementsByScope 'Person'
 
-
+	
 	window.editor = editor
 
 

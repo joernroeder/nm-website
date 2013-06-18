@@ -125,7 +125,7 @@ MarkdownedTeaser
 
 								<div data-editor-scope="\My.Fucki">
 									<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Image.Test">{{Test}}</a>
-									<div data-editor-scope="Image">
+									<div data-editor-scope="Image2">
 										<a href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Test">{{Test}}</a>
 										<h5 href="/{{LinkTo}}/{{UglyHash}}/" data-editor-type="inline" data-editor-name="Title">{{Title}}</h5>
 									</div>

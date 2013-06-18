@@ -95,7 +95,7 @@ var __hasProp = {}.hasOwnProperty,
     });
   };
   JJEditor = (function() {
-    var addComponent, addContentType, createComponent, events, getComponentByContentType, init, _components, _contentTypes, _storage;
+    var addComponent, addContentType, createComponent, destroyComponent, getComponentByContentType, _components, _contentTypes, _events, _storage;
 
     _contentTypes = {};
 
@@ -103,7 +103,7 @@ var __hasProp = {}.hasOwnProperty,
 
     _storage = {};
 
-    events = {};
+    _events = {};
 
     JJEditor.prototype.debug = true;
 
@@ -138,7 +138,27 @@ var __hasProp = {}.hasOwnProperty,
       if (this.debug) {
         console.groupEnd();
       }
-      init.call(this);
+      this.on('change:\\', function(e) {
+        var obj;
+
+        if (_this.debug) {
+          console.group('EDITOR BINDINGS:');
+        }
+        obj = {};
+        obj[e.fullName] = e.value;
+        _storage = $.extend(_storage, _this.extractScope(obj));
+        if (_this.debug) {
+          console.log(_storage);
+        }
+        if (_this.debug) {
+          return console.groupEnd();
+        }
+      });
+      this.on('editor.removeComponent', function(e) {
+        console.log('@todo: remove component from state');
+        return console.log(_this.getState());
+      });
+      this.updateElements();
     }
 
     JJEditor.prototype.getAttr = function(name) {
@@ -152,22 +172,22 @@ var __hasProp = {}.hasOwnProperty,
     /*
     		 # on, off, trigger via $.Callbacks() 
     		 #
-    		 # @link http://stackoverflow.com/questions/9099555/jquery-bind-events-on-plain-javascript-objects
+    		 # @see http://stackoverflow.com/questions/9099555/jquery-bind-events-on-plain-javascript-objects
     */
 
 
     JJEditor.prototype.on = function(name, callback) {
-      if (!events[name]) {
-        events[name] = $.Callbacks();
+      if (!_events[name]) {
+        _events[name] = $.Callbacks("unique");
       }
-      return events[name].add(callback);
+      return _events[name].add(callback);
     };
 
     JJEditor.prototype.off = function(name, callback) {
-      if (!events[name]) {
+      if (!_events[name]) {
         return;
       }
-      return events[name].remove(callback);
+      return _events[name].remove(callback);
     };
 
     JJEditor.prototype.trigger = function(name, eventData) {
@@ -176,13 +196,9 @@ var __hasProp = {}.hasOwnProperty,
         console.log(eventData);
         console.groupEnd();
       }
-      if (events[name]) {
-        return events[name].fire(eventData);
+      if (_events[name]) {
+        return _events[name].fire(eventData);
       }
-    };
-
-    JJEditor.prototype.triggerScope = function(type, scope, eventData) {
-      return '';
     };
 
     JJEditor.prototype.extractScope = function(o) {
@@ -209,6 +225,15 @@ var __hasProp = {}.hasOwnProperty,
       return _storage;
     };
 
+    /*
+    		 # adds a new component with the settings of the DOM element to the editor.
+    		 #
+    		 # @param $el jQuery element
+    		 #
+    		 # @return JJEditable
+    */
+
+
     JJEditor.prototype.addElement = function($el) {
       var component, contentType;
 
@@ -222,26 +247,38 @@ var __hasProp = {}.hasOwnProperty,
         component = getComponentByContentType.call(this, contentType);
         $el.data(this.getAttr('componentId'), component.id);
         component.init($el);
+        if (this.debug) {
+          console.log('add element: %s', component.getDataFullName());
+        }
       }
       return component;
     };
 
+    /*
+    		 # removes the component instance associated with the given element
+    */
+
+
     JJEditor.prototype.removeElement = function($el) {
       var component, componentId;
 
-      console.log('going to remove element: %o', $el);
+      if (this.debug) {
+        console.group('EDITOR: remove component');
+      }
       componentId = $el.data(this.getAttr('componentId'));
       component = this.getComponent(componentId);
       if (component) {
-        component.destroy();
+        destroyComponent.call(this, component);
+        if (this.debug) {
+          console.groupEnd();
+        }
         return true;
       }
-      console.log(this.getState());
       return false;
     };
 
     /*
-    		 # remove element by scope
+    		 # removes an element by scope
     		 #
     		 # @example editor.removeElementByScope('Foo.Bar.Title');
     */
@@ -252,12 +289,18 @@ var __hasProp = {}.hasOwnProperty,
 
       components = this.getComponents();
       removed = false;
+      if (this.debug) {
+        console.group('EDITOR: remove component by scope: %s', fullName);
+      }
       for (i in components) {
         component = components[i];
         if (fullName === component.getDataFullName()) {
-          component.destroy();
+          destroyComponent.call(this, component);
           removed = true;
         }
+      }
+      if (this.debug) {
+        console.groupEnd();
       }
       return removed;
     };
@@ -281,23 +324,37 @@ var __hasProp = {}.hasOwnProperty,
       if (!names.length) {
         all = true;
       }
+      if (this.debug) {
+        console.group('EDITOR: remove components by scope: %s, names: %O', scope, names);
+      }
       for (i in components) {
         component = components[i];
         if (scope === component.getDataScope()) {
           if (all || -1 !== $.inArray(component.getDataName(), names)) {
-            component.destroy();
+            destroyComponent.call(this, component);
             removed = true;
           }
         }
       }
+      if (this.debug) {
+        console.groupEnd();
+      }
       return removed;
     };
+
+    /*
+    		 # syncs the editor components with the current DOM-Structure
+    */
+
 
     JJEditor.prototype.updateElements = function() {
       var component, handledBy, id, _ref,
         _this = this;
 
       handledBy = this.getAttr('handledBy');
+      if (this.debug) {
+        console.group('EDITOR: update Elements');
+      }
       $('[data-' + this.getAttr('type') + ']', this.scope).each(function(i, el) {
         var $el;
 
@@ -310,41 +367,36 @@ var __hasProp = {}.hasOwnProperty,
       for (id in _ref) {
         component = _ref[id];
         if (!component.elementExists()) {
-          component.destroy();
+          destroyComponent.call(this, component);
         }
+      }
+      if (this.debug) {
+        console.groupEnd();
       }
       return null;
     };
 
-    JJEditor.prototype.detroy = function() {
-      return console.log('going to destroy the editor and remove all');
-    };
-
     /*
-    		 # @private
+    		 # removes all component bindings and destroys the editor.
     */
 
 
-    init = function() {
-      var _this = this;
+    JJEditor.prototype.detroy = function() {
+      var callbacks, component, id, name, _ref;
 
-      this.on('change:\\', function(e) {
-        var obj;
-
-        if (_this.debug) {
-          console.group('EDITOR BINDINGS:');
-        }
-        obj = {};
-        obj[e.fullName] = e.value;
-        _storage = $.extend(_storage, _this.extractScope(obj));
-        if (_this.debug) {
-          console.log(_storage);
-        }
-        if (_this.debug) {
-          return console.groupEnd();
-        }
-      });
-      return this.updateElements();
+      console.log('going to destroy the editor and remove all');
+      _ref = this.getComponents();
+      for (id in _ref) {
+        component = _ref[id];
+        destroyComponent.call(this, component);
+      }
+      this.off();
+      for (name in _events) {
+        callbacks = _events[name];
+        callbacks.disable();
+        callbacks.empty();
+      }
+      return false;
     };
 
     /*
@@ -402,6 +454,24 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
+    /*
+    		 # @private
+    		 #
+    */
+
+
+    destroyComponent = function(component) {
+      var id;
+
+      id = component.getId();
+      if (this.debug) {
+        console.log('EDITOR: destroy component %s', component.getDataFullName());
+      }
+      component.destroy();
+      _components[id] = null;
+      return delete _components[id];
+    };
+
     JJEditor.prototype.getComponent = function(id) {
       if (_components[id]) {
         return _components[id];
@@ -434,23 +504,23 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    /*
-    		 # @todo check what's going on here!
-    */
-
-
-    JJEditor.prototype.save = function() {
-      console.log('save state!!');
-      return this.trigger('saved');
-    };
-
     return JJEditor;
 
   })();
   /*
   	 # Abstract Editable Class
-  	 # 
+  	 #
   	 # @param [Editor] editor
+  	 # 
+  	 #
+  	 # Custom event names can be easily created and destroyed with the 'getNamespacedEventName' function
+  	 # @example
+  	 # 		$foo.on(this.getNamespacedEventName('click'), function() {
+  	 #			console.log('clicked');
+  	 #		});
+  	 #
+  	 #		$foo.off(this.getNamespacedEventName('click'));
+  	 #
   */
 
   JJEditable = (function() {
@@ -502,12 +572,24 @@ var __hasProp = {}.hasOwnProperty,
       return name = -1 !== name.indexOf('.') ? name : this.name + '.' + name;
     };
 
+    JJEditable.prototype.getNamespacedEventName = function(name) {
+      var eventNames, n, names, _i, _len;
+
+      names = name.split(' ');
+      eventNames = [];
+      for (_i = 0, _len = names.length; _i < _len; _i++) {
+        n = names[_i];
+        eventNames.push("" + n + "." + this.id);
+      }
+      return eventNames.join(' ');
+    };
+
     JJEditable.prototype.trigger = function(name, eventData) {
       if (eventData == null) {
         eventData = {};
       }
       eventData['senderId'] = this.id;
-      name = getEventName(name);
+      name = getEventName.call(this, name);
       return this.editor.trigger(name, eventData);
     };
 
@@ -550,13 +632,19 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditable.prototype.on = function(name, callback) {
-      name = getEventName(name);
-      return this.editor.on(name, callback);
+      name = getEventName.call(this, name);
+      name = this.getNamespacedEventName(name);
+      if (!this.editor) {
+        return this.editor.on(name, callback);
+      }
     };
 
     JJEditable.prototype.off = function(name, callback) {
-      name = getEventName(name);
-      return this.editor.off(name, callback);
+      name = getEventName.call(this, name);
+      name = this.getNamespacedEventName(name);
+      if (!this.editor) {
+        return this.editor.off(name, callback);
+      }
     };
 
     JJEditable.prototype.getElement = function() {
@@ -579,35 +667,55 @@ var __hasProp = {}.hasOwnProperty,
       return this.id;
     };
 
-    JJEditable.prototype.setValue = function(value) {
+    /*
+    		 # sets the value of the component
+    		 #
+    		 # @param [object] value
+    		 # @param [boolean] silent
+    */
+
+
+    JJEditable.prototype.setValue = function(value, silent) {
       if (this._prevValue === value) {
         return;
       }
       this._prevValue = this._value;
       this._value = value;
-      this.triggerScopeEvent('change', {
-        value: this._value,
-        prevValue: this._prevValue
-      });
-      this.triggerDataEvent('change', {
-        value: this._value,
-        prevValue: this._prevValue
-      });
-      if (typeof value === 'string') {
-        return this.render();
+      console.log('set value silent: %s', silent);
+      if (!silent) {
+        this.triggerScopeEvent('change', {
+          value: this._value,
+          prevValue: this._prevValue
+        });
+        this.triggerDataEvent('change', {
+          value: this._value,
+          prevValue: this._prevValue
+        });
+        if (typeof value === 'string') {
+          this.render();
+        }
       }
+      return true;
     };
 
     JJEditable.prototype.getValue = function() {
       return this._value;
     };
 
-    JJEditable.prototype.updateValue = function() {
-      return this.setValue(this.getValueFromContent());
+    /*
+    		 # use this method if you're going bind an element property to the component value.
+    		 #
+    		 # @use DateEditable.updateValue as an example
+    		 #
+    */
+
+
+    JJEditable.prototype.updateValue = function(silent) {
+      return this.setValue(this.getValueFromContent(), silent);
     };
 
     JJEditable.prototype.getValueFromContent = function() {
-      return '';
+      return null;
     };
 
     JJEditable.prototype.getPlaceholder = function() {
@@ -617,7 +725,7 @@ var __hasProp = {}.hasOwnProperty,
       if (placeholder) {
         return placeholder;
       } else {
-        return 'foo';
+        return 'PLACEHOLDER';
       }
     };
 
@@ -725,7 +833,10 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditable.prototype.destroy = function() {
-      return console.log('going to remove the Component %s from the editor', this.getDataFullName());
+      this.element.removeAttr(this.editor.getAttr('handledBy'));
+      this.trigger('editor.removeComponent', this.getDataFullName());
+      this.editor.off(this.getNamespacedEventName('editor'));
+      return this.editor = null;
     };
 
     return JJEditable;
@@ -769,7 +880,7 @@ var __hasProp = {}.hasOwnProperty,
             $input = $('input, textarea', _this.api.tooltip).eq(0);
             $input.selectRange($input.val().length);
             if (_this.closeOnOuterClick) {
-              _this.api.tooltip.one('outerClick', function() {
+              _this.api.tooltip.one(_this.getNamespacedEventName('outerClick'), function() {
                 return _this.close();
               });
             }
@@ -812,9 +923,13 @@ var __hasProp = {}.hasOwnProperty,
           return _this.close();
         }
       });
-      return element.on('click', function() {
+      return element.on(this.getNamespacedEventName('click'), function() {
         return _this.toggle();
       });
+    };
+
+    JJPopoverEditable.prototype.getValueFromContent = function() {
+      return this.element.html();
     };
 
     JJPopoverEditable.prototype.open = function() {
@@ -825,7 +940,7 @@ var __hasProp = {}.hasOwnProperty,
 
     JJPopoverEditable.prototype.close = function() {
       this.element.removeClass('active');
-      this.element.unbind('outerClick');
+      this.api.tooltip.unbind(this.getNamespacedEventName('outerClick'));
       return this.api.hide();
     };
 
@@ -861,6 +976,12 @@ var __hasProp = {}.hasOwnProperty,
       return this._popoverContent = value;
     };
 
+    JJPopoverEditable.prototype.destroy = function() {
+      this.api.tooltip.unbind(this.getNamespacedEventName('outerClick'));
+      this.element.off(this.getNamespacedEventName('click'));
+      return JJPopoverEditable.__super__.destroy.call(this);
+    };
+
     return JJPopoverEditable;
 
   })(JJEditable);
@@ -882,15 +1003,21 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       InlineEditable.__super__.init.call(this, element);
-      return element.attr('contenteditable', true).on('keyup', function(e) {
+      return element.attr('contenteditable', true).on(this.getNamespacedEventName('keyup'), function(e) {
         return _this.updateValue();
-      }).on('click focus', function() {
+      }).on(this.getNamespacedEventName('click focus'), function() {
         return _this.trigger('editor.closepopovers');
       });
     };
 
     InlineEditable.prototype.getValueFromContent = function() {
       return this.element.text();
+    };
+
+    InlineEditable.prototype.destroy = function() {
+      this.element.removeAttr('contenteditable');
+      this.element.off(this.getNamespacedEventName('keyup click focus'));
+      return InlineEditable.__super__.destroy.call(this);
     };
 
     return InlineEditable;
@@ -920,9 +1047,9 @@ var __hasProp = {}.hasOwnProperty,
     DateEditable.prototype.init = function(element) {
       var _this = this;
 
-      DateEditable.__super__.init.call(this, element);
       this.$input = $('<input type="text">');
-      this.$input.on('keyup', function(e) {
+      DateEditable.__super__.init.call(this, element);
+      this.$input.on(this.getNamespacedEventName('keyup'), function(e) {
         return _this.updateValue();
       });
       return this.setPopoverContent(this.$input);
@@ -930,6 +1057,11 @@ var __hasProp = {}.hasOwnProperty,
 
     DateEditable.prototype.getValueFromContent = function() {
       return this.$input.val();
+    };
+
+    DateEditable.prototype.destroy = function() {
+      this.$input.off(this.getNamespacedEventName('keyup'));
+      return DateEditable.__super__.destroy.call(this);
     };
 
     return DateEditable;
@@ -958,31 +1090,38 @@ var __hasProp = {}.hasOwnProperty,
     MarkdownEditable.prototype.popoverClasses = ['markdown'];
 
     MarkdownEditable.prototype.init = function(element) {
-      var $preview, $text,
+      var $preview, $text, initialTriggerDone,
         _this = this;
 
       MarkdownEditable.__super__.init.call(this, element);
-      element.on('focus', function() {
+      element.on(this.getNamespacedEventName('focus'), function() {
         return _this.trigger('editor.closepopovers');
       });
-      /*
-      				.on 'blur', =>
-      					@close()
-      */
-
       $text = $('<textarea>', {
         'class': this.previewClass
       });
       $text.val(element.text());
+      /*
+      			 # @todo set silent value
+      			@setValue
+      				images: {}
+      				raw: $text.val()
+      */
+
       $preview = $('<div>', {
         'class': this.previewClass
       });
       this.setPopoverContent($text);
+      initialTriggerDone = false;
       return this.markdown = new JJMarkdownEditor($text, {
         preview: element,
         contentGetter: 'val',
         onChange: function(val) {
-          console.log('changed');
+          if (!initialTriggerDone) {
+            initialTriggerDone = true;
+            return;
+          }
+          console.log('markdown changed');
           if (_this.markdownChangeTimeout) {
             clearTimeout(_this.markdownChangeTimeout);
           }
@@ -996,8 +1135,11 @@ var __hasProp = {}.hasOwnProperty,
       });
     };
 
-    MarkdownEditable.prototype.open = function() {
-      return MarkdownEditable.__super__.open.call(this);
+    MarkdownEditable.prototype.destroy = function() {
+      this.element.off(this.getNamespacedEventName('focus'));
+      this.markdown.cleanup();
+      this.markdown = null;
+      return MarkdownEditable.__super__.destroy.call(this);
     };
 
     return MarkdownEditable;
@@ -1038,13 +1180,12 @@ var __hasProp = {}.hasOwnProperty,
   });
   window.$test = $test = $('<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>');
   $('.overview').prepend($test);
+  editor.updateElements();
   /*
   	testComponent = editor.addElement $test
   	console.log testComponent
   	console.log testComponent.getId()
   */
 
-  editor.removeElement($('[data-editor-name="Title"]'));
-  editor.removeElementsByScope('Person');
   return window.editor = editor;
 })(jQuery);
