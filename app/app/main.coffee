@@ -65,9 +65,9 @@ require [
 			'2': 'Exhibition'
 			'3': 'Workshop'
 		GalleryUrl: 'imagery/gallery/'
-		DocImageUrl: 'imagery/images/docimage'
-		PersonImageUrl: 'imagery/images/personimage'
-		ChangeCredentialsUrl: 'api/v2/Auth/credentials'
+		DocImageUrl: 'imagery/images/docimage/'
+		PersonImageUrl: 'imagery/images/personimage/'
+		ChangeCredentialsUrl: 'api/v2/Auth/credentials/'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'
 			about_persons: '?search=IsExternal:0'

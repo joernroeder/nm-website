@@ -31,9 +31,9 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       '3': 'Workshop'
     },
     GalleryUrl: 'imagery/gallery/',
-    DocImageUrl: 'imagery/images/docimage',
-    PersonImageUrl: 'imagery/images/personimage',
-    ChangeCredentialsUrl: 'api/v2/Auth/credentials',
+    DocImageUrl: 'imagery/images/docimage/',
+    PersonImageUrl: 'imagery/images/personimage/',
+    ChangeCredentialsUrl: 'api/v2/Auth/credentials/',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
     },

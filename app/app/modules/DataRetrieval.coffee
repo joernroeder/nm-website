@@ -162,7 +162,7 @@ define [
 				if userGallery.fetched[type]
 					dfd.resolve userGallery
 				else
-					req = $.getJSON(app.Config.GalleryUrl + type)
+					req = $.getJSON(app.Config.GalleryUrl + type + '/')
 						.done (data) ->
 							userGallery.images[type] = data
 							userGallery.fetched[type] = true

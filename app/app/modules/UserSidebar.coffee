@@ -6,6 +6,7 @@ define [
 		'plugins/misc/jquery.list'
 		'plugins/editor/jquery.jjdropzone'
 		'plugins/editor/jquery.jjmarkdown'
+		'plugins/editor/jquery.editor-popover'
 	],
 	(app, DataRetrieval, RecycleBin, Spinner) ->
 
@@ -257,7 +258,6 @@ define [
 
 			events:
 				'submit form.user-settings': 'changeUserCredentials'
-				'blur .save-on-blur': 'savePerson'
 
 					#@.$el.html(@.serialize())
 					#@.render()
@@ -267,7 +267,8 @@ define [
 			
 			cleanup: ->
 				@._cleanup()
-				@.bioEditor.cleanup()
+				@.metaEditor.destroy()
+				#@.bioEditor.cleanup()
 
 
 			render: (template, context = {}) ->
@@ -339,6 +340,7 @@ define [
 								app.CurrentMemberPerson.save 'Image', id
 								#app.CurrentMemberPerson.fetchByIdQueue 'Image'
 
+			###
 			initBioEditor: ->
 				$bio = @.$el.find '#bio'
 				$textarea = $bio.find '.markdown-editor'
@@ -347,14 +349,14 @@ define [
 					preview: $preview
 					dragAndDropAllowed: false
 					customParsers: []
+			###
 
-			savePerson: (e) ->
-				$target = $ e.target
-				attributeName = $target.attr 'name'
-				value = $target.val()
-				if app.CurrentMemberPerson.get(attributeName) isnt value
-					app.CurrentMemberPerson.save attributeName, value
-
+			initMetaEditor: ->
+				@.metaEditor = editor = new JJEditor $('.meta-info'), [
+					'InlineEditable'
+					'MarkdownEditable'
+				]
+				console.log @
 
 			afterRender: ->
 				@._afterRender()
@@ -362,7 +364,7 @@ define [
 				@.initDropzone()
 				@.initPersonImageList()
 				@.initProjectList()
-				@.initBioEditor()
+				@.initMetaEditor()
 			
 			# ! Events
 			changeUserCredentials: (e) ->

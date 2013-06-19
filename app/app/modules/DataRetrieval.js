@@ -182,7 +182,7 @@ define(['app'], function(app) {
       if (userGallery.fetched[type]) {
         dfd.resolve(userGallery);
       } else {
-        req = $.getJSON(app.Config.GalleryUrl + type).done(function(data) {
+        req = $.getJSON(app.Config.GalleryUrl + type + '/').done(function(data) {
           userGallery.images[type] = data;
           userGallery.fetched[type] = true;
           return dfd.resolve(userGallery);

@@ -13,9 +13,9 @@ define(['app', 'modules/UserSidebar'], function(app, UserSidebar) {
     url: JJRestApi.setObjectUrl('User'),
     interval: 200000
   };
-  Auth.loginUrl = 'api/v2/Auth/login';
-  Auth.logoutUrl = 'api/v2/Auth/logout';
-  Auth.canEditUrl = 'api/v2/Auth/canEdit';
+  Auth.loginUrl = 'api/v2/Auth/login/';
+  Auth.logoutUrl = 'api/v2/Auth/logout/';
+  Auth.canEditUrl = 'api/v2/Auth/canEdit/';
   Auth.Cache = {
     userWidget: null
   };
