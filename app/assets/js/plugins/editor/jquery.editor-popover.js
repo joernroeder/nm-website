@@ -139,24 +139,15 @@ var __hasProp = {}.hasOwnProperty,
         console.groupEnd();
       }
       this.on('change:\\', function(e) {
-        var obj;
-
-        if (_this.debug) {
-          console.group('EDITOR BINDINGS:');
-        }
-        obj = {};
-        obj[e.fullName] = e.value;
-        _storage = $.extend(_storage, _this.extractScope(obj));
-        if (_this.debug) {
-          console.log(_storage);
-        }
-        if (_this.debug) {
-          return console.groupEnd();
-        }
+        return _this.updateState(e.fullName, e.value);
       });
       this.on('editor.removeComponent', function(e) {
-        console.log('@todo: remove component from state');
-        return console.log(_this.getState());
+        if (_this.debug) {
+          console.log('@todo: remove component from state');
+        }
+        if (_this.debug) {
+          return console.log(_this.getState());
+        }
       });
       this.updateElements();
     }
@@ -178,7 +169,7 @@ var __hasProp = {}.hasOwnProperty,
 
     JJEditor.prototype.on = function(name, callback) {
       if (!_events[name]) {
-        _events[name] = $.Callbacks("unique");
+        _events[name] = $.Callbacks('unique');
       }
       return _events[name].add(callback);
     };
@@ -193,8 +184,6 @@ var __hasProp = {}.hasOwnProperty,
     JJEditor.prototype.trigger = function(name, eventData) {
       if (this.debug && name.indexOf(':' !== -1)) {
         console.group('EDITOR: trigger ' + name);
-        console.log(eventData);
-        console.groupEnd();
       }
       if (_events[name]) {
         return _events[name].fire(eventData);
@@ -219,6 +208,26 @@ var __hasProp = {}.hasOwnProperty,
         t[key] = o[k];
       }
       return oo;
+    };
+
+    JJEditor.prototype.updateState = function(scope, value) {
+      var obj;
+
+      if (this.debug) {
+        console.group('EDITOR: update state');
+      }
+      if (this.debug) {
+        console.log('scope: %s -> %O', scope, value);
+      }
+      obj = {};
+      obj[scope] = value;
+      _storage = $.extend(_storage, this.extractScope(obj));
+      if (this.debug) {
+        console.log(_storage);
+      }
+      if (this.debug) {
+        return console.groupEnd();
+      }
     };
 
     JJEditor.prototype.getState = function() {
@@ -248,7 +257,7 @@ var __hasProp = {}.hasOwnProperty,
         $el.data(this.getAttr('componentId'), component.id);
         component.init($el);
         if (this.debug) {
-          console.log('add element: %s', component.getDataFullName());
+          console.log('added element: %s', component.getDataFullName());
         }
       }
       return component;
@@ -557,7 +566,8 @@ var __hasProp = {}.hasOwnProperty,
       this.element = element;
       this.setDataName(element.data(this.editor.getAttr('name')));
       this.setOptions(element.data(this.editor.getAttr('options')));
-      return element.attr(this.editor.getAttr('handledBy'), this.id);
+      element.attr(this.editor.getAttr('handledBy'), this.id);
+      return this.updateValue(true);
     };
 
     /*
@@ -676,13 +686,14 @@ var __hasProp = {}.hasOwnProperty,
 
 
     JJEditable.prototype.setValue = function(value, silent) {
-      if (this._prevValue === value) {
+      if (!silent && this._prevValue === value) {
         return;
       }
       this._prevValue = this._value;
       this._value = value;
-      console.log('set value silent: %s', silent);
-      if (!silent) {
+      if (silent) {
+        this.editor.updateState(this.getDataFullName(), this._value);
+      } else {
         this.triggerScopeEvent('change', {
           value: this._value,
           prevValue: this._prevValue

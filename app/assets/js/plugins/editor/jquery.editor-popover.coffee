@@ -91,25 +91,20 @@ do ($ = jQuery) ->
 
 			@scope = if scope instanceof jQuery then scope else $ scope
 
-			if @debug then console.group 'EDITOR: add Components'
+			console.group 'EDITOR: add Components' if @debug
 			$.map components, (component) =>
-				if @debug then console.log '- ' + component
+				console.log '- ' + component if @debug
 				addComponent component
-			if @debug then console.groupEnd()
+			
+			console.groupEnd() if @debug
 
 			# global bindings
 			@.on 'change:\\', (e) =>
-				if @debug then console.group 'EDITOR BINDINGS:'
-				obj = {}
-				obj[e.fullName] = e.value				
-				_storage = $.extend _storage, @extractScope(obj)
-				
-				if @debug then console.log _storage
-				if @debug then console.groupEnd()
+				@updateState e.fullName, e.value
 
 			@.on 'editor.removeComponent', (e) =>
-				console.log '@todo: remove component from state'
-				console.log @.getState()
+				console.log '@todo: remove component from state' if @debug
+				console.log @.getState() if @debug
 				#console.log e
 
 			# create component instances
@@ -126,7 +121,7 @@ do ($ = jQuery) ->
 		###
 		on: (name, callback) ->
 			if not _events[name]
-				_events[name] = $.Callbacks "unique"
+				_events[name] = $.Callbacks 'unique'
 
 			_events[name].add callback
 
@@ -137,8 +132,8 @@ do ($ = jQuery) ->
 		trigger: (name, eventData) ->
 			if @debug and name.indexOf ':' isnt -1
 				console.group 'EDITOR: trigger ' + name
-				console.log eventData
-				console.groupEnd()
+				#console.log eventData
+				#console.groupEnd()
 
 			if _events[name] then _events[name].fire eventData
 
@@ -157,6 +152,17 @@ do ($ = jQuery) ->
 					t = t[part] = t[part] or {}
 				t[key] = o[k]
 			oo
+
+		updateState: (scope, value) ->
+			console.group 'EDITOR: update state' if @debug
+			console.log 'scope: %s -> %O', scope, value if @debug
+
+			obj = {}
+			obj[scope] = value
+			_storage = $.extend _storage, @extractScope(obj)
+
+			console.log _storage if @debug
+			console.groupEnd() if @debug
 
 		getState: ->
 			_storage
@@ -184,7 +190,7 @@ do ($ = jQuery) ->
 
 				$el.data @getAttr('componentId'), component.id
 				component.init $el	
-				console.log 'add element: %s', component.getDataFullName() if @debug
+				console.log 'added element: %s', component.getDataFullName() if @debug
 
 			component
 
@@ -198,7 +204,7 @@ do ($ = jQuery) ->
 			
 			if component
 				destroyComponent.call @, component
-				console.groupEnd() if @debug 
+				console.groupEnd() if @debug
 				return true
 
 			false
@@ -403,7 +409,7 @@ do ($ = jQuery) ->
 			@setOptions element.data @editor.getAttr('options')
 			element.attr @editor.getAttr('handledBy'), @id
 
-			#@updateValue true
+			@updateValue true
 
 		###
 		 # returns a namespaced event name
@@ -492,13 +498,15 @@ do ($ = jQuery) ->
 		 # @param [boolean] silent
 		###
 		setValue: (value, silent) ->
-			if @_prevValue is value then return
+			if not silent and @_prevValue is value then return
 				
 			@_prevValue = @_value
 			@_value = value
 
-			console.log 'set value silent: %s', silent
-			if not silent
+			#console.log 'set value silent: %s', silent
+			if silent
+				@editor.updateState @getDataFullName(), @_value
+			else
 				@triggerScopeEvent 'change',
 					value: @_value
 					prevValue: @_prevValue
