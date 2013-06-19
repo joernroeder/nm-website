@@ -28,21 +28,19 @@
 	<header>
 		<h2>Personal Information</h2>
 	</header>
-	<section>
-		<section id="bio">
+	<section class="meta-info" data-editor-scope="\CurrentPerson">
+		<div id="bio">
 			<h3>Bio</h3>
-			<textarea class="markdown-editor">{{Person.Bio}}</textarea>
-			<div class="markdown-editor-preview"></div>
-			<a href="#" data-bypass class="btn">Update Bio</a>
-		</section>
-		<section>
+			<p data-editor-type="markdown" data-editor-name="Bio" data-editor-options='{"customParsers": []}'>{{Person.Bio}}</p>
+		</div>
+		<div>
 			<h3>Phone</h3>
-			<input type="tel" name="Phone" class="save-on-blur" value="{{Person.Phone}}" placeholder="Phone number" />
-		</section>
-		<section>
+			<span data-editor-type="inline" data-editor-placeholder="Phone" data-editor-name="Phone">{{Person.Phone}}</span>
+		</div>
+		<div>
 			<h3>Email</h3>
-			<input type="email" name="Email" class="save-on-blur" value="{{Person.Email}}" placeholder="Email address" />
-		</section>
+			<span data-editor-type="inline" data-editor-email="Email" data-editor-name="Email">{{Person.Email}}</span>
+		</div>
 	</section>
 
 	<header>
