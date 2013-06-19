@@ -198,8 +198,7 @@ var __hasProp = {}.hasOwnProperty,
       }
       obj = {};
       obj[scope] = value;
-      _storage = $.extend(_storage, extractScope.call(this, obj));
-      _storage = trimObject.call(this, _storage);
+      _storage = $.extend(true, _storage, extractScope.call(this, obj));
       if (this.debug) {
         console.log(_storage);
       }
@@ -207,6 +206,8 @@ var __hasProp = {}.hasOwnProperty,
         console.groupEnd();
       }
       if (!silent) {
+        console.log(_storage);
+        console.log(this.getState());
         return this.trigger('stateUpdate', _storage);
       }
     };

@@ -141,13 +141,15 @@ do ($ = jQuery) ->
 
 			obj = {}
 			obj[scope] = value
-			_storage = $.extend _storage, extractScope.call(@, obj)
-			_storage = trimObject.call @, _storage
+			_storage = $.extend true, _storage, extractScope.call(@, obj)
+			#_storage = trimObject.call @, _storage
 
 			console.log _storage if @debug
 			console.groupEnd() if @debug
 
 			if not silent
+				console.log _storage
+				console.log @getState()
 				@trigger 'stateUpdate', _storage
 
 		getState: ->
