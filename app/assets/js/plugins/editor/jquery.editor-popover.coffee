@@ -863,12 +863,6 @@ do ($ = jQuery) ->
 				'class': @previewClass
 
 			$text.val element.text()
-			###
-			 # @todo set silent value
-			@setValue
-				images: {}
-				raw: $text.val()
-			###
 
 			$preview = $ '<div>', 
 				'class': @previewClass
