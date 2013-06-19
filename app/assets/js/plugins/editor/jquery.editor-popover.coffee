@@ -787,7 +787,7 @@ do ($ = jQuery) ->
 
 			element
 				.attr('contenteditable', true)
-				.on(@getNamespacedEventName('keyup'), (e) =>
+				.on(@getNamespacedEventName('blur'), (e) =>
 					@updateValue()
 				)
 				.on @getNamespacedEventName('click focus'), =>

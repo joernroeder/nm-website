@@ -355,8 +355,11 @@ define [
 				@.metaEditor = editor = new JJEditor $('.meta-info'), [
 					'InlineEditable'
 					'MarkdownEditable'
+					'SplitMarkdownEditable'
 				]
-				console.log @
+				editor.on 'change:\\', (e) ->
+					if app.CurrentMemberPerson.get(e.name) isnt e.value
+						app.CurrentMemberPerson.save e.name, e.value
 
 			afterRender: ->
 				@._afterRender()

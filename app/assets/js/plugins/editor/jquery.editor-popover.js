@@ -1047,7 +1047,7 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       InlineEditable.__super__.init.call(this, element);
-      return element.attr('contenteditable', true).on(this.getNamespacedEventName('keyup'), function(e) {
+      return element.attr('contenteditable', true).on(this.getNamespacedEventName('blur'), function(e) {
         return _this.updateValue();
       }).on(this.getNamespacedEventName('click focus'), function() {
         return _this.trigger('editor.closepopovers');

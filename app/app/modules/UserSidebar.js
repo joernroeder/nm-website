@@ -399,8 +399,12 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     initMetaEditor: function() {
       var editor;
 
-      this.metaEditor = editor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable']);
-      return console.log(this);
+      this.metaEditor = editor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
+      return editor.on('change:\\', function(e) {
+        if (app.CurrentMemberPerson.get(e.name) !== e.value) {
+          return app.CurrentMemberPerson.save(e.name, e.value);
+        }
+      });
     },
     afterRender: function() {
       this._afterRender();
