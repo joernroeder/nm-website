@@ -1185,6 +1185,12 @@ var __hasProp = {}.hasOwnProperty,
       return this.markdown = new JJMarkdownEditor($text, options);
     };
 
+    MarkdownEditable.prototype.getValueFromContent = function() {
+      return {
+        raw: this.element.text()
+      };
+    };
+
     MarkdownEditable.prototype.destroy = function() {
       this.element.off(this.getNamespacedEventName('focus'));
       this.markdown.cleanup();

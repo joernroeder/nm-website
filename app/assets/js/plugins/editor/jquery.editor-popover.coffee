@@ -901,7 +901,9 @@ do ($ = jQuery) ->
 			$.extend options, @_options || {}
 			
 			@markdown = new JJMarkdownEditor $text, options
-				
+
+		getValueFromContent: ->
+			raw: @element.text()
 		
 		destroy: ->
 			@element.off @getNamespacedEventName('focus')
