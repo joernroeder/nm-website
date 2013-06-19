@@ -274,7 +274,7 @@ do ($ = jQuery) ->
 		###
 		 # removes all component bindings and destroys the editor.
 		###
-		detroy: ->
+		destroy: ->
 			console.log 'going to destroy the editor and remove all'
 
 			# destroy components
