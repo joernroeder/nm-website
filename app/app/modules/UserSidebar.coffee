@@ -357,14 +357,12 @@ define [
 					'MarkdownEditable'
 					'SplitMarkdownEditable'
 				]
-				###
-				editor.on 'change:\\', (e) ->
-					if app.CurrentMemberPerson.get(e.name) isnt e.value
-						app.CurrentMemberPerson.save e.name, e.value
-				###
+				
 				editor.on 'stateUpdate', (e) ->
-					if e.CurrentPerson
-						console.log 'stateUpdate %O', e
+					for key, val of e.CurrentPerson
+						if key is 'Bio' then val = val.raw
+						if app.CurrentMemberPerson.get(key) isnt val
+							app.CurrentMemberPerson.save key, val
 
 			afterRender: ->
 				@._afterRender()
