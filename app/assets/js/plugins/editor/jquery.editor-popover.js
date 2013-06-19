@@ -73,7 +73,7 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var $test, DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, editor, _ref, _ref1, _ref2, _ref3;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3;
 
   $.fn.selectRange = function(start, end) {
     if (!end) {
@@ -184,6 +184,7 @@ var __hasProp = {}.hasOwnProperty,
     JJEditor.prototype.trigger = function(name, eventData) {
       if (this.debug && name.indexOf(':' !== -1)) {
         console.group('EDITOR: trigger ' + name);
+        console.groupEnd();
       }
       if (_events[name]) {
         return _events[name].fire(eventData);
@@ -390,7 +391,7 @@ var __hasProp = {}.hasOwnProperty,
     */
 
 
-    JJEditor.prototype.detroy = function() {
+    JJEditor.prototype.destroy = function() {
       var callbacks, component, id, name, _ref;
 
       console.log('going to destroy the editor and remove all');
@@ -1101,7 +1102,7 @@ var __hasProp = {}.hasOwnProperty,
     MarkdownEditable.prototype.popoverClasses = ['markdown'];
 
     MarkdownEditable.prototype.init = function(element) {
-      var $preview, $text, initialTriggerDone,
+      var $preview, $text, initialTriggerDone, options,
         _this = this;
 
       MarkdownEditable.__super__.init.call(this, element);
@@ -1124,7 +1125,7 @@ var __hasProp = {}.hasOwnProperty,
       });
       this.setPopoverContent($text);
       initialTriggerDone = false;
-      return this.markdown = new JJMarkdownEditor($text, {
+      options = {
         preview: element,
         contentGetter: 'val',
         onChange: function(val) {
@@ -1143,7 +1144,9 @@ var __hasProp = {}.hasOwnProperty,
             }
           }, 500);
         }
-      });
+      };
+      $.extend(options, this._options || {});
+      return this.markdown = new JJMarkdownEditor($text, options);
     };
 
     MarkdownEditable.prototype.destroy = function() {
@@ -1171,32 +1174,45 @@ var __hasProp = {}.hasOwnProperty,
     return SplitMarkdownEditable;
 
   })(MarkdownEditable);
+  window.JJEditor = JJEditor;
   window.editorComponents = {};
   window.editorComponents.JJEditable = JJEditable;
   window.editorComponents.JJPopoverEditable = JJPopoverEditable;
   window.editorComponents.InlineEditable = InlineEditable;
   window.editorComponents.DateEditable = DateEditable;
   window.editorComponents.MarkdownEditable = MarkdownEditable;
-  window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
-  jQuery.event.props.push('dataTransfer');
-  $(document).on('dragover drop', function(e) {
-    return e.preventDefault();
-  });
-  editor = new JJEditor(['InlineEditable', 'DateEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
-  editor.on('change:My.Fucki.Image', function(e) {
-    return console.log("changed '" + e.name + "' within " + e.scope + " from " + e.prevValue + " to " + e.value);
-  });
-  editor.on('change:My.Fucki.Image.Test', function(e) {
-    return console.log("changed Test from " + e.prevValue + " to " + e.value);
-  });
-  window.$test = $test = $('<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>');
-  $('.overview').prepend($test);
-  editor.updateElements();
+  return window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
+  /*
+  	# init file transfer
+  	jQuery.event.props.push 'dataTransfer'
+  	# disable drag'n'drop for whole document
+  	
+  	$(document).on 'dragover drop', (e) ->
+  		e.preventDefault()
+  
+  
+  	editor = new JJEditor [
+  		'InlineEditable'
+  		'DateEditable'
+  		'MarkdownEditable',
+  		'SplitMarkdownEditable'
+  	]
+  
+  	editor.on 'change:My.Fucki.Image', (e) ->
+  		console.log "changed '#{e.name}' within #{e.scope} from #{e.prevValue} to #{e.value}"
+  
+  	editor.on 'change:My.Fucki.Image.Test', (e) ->
+  		console.log "changed Test from #{e.prevValue} to #{e.value}"
+  
+  	window.$test = $test = $ '<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>'
+  	$('.overview').prepend $test
+  	editor.updateElements()
+  */
+
   /*
   	testComponent = editor.addElement $test
   	console.log testComponent
   	console.log testComponent.getId()
   */
 
-  return window.editor = editor;
 })(jQuery);

@@ -133,7 +133,7 @@ do ($ = jQuery) ->
 			if @debug and name.indexOf ':' isnt -1
 				console.group 'EDITOR: trigger ' + name
 				#console.log eventData
-				#console.groupEnd()
+				console.groupEnd()
 
 			if _events[name] then _events[name].fire eventData
 
@@ -847,9 +847,11 @@ do ($ = jQuery) ->
 
 			@setPopoverContent $text
 
+			
 			# @todo fix initial change trigger!
 			initialTriggerDone = false
-			@markdown = new JJMarkdownEditor $text,
+
+			options = 
 				preview : element
 				contentGetter: 'val'
 				onChange: (val) =>
@@ -867,6 +869,11 @@ do ($ = jQuery) ->
 						if not val.raw
 							@element.html @getPlaceholder()
 					, 500
+			
+			$.extend options, @_options || {}
+			
+			@markdown = new JJMarkdownEditor $text, options
+				
 		
 		destroy: ->
 			@element.off @getNamespacedEventName('focus')
@@ -886,6 +893,8 @@ do ($ = jQuery) ->
 
 	# ! --- Implementation --------------------------------
 
+	# make accessible
+	window.JJEditor = JJEditor
 
 	# publish base
 	window.editorComponents = {}
@@ -901,13 +910,14 @@ do ($ = jQuery) ->
 	window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable
 
 	# construction
-	
+	###
 	# init file transfer
 	jQuery.event.props.push 'dataTransfer'
 	# disable drag'n'drop for whole document
 	
 	$(document).on 'dragover drop', (e) ->
 		e.preventDefault()
+
 
 	editor = new JJEditor [
 		'InlineEditable'
@@ -925,6 +935,7 @@ do ($ = jQuery) ->
 	window.$test = $test = $ '<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>'
 	$('.overview').prepend $test
 	editor.updateElements()
+	###
 
 	###
 	testComponent = editor.addElement $test
@@ -941,7 +952,7 @@ do ($ = jQuery) ->
 	#editor.removeElementsByScope 'Person'
 
 	
-	window.editor = editor
+	#window.editor = editor
 
 
 
