@@ -95,7 +95,7 @@ var __hasProp = {}.hasOwnProperty,
     });
   };
   JJEditor = (function() {
-    var addComponent, addContentType, createComponent, destroyComponent, getComponentByContentType, _components, _contentTypes, _events, _storage;
+    var addComponent, addContentType, createComponent, destroyComponent, extractScope, getComponentByContentType, trimObject, _components, _contentTypes, _events, _storage;
 
     _contentTypes = {};
 
@@ -141,13 +141,8 @@ var __hasProp = {}.hasOwnProperty,
       this.on('change:\\', function(e) {
         return _this.updateState(e.fullName, e.value);
       });
-      this.on('editor.removeComponent', function(e) {
-        if (_this.debug) {
-          console.log('@todo: remove component from state');
-        }
-        if (_this.debug) {
-          return console.log(_this.getState());
-        }
+      this.on('editor.removeComponent', function(fullName) {
+        return _this.updateState(fullName, null);
       });
       this.updateElements();
     }
@@ -182,33 +177,14 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditor.prototype.trigger = function(name, eventData) {
-      if (this.debug && name.indexOf(':' !== -1)) {
+      if (name.indexOf(':' !== -1 && this.debug)) {
         console.group('EDITOR: trigger ' + name);
+        console.log(eventData);
         console.groupEnd();
       }
       if (_events[name]) {
         return _events[name].fire(eventData);
       }
-    };
-
-    JJEditor.prototype.extractScope = function(o) {
-      var k, key, oo, part, parts, t;
-
-      oo = {};
-      t = void 0;
-      parts = void 0;
-      part = void 0;
-      for (k in o) {
-        t = oo;
-        parts = k.split(".");
-        key = parts.pop();
-        while (parts.length) {
-          part = parts.shift();
-          t = t[part] = t[part] || {};
-        }
-        t[key] = o[k];
-      }
-      return oo;
     };
 
     JJEditor.prototype.updateState = function(scope, value) {
@@ -222,7 +198,8 @@ var __hasProp = {}.hasOwnProperty,
       }
       obj = {};
       obj[scope] = value;
-      _storage = $.extend(_storage, this.extractScope(obj));
+      _storage = $.extend(_storage, extractScope.call(this, obj));
+      _storage = trimObject.call(this, _storage);
       if (this.debug) {
         console.log(_storage);
       }
@@ -250,7 +227,9 @@ var __hasProp = {}.hasOwnProperty,
       contentType = $el.data(this.getAttr('type'));
       component = false;
       if ($el.attr(this.getAttr('handledBy'))) {
-        console.log('already handled by the editor!');
+        if (this.debug) {
+          console.log('already handled by the editor!');
+        }
         return component;
       }
       if (-1 !== $.inArray(contentType, Object.keys(_contentTypes))) {
@@ -512,6 +491,59 @@ var __hasProp = {}.hasOwnProperty,
       } else {
         return _contentTypes[lowerType] = componentName;
       }
+    };
+
+    /*
+    		 #
+    		 # @private
+    		 #
+    		 # @param [object] Object
+    */
+
+
+    trimObject = function(obj) {
+      var key, value;
+
+      for (key in obj) {
+        value = obj[key];
+        if (typeof value === 'object') {
+          value = trimObject(value);
+        }
+        if (value === null || value === void 0 || $.isEmptyObject(obj[key])) {
+          delete obj[key];
+        }
+      }
+      return obj;
+    };
+
+    /*
+    		 # keys with dot syntax are divided into multi-dimensional objects.
+    		 #
+    		 # @private
+    		 #
+    		 # @param [object] Object
+    		 #
+    */
+
+
+    extractScope = function(o) {
+      var k, key, oo, part, parts, t;
+
+      oo = {};
+      t = void 0;
+      parts = void 0;
+      part = void 0;
+      for (k in o) {
+        t = oo;
+        parts = k.split('.');
+        key = parts.pop();
+        while (parts.length) {
+          part = parts.shift();
+          t = t[part] = t[part] || {};
+        }
+        t[key] = o[k];
+      }
+      return oo;
     };
 
     return JJEditor;
@@ -1198,10 +1230,10 @@ var __hasProp = {}.hasOwnProperty,
   		'SplitMarkdownEditable'
   	]
   
-  	editor.on 'change:My.Fucki.Image', (e) ->
+  	editor.on 'change:Foo.My.Fucki.Image', (e) ->
   		console.log "changed '#{e.name}' within #{e.scope} from #{e.prevValue} to #{e.value}"
   
-  	editor.on 'change:My.Fucki.Image.Test', (e) ->
+  	editor.on 'change:Foo.My.Fucki.Image.Test', (e) ->
   		console.log "changed Test from #{e.prevValue} to #{e.value}"
   
   	window.$test = $test = $ '<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>'

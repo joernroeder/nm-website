@@ -102,10 +102,8 @@ do ($ = jQuery) ->
 			@.on 'change:\\', (e) =>
 				@updateState e.fullName, e.value
 
-			@.on 'editor.removeComponent', (e) =>
-				console.log '@todo: remove component from state' if @debug
-				console.log @.getState() if @debug
-				#console.log e
+			@.on 'editor.removeComponent', (fullName) =>
+				@updateState fullName, null
 
 			# create component instances
 			@updateElements()
@@ -130,28 +128,12 @@ do ($ = jQuery) ->
 			_events[name].remove callback
 
 		trigger: (name, eventData) ->
-			if @debug and name.indexOf ':' isnt -1
+			if name.indexOf ':' isnt -1 and @debug
 				console.group 'EDITOR: trigger ' + name
-				#console.log eventData
+				console.log eventData
 				console.groupEnd()
 
 			if _events[name] then _events[name].fire eventData
-
-		extractScope: (o) ->
-			oo = {}
-			t = undefined
-			parts = undefined
-			part = undefined
-			
-			for k of o
-				t = oo
-				parts = k.split(".")
-				key = parts.pop()
-				while parts.length
-					part = parts.shift()
-					t = t[part] = t[part] or {}
-				t[key] = o[k]
-			oo
 
 		updateState: (scope, value) ->
 			console.group 'EDITOR: update state' if @debug
@@ -159,7 +141,8 @@ do ($ = jQuery) ->
 
 			obj = {}
 			obj[scope] = value
-			_storage = $.extend _storage, @extractScope(obj)
+			_storage = $.extend _storage, extractScope.call(@, obj)
+			_storage = trimObject.call @, _storage
 
 			console.log _storage if @debug
 			console.groupEnd() if @debug
@@ -182,7 +165,7 @@ do ($ = jQuery) ->
 			component = false
 
 			if $el.attr @getAttr('handledBy')
-				console.log 'already handled by the editor!'
+				console.log 'already handled by the editor!' if @debug
 				return component
 
 			if -1 isnt $.inArray(contentType, Object.keys(_contentTypes))
@@ -359,6 +342,46 @@ do ($ = jQuery) ->
 				throw new Error 'Another Component (' + _contentTypes[lowerType] + ') is already handling the content-type "' + type + '"'
 			else
 				_contentTypes[lowerType] = componentName
+
+		###
+		 #
+		 # @private
+		 #
+		 # @param [object] Object
+		###
+		trimObject = (obj) ->
+			for key, value of obj
+				if typeof value is 'object'
+					value = trimObject value
+
+				if value is null or value is undefined or $.isEmptyObject obj[key]
+					delete obj[key]
+
+			obj
+
+		###
+		 # keys with dot syntax are divided into multi-dimensional objects.
+		 #
+		 # @private
+		 #
+		 # @param [object] Object
+		 #
+		###
+		extractScope = (o) ->
+			oo = {}
+			t = undefined
+			parts = undefined
+			part = undefined
+			
+			for k of o
+				t = oo
+				parts = k.split '.'
+				key = parts.pop()
+				while parts.length
+					part = parts.shift()
+					t = t[part] = t[part] or {}
+				t[key] = o[k]
+			oo
 
 
 
@@ -926,10 +949,10 @@ do ($ = jQuery) ->
 		'SplitMarkdownEditable'
 	]
 
-	editor.on 'change:My.Fucki.Image', (e) ->
+	editor.on 'change:Foo.My.Fucki.Image', (e) ->
 		console.log "changed '#{e.name}' within #{e.scope} from #{e.prevValue} to #{e.value}"
 
-	editor.on 'change:My.Fucki.Image.Test', (e) ->
+	editor.on 'change:Foo.My.Fucki.Image.Test', (e) ->
 		console.log "changed Test from #{e.prevValue} to #{e.value}"
 
 	window.$test = $test = $ '<h1 data-editor-type="inline" data-editor-name="\My.Fucki.Image.TestTitle">FooBar</h1>'
@@ -950,7 +973,6 @@ do ($ = jQuery) ->
 	
 	#editor.removeElement $('[data-editor-name="Title"]')
 	#editor.removeElementsByScope 'Person'
-
 	
 	#window.editor = editor
 
