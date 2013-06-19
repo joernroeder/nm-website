@@ -23,6 +23,8 @@ ErrorDocument 500 /assets/error-500.html
 	RewriteBase '/'
 
   # add trailing slash {@link http://enarion.net/web/htaccess/trailing-slash/}
+  RewriteCond %{REQUEST_METHOD}  !POST
+  RewriteCond %{REQUEST_URI} !api/v2
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !(.*)/$
   RewriteRule ^(.*)$ $1/ [L,R=301]
