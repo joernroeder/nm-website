@@ -187,7 +187,7 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    JJEditor.prototype.updateState = function(scope, value) {
+    JJEditor.prototype.updateState = function(scope, value, silent) {
       var obj;
 
       if (this.debug) {
@@ -204,7 +204,10 @@ var __hasProp = {}.hasOwnProperty,
         console.log(_storage);
       }
       if (this.debug) {
-        return console.groupEnd();
+        console.groupEnd();
+      }
+      if (!silent) {
+        return this.trigger('stateUpdate', _storage);
       }
     };
 
@@ -725,7 +728,7 @@ var __hasProp = {}.hasOwnProperty,
       this._prevValue = this._value;
       this._value = value;
       if (silent) {
-        this.editor.updateState(this.getDataFullName(), this._value);
+        this.editor.updateState(this.getDataFullName(), this._value, silent);
       } else {
         this.triggerScopeEvent('change', {
           value: this._value,

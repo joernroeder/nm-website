@@ -135,7 +135,7 @@ do ($ = jQuery) ->
 
 			if _events[name] then _events[name].fire eventData
 
-		updateState: (scope, value) ->
+		updateState: (scope, value, silent) ->
 			console.group 'EDITOR: update state' if @debug
 			console.log 'scope: %s -> %O', scope, value if @debug
 
@@ -146,6 +146,9 @@ do ($ = jQuery) ->
 
 			console.log _storage if @debug
 			console.groupEnd() if @debug
+
+			if not silent
+				@trigger 'stateUpdate', _storage
 
 		getState: ->
 			_storage
@@ -528,7 +531,7 @@ do ($ = jQuery) ->
 
 			#console.log 'set value silent: %s', silent
 			if silent
-				@editor.updateState @getDataFullName(), @_value
+				@editor.updateState @getDataFullName(), @_value, silent
 			else
 				@triggerScopeEvent 'change',
 					value: @_value
