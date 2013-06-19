@@ -400,9 +400,15 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       var editor;
 
       this.metaEditor = editor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
-      return editor.on('change:\\', function(e) {
-        if (app.CurrentMemberPerson.get(e.name) !== e.value) {
-          return app.CurrentMemberPerson.save(e.name, e.value);
+      /*
+      				editor.on 'change:\\', (e) ->
+      					if app.CurrentMemberPerson.get(e.name) isnt e.value
+      						app.CurrentMemberPerson.save e.name, e.value
+      */
+
+      return editor.on('stateUpdate', function(e) {
+        if (e.CurrentPerson) {
+          return console.log('stateUpdate %O', e);
         }
       });
     },
