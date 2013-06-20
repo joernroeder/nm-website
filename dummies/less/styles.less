@@ -1315,7 +1315,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 	input[type="text"],
 	input[type="email"],
 	input[type="tel"],
-	input[type="password"] {
+	input[type="password"],
+	*[data-editor-type][editor-handled-by] {
 		font-size: 14 / @em;
 		width: 100%;
 		.box-sizing(border-box);
@@ -1327,7 +1328,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
 
-		&:focus {
+		&:focus,
+		&.active {
 			color: #fff;
 			outline: none;
 			background: darken(@nmColor, 30%);

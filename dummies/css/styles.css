@@ -1955,7 +1955,8 @@ x:-o-prefocus,
 .editor-sidebar input[type="text"],
 .editor-sidebar input[type="email"],
 .editor-sidebar input[type="tel"],
-.editor-sidebar input[type="password"] {
+.editor-sidebar input[type="password"],
+.editor-sidebar *[data-editor-type][editor-handled-by] {
   font-size: 0.875em;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -1975,7 +1976,13 @@ x:-o-prefocus,
 .editor-sidebar input[type="text"]:focus,
 .editor-sidebar input[type="email"]:focus,
 .editor-sidebar input[type="tel"]:focus,
-.editor-sidebar input[type="password"]:focus {
+.editor-sidebar input[type="password"]:focus,
+.editor-sidebar *[data-editor-type][editor-handled-by]:focus,
+.editor-sidebar input[type="text"].active,
+.editor-sidebar input[type="email"].active,
+.editor-sidebar input[type="tel"].active,
+.editor-sidebar input[type="password"].active,
+.editor-sidebar *[data-editor-type][editor-handled-by].active {
   color: #fff;
   outline: none;
   background: #57590d;
@@ -1992,25 +1999,49 @@ x:-o-prefocus,
 .editor-sidebar input[type="text"]:focus::-webkit-input-placeholder,
 .editor-sidebar input[type="email"]:focus::-webkit-input-placeholder,
 .editor-sidebar input[type="tel"]:focus::-webkit-input-placeholder,
-.editor-sidebar input[type="password"]:focus::-webkit-input-placeholder {
+.editor-sidebar input[type="password"]:focus::-webkit-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:focus::-webkit-input-placeholder,
+.editor-sidebar input[type="text"].active::-webkit-input-placeholder,
+.editor-sidebar input[type="email"].active::-webkit-input-placeholder,
+.editor-sidebar input[type="tel"].active::-webkit-input-placeholder,
+.editor-sidebar input[type="password"].active::-webkit-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by].active::-webkit-input-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="text"]:focus::-moz-placeholder,
 .editor-sidebar input[type="email"]:focus::-moz-placeholder,
 .editor-sidebar input[type="tel"]:focus::-moz-placeholder,
-.editor-sidebar input[type="password"]:focus::-moz-placeholder {
+.editor-sidebar input[type="password"]:focus::-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:focus::-moz-placeholder,
+.editor-sidebar input[type="text"].active::-moz-placeholder,
+.editor-sidebar input[type="email"].active::-moz-placeholder,
+.editor-sidebar input[type="tel"].active::-moz-placeholder,
+.editor-sidebar input[type="password"].active::-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by].active::-moz-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="text"]:focus:-ms-input-placeholder,
 .editor-sidebar input[type="email"]:focus:-ms-input-placeholder,
 .editor-sidebar input[type="tel"]:focus:-ms-input-placeholder,
-.editor-sidebar input[type="password"]:focus:-ms-input-placeholder {
+.editor-sidebar input[type="password"]:focus:-ms-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:focus:-ms-input-placeholder,
+.editor-sidebar input[type="text"].active:-ms-input-placeholder,
+.editor-sidebar input[type="email"].active:-ms-input-placeholder,
+.editor-sidebar input[type="tel"].active:-ms-input-placeholder,
+.editor-sidebar input[type="password"].active:-ms-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by].active:-ms-input-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="text"]:focus:-moz-placeholder,
 .editor-sidebar input[type="email"]:focus:-moz-placeholder,
 .editor-sidebar input[type="tel"]:focus:-moz-placeholder,
-.editor-sidebar input[type="password"]:focus:-moz-placeholder {
+.editor-sidebar input[type="password"]:focus:-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:focus:-moz-placeholder,
+.editor-sidebar input[type="text"].active:-moz-placeholder,
+.editor-sidebar input[type="email"].active:-moz-placeholder,
+.editor-sidebar input[type="tel"].active:-moz-placeholder,
+.editor-sidebar input[type="password"].active:-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by].active:-moz-placeholder {
   color: #262626;
 }
 .editor-sidebar input[type="password"] {
