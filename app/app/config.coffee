@@ -39,6 +39,7 @@ require.config
 
 		'plugins/misc/spin.min'					: ['jquery']
 		'plugins/misc/misc'						: ['jquery']
+		'plugins/misc/jquery.list'				: ['jquery']
 
 		'plugins/editor/jquery.jjfileupload'	: ['jquery']
 		'plugins/editor/jquery.tabby'			: ['jquery']

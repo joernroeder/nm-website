@@ -29,6 +29,7 @@ require.config({
     'responsiveimage/picturefill': ['responsiveimage/external/matchmedia'],
     'plugins/misc/spin.min': ['jquery'],
     'plugins/misc/misc': ['jquery'],
+    'plugins/misc/jquery.list': ['jquery'],
     'plugins/editor/jquery.jjfileupload': ['jquery'],
     'plugins/editor/jquery.tabby': ['jquery'],
     'plugins/editor/jquery.editor-sidebar': ['plugins/misc/misc'],
