@@ -1149,13 +1149,6 @@ var __hasProp = {}.hasOwnProperty,
         'class': this.previewClass
       });
       $text.val(element.text());
-      /*
-      			 # @todo set silent value
-      			@setValue
-      				images: {}
-      				raw: $text.val()
-      */
-
       $preview = $('<div>', {
         'class': this.previewClass
       });
