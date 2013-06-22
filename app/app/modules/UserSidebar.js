@@ -52,7 +52,15 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     },
     subView: null,
     events: {
-      'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
+      'click [data-editor-sidebar-content]': 'toggleSidebarCheck',
+      'click .icon-switch': 'switchEditorView'
+    },
+    switchEditorView: function(e) {
+      e.preventDefault();
+      if (app.isEditor) {
+        app.ProjectEditor.toggleView();
+      }
+      return false;
     },
     toggleSidebarCheck: function(e) {
       var $target, subViewName, toShow;
@@ -523,8 +531,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       this.uploadZone = new JJSimpleImagesUploadZone('#uploadzone', {
         url: app.Config.DocImageUrl,
         additionalData: {
-          projectId: app.CurrentlyEditingProject.id,
-          projectClass: app.CurrentlyEditingProject.get('ClassName')
+          projectId: app.ProjectEditor.model.id,
+          projectClass: app.ProjectEditor.model.get('ClassName')
         },
         responseHandler: function(data) {
           app.updateGalleryCache(data);
@@ -554,7 +562,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         projects = _.sortBy(gallery.images.Projects, function(project) {
           return project.Title.toLowerCase();
         });
-        currentProj = app.CurrentlyEditingProject;
+        currentProj = app.ProjectEditor.model;
         editFilter = currentProj.get('ClassName') + '-' + currentProj.id;
         old_i = 0;
         _.each(projects, function(project, i) {

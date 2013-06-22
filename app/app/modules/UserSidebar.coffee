@@ -64,8 +64,14 @@ define [
 
 			events:
 				'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
+				'click .icon-switch': 'switchEditorView'
 			
 			# !- Custom
+			
+			switchEditorView: (e) ->
+				e.preventDefault()
+				if app.isEditor then app.ProjectEditor.toggleView()
+				false
 			
 			toggleSidebarCheck: (e) ->
 				e.preventDefault()
@@ -450,8 +456,8 @@ define [
 				@.uploadZone = new JJSimpleImagesUploadZone '#uploadzone',
 					url: app.Config.DocImageUrl
 					additionalData: 
-						projectId: app.CurrentlyEditingProject.id
-						projectClass: app.CurrentlyEditingProject.get 'ClassName'
+						projectId: app.ProjectEditor.model.id
+						projectClass: app.ProjectEditor.model.get 'ClassName'
 					responseHandler: (data) =>
 						app.updateGalleryCache data
 						_.each data, (img) =>
@@ -472,7 +478,7 @@ define [
 					projects = _.sortBy gallery.images.Projects, (project) ->
 						return project.Title.toLowerCase()
 					
-					currentProj = app.CurrentlyEditingProject
+					currentProj = app.ProjectEditor.model
 					editFilter = currentProj.get('ClassName') + '-' + currentProj.id
 					old_i = 0
 					_.each projects, (project, i) ->

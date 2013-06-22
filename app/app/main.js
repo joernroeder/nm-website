@@ -18,7 +18,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   };
   app.CurrentMember = {};
   app.CurrentMemberPerson = null;
-  app.CurrentlyEditingProject = null;
+  app.ProjectEditor = null;
   app.origin = window.location.origin ? window.location.origin : window.location.protocol + '//' + window.location.host;
   console.log(app);
   app.Config = {

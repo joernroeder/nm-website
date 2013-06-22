@@ -15,7 +15,8 @@ define [
 	'modules/ProjectSearch'
 	'modules/DataRetrieval'
 	'modules/Editor'
-], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch, DataRetrieval, Editor) ->
+	'modules/ProjectEditor'
+], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch, DataRetrieval, Editor, ProjectEditor) ->
 
 	###*
 	 *
@@ -298,9 +299,7 @@ define [
 				Backbone.history.navigate '/login/', true
 			.done (model) ->
 				layout = app.useLayout 'editor'
-				app.CurrentlyEditingProject = model
-
-
+				app.ProjectEditor = new ProjectEditor.Inst(model)
 
 				
 

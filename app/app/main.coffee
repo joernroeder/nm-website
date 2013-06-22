@@ -44,7 +44,8 @@ require [
 	# auth
 	app.CurrentMember = {}
 	app.CurrentMemberPerson = null
-	app.CurrentlyEditingProject = null
+	app.ProjectEditor = null
+
 
 	# base url
 	app.origin = if window.location.origin then window.location.origin else window.location.protocol + '//' + window.location.host
