@@ -234,6 +234,12 @@ define [
 					@.$sidebarContent.list
 						headerSelector: 'header'
 
+					$('.ui-list', @.$sidebarContent).scroll (e) =>
+						@onContentScroll()
+
+			onContentScroll: ->
+
+
 			_onOpened: (switched) ->
 				delay = if switched then 0 else 300
 				@.isOpen = true
@@ -356,6 +362,9 @@ define [
 					dragAndDropAllowed: false
 					customParsers: []
 			###
+			onContentScroll: ->
+				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
+				bio.api.reposition()
 
 			initMetaEditor: ->
 				@.metaEditor = editor = new JJEditor $('.meta-info'), [
