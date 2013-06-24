@@ -670,7 +670,7 @@ var __hasProp = {}.hasOwnProperty,
     JJEditable.prototype.init = function(element) {
       this.element = element;
       this.setDataName(element.data(this.editor.getAttr('name')));
-      this.setOptions(element.data(this.editor.getAttr('options')));
+      this.updateOptions(element.data(this.editor.getAttr('options')), true);
       element.attr(this.editor.getAttr('handledBy'), this.id);
       return this.updateValue(true);
     };
@@ -922,10 +922,6 @@ var __hasProp = {}.hasOwnProperty,
       return this._dataName = name;
     };
 
-    JJEditable.prototype.setOptions = function(_options) {
-      this._options = _options;
-    };
-
     JJEditable.prototype.getDataScope = function() {
       return this._dataScope;
     };
@@ -942,9 +938,11 @@ var __hasProp = {}.hasOwnProperty,
       return this._options;
     };
 
-    JJEditable.prototype.updateOptions = function(options) {
+    JJEditable.prototype.updateOptions = function(options, silent) {
       this._options = $.extend(true, this._options, options);
-      return this.onOptionsUpdate();
+      if (!silent) {
+        return this.onOptionsUpdate();
+      }
     };
 
     JJEditable.prototype.onOptionsUpdate = function() {};
@@ -978,11 +976,6 @@ var __hasProp = {}.hasOwnProperty,
 
     JJPopoverEditable.prototype.closeOnOuterClick = true;
 
-    JJPopoverEditable.prototype.position = {
-      at: 'right center',
-      my: 'left center'
-    };
-
     function JJPopoverEditable(editor) {
       this.editor = editor;
       if (this.constructor.name === 'PopoverEditable') {
@@ -994,46 +987,30 @@ var __hasProp = {}.hasOwnProperty,
     JJPopoverEditable.prototype.init = function(element) {
       var _this = this;
 
+      this._options.position = {
+        at: 'right center',
+        my: 'left center',
+        adjust: {
+          x: 10,
+          resize: true,
+          method: 'flip shift'
+        }
+      };
       JJPopoverEditable.__super__.init.call(this, element);
+      element.data();
       element.qtip({
         events: {
-          show: function(event, api) {
-            var checkInput, key, pos, timer, _i, _len, _ref;
+          render: function(event, api) {},
+          visible: function() {
+            var $input;
 
-            pos = _this.getPosition();
-            _ref = Object.keys(pos);
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              key = _ref[_i];
-              api.set("position." + key, pos[key]);
+            $input = $('input, textarea', _this.api.tooltip).eq(0);
+            $input.selectRange($input.val().length);
+            if (_this.closeOnOuterClick) {
+              _this.api.tooltip.one(_this.getNamespacedEventName('outerClick'), function() {
+                return _this.close();
+              });
             }
-            checkInput = function() {
-              var $input;
-
-              $input = $('input, textarea', _this.api.tooltip).eq(0);
-              if ($input.length) {
-                return $input;
-              } else {
-                return false;
-              }
-            };
-            timer = function(delay) {
-              return setTimeout(function() {
-                var $input;
-
-                $input = checkInput();
-                if (!$input) {
-                  return timer(50);
-                } else {
-                  $input.selectRange($input.val().length);
-                  if (_this.closeOnOuterClick) {
-                    return _this.api.tooltip.one(_this.getNamespacedEventName('outerClick'), function() {
-                      return _this.close();
-                    });
-                  }
-                }
-              }, delay);
-            };
-            timer(300);
             return true;
           }
         },
@@ -1043,15 +1020,7 @@ var __hasProp = {}.hasOwnProperty,
           },
           title: ''
         },
-        position: {
-          at: this.position.at,
-          my: this.position.my,
-          adjust: {
-            x: 10,
-            resize: true,
-            method: 'flip shift'
-          }
-        },
+        position: this.getPosition(),
         show: {
           event: false
         },
@@ -1059,6 +1028,7 @@ var __hasProp = {}.hasOwnProperty,
           event: false,
           fixed: true
         },
+        prerender: true,
         style: {
           classes: this.getPopOverClasses(),
           tip: {
@@ -1080,6 +1050,19 @@ var __hasProp = {}.hasOwnProperty,
 
     JJPopoverEditable.prototype.getValueFromContent = function() {
       return this.element.html();
+    };
+
+    JJPopoverEditable.prototype.onOptionsUpdate = function() {
+      var key, pos, _i, _len, _ref, _results;
+
+      pos = this.getPosition();
+      _ref = Object.keys(pos);
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        key = _ref[_i];
+        _results.push(this.element.qtip('option', "position." + key, pos[key]));
+      }
+      return _results;
     };
 
     JJPopoverEditable.prototype.getPosition = function() {

@@ -840,6 +840,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.transition(~"background-color .2s .1s ease-in-out");
 		cursor: pointer;
 
+		&:hover,
 		&:focus {
 			background: rgba(255, 255, 255, .2);
 			cursor: auto;
@@ -852,7 +853,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 .editor-popover {
 
 	&.currentperson-bio {
-		border-right: 1px solid mix(@bgColor, @editorSidebarBg);
+		border: 1px solid mix(@bgColor, @editorSidebarBg);
+		border-left: none;
 	}
 }
 
@@ -871,6 +873,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 }
 
 .editor-sidebar {
+	@sidebarColor: darken(#fff, 20%);
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -1026,12 +1029,12 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	h1, h2, h3 {
-		color: #fff;
+		color: @sidebarColor;
 	}
 
 	a {
 		.link();
-		color: #fff;
+		color: @sidebarColor;
 	}
 
 	select.filter {
@@ -1082,7 +1085,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 			}
 
 			a {
-				color: darken(#fff, 20%);
+				color: @sidebarColor;
 				display: block;
 				padding: (@line / 4 / @em) (@line / 2 / @em);
 				margin: 0 -(@line / 2 / @em);
@@ -1333,9 +1336,13 @@ x:-o-prefocus, .qtip .qtip-tip{
 		padding: @line / 4 / @em;
 		border: none;
 		margin-bottom: @line / 2 / @em;
-		color: #fff;
+		color: @sidebarColor;
 
 		.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
+
+		&:hover {
+			background: mix(lighten(@black, 5%), darken(@nmColor, 30%), 75%);
+		}
 
 		&:focus,
 		&.active {

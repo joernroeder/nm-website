@@ -404,19 +404,9 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return bio.api.reposition();
     },
     initMetaEditor: function() {
-      var bio, editor;
+      var editor;
 
       this.metaEditor = editor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
-      bio = this.metaEditor.getComponentByName('CurrentPerson.Bio');
-      bio.updateOptions({
-        position: {
-          my: 'top right',
-          at: 'top left',
-          'adjust.x': -24,
-          'adjust.resize': true,
-          'adjust.method': 'flip shift'
-        }
-      });
       return editor.on('stateUpdate', function(e) {
         var key, val, _ref, _results;
 
@@ -424,7 +414,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         _results = [];
         for (key in _ref) {
           val = _ref[key];
-          if (key === 'Bio') {
+          if (key === 'Bio' && val) {
             val = val.raw;
           }
           if (app.CurrentMemberPerson.get(key) !== val) {

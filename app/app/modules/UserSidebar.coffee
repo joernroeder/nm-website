@@ -362,19 +362,20 @@ define [
 					'SplitMarkdownEditable'
 				]
 
-				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
+				#bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
 
-				bio.updateOptions
-					position:
-						my: 'top right'
-						at: 'top left'
-						'adjust.x': -24
-						'adjust.resize': true
-						'adjust.method': 'flip shift'
+				#console.log 'update options'
+				#bio.updateOptions
+				#	position:
+				#		my: 'top right'
+				#		at: 'top left'
+				#		'adjust.x': -24
+				#		'adjust.resize': true
+				#		'adjust.method': 'flip shift'
 				
 				editor.on 'stateUpdate', (e) ->
 					for key, val of e.CurrentPerson
-						if key is 'Bio' then val = val.raw
+						if key is 'Bio' and val then val = val.raw
 						if app.CurrentMemberPerson.get(key) isnt val
 							app.CurrentMemberPerson.save key, val
 

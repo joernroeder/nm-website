@@ -484,7 +484,7 @@ do ($ = jQuery) ->
 		# kick off your stuff from here!
 		init: (@element) ->
 			@setDataName element.data @editor.getAttr('name') 
-			@setOptions element.data @editor.getAttr('options')
+			@updateOptions element.data(@editor.getAttr('options')), true
 			element.attr @editor.getAttr('handledBy'), @id
 
 			@updateValue true
@@ -678,8 +678,6 @@ do ($ = jQuery) ->
 			@_dataScope = scope
 			@_dataName = name
 
-		setOptions: (@_options) ->
-
 		# ---
 
 		getDataScope: ->
@@ -694,9 +692,9 @@ do ($ = jQuery) ->
 		getOptions: ->
 			@_options
 
-		updateOptions: (options) ->
+		updateOptions: (options, silent) ->
 			@_options = $.extend true, @_options, options
-			@onOptionsUpdate()
+			@onOptionsUpdate() if not silent
 
 		onOptionsUpdate: ->
 
@@ -729,10 +727,6 @@ do ($ = jQuery) ->
 
 		closeOnOuterClick: true
 		
-		position:
-			at: 'right center'
-			my: 'left center'
-
 		constructor: (@editor) ->
 			if @.constructor.name is 'PopoverEditable'
 				throw new ReferenceError '"PopoverEditable" is an abstract class. Please use one of the subclasses instead.'
@@ -740,55 +734,49 @@ do ($ = jQuery) ->
 			super editor
 
 		init: (element) ->
+			@_options.position =
+				at: 'right center'
+				my: 'left center'
+
+				adjust:
+					x: 10
+					resize: true # @todo: own resize method
+					method: 'flip shift'
+
 			super element
 
 			#@.setValue element.html(), 
+			
+			element.data()
 
 			element.qtip
 				events:
-					show: (event, api) =>
-						pos = @getPosition()
-						for key in Object.keys(pos)
-							api.set "position.#{key}", pos[key]
+					render: (event, api) =>
+						#console.log 'render'
+						#pos = @getPosition()
+						#console.log pos
+						#for key in Object.keys(pos)
+						#	api.set "position.#{key}", pos[key]
+						##	console.log api.get "position.#{key}"
+						#true
 
-						checkInput = =>
-							$input = $('input, textarea', @api.tooltip).eq 0
+					visible: =>
+						$input = $('input, textarea', @api.tooltip).eq 0
+						# set cursor to the end of the first input or textarea element
+						$input.selectRange $input.val().length
+						# bind outer click to close the popup
+						if @closeOnOuterClick
+							@api.tooltip.one @getNamespacedEventName('outerClick'), =>
+								@close()
 
-							return if $input.length then $input else false
-
-						timer = (delay) =>
-							setTimeout =>
-								$input = checkInput()
-								if not $input 
-									timer 50
-								else
-									# set cursor to the end of the first input or textarea element
-									$input.selectRange $input.val().length
-
-									# bind outer click to close the popup
-									if @closeOnOuterClick
-										@api.tooltip.one @getNamespacedEventName('outerClick'), =>
-											@close()
-
-							, delay
-
-						timer 300
-
-						true					
+						true
 				
 				content: 
 					text: =>
 						@getPopoverContent()
 					title: ''
 
-				position:
-					at: @position.at
-					my: @position.my
-
-					adjust:
-						x: 10
-						resize: true # @todo: own resize method
-						method: 'flip shift'
+				position: @getPosition()
 
 				show:
 					event: false
@@ -798,6 +786,8 @@ do ($ = jQuery) ->
 					event: false
 					#inactive: 3000
 					fixed: true
+
+				prerender: true
 
 				style: 
 					classes: @getPopOverClasses()
@@ -816,6 +806,11 @@ do ($ = jQuery) ->
 
 		getValueFromContent: ->
 			@element.html()
+
+		onOptionsUpdate: ->
+			pos = @getPosition()
+			for key in Object.keys(pos)
+				@element.qtip 'option', "position.#{key}", pos[key]
 			
 
 		getPosition: ->
