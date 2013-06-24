@@ -242,11 +242,15 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         this._setColumnCount();
       }
       if (this.$sidebarContent.hasClass('scrollbox')) {
-        return this.$sidebarContent.list({
+        this.$sidebarContent.list({
           headerSelector: 'header'
+        });
+        return $('.ui-list', this.$sidebarContent).scroll(function(e) {
+          return _this.onContentScroll();
         });
       }
     },
+    onContentScroll: function() {},
     _onOpened: function(switched) {
       var delay,
         _this = this;
@@ -404,10 +408,35 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     					customParsers: []
     */
 
+    onContentScroll: function() {
+      var bio;
+
+      bio = this.metaEditor.getComponentByName('CurrentPerson.Bio');
+      return bio.api.reposition();
+    },
     initMetaEditor: function() {
-      var editor;
+      var bio, editor;
 
       this.metaEditor = editor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
+      /*
+      				markdownEditables = @.metaEditor.getComponentsByClassName 'MarkdownEditable'
+      				console.log markdownEditables
+      
+      				markdownEditables2 = @.metaEditor.getComponentsByType 'Markdown'
+      				console.log markdownEditables2
+      */
+
+      bio = this.metaEditor.getComponentByName('CurrentPerson.Bio');
+      console.log(bio);
+      bio.updateOptions({
+        position: {
+          my: 'top right',
+          at: 'top left',
+          'adjust.x': -24,
+          'adjust.resize': true,
+          'adjust.method': 'flip shift'
+        }
+      });
       return editor.on('stateUpdate', function(e) {
         var key, val, _ref, _results;
 
