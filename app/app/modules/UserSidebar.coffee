@@ -234,6 +234,12 @@ define [
 					@.$sidebarContent.list
 						headerSelector: 'header'
 
+					$('.ui-list', @.$sidebarContent).scroll (e) =>
+						@onContentScroll()
+
+			onContentScroll: ->
+
+
 			_onOpened: (switched) ->
 				delay = if switched then 0 else 300
 				@.isOpen = true
@@ -343,19 +349,11 @@ define [
 							personImg = app.CurrentMemberPerson.get 'Image'
 							if id isnt personImg and (not personImg or id isnt personImg.id)
 								# new image
-								app.CurrentMemberPerson.save 'Image', id
-								#app.CurrentMemberPerson.fetchByIdQueue 'Image'
+								app.CurrentMemberPerson.save 'Image', i
 
-			###
-			initBioEditor: ->
-				$bio = @.$el.find '#bio'
-				$textarea = $bio.find '.markdown-editor'
-				$preview = $bio.find '.markdown-editor-preview'
-				@.bioEditor = bioEditor = new JJMarkdownEditor $textarea,
-					preview: $preview
-					dragAndDropAllowed: false
-					customParsers: []
-			###
+			onContentScroll: ->
+				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
+				bio.api.reposition()
 
 			initMetaEditor: ->
 				@.metaEditor = editor = new JJEditor $('.meta-info'), [
@@ -363,6 +361,16 @@ define [
 					'MarkdownEditable'
 					'SplitMarkdownEditable'
 				]
+
+				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
+
+				bio.updateOptions
+					position:
+						my: 'top right'
+						at: 'top left'
+						'adjust.x': -24
+						'adjust.resize': true
+						'adjust.method': 'flip shift'
 				
 				editor.on 'stateUpdate', (e) ->
 					for key, val of e.CurrentPerson

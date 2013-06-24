@@ -847,13 +847,22 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 }
 
+// ! --- Custom Editables -----------------------
+
+.editor-popover {
+
+	&.currentperson-bio {
+		border-right: 1px solid mix(@bgColor, @editorSidebarBg);
+	}
+}
+
 
 // ! --- Editor Sidebar -----------------------------------
 
 // dirty hack! we have to remove this after testing
-#qtip-0.markdowneditable {
+/*#qtip-0.markdowneditable {
 	left: 10px !important;
-}
+}*/
 
 #editor-sidebar-spinner {
 	position: absolute;

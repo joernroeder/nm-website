@@ -333,6 +333,56 @@ do ($ = jQuery) ->
 		getComponents: ->
 			_components
 
+		###
+		 # returns an array with all components from the given className
+		 #
+		 # @param [string] type
+		 #
+		 # @return array
+		###
+		getComponentsByClassName: (className) ->
+			components = @getComponents()
+			results = []
+
+			for id, component of components
+				if component.constructor.name is className
+					results.push component
+
+			results
+
+		###
+		 # returns an array with all components from the given type
+		 #
+		 # @param [string] type
+		 #
+		 # @return array
+		###
+		getComponentsByType: (type) ->
+			components = @getComponents()
+			results = []
+
+			for id, component of components
+				if -1 isnt $.inArray type.toLowerCase(), component.contentTypes
+					results.push component
+
+			results
+
+		###
+		 # returns a Editor-Component by name
+		 #
+		 # @param [string] fullName
+		 #
+		 # @return JJEditable
+		###
+		getComponentByName: (fullName) ->
+			components = @getComponents()
+
+			for id, component of components
+				if component.getDataFullName() is fullName
+					return component
+
+			null	
+
 
 		###
 		 #
@@ -644,6 +694,13 @@ do ($ = jQuery) ->
 		getOptions: ->
 			@_options
 
+		updateOptions: (options) ->
+			@_options = $.extend true, @_options, options
+			@onOptionsUpdate()
+
+		onOptionsUpdate: ->
+
+
 		render: ->
 			if @element
 				@element.html @getValueOrPlaceholder()
@@ -689,17 +746,35 @@ do ($ = jQuery) ->
 
 			element.qtip
 				events:
-					visible: (event, api) =>
-						# set cursor to the end of the first input or textarea element
-						$input = $('input, textarea', @api.tooltip).eq 0
-						$input.selectRange $input.val().length
+					show: (event, api) =>
+						pos = @getPosition()
+						for key in Object.keys(pos)
+							api.set "position.#{key}", pos[key]
 
-						# bind outer click to close the popup
-						if @closeOnOuterClick
-							@api.tooltip.one @getNamespacedEventName('outerClick'), =>
-								@close()
+						checkInput = =>
+							$input = $('input, textarea', @api.tooltip).eq 0
 
-						@
+							return if $input.length then $input else false
+
+						timer = (delay) =>
+							setTimeout =>
+								$input = checkInput()
+								if not $input 
+									timer 50
+								else
+									# set cursor to the end of the first input or textarea element
+									$input.selectRange $input.val().length
+
+									# bind outer click to close the popup
+									if @closeOnOuterClick
+										@api.tooltip.one @getNamespacedEventName('outerClick'), =>
+											@close()
+
+							, delay
+
+						timer 300
+
+						true					
 				
 				content: 
 					text: =>
@@ -709,7 +784,7 @@ do ($ = jQuery) ->
 				position:
 					at: @position.at
 					my: @position.my
-				
+
 					adjust:
 						x: 10
 						resize: true # @todo: own resize method
@@ -741,6 +816,10 @@ do ($ = jQuery) ->
 
 		getValueFromContent: ->
 			@element.html()
+			
+
+		getPosition: ->
+			return if @_options.position then @_options.position else @position
 
 		open: ->
 			@element.addClass 'active'
@@ -759,7 +838,8 @@ do ($ = jQuery) ->
 				@open()
 
 		getPopOverClasses: ->
-			(['editor-popover']).concat([@name], @popoverClasses).join ' '
+			dataName =  (@getDataFullName()).toLowerCase().replace '.', '-'
+			(['editor-popover']).concat([@name, dataName], @popoverClasses).join ' '
 
 		getPopoverContent: ->
 			types = @contentTypes.join ', '

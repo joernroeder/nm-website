@@ -1470,9 +1470,12 @@ x:-o-prefocus,
   background: rgba(255, 255, 255, 0.2);
   cursor: auto;
 }
-#qtip-0.markdowneditable {
-  left: 10px !important;
+.editor-popover.currentperson-bio {
+  border-right: 1px solid #868686;
 }
+/*#qtip-0.markdowneditable {
+	left: 10px !important;
+}*/
 #editor-sidebar-spinner {
   position: absolute;
   top: 50%;
