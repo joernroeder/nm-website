@@ -303,10 +303,13 @@ class JJ_RestfulServer extends RestfulServer {
 		$md5Obj = md5($obj);
 		$md5Fields = md5($fields);
 		$md5Context = md5($context->getContext());
+		Debug::dump($obj->LastEdited);
+		$md5LastEdited = isset($obj->LastEdited) ? md5($obj->LastEdited) . '_' : '';
+		Debug::dump($md5LastEdited);
 		$md5ResponseFormatter = md5($responseFormatter->class);
 		$currentUserId = (int) Member::currentUserId();
 
-		$cacheKey = md5($md5Obj . '_' . $id . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
+		$cacheKey = md5($md5LastEdited . $md5Obj . '_' . $id . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
@@ -344,6 +347,11 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @return DataList
 	 */
 	protected function getObjectQuery($className, $ids, $params) {
+		$implIds = implode(',', $ids);
+		$aggregate = new Aggregate($className, "ID IN ($implIds)");
+		Debug::dump($aggregate->XML_val('Max', array('LastEdited')));
+
+
 		$cacheKey =  md5(implode('_', array_merge($ids, $params))) . '_ObjectQuery';
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
