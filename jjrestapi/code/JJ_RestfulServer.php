@@ -496,7 +496,7 @@ class JJ_RestfulServer extends RestfulServer {
 			$result = unserialize($result);
 		}
 		else {
-			$result = $searchContext->getQuery($params, $sort, $limit, $existingQuery);
+			$result = $searchContext->getQuery($params, $sort, $limit, null);
 			$result = $result->toArray();
 			$cache->save(serialize($result));
 		}
