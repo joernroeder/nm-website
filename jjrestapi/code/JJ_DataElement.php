@@ -8,7 +8,7 @@ class JJ_DataElement extends ViewableData {
 	 * @static
 	 * @var string
 	 */
-	public static $att_prefix = 'api-';
+	private static $att_prefix = 'api-';
 
 
 	/**
@@ -17,7 +17,7 @@ class JJ_DataElement extends ViewableData {
 	 * @static
 	 * @var string
 	 */
-	public static $default_extension = 'json';
+	private static $default_extension = 'json';
 
 
 	/**
@@ -67,11 +67,15 @@ class JJ_DataElement extends ViewableData {
 		$this->setName($name);
 		$this->setData($data);
 
-		$extension = $extension ? $extension : self::$default_extension;
+		$extension = $extension ? $extension : self::get_default_extension();
 		$context = $context ? $context : JJ_ApiContext::create_from_string();
 		
 		$this->setExtension($extension);
 		$this->setContext($context);
+	}
+
+	public static function get_default_extension() {
+		return self::config()->default_extension;
 	}
 
 

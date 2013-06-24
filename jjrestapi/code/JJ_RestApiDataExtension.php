@@ -85,7 +85,7 @@ class JJ_RestApiDataExtension extends Object {
 	 */
 	public static function for_template() {
 		$self = self::create();
-		$extension = JJ_DataElement::$default_extension;
+		$extension = JJ_DataElement::get_default_extension();
 		$elementKey = strtolower(self::extension_key());
 
 		return new JJ_DataElement($elementKey, $self->getData($extension), $extension);
