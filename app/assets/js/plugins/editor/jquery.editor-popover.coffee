@@ -758,6 +758,13 @@ do ($ = jQuery) ->
 								@close()
 
 						@
+
+					show: (event, api) =>
+						pos = @getPosition()
+						for key in Object.keys(pos)
+							api.set "position.#{key}", pos[key]
+
+						true
 				
 				content: 
 					text: =>
@@ -767,7 +774,7 @@ do ($ = jQuery) ->
 				position:
 					at: @position.at
 					my: @position.my
-				
+
 					adjust:
 						x: 10
 						resize: true # @todo: own resize method
@@ -799,6 +806,10 @@ do ($ = jQuery) ->
 
 		getValueFromContent: ->
 			@element.html()
+			
+
+		getPosition: ->
+			return if @_options.position then @_options.position else @position
 
 		open: ->
 			@element.addClass 'active'
