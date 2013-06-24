@@ -378,7 +378,6 @@ do ($ = jQuery) ->
 			components = @getComponents()
 
 			for id, component of components
-				console.log component.getDataFullName()
 				if component.getDataFullName() is fullName
 					return component
 

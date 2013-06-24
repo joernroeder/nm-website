@@ -538,7 +538,6 @@ var __hasProp = {}.hasOwnProperty,
       components = this.getComponents();
       for (id in components) {
         component = components[id];
-        console.log(component.getDataFullName());
         if (component.getDataFullName() === fullName) {
           return component;
         }
@@ -1014,7 +1013,6 @@ var __hasProp = {}.hasOwnProperty,
             var key, pos, _i, _len, _ref;
 
             pos = _this.getPosition();
-            console.log(pos);
             _ref = Object.keys(pos);
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               key = _ref[_i];
