@@ -28,12 +28,14 @@ class Upload extends Controller {
 	
 	/**
 	 * A File object
+	 * 
 	 * @var File
 	 */
 	protected $file;
 	
 	/**
-	 * An instance of Upload_Validator
+	 * Validator for this upload field
+	 * 
 	 * @var Upload_Validator
 	 */
 	protected $validator;
@@ -45,10 +47,11 @@ class Upload extends Controller {
 	 * @var array
 	 */
 	protected $tmpFile;
-
+	
 	/**
 	 * Replace an existing file rather than renaming the new one.
-	 * @var Boolean
+	 * 
+	 * @var boolean
 	 */
 	protected $replaceFile;
 	
@@ -68,17 +71,17 @@ class Upload extends Controller {
 	 * @var string
 	 */
 	private static $uploads_folder = "Uploads"; 
-
+	
 	public function __construct() {
 		parent::__construct();
 		$this->validator = new Upload_Validator();
-		$this->replaceFile = $this->config()->replaceFile;
+		$this->replaceFile = self::config()->replaceFile;
 	}
 	
 	/**
 	 * Get current validator
 	 * 
-	 * @return object $validator
+	 * @return Upload_Validator $validator
 	 */
 	public function getValidator() {
 		return $this->validator;
@@ -127,11 +130,8 @@ class Upload extends Controller {
 		$parentFolder = Folder::find_or_make($folderPath);
 
 		// Create a folder for uploading.
-		if(!file_exists(ASSETS_PATH)){
-			mkdir(ASSETS_PATH, Config::inst()->get('Filesystem', 'folder_create_mask'));
-		}
 		if(!file_exists(ASSETS_PATH . "/" . $folderPath)){
-			mkdir(ASSETS_PATH . "/" . $folderPath, Config::inst()->get('Filesystem', 'folder_create_mask'));
+			Filesystem::makeFolder(ASSETS_PATH . "/" . $folderPath);
 		}
 
 		// Generate default filename
@@ -140,7 +140,7 @@ class Upload extends Controller {
 		$fileName = basename($file);
 
 		$relativeFilePath = ASSETS_DIR . "/" . $folderPath . "/$fileName";
-
+		
 		// Create a new file record (or try to retrieve an existing one)
 		if(!$this->file) {
 			$fileClass = File::get_class_for_file_extension(pathinfo($tmpFile['name'], PATHINFO_EXTENSION));
@@ -174,6 +174,9 @@ class Upload extends Controller {
 					user_error("Couldn't fix $relativeFilePath with $i tries", E_USER_ERROR);
 				}
 			}	
+		} else {
+			//reset the ownerID to the current member when replacing files
+			$this->file->OwnerID = (Member::currentUser() ? Member::currentUser()->ID : 0);
 		}
 
 		if(file_exists($tmpFile['tmp_name']) && copy($tmpFile['tmp_name'], "$base/$relativeFilePath")) {
@@ -181,6 +184,7 @@ class Upload extends Controller {
 			// This is to prevent it from trying to rename the file
 			$this->file->Name = basename($relativeFilePath);
 			$this->file->write();
+			$this->extend('onAfterLoad', $this->file);   //to allow extensions to e.g. create a version after an upload
 			return true;
 		} else {
 			$this->errors[] = _t('File.NOFILESIZE', 'Filesize is zero bytes.');
@@ -199,7 +203,7 @@ class Upload extends Controller {
 		$this->file = $file;
 		return $this->load($tmpFile, $folderPath);
 	}
-
+	
 	/**
 	 * @return Boolean
 	 */
@@ -276,7 +280,7 @@ class Upload extends Controller {
 	 * @return array
 	 */
 	public function getErrors() {
-		return $this->errors;		
+		return $this->errors;
 	}
 	
 }

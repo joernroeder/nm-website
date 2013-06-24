@@ -92,6 +92,10 @@ class TestRunner extends Controller {
 		Config::inst()->pushConfigStaticManifest(new SS_ConfigStaticManifest(
 			BASE_PATH, true, isset($_GET['flush'])
 		));
+		
+		// Invalidate classname spec since the test manifest will now pull out new subclasses for each internal class
+		// (e.g. Member will now have various subclasses of DataObjects that implement TestOnly)
+		DataObject::clear_classname_spec_cache();
 	}
 
 	public function init() {
@@ -282,8 +286,18 @@ class TestRunner extends Controller {
 			$skipTests = explode(',', $this->request->getVar('SkipTests'));
 		}
 
-		$classList = array_diff($classList, $skipTests);
+		$abstractClasses = array();
+		foreach($classList as $className) {
+			// Ensure that the autoloader pulls in the test class, as PHPUnit won't know how to do this.
+			class_exists($className);
+			$reflection = new ReflectionClass($className);
+			if ($reflection->isAbstract()) {
+				array_push($abstractClasses, $className);
+			}
+		}
 		
+		$classList = array_diff($classList, $skipTests, $abstractClasses);
+
 		// run tests before outputting anything to the client
 		$suite = new PHPUnit_Framework_TestSuite();
 		natcasesort($classList);
@@ -310,6 +324,12 @@ class TestRunner extends Controller {
 		$phpunitwrapper = PhpUnitWrapper::inst();
 		$phpunitwrapper->setSuite($suite);
 		$phpunitwrapper->setCoverageStatus($coverage);
+
+		// Make sure TearDown is called (even in the case of a fatal error)
+		$self = $this;
+		register_shutdown_function(function() use ($self) {
+			$self->tearDown();
+		});
 
 		$phpunitwrapper->runTests();
 

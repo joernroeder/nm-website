@@ -210,6 +210,11 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	public function checkPassword($password) {
 		$result = $this->canLogIn();
 
+		if(empty($this->Password) && $this->exists()) {
+			$result->error(_t('Member.NoPassword','There is no password on this member.'));
+			return $result;
+		}
+
 		$e = PasswordEncryptor::create_for_algorithm($this->PasswordEncryption);
 		if(!$e->check($this->Password, $password, $this->Salt, $this)) {
 			$result->error(_t (
@@ -447,7 +452,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	public function logOut() {
 		Session::clear("loggedInAs");
 		if(Member::config()->login_marker_cookie) Cookie::set(Member::config()->login_marker_cookie, null, 0);
-		self::session_regenerate_id();
+
+		Session::destroy();
 
 		$this->extend('memberLoggedOut');
 
@@ -988,7 +994,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * @todo Push all this logic into Member_GroupSet's getIterator()?
 	 */
 	public function Groups() {
-		$groups = Injector::inst()->create('Member_GroupSet', 'Group', 'Group_Members', 'GroupID', 'MemberID');
+		$groups = Member_GroupSet::create('Group', 'Group_Members', 'GroupID', 'MemberID');
 		$groups = $groups->forForeignID($this->ID);
 		
 		$this->extend('updateGroups', $groups);
@@ -1424,6 +1430,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 				$config = HtmlEditorConfig::get($group->HtmlEditorConfig);
 				if($config && $config->getOption('priority') > $currentPriority) {
 					$currentName = $configName;
+					$currentPriority = $config->getOption('priority');
 				}
 			}
 		}

@@ -6,8 +6,8 @@
  * This is essentially an abstract class which should be subclassed.
  * See {@link CMSMain} for a good example.
  * 
- * @package cms
- * @subpackage core
+ * @package framework
+ * @subpackage admin
  */
 class LeftAndMain extends Controller implements PermissionProvider {
 	
@@ -76,7 +76,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 	 * @config
 	 * @var string
 	 */
-	private static $help_link = 'http://3.0.userhelp.silverstripe.org';
+	private static $help_link = 'http://userhelp.silverstripe.org/framework/en/3.1';
 
 	/**
 	 * @var array
@@ -153,6 +153,15 @@ class LeftAndMain extends Controller implements PermissionProvider {
 	private static $extra_requirements_themedCss = array();
 
 	/**
+	 * If true, call a keepalive ping every 5 minutes from the CMS interface,
+	 * to ensure that the session never dies.
+	 * 
+	 * @config
+	 * @var boolean
+	 */
+	private static $session_keepalive_ping = true;
+
+	/**
 	 * @var PjaxResponseNegotiator
 	 */
 	protected $responseNegotiator;
@@ -197,6 +206,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		parent::init();
 
 		Config::inst()->update('SSViewer', 'rewrite_hash_links', false); 
+		Config::inst()->update('ContentNegotiator', 'enabled', false);
 		
 		// set language
 		$member = Member::currentUser();
@@ -326,28 +336,30 @@ class LeftAndMain extends Controller implements PermissionProvider {
 
 		HTMLEditorField::include_js();
 
-		Requirements::combine_files(
-			'leftandmain.js',
-			array_unique(array_merge(
-				array(
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Layout.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.ActionTabSet.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Panel.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Tree.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Ping.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Content.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.EditForm.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Menu.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Preview.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.BatchActions.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.FieldHelp.js',
-					FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.TreeDropdownField.js',
-				),
-				Requirements::add_i18n_javascript(FRAMEWORK_DIR . '/javascript/lang', true, true),
-				Requirements::add_i18n_javascript(FRAMEWORK_ADMIN_DIR . '/javascript/lang', true, true)
-			))
-		);
+		$leftAndMainIncludes = array_unique(array_merge(
+			array(
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Layout.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.ActionTabSet.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Panel.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Tree.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Content.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.EditForm.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Menu.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Preview.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.BatchActions.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.FieldHelp.js',
+				FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.TreeDropdownField.js',
+			),
+			Requirements::add_i18n_javascript(FRAMEWORK_DIR . '/javascript/lang', true, true),
+			Requirements::add_i18n_javascript(FRAMEWORK_ADMIN_DIR . '/javascript/lang', true, true)
+		));
+
+		if($this->config()->session_keepalive_ping) {
+			$leftAndMainIncludes[] = FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Ping.js';
+		}
+
+		Requirements::combine_files('leftandmain.js', $leftAndMainIncludes);
 
 		// TODO Confuses jQuery.ondemand through document.write()
 		if (Director::isDev()) {
@@ -366,29 +378,58 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		$ie = isset($_SERVER['HTTP_USER_AGENT']) ? strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') : false;
 		if($ie) {
 			$version = substr($_SERVER['HTTP_USER_AGENT'], $ie + 5, 3);
-			if($version == 7) Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/ie7.css');
-			else if($version == 8) Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/ie8.css');
+
+			if($version == 7) {
+				Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/ie7.css');
+			} else if($version == 8) {
+				Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/ie8.css');
+			}
 		}
 
 		// Custom requirements
 		$extraJs = $this->stat('extra_requirements_javascript');
 
-		if($extraJs) foreach($extraJs as $file => $config) {
-			Requirements::javascript($file);
+		if($extraJs) {
+			foreach($extraJs as $file => $config) {
+				if(is_numeric($file)) {
+					$file = $config;
+				}
+				
+				Requirements::javascript($file);
+			}
 		}
+
 		$extraCss = $this->stat('extra_requirements_css');
-		if($extraCss) foreach($extraCss as $file => $config) {
-			Requirements::css($file, isset($config['media']) ? $config['media'] : null);
+		
+		if($extraCss) {
+			foreach($extraCss as $file => $config) {
+				if(is_numeric($file)) {
+					$file = $config;
+					$config = array();
+				}
+				
+				Requirements::css($file, isset($config['media']) ? $config['media'] : null);
+			}
 		}
-		$extraThemedCss = $this->stat('extra_requirements_themedcss');
-		if($extraThemedCss) foreach ($extraThemedCss as $file => $config) {
-			Requirements::themedCSS($file, isset($config['media']) ? $config['media'] : null);
+
+		$extraThemedCss = $this->stat('extra_requirements_themedCss');
+
+		if($extraThemedCss) {
+			foreach ($extraThemedCss as $file => $config) {
+				if(is_numeric($file)) {
+					$file = $config;
+					$config = array();
+				}
+
+				Requirements::themedCSS($file, isset($config['media']) ? $config['media'] : null);
+			}
 		}
 
 		$dummy = null;
 		$this->extend('init', $dummy);
 
-		// The user's theme shouldn't affect the CMS, if, for example, they have replaced TableListField.ss or Form.ss.
+		// The user's theme shouldn't affect the CMS, if, for example, they have 
+		// replaced TableListField.ss or Form.ss.
 		Config::inst()->update('SSViewer', 'theme_enabled', false);
 	}
 	
@@ -1170,7 +1211,10 @@ class LeftAndMain extends Controller implements PermissionProvider {
 			$actionsFlattened = $actions->dataFields();
 			if($actionsFlattened) foreach($actionsFlattened as $action) $action->setUseButtonTag(true);
 			
-			$form = new Form($this, "EditForm", $fields, $actions);
+			$form = CMSForm::create( 
+				$this, "EditForm", $fields, $actions
+			)->setHTMLID('Form_EditForm');
+			$form->setResponseNegotiator($this->getResponseNegotiator());
 			$form->addExtraClass('cms-edit-form');
 			$form->loadDataFrom($record);
 			$form->setTemplate($this->getTemplatesWithSuffix('_EditForm'));
@@ -1223,7 +1267,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 	 * @return Form
 	 */
 	public function EmptyForm() {
-		$form = new Form(
+		$form = CMSForm::create( 
 			$this, 
 			"EditForm", 
 			new FieldList(
@@ -1241,7 +1285,8 @@ class LeftAndMain extends Controller implements PermissionProvider {
 				// )
 			), 
 			new FieldList()
-		);
+		)->setHTMLID('Form_EditForm');
+		$form->setResponseNegotiator($this->getResponseNegotiator());
 		$form->unsetValidator();
 		$form->addExtraClass('cms-edit-form');
 		$form->addExtraClass('root-form');
@@ -1686,8 +1731,8 @@ class LeftAndMain extends Controller implements PermissionProvider {
 	 * @param $media String Comma-separated list of media-types (e.g. "screen,projector") 
 	 */
 	public static function require_themed_css($name, $media = null) {
-		Deprecation::notice('3.2', 'Use "LeftAndMain.extra_requirements_css" config setting instead');
-		Config::inst()->update('LeftAndMain', 'extra_requirements_css', array($name => array('media' => $media)));
+		Deprecation::notice('3.2', 'Use "LeftAndMain.extra_requirements_themedCss" config setting instead');
+		Config::inst()->update('LeftAndMain', 'extra_requirements_themedCss', array($name => array('media' => $media)));
 	}
 	
 }
@@ -1768,6 +1813,9 @@ class LeftAndMainMarkingFilter {
 
 /**
  * Allow overriding finished state for faux redirects.
+ *
+ * @package framework
+ * @subpackage admin
  */
 class LeftAndMain_HTTPResponse extends SS_HTTPResponse {
 
@@ -1787,7 +1835,10 @@ class LeftAndMain_HTTPResponse extends SS_HTTPResponse {
  * Wrapper around objects being displayed in a tree.
  * Caution: Volatile API.
  *
- * @todo Implement recursive tree node rendering
+ * @todo Implement recursive tree node rendering.
+ *
+ * @package framework
+ * @subpackage admin
  */
 class LeftAndMain_TreeNode extends ViewableData {
 	
@@ -1833,7 +1884,12 @@ class LeftAndMain_TreeNode extends ViewableData {
 		$classes = $this->obj->CMSTreeClasses();
 		if($this->isCurrent) $classes .= " current";
 		$flags = $this->obj->hasMethod('getStatusFlags') ? $this->obj->getStatusFlags() : false;
-		if($flags) $classes .= ' ' . implode(' ', array_keys($flags));
+		if ($flags) {
+			$statuses = array_keys($flags);
+			foreach ($statuses as $s) {
+				$classes .= ' status-' . $s;
+			}
+		}
 		return $classes;
 	}
 

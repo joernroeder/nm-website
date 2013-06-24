@@ -4,8 +4,22 @@
 		 * On resize of any close the open treedropdownfields
 		 * as we'll need to redo with widths
 		 */
-		$(window).resize(function() {
-			$('.TreeDropdownField').closePanel();
+		var windowWidth, windowHeight;
+		$(window).bind('resize.treedropdownfield', function() {
+			// Entwine's 'fromWindow::onresize' does not trigger on IE8. Use synthetic event.
+			var cb = function() {$('.TreeDropdownField').closePanel();};
+
+			// Workaround to avoid IE8 infinite loops when elements are resized as a result of this event 
+			if($.browser.msie && parseInt($.browser.version, 10) < 9) {
+				var newWindowWidth = $(window).width(), newWindowHeight = $(window).height();
+				if(newWindowWidth != windowWidth || newWindowHeight != windowHeight) {
+					windowWidth = newWindowWidth;
+					windowHeight = newWindowHeight;
+					cb();
+				}
+			} else {
+				cb();
+			}
 		});
 		
 		var strings = {
@@ -58,9 +72,7 @@
 				$('body').bind('click', _clickTestFn);
 				
 				var panel = this.getPanel(), tree = this.find('.tree-holder');
-				var top = this.position().top + this.height();
-				
-				panel.css('top', top);
+
 				panel.css('width', this.width());
 				
 				panel.show();
@@ -116,16 +128,19 @@
 						
 						var node = tree.find('*[data-id="' + val + '"]'),
 							title = node.children('a').find("span.jstree_pageicon")?node.children('a').find("span.item").html():null;
-						if(!title) title=(node) ? tree.jstree('get_text', node[0]) : null;
+						if(!title) title=(node.length > 0) ? tree.jstree('get_text', node[0]) : null;
 						
-						if(title) self.setTitle(title);
+						if(title) {
+							self.setTitle(title);
+							self.data('title', title)
+						}
 						if(node) tree.jstree('select_node', node);
 					}
 				};
 
 				// Load the tree if its not already present
-				if(jQuery.jstree._reference(tree) || !val) updateFn();
-				else this.loadTree(null, updateFn);
+				if(!tree.is(':empty') || !val) updateFn();
+				else this.loadTree({forceValue: val}, updateFn);
 			},
 			setValue: function(val) {
 				this.data('metadata', $.extend(this.data('metadata'), {id: val}));

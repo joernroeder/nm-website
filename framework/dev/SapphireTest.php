@@ -287,6 +287,10 @@ class SapphireTest extends PHPUnit_Framework_TestCase {
 	public function setUpOnce() {
 		$isAltered = false;
 
+		if(!Director::isDev()) {
+			user_error('Tests can only run in "dev" mode', E_USER_ERROR);
+		}
+
 		// Remove any illegal extensions that are present
 		foreach($this->illegalExtensions as $class => $extensions) {
 			foreach($extensions as $extension) {
@@ -855,6 +859,7 @@ class SapphireTest extends PHPUnit_Framework_TestCase {
 		}
 		
 		$this->cache_generatedMembers[$permCode]->logIn();
+		return $this->cache_generatedMembers[$permCode]->ID;
 	}
 	
 	/**

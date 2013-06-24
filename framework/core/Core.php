@@ -44,24 +44,46 @@
 error_reporting(E_ALL | E_STRICT);
 
 /**
- * Include _ss_environment.php files
+ * Include _ss_environment.php file
  */
 //define the name of the environment file
 $envFile = '_ss_environment.php';
-//define the dir to start scanning from (have to add the trailing slash)
-$dir = '.';
-//check this dir and every parent dir (until we hit the base of the drive)
-do {
-	$dir = realpath($dir) . '/';
-	//if the file exists, then we include it, set relevant vars and break out
-	if (file_exists($dir . $envFile)) {
-		define('SS_ENVIRONMENT_FILE', $dir . $envFile);
-		include_once(SS_ENVIRONMENT_FILE);
-		break;
-	}
-//here we need to check that the real path of the last dir and the next one are
-// not the same, if they are, we have hit the root of the drive
-} while (realpath($dir) != realpath($dir .= '../'));
+//define the dirs to start scanning from (have to add the trailing slash)
+// we're going to check the realpath AND the path as the script sees it
+$dirsToCheck = array(
+	realpath('.'),
+	dirname($_SERVER['SCRIPT_FILENAME'])
+);
+//if they are the same, remove one of them
+if ($dirsToCheck[0] == $dirsToCheck[1]) {
+	unset($dirsToCheck[1]);
+}
+foreach ($dirsToCheck as $dir) {
+	//check this dir and every parent dir (until we hit the base of the drive)
+	// or until we hit a dir we can't read
+	do {
+		//add the trailing slash we need to concatenate properly
+		$dir .= DIRECTORY_SEPARATOR;
+		//if it's readable, go ahead
+		if (@is_readable($dir)) {
+			//if the file exists, then we include it, set relevant vars and break out
+			if (file_exists($dir . $envFile)) {
+				define('SS_ENVIRONMENT_FILE', $dir . $envFile);
+				include_once(SS_ENVIRONMENT_FILE);
+				//break out of BOTH loops because we found the $envFile
+				break(2);
+			}
+		}
+		else {
+			//break out of the while loop, we can't read the dir
+			break;
+		}
+		//go up a directory
+		$dir = dirname($dir);
+	//here we need to check that the path of the last dir and the next one are
+	// not the same, if they are, we have hit the root of the drive
+	} while (dirname($dir) != $dir);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // GLOBALS AND DEFINE SETTING
@@ -120,6 +142,9 @@ if(!isset($_SERVER['HTTP_HOST'])) {
 		if($_GET) stripslashes_recursively($_GET);
 		if($_POST) stripslashes_recursively($_POST);
 		if($_COOKIE) stripslashes_recursively($_COOKIE);
+		// No more magic_quotes!
+		trigger_error('get_magic_quotes_gpc support is being removed from Silverstripe. Please set this to off in ' .
+			' your php.ini and see http://php.net/manual/en/security.magicquotes.php', E_USER_WARNING);
 	}
 	
 	/**
@@ -183,7 +208,10 @@ define('SAPPHIRE_ADMIN_PATH', FRAMEWORK_ADMIN_PATH);
 
 define('THIRDPARTY_DIR', FRAMEWORK_DIR . '/thirdparty');
 define('THIRDPARTY_PATH', BASE_PATH . '/' . THIRDPARTY_DIR);
-define('ASSETS_DIR', 'assets');
+
+if(!defined('ASSETS_DIR')) {
+	define('ASSETS_DIR', 'assets');
+}
 define('ASSETS_PATH', BASE_PATH . '/' . ASSETS_DIR);
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -247,6 +275,7 @@ gc_enable();
 require_once 'cache/Cache.php';
 require_once 'core/Object.php';
 require_once 'core/ClassInfo.php';
+require_once 'core/DAG.php';
 require_once 'core/Config.php';
 require_once 'view/TemplateGlobalProvider.php';
 require_once 'control/Director.php';

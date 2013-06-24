@@ -148,8 +148,12 @@ class Image extends File {
 	/**
 	 * File names are filtered through {@link FileNameFilter}, see class documentation
 	 * on how to influence this behaviour.
+	 *
+	 * @deprecated 3.2
 	 */
 	public function loadUploadedImage($tmpFile) {
+		Deprecation::notice('3.2', 'Use the Upload::loadIntoFile()');
+
 		if(!is_array($tmpFile)) {
 			user_error("Image::loadUploadedImage() Not passed an array.  Most likely, the form hasn't got the right"
 				. "enctype", E_USER_ERROR);
@@ -346,7 +350,7 @@ class Image extends File {
 	 * @param integer $height The height to size to
 	 * @return Image
 	 */
-	public function PaddedImage($width, $height, $backgroundColor=null) {
+	public function PaddedImage($width, $height, $backgroundColor='FFFFFF') {
 		return $this->isSize($width, $height)
 			? $this 
 			: $this->getFormattedImage('PaddedImage', $width, $height, $backgroundColor);
@@ -360,7 +364,7 @@ class Image extends File {
 	 * @param integer $height The height to size to
 	 * @return Image_Backend
 	 */
-	public function generatePaddedImage(Image_Backend $backend, $width, $height, $backgroundColor=null) {
+	public function generatePaddedImage(Image_Backend $backend, $width, $height, $backgroundColor='FFFFFF') {
 		return $backend->paddedResize($width, $height, $backgroundColor);
 	}
 	

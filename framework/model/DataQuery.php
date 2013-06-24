@@ -14,7 +14,7 @@
 class DataQuery {
 	
 	/**
-	 * @var String
+	 * @var string
 	 */
 	protected $dataClass;
 	
@@ -419,14 +419,22 @@ class DataQuery {
 	}
 	
 	/**
+	 * Set the GROUP BY clause of this query.
+	 * 
+	 * @param String $groupby Escaped SQL statement
+	 */
+	public function groupby($groupby) {
+		$this->query->addGroupBy($groupby);
+		return $this;
+	}
+	
+	/**
 	 * Set the HAVING clause of this query.
 	 * 
 	 * @param String $having Escaped SQL statement
 	 */
 	public function having($having) {
-		if($having) {
-			$this->query->addHaving($having);
-		}
+		$this->query->addHaving($having);
 		return $this;
 	}
 
@@ -756,11 +764,16 @@ class DataQuery {
 /**
  * Represents a subgroup inside a WHERE clause in a {@link DataQuery}
  *
- * Stores the clauses for the subgroup inside a specific {@link SQLQuery} object.
+ * Stores the clauses for the subgroup inside a specific {@link SQLQuery} 
+ * object.
+ *
  * All non-where methods call their DataQuery versions, which uses the base
  * query object.
+ *
+ * @package framework
  */
 class DataQuery_SubGroup extends DataQuery {
+
 	protected $whereQuery;
 
 	public function __construct(DataQuery $base, $connective) {
@@ -790,6 +803,7 @@ class DataQuery_SubGroup extends DataQuery {
 		if($filter) {
 			$this->whereQuery->addWhere($filter);
 		}
+
 		return $this;
 	}
 
@@ -806,6 +820,7 @@ class DataQuery_SubGroup extends DataQuery {
 		if($filter) {
 			$this->whereQuery->addWhereAny($filter);
 		}
+
 		return $this;
 	}
 
@@ -814,8 +829,14 @@ class DataQuery_SubGroup extends DataQuery {
 			// We always need to have something so we don't end up with something like '... AND () AND ...'
 			return '1=1';
 		}
-		$sql = DB::getConn()->sqlWhereToString($this->whereQuery->getWhere(), $this->whereQuery->getConnective());
+
+		$sql = DB::getConn()->sqlWhereToString(
+			$this->whereQuery->getWhere(), 
+			$this->whereQuery->getConnective()
+		);
+		
 		$sql = preg_replace('[^\s*WHERE\s*]', '', $sql);
+
 		return $sql;
 	}
 }

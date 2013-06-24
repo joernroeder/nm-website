@@ -65,6 +65,11 @@ class Form extends RequestHandler {
 	protected $validator;
 	
 	protected $formMethod = "post";
+
+	/**
+	 * @var boolean
+	 */
+	protected $strictFormMethodCheck = false;
 	
 	protected static $current_action;
 	
@@ -164,7 +169,7 @@ class Form extends RequestHandler {
 			throw new InvalidArgumentException('$actions must be a valid FieldList instance');
 		}
 		if($validator && !$validator instanceof Validator) {
-			throw new InvalidArgumentException('$validator must be a Valdidator instance');
+			throw new InvalidArgumentException('$validator must be a Validator instance');
 		}
 
 		$fields->setForm($this);
@@ -239,9 +244,20 @@ class Form extends RequestHandler {
 	 * if the form is valid.
 	 */
 	public function httpSubmission($request) {
-		$vars = $request->requestVars();
-		if(isset($funcName)) {
-			Form::set_current_action($funcName);
+		// Strict method check
+		if($this->strictFormMethodCheck) {
+			
+			// Throws an error if the method is bad...
+			if($this->formMethod != strtolower($request->httpMethod())) {
+				$response = Controller::curr()->getResponse();
+				$response->addHeader('Allow', $this->formMethod);
+				$this->httpError(405, _t("Form.BAD_METHOD", "This form requires a ".$this->formMethod." submission"));
+			}
+
+			// ...and only uses the vairables corresponding to that method type
+			$vars = $this->formMethod == 'get' ? $request->getVars() : $request->postVars();
+		} else {
+			$vars = $request->requestVars();
 		}
 		
 		// Populate the form
@@ -279,6 +295,7 @@ class Form extends RequestHandler {
 		}
 			
 		if(isset($funcName)) {
+			Form::set_current_action($funcName);
 			$this->setButtonClicked($funcName);
 		}
 		
@@ -327,9 +344,36 @@ class Form extends RequestHandler {
 		
 		// Validate the form
 		if(!$this->validate()) {
-			if(Director::is_ajax()) {
-				// Special case for legacy Validator.js implementation (assumes eval'ed javascript collected through
-				// FormResponse)
+			return $this->getValidationErrorResponse();
+		}
+		
+		// First, try a handler method on the controller (has been checked for allowed_actions above already)
+		if($this->controller->hasMethod($funcName)) {
+			return $this->controller->$funcName($vars, $this, $request);
+		// Otherwise, try a handler method on the form object.
+		} elseif($this->hasMethod($funcName)) {
+			return $this->$funcName($vars, $this, $request);
+		} elseif($field = $this->checkFieldsForAction($this->Fields(), $funcName)) {
+			return $field->$funcName($vars, $this, $request);
+		}
+		
+		return $this->httpError(404);
+	}
+
+	/**
+	 * Returns the appropriate response up the controller chain
+	 * if {@link validate()} fails (which is checked prior to executing any form actions).
+	 * By default, returns different views for ajax/non-ajax request, and
+	 * handles 'appliction/json' requests with a JSON object containing the error messages.
+	 * Behaviour can be influenced by setting {@link $redirectToFormOnValidationError}.
+	 * 
+	 * @return SS_HTTPResponse|string
+	 */
+	protected function getValidationErrorResponse() {
+		$request = $this->getRequest();
+		if($request->isAjax()) {
+				// Special case for legacy Validator.js implementation 
+				// (assumes eval'ed javascript collected through FormResponse)
 				$acceptType = $request->getHeader('Accept');
 				if(strpos($acceptType, 'application/json') !== FALSE) {
 					// Send validation errors back as JSON with a flag at the start
@@ -355,19 +399,6 @@ class Form extends RequestHandler {
 				}
 				return $this->controller->redirectBack();
 			}
-		}
-		
-		// First, try a handler method on the controller (has been checked for allowed_actions above already)
-		if($this->controller->hasMethod($funcName)) {
-			return $this->controller->$funcName($vars, $this, $request);
-		// Otherwise, try a handler method on the form object.
-		} elseif($this->hasMethod($funcName)) {
-			return $this->$funcName($vars, $this, $request);
-		} elseif($field = $this->checkFieldsForAction($this->Fields(), $funcName)) {
-			return $field->$funcName($vars, $this, $request);
-		}
-		
-		return $this->httpError(404);
 	}
 	
 	/**
@@ -794,10 +825,36 @@ class Form extends RequestHandler {
 	 * Set the form method: GET, POST, PUT, DELETE.
 	 * 
 	 * @param $method string
+	 * @param $strict If non-null, pass value to {@link setStrictFormMethodCheck()}.
 	 */
-	public function setFormMethod($method) {
+	public function setFormMethod($method, $strict = null) {
 		$this->formMethod = strtolower($method);
+		if($strict !== null) $this->setStrictFormMethodCheck($strict);
 		return $this;
+	}
+
+	/**
+	 * If set to true, enforce the matching of the form method.
+	 *
+	 * This will mean two things:
+	 *  - GET vars will be ignored by a POST form, and vice versa
+	 *  - A submission where the HTTP method used doesn't match the form will return a 400 error.
+	 *
+	 * If set to false (the default), then the form method is only used to construct the default
+	 * form.
+	 *
+	 * @param $bool boolean
+	 */
+	public function setStrictFormMethodCheck($bool) {
+		$this->strictFormMethodCheck = (bool)$bool;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getStrictFormMethodCheck() {
+		return $this->strictFormMethodCheck;
 	}
 	
 	/**
@@ -848,6 +905,7 @@ class Form extends RequestHandler {
 	 */
 	public function setHTMLID($id) {
 		$this->htmlID = $id;
+		return $this;
 	}
 	
 	/**

@@ -644,7 +644,7 @@ class SSViewer {
 
 		foreach (scandir($path) as $item) {
 			if ($item[0] != '.' && is_dir("$path/$item")) {
-				if ($subthemes || !strpos($item, '_')) {
+				if ($subthemes || strpos($item, '_') === false) {
 					$themes[$item] = $item;
 				}
 			}
@@ -717,8 +717,14 @@ class SSViewer {
 	public static function hasTemplate($templates) {
 		$manifest = SS_TemplateLoader::instance()->getManifest();
 
+		if(Config::inst()->get('SSViewer', 'theme_enabled')) {
+			$theme = Config::inst()->get('SSViewer', 'theme');
+		} else {
+			$theme = null;
+		}
+
 		foreach ((array) $templates as $template) {
-			if ($manifest->getTemplate($template)) return true;
+			if ($manifest->getCandidateTemplate($template, $theme)) return true;
 		}
 
 		return false;

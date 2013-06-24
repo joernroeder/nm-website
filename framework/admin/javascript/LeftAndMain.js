@@ -5,10 +5,23 @@ jQuery.noConflict();
  */
 (function($) {
 
-	window.onresize = function(e) {
+	var windowWidth, windowHeight;
+	$(window).bind('resize.leftandmain', function(e) {
 		// Entwine's 'fromWindow::onresize' does not trigger on IE8. Use synthetic event.
-		$('.cms-container').trigger('windowresize');
-	};
+		var cb = function() {$('.cms-container').trigger('windowresize');};
+
+		// Workaround to avoid IE8 infinite loops when elements are resized as a result of this event 
+		if($.browser.msie && parseInt($.browser.version, 10) < 9) {
+			var newWindowWidth = $(window).width(), newWindowHeight = $(window).height();
+			if(newWindowWidth != windowWidth || newWindowHeight != windowHeight) {
+				windowWidth = newWindowWidth;
+				windowHeight = newWindowHeight;
+				cb();
+			}
+		} else {
+			cb();
+		}
+	});
 
 	// setup jquery.entwine
 	$.entwine.warningLevel = $.entwine.WARN_LEVEL_BESTPRACTISE;
@@ -125,10 +138,10 @@ jQuery.noConflict();
 				var self = this;
 
 				// Browser detection
-				if($.browser.msie && parseInt($.browser.version, 10) < 7) {
+				if($.browser.msie && parseInt($.browser.version, 10) < 8) {
 					$('.ss-loading-screen').append(
 						'<p class="ss-loading-incompat-warning"><span class="notice">' + 
-						'Your browser is not compatible with the CMS interface. Please use Internet Explorer 7+, Google Chrome 10+ or Mozilla Firefox 3.5+.' +
+						'Your browser is not compatible with the CMS interface. Please use Internet Explorer 8+, Google Chrome or Mozilla Firefox.' +
 						'</span></p>'
 					).css('z-index', $('.ss-loading-screen').css('z-index')+1);
 					$('.loading-animation').remove();
@@ -136,7 +149,7 @@ jQuery.noConflict();
 					this._super();
 					return;
 				}
-
+				
 				// Initialize layouts
 				this.redraw();
 
@@ -228,15 +241,15 @@ jQuery.noConflict();
 					},
 					this.getLayoutOptions()
 				));
-				
+
 				// Trigger layout algorithm once at the top. This also lays out children - we move from outside to
 				// inside, resizing to fit the parent.
 				this.layout();
 
 				// Redraw on all the children that need it
-				this.find('.cms-panel-layout').redraw();
-				this.find('.cms-content-fields[data-layout-type]').redraw();
-				this.find('.cms-edit-form[data-layout-type]').redraw();
+				this.find('.cms-panel-layout').redraw(); 
+				this.find('.cms-content-fields[data-layout-type]').redraw(); 
+				this.find('.cms-edit-form[data-layout-type]').redraw(); 
 				this.find('.cms-preview').redraw();
 				this.find('.cms-content').redraw();
 			},
@@ -461,19 +474,14 @@ jQuery.noConflict();
 
 				// Support a full reload
 				if(xhr.getResponseHeader('X-Reload') && xhr.getResponseHeader('X-ControllerURL')) {
-					document.location.href = xhr.getResponseHeader('X-ControllerURL');
+					document.location.href = $('base').attr('href').replace(/\/*$/, '') 
+						+ '/' + xhr.getResponseHeader('X-ControllerURL');
 					return;
 				}
 
 				// Pseudo-redirects via X-ControllerURL might return empty data, in which
 				// case we'll ignore the response
 				if(!data) return;
-
-				// Support a full reload
-				if(xhr.getResponseHeader('X-Reload') && xhr.getResponseHeader('X-ControllerURL')) {
-					document.location.href = xhr.getResponseHeader('X-ControllerURL');
-					return;
-				}
 
 				// Update title
 				var title = xhr.getResponseHeader('X-Title');
@@ -595,7 +603,7 @@ jQuery.noConflict();
 				if(typeof(window.sessionStorage)=="undefined" || window.sessionStorage === null) return;
 
 				var selectedTabs = [], url = this._tabStateUrl();
-				this.find('.cms-tabset,.ss-tabset').each(function(i, el) {					
+				this.find('.cms-tabset,.ss-tabset').each(function(i, el) {
 					var id = $(el).attr('id');
 					if(!id) return; // we need a unique reference
 					if(!$(el).data('tabs')) return; // don't act on uninit'ed controls
@@ -643,6 +651,10 @@ jQuery.noConflict();
 
 					if(!tabset.data('tabs')) return; // don't act on uninit'ed controls
 
+					// The tabs may have changed, notify the widget that it should update its internal state.
+					tabset.tabs('refresh');
+
+					// Make sure the intended tab is selected.
 					if(forcedTab.length) {
 						index = forcedTab.index();
 					} else if(overrideStates && overrideStates[tabsetId]) {
@@ -651,8 +663,8 @@ jQuery.noConflict();
 					} else if(sessionStates) {
 						$.each(sessionStates, function(i, sessionState) {
 							if(tabset.is('#' + sessionState.id)) index = sessionState.selected;
-						});
-					}
+					});
+				}
 					if(index !== null) tabset.tabs('select', index);
 				});
 			},
@@ -670,7 +682,9 @@ jQuery.noConflict();
 				if(url) {
 					s.removeItem('tabs-' + url);	
 				} else {
-					for(var i=0;i<s.length;i++) s.removeItem(s.key(i));
+					for(var i=0;i<s.length;i++) {
+						if(s.key(i).match(/^tabs-/)) s.removeItem(s.key(i));
+				}
 				}
 			},
 
@@ -818,12 +832,15 @@ jQuery.noConflict();
 			onmatch: function() {
 				this.find('.ss-ui-button').click(function() {
 						var form = this.form;
+
 						// forms don't natively store the button they've been triggered with
 						if(form) {
 							form.clickedButton = this;
 							// Reset the clicked button shortly after the onsubmit handlers
 							// have fired on the form
-							setTimeout(function() {form.clickedButton = null;}, 10);
+						setTimeout(function() {
+							form.clickedButton = null;
+						}, 10);
 						}
 					});
 
@@ -938,33 +955,46 @@ jQuery.noConflict();
 		 * Generic search form in the CMS, often hooked up to a GridField results display.
 		 */	
 		$('.cms-search-form').entwine({
-
-			onsubmit: function() {
+			onsubmit: function(e) {
 				// Remove empty elements and make the URL prettier
-				var nonEmptyInputs = this.find(':input:not(:submit)').filter(function() {
+				var nonEmptyInputs,
+					url;
+
+				nonEmptyInputs = this.find(':input:not(:submit)').filter(function() {
 					// Use fieldValue() from jQuery.form plugin rather than jQuery.val(),
 					// as it handles checkbox values more consistently
 					var vals = $.grep($(this).fieldValue(), function(val) { return (val);});
 					return (vals.length);
 				});
-				var url = this.attr('action');
-				if(nonEmptyInputs.length) url = $.path.addSearchParams(url, nonEmptyInputs.serialize());
+
+				url = this.attr('action');
+
+				if(nonEmptyInputs.length) {
+					url = $.path.addSearchParams(url, nonEmptyInputs.serialize());
+				}
 
 				var container = this.closest('.cms-container');
 				container.find('.cms-edit-form').tabs('select',0);  //always switch to the first tab (list view) when searching
-				container.loadPanel(url);
+				container.loadPanel(url, "", {}, true);
+
 				return false;
-			},
-
-			/**
-			 * Resets are processed on the serverside, so need to trigger a submit.
-			 */
-			onreset: function(e) {
-				this.clearForm();
-				this.submit();
 			}
-
 		});
+
+		/**
+		 * Reset button handler. IE8 does not bubble reset events to
+		 */
+		$(".cms-search-form button[type=reset], .cms-search-form input[type=reset]").entwine({
+			onclick: function(e) {
+				e.preventDefault();
+
+				var form = $(this).parents('form');
+
+				form.clearForm();
+				form.find(".dropdown select").prop('selectedIndex', 0).trigger("liszt:updated"); // Reset chosen.js
+				form.submit();
+				}
+		})
 
 		/**
 		 * Allows to lazy load a panel, by leaving it empty
@@ -1034,7 +1064,7 @@ jQuery.noConflict();
 			},
 			redrawTabs: function() {
 				this.rewriteHashlinks();
-				
+
 				var id = this.attr('id'), activeTab = this.find('ul:first .ui-tabs-active');
 
 				if(!this.data('uiTabs')) this.tabs({
@@ -1045,6 +1075,12 @@ jQuery.noConflict();
 						return false;
 					},
 					activate: function(e, ui) {
+						// Accessibility: Simulate click to trigger panel load when tab is focused
+						// by a keyboard navigation event rather than a click
+						if(ui.newTab) {
+							ui.newTab.find('.cms-panel-link').click();
+						}
+
 						// Usability: Hide actions for "readonly" tabs (which don't contain any editable fields)
 						var actions = $(this).closest('form').find('.Actions');
 						if($(ui.newTab).closest('li').hasClass('readonly')) {

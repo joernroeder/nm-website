@@ -106,10 +106,11 @@
 				} else if (modeName == 'content') {
 					container.entwine('.ss').contentViewMode();
 					this.setIsPreviewEnabled(false);
-					this._loadCurrentState();
+					// Do not load content as the preview is not visible.
 				} else if (modeName == 'preview') {
 					container.entwine('.ss').previewMode();
 					this.setIsPreviewEnabled(true);
+					this._loadCurrentState();
 				} else {
 					throw 'Invalid mode: ' + modeName;
 				}
@@ -453,6 +454,9 @@
 				if(navi) navi.style.display = 'none';
 				var naviMsg = doc.getElementById('SilverStripeNavigatorMessage');
 				if(naviMsg) naviMsg.style.display = 'none';
+
+				// Trigger extensions.
+				this.trigger('afterIframeAdjustedForPreview', [ doc ]);
 			}
 		});
 
