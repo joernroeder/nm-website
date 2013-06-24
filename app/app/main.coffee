@@ -59,7 +59,7 @@ require [
 	# this will get updated over time to avoid unnecessary requests etc.
 	app.Config =
 		ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition']
-		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry']
+		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage']
 		ClassEnc:
 			'0': 'Project',
 			'1': 'Excursion'

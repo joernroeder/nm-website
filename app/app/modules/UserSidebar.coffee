@@ -530,7 +530,10 @@ define [
 
 			afterRender: ->
 				@._afterRender()
-				JJMarkdownEditor.setAsDraggable @.$el.find('[data-md-tag]')
+
+				$img = @.$el.find('[data-md-tag]')
+				JJMarkdownEditor.setAsDraggable $img
+				app.ProjectEditor.PreviewImageZone.setAsDraggable $img
 
 			liveRemoval: ->
 				# get all gallery item views

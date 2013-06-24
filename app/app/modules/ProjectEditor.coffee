@@ -36,9 +36,24 @@ define [
 
 
 	ProjectEditor.Views.Preview = Backbone.View.extend
-		tagName: 'div'
+		tagName: 'article'
 		template: 'security/editor-project-preview'
+
+		cleanup: ->
+			@uploadZone.cleanup()
+
+		initDropzone: ->
+			console.log app
+			app.ProjectEditor.PreviewImageZone = @uploadZone = new JJSingleImageUploadZone '.preview-image',
+				url: app.Config.DocImageUrl
+				getFromCache: (id) =>
+					console.log id
+
+		afterRender: ->
+			@initDropzone()
+
 		serialize: ->
+			console.log app.ProjectEditor.modelJSON
 			app.ProjectEditor.modelJSON
 
 

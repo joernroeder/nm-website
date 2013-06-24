@@ -1,2 +1,17 @@
-<h2>Preview project view</h2>
-<h3>{{Title}}</h3>
+<style>
+	.preview-image.dropzone {
+		display: block;
+		min-width: 320px;
+		min-height: 320px;
+	}
+
+
+</style>
+
+<div class="preview-image">
+	{{#if PreviewImage}}
+		{{#with PreviewImage.Urls._320}}
+			<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>
+		{{/with}}
+	{{/if}}
+</div>

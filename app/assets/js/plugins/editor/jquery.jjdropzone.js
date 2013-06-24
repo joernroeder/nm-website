@@ -102,6 +102,9 @@ var __hasProp = {}.hasOwnProperty,
 
     function JJSingleImageUploadZone(selector, opts) {
       JJSingleImageUploadZone.__super__.constructor.call(this, selector, opts);
+      window.dropzoneIDCount++;
+      this.dropzoneID = 'jjdrop-' + window.dropzoneIDCount;
+      console.log(this.dropzoneID);
       this.dragAndDropSetup();
     }
 
@@ -124,8 +127,9 @@ var __hasProp = {}.hasOwnProperty,
       }
       if ($el.length) {
         this.draggables.push($el);
-        return $el.on('dragstart dragend', function(e) {
+        return $el.on('dragstart.' + this.dropzoneID + ' dragend.' + this.dropzoneID, function(e) {
           $.fireGlobalDragEvent(e.type, e.target);
+          console.log(_this);
           return _this.setAsActiveDraggable(e);
         });
       }
@@ -140,7 +144,7 @@ var __hasProp = {}.hasOwnProperty,
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           $draggable = _ref[_i];
-          _results.push($draggable.off('dragstart dragend'));
+          _results.push($draggable.off('dragstart.' + this.dropzoneID + ' dragend.' + this.dropzoneID));
         }
         return _results;
       }
@@ -176,6 +180,7 @@ var __hasProp = {}.hasOwnProperty,
     return JJSingleImageUploadZone;
 
   })(JJUploadZone);
+  window.dropzoneIDCount = 0;
   window.JJSimpleImagesUploadZone = JJSimpleImagesUploadZone;
   return window.JJSingleImageUploadZone = JJSingleImageUploadZone;
 })(jQuery);

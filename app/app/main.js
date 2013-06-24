@@ -23,7 +23,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   console.log(app);
   app.Config = {
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
-    StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry'],
+    StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage'],
     ClassEnc: {
       '0': 'Project',
       '1': 'Excursion',

@@ -42,9 +42,27 @@ define(['app'], function(app) {
     }
   });
   ProjectEditor.Views.Preview = Backbone.View.extend({
-    tagName: 'div',
+    tagName: 'article',
     template: 'security/editor-project-preview',
+    cleanup: function() {
+      return this.uploadZone.cleanup();
+    },
+    initDropzone: function() {
+      var _this = this;
+
+      console.log(app);
+      return app.ProjectEditor.PreviewImageZone = this.uploadZone = new JJSingleImageUploadZone('.preview-image', {
+        url: app.Config.DocImageUrl,
+        getFromCache: function(id) {
+          return console.log(id);
+        }
+      });
+    },
+    afterRender: function() {
+      return this.initDropzone();
+    },
     serialize: function() {
+      console.log(app.ProjectEditor.modelJSON);
       return app.ProjectEditor.modelJSON;
     }
   });

@@ -78,7 +78,10 @@ do ($ = jQuery) ->
 
 		constructor: (selector, opts) ->
 			super(selector, opts)
-			@.dragAndDropSetup()
+			window.dropzoneIDCount++
+			@dropzoneID = 'jjdrop-' + window.dropzoneIDCount
+			console.log @dropzoneID
+			@dragAndDropSetup()			
 
 		setAsActiveDraggable : (e) ->
 			if e.type is 'dragstart' 
@@ -93,15 +96,16 @@ do ($ = jQuery) ->
 			if not @.draggables then @.draggables = []
 			if $el.length
 				@.draggables.push $el
-				$el.on 'dragstart dragend', (e) =>
+				$el.on 'dragstart.' + @dropzoneID + ' dragend.' + @dropzoneID, (e) =>
 					$.fireGlobalDragEvent e.type, e.target
+					console.log @
 					@.setAsActiveDraggable e
 
 		cleanup: ->
 			super()
 			if @.draggables 
 				for $draggable in @.draggables
-					$draggable.off 'dragstart dragend'
+					$draggable.off 'dragstart.' + @dropzoneID + ' dragend.' + @dropzoneID
 
 		dragAndDropSetup: ->
 			$dropzone = @.$dropzone
@@ -123,7 +127,7 @@ do ($ = jQuery) ->
 
 
 
-
+	window.dropzoneIDCount = 0
 
 	window.JJSimpleImagesUploadZone = JJSimpleImagesUploadZone
 	window.JJSingleImageUploadZone = JJSingleImageUploadZone

@@ -615,8 +615,12 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return this._cleanup();
     },
     afterRender: function() {
+      var $img;
+
       this._afterRender();
-      return JJMarkdownEditor.setAsDraggable(this.$el.find('[data-md-tag]'));
+      $img = this.$el.find('[data-md-tag]');
+      JJMarkdownEditor.setAsDraggable($img);
+      return app.ProjectEditor.PreviewImageZone.setAsDraggable($img);
     },
     liveRemoval: function() {
       var _this = this;
