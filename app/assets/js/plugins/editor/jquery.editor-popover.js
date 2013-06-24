@@ -1014,6 +1014,7 @@ var __hasProp = {}.hasOwnProperty,
             var key, pos, _i, _len, _ref;
 
             pos = _this.getPosition();
+            console.log(pos);
             _ref = Object.keys(pos);
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               key = _ref[_i];
@@ -1067,8 +1068,6 @@ var __hasProp = {}.hasOwnProperty,
       return this.element.html();
     };
 
-    JJPopoverEditable.prototype.onOptionsUpdate = function() {};
-
     JJPopoverEditable.prototype.getPosition = function() {
       if (this._options.position) {
         return this._options.position;
@@ -1098,7 +1097,10 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJPopoverEditable.prototype.getPopOverClasses = function() {
-      return ['editor-popover'].concat([this.name], this.popoverClasses).join(' ');
+      var dataName;
+
+      dataName = (this.getDataFullName()).toLowerCase().replace('.', '-');
+      return ['editor-popover'].concat([this.name, dataName], this.popoverClasses).join(' ');
     };
 
     JJPopoverEditable.prototype.getPopoverContent = function() {

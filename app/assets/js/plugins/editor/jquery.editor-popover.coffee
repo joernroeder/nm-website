@@ -828,7 +828,8 @@ do ($ = jQuery) ->
 				@open()
 
 		getPopOverClasses: ->
-			(['editor-popover']).concat([@name], @popoverClasses).join ' '
+			dataName =  (@getDataFullName()).toLowerCase().replace '.', '-'
+			(['editor-popover']).concat([@name, dataName], @popoverClasses).join ' '
 
 		getPopoverContent: ->
 			types = @contentTypes.join ', '
