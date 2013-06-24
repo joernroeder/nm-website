@@ -414,7 +414,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         _results = [];
         for (key in _ref) {
           val = _ref[key];
-          if (key === 'Bio') {
+          if (key === 'Bio' && val) {
             val = val.raw;
           }
           if (app.CurrentMemberPerson.get(key) !== val) {

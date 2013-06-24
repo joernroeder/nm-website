@@ -375,7 +375,7 @@ define [
 				
 				editor.on 'stateUpdate', (e) ->
 					for key, val of e.CurrentPerson
-						if key is 'Bio' then val = val.raw
+						if key is 'Bio' and val then val = val.raw
 						if app.CurrentMemberPerson.get(key) isnt val
 							app.CurrentMemberPerson.save key, val
 
