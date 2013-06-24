@@ -464,6 +464,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
     template: 'security/editor-sidebar-gallery',
+    isGallery: true,
     $sidebarContent: null,
     cleanup: function() {
       this._cleanup();

@@ -104,7 +104,6 @@ var __hasProp = {}.hasOwnProperty,
       JJSingleImageUploadZone.__super__.constructor.call(this, selector, opts);
       window.dropzoneIDCount++;
       this.dropzoneID = 'jjdrop-' + window.dropzoneIDCount;
-      console.log(this.dropzoneID);
       this.dragAndDropSetup();
     }
 
@@ -129,7 +128,6 @@ var __hasProp = {}.hasOwnProperty,
         this.draggables.push($el);
         return $el.on('dragstart.' + this.dropzoneID + ' dragend.' + this.dropzoneID, function(e) {
           $.fireGlobalDragEvent(e.type, e.target);
-          console.log(_this);
           return _this.setAsActiveDraggable(e);
         });
       }
@@ -169,7 +167,11 @@ var __hasProp = {}.hasOwnProperty,
           _this._activeDraggableId = null;
           data = _this.options.getFromCache(id);
           if (data) {
-            return _this.options.responseHandler(data);
+            if (data.done) {
+              return data.done(_this.options.responseHandler);
+            } else {
+              return _this.options.responseHandler(data);
+            }
           }
         } else if (e.dataTransfer.files.length) {
           return _this.deferredUpload(e);

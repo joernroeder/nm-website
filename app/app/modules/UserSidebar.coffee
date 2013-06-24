@@ -404,6 +404,8 @@ define [
 			tagName: 'div'
 			template: 'security/editor-sidebar-gallery'
 
+			isGallery: true
+
 			$sidebarContent: null
 
 			cleanup: ->

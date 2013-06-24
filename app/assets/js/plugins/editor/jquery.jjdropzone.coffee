@@ -80,7 +80,6 @@ do ($ = jQuery) ->
 			super(selector, opts)
 			window.dropzoneIDCount++
 			@dropzoneID = 'jjdrop-' + window.dropzoneIDCount
-			console.log @dropzoneID
 			@dragAndDropSetup()			
 
 		setAsActiveDraggable : (e) ->
@@ -98,7 +97,6 @@ do ($ = jQuery) ->
 				@.draggables.push $el
 				$el.on 'dragstart.' + @dropzoneID + ' dragend.' + @dropzoneID, (e) =>
 					$.fireGlobalDragEvent e.type, e.target
-					console.log @
 					@.setAsActiveDraggable e
 
 		cleanup: ->
@@ -121,7 +119,12 @@ do ($ = jQuery) ->
 				if id = @._activeDraggableId
 					@._activeDraggableId = null
 					data = @.options.getFromCache id
-					if data then @.options.responseHandler data
+					if data
+						if data.done
+							# is deferred
+							data.done @.options.responseHandler
+						else
+							@.options.responseHandler data
 				else if e.dataTransfer.files.length
 					@.deferredUpload e
 

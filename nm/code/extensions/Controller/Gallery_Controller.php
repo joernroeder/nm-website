@@ -201,7 +201,7 @@ class Gallery_Controller extends Controller {
 	}
 
 	private function imageAsGalleryItem($img, $includeTag = false) {
-		$closest = $img->getClosestImage(150);#
+		$closest = $img->getClosestImage(150);
 		$cropped = $closest ? $closest->CroppedImage(150,150) : null;
 		if (!$cropped) return null;
 		
@@ -210,7 +210,8 @@ class Gallery_Controller extends Controller {
 			'id'	=> $img->ID,
 			'url'	=> $url
 		);
-		if ($includeTag) $a['tag'] = $img->forTemplate();
+		// @deprecated
+		//if ($includeTag) $a['tag'] = $img->forTemplate();
 		return $a;
 	}
 

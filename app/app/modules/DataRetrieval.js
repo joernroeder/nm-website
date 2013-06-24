@@ -195,6 +195,27 @@ define(['app'], function(app) {
       }
       return dfd;
     },
+    forDocImage: function(id) {
+      var dfd, existModel;
+
+      console.log(id);
+      debugger;
+      dfd = new $.Deferred();
+      if (existModel = app.Collections.DocImage.get(id)) {
+        dfd.resolve(existModel);
+      } else {
+        JJRestApi.getFromDomOrApi('DocImage', {
+          id: id
+        }).done(function(model) {
+          if (model) {
+            return dfd.resolve(app.handleFetchedModel('DocImage', model));
+          } else {
+            return dfd.reject();
+          }
+        });
+      }
+      return dfd.promise();
+    },
     fetchExistingModelCompletely: function(existModel) {
       var dfd;
 

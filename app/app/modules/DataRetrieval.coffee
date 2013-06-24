@@ -171,6 +171,22 @@ define [
 						if req.readyState isnt 4 then req.abort()
 				dfd
 
+			# just get a regular DocImage
+			forDocImage: (id) ->
+				console.log id
+				debugger
+				dfd = new $.Deferred()
+				if existModel = app.Collections.DocImage.get(id)
+					dfd.resolve existModel
+				else
+					JJRestApi.getFromDomOrApi('DocImage', { id: id }).done (model) ->
+						if model
+							dfd.resolve app.handleFetchedModel('DocImage', model)
+						else
+							dfd.reject()
+
+				dfd.promise()
+
 			# abstract function that calls `fetch` on a model and then calls back
 			fetchExistingModelCompletely : (existModel) ->
 				dfd = new $.Deferred()

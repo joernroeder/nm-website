@@ -178,6 +178,11 @@ class Excursion extends DataObject {
 			'Persons.UrlSlug',
 			'Persons.Templates.Url',
 			'Persons.Templates.IsDetail'
+		),
+		'edit'	=> array(
+			'Title',
+			'Persons',
+			'PreviewImage'
 		)
 	);
 

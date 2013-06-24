@@ -1,8 +1,9 @@
 define [
 		'app'
+		'modules/DataRetrieval'
+		'modules/Auth'
 	],
-(app) ->
-
+(app, DataRetrieval, Auth) ->
 	ProjectEditor = app.module()
 
 	class ProjectEditor.Inst
@@ -39,21 +40,52 @@ define [
 		tagName: 'article'
 		template: 'security/editor-project-preview'
 
+		getFilterID: ->
+			"#{@model.get('ClassName')}-#{@model.id}"
+
 		cleanup: ->
 			@uploadZone.cleanup()
 
 		initDropzone: ->
-			console.log app
 			app.ProjectEditor.PreviewImageZone = @uploadZone = new JJSingleImageUploadZone '.preview-image',
 				url: app.Config.DocImageUrl
+				additionalData:
+					projectId: app.ProjectEditor.model.id
+					projectClass: app.ProjectEditor.model.get 'ClassName'
 				getFromCache: (id) =>
-					console.log id
+					DataRetrieval.forDocImage id
+				responseHandler: (data) =>
+
+					setPreviewImage = (model, thumbUrl) =>
+						img = model.get('Urls')['_320']
+						@uploadZone.$dropzone.html "<img src=\"#{ img.Url }\" width=\"#{ img.Width }\" height=\"#{ img.Height }\">"
+
+						# insert into gallery if open and necessary
+						if sideSubview = Auth.Cache.userWidget.subView
+							if sideSubview.isGallery and sideSubview.isOpen
+								if not @model.get('Images').get(model.id)
+									sideSubview.insertGalleryImage @getFilterID(), { url: thumbUrl, id: @model.id }
+
+						if @model.get('PreviewImage') isnt model
+							@model.set 'PreviewImage', model
+							@model.get('Images').add model
+							@model.save()
+
+					if data instanceof Backbone.Model is true
+						$img = $("[data-filter-id=\"#{@getFilterID()}\"]").find("img[data-id=\"#{data.id}\"]")
+						
+						setPreviewImage data, $img.attr('src')
+					else
+						app.updateGalleryCache data
+
+						DataRetrieval.forDocImage(data[0].id).done (model) ->
+							setPreviewImage model, data[0].url
+
 
 		afterRender: ->
 			@initDropzone()
 
 		serialize: ->
-			console.log app.ProjectEditor.modelJSON
 			app.ProjectEditor.modelJSON
 
 
