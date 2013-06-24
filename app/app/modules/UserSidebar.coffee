@@ -349,19 +349,8 @@ define [
 							personImg = app.CurrentMemberPerson.get 'Image'
 							if id isnt personImg and (not personImg or id isnt personImg.id)
 								# new image
-								app.CurrentMemberPerson.save 'Image', id
-								#app.CurrentMemberPerson.fetchByIdQueue 'Image'
+								app.CurrentMemberPerson.save 'Image', i
 
-			###
-			initBioEditor: ->
-				$bio = @.$el.find '#bio'
-				$textarea = $bio.find '.markdown-editor'
-				$preview = $bio.find '.markdown-editor-preview'
-				@.bioEditor = bioEditor = new JJMarkdownEditor $textarea,
-					preview: $preview
-					dragAndDropAllowed: false
-					customParsers: []
-			###
 			onContentScroll: ->
 				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
 				bio.api.reposition()
