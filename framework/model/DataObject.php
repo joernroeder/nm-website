@@ -192,6 +192,14 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @var [string] - class => ClassName field definition cache for self::database_fields
 	 */
 	private static $classname_spec_cache = array();
+	
+	/**
+	 * Clear all cached classname specs. It's necessary to clear all cached subclassed names
+	 * for any classes if a new class manifest is generated.
+	 */
+	public static function clear_classname_spec_cache() {
+		self::$classname_spec_cache = array();
+	}
 
 	/**
 	 * Return the complete map of fields on this object, including "Created", "LastEdited" and "ClassName".
@@ -202,7 +210,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 */
 	public static function database_fields($class) {
 		if(get_parent_class($class) == 'DataObject') {
-			if(!isset(self::$classname_spec_cache[$class])) {
+			if(empty(self::$classname_spec_cache[$class])) {
 				$classNames = ClassInfo::subclassesFor($class);
 
 				$db = DB::getConn();
@@ -491,7 +499,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 					}
 				}
 			} else {    //one-to-one relation
-				$destinationObject->$name = $relations;
+				$destinationObject->{"{$name}ID"} = $relations->ID;
 			}
 		}
 	}
@@ -750,6 +758,18 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	}
 
 	/**
+	 * Return all currently fetched database fields.
+	 *
+	 * This function is similar to toMap() but doesn't trigger the lazy-loading of all unfetched fields.
+	 * Obviously, this makes it a lot faster.
+	 *
+	 * @return array The data as a map.
+	 */
+	public function getQueriedDatabaseFields() {
+		return $this->record;
+	}
+
+	/**
 	 * Update a number of fields on this object, given a map of the desired changes.
 	 * 
 	 * The field names can be simple names, or you can use a dot syntax to access $has_one relations.
@@ -772,10 +792,15 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 					// no support for has_many or many_many relationships,
 					// as the updater wouldn't know which object to write to (or create)
 					if($relObj->$relation() instanceof DataObject) {
+						$parentObj = $relObj;
 						$relObj = $relObj->$relation();
-						
 						// If the intermediate relationship objects have been created, then write them
-						if($i<sizeof($relation)-1 && !$relObj->ID) $relObj->write();
+						if($i<sizeof($relation)-1 && !$relObj->ID || (!$relObj->ID && $parentObj != $this)) {
+							$relObj->write();
+							$relatedFieldName = $relation."ID";
+							$parentObj->$relatedFieldName = $relObj->ID;
+							$parentObj->write();
+						}
 					} else {
 						user_error(
 							"DataObject::update(): Can't traverse relationship '$relation'," .  
@@ -791,6 +816,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 				if($relObj) {
 					$relObj->$fieldName = $v;
 					$relObj->write();
+					$relatedFieldName = $relation."ID";
+					$this->$relatedFieldName = $relObj->ID;
 					$relObj->flushCache();
 				} else {
 					user_error("Couldn't follow dot syntax '$k' on '$this->class' object", E_USER_WARNING);
@@ -1123,7 +1150,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		}
 
 		// No changes made
-		if($this->changed) {
+		if($this->changed || $forceWrite) {
 			foreach($this->getClassAncestry() as $ancestor) {
 				if(self::has_own_table($ancestor))
 				$ancestry[] = $ancestor;
@@ -1133,13 +1160,14 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			if(!$forceInsert) unset($this->changed['ID']);
 
 			$hasChanges = false;
-			foreach($this->changed as $fieldName => $changed) {
-				if($changed) {
-					$hasChanges = true;
-					break;
+			if (!$forceWrite) {
+				foreach ($this->changed as $fieldName => $changed) {
+					if ($changed) {
+						$hasChanges = true;
+						break;
+					}
 				}
 			}
-
 			if($hasChanges || $forceWrite || !$this->record['ID']) {
 					
 				// New records have their insert into the base data table done first, so that they can pass the
@@ -1420,7 +1448,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 
 		$joinField = $this->getRemoteJoinField($componentName, 'has_many');
 		
-		$result = new HasManyList($componentClass, $joinField);
+		$result = HasManyList::create($componentClass, $joinField);
 		if($this->model) $result->setDataModel($this->model);
 		$result = $result->forForeignID($this->ID);
 
@@ -1544,7 +1572,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			return $this->unsavedRelations[$componentName];
 		}
 		
-		$result = Injector::inst()->create('ManyManyList', $componentClass, $table, $componentField, $parentField,
+		$result = ManyManyList::create($componentClass, $table, $componentField, $parentField,
 			$this->many_many_extraFields($componentName));
 		if($this->model) $result->setDataModel($this->model);
 
@@ -1987,6 +2015,16 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	}
 	
 	/**
+	 * Allows user code to hook into DataObject::getCMSFields prior to updateCMSFields
+	 * being called on extensions
+	 * 
+	 * @param callable $callback The callback to execute
+	 */
+	protected function beforeUpdateCMSFields($callback) {
+		$this->beforeExtending('updateCMSFields', $callback);
+	}
+	
+	/**
 	 * Centerpiece of every data administration interface in Silverstripe,
 	 * which returns a {@link FieldList} suitable for a {@link Form} object.
 	 * If not overloaded, we're using {@link scaffoldFormFields()} to automatically
@@ -2325,9 +2363,9 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	}
 
 	/**
-	 * Returns true if the given field exists
-	 * in a database column on any of the objects tables,
-	 * or as a dynamic getter with get<fieldName>().
+	 * Returns true if the given field exists in a database column on any of 
+	 * the objects tables and optionally look up a dynamic getter with 
+	 * get<fieldName>().
 	 *
 	 * @param string $field Name of the field
 	 * @return boolean True if the given field exists
@@ -2530,7 +2568,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		$results = $this->extend($methodName, $member);
 		if($results && is_array($results)) {
 			// Remove NULLs
-			$results = array_filter($results, array($this,'isNotNull'));
+			$results = array_filter($results, function($v) {return !is_null($v);});
 			// If there are any non-NULL responses, then return the lowest one of them.
 			// If any explicitly deny the permission, then we don't get access 
 			if($results) return min($results);
@@ -2538,16 +2576,6 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		return null;
 	}
 	
-	/**
-	 * Helper functon for extendedCan
-	 * 
-	 * @param Mixed $value
-	 * @return boolean
-	 */
-	private function isNotNull($value) {
-		return !is_null($value);
-	}
-
 	/**
 	 * @param Member $member
 	 * @return boolean
@@ -2615,8 +2643,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		} else if($fieldName == 'ID') {
 			return new PrimaryKey($fieldName, $this);
 			
-		// General casting information for items in $db or $casting
-		} else if($helper = $this->castingHelper($fieldName)) {
+		// General casting information for items in $db
+		} else if($helper = $this->db($fieldName)) {
 			$obj = Object::create_from_string($helper, $fieldName);
 			$obj->setValue($this->$fieldName, $this->record, false);
 			return $obj;
@@ -2635,22 +2663,31 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 
 	/**
 	 * Traverses to a DBField referenced by relationships between data objects.
-	 * The path to the related field is specified with dot separated syntax (eg: Parent.Child.Child.FieldName)
 	 *
-	 * @param $fieldPath string
-	 * @return DBField
+	 * The path to the related field is specified with dot separated syntax 
+	 * (eg: Parent.Child.Child.FieldName).
+	 *
+	 * @param string $fieldPath
+	 *
+	 * @return mixed DBField of the field on the object or a DataList instance.
 	 */
 	public function relObject($fieldPath) {
+		$object = null;
+
 		if(strpos($fieldPath, '.') !== false) {
 			$parts = explode('.', $fieldPath);
 			$fieldName = array_pop($parts);
 
 			// Traverse dot syntax
 			$component = $this;
+
 			foreach($parts as $relation) {
 				if($component instanceof SS_List) {
-					if(method_exists($component,$relation)) $component = $component->$relation();
-					else $component = $component->relation($relation);
+					if(method_exists($component,$relation)) {
+						$component = $component->$relation();
+					} else {
+						$component = $component->relation($relation);
+					}
 				} else {
 					$component = $component->$relation();
 				}
@@ -2662,12 +2699,6 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			$object = $this->dbObject($fieldPath);
 		}
 
-
-		if (!($object instanceof DBField) && !($object instanceof DataList)) {
-			// Todo: come up with a broader range of exception objects to describe differnet kinds of errors
-			// programatically
-			throw new Exception("Unable to traverse to related object field [$fieldPath] on [$this->class]");
-		}
 		return $object;
 	}
 
@@ -2686,12 +2717,20 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			$relations = explode('.', $fieldName);
 			$fieldName = array_pop($relations);
 			foreach($relations as $relation) {
-				// Bail if any of the below sets a $component to a null object
-				if($component instanceof SS_List && !method_exists($component, $relation)) {
-					$component = $component->relation($relation);
-				// Just call the method and hope for the best
-				} else { 
+				// Inspect $component for element $relation
+				if($component->hasMethod($relation)) {
+					// Check nested method
 					$component = $component->$relation();
+				} elseif($component instanceof SS_List) {
+					// Select adjacent relation from DataList
+					$component = $component->relation($relation);
+				} elseif($component instanceof DataObject
+					&& ($dbObject = $component->dbObject($relation))
+				) { 
+					// Select db object
+					$component = $dbObject;
+				} else {
+					user_error("$relation is not a relation/field on ".get_class($component), E_USER_ERROR);
 				}
 			}
 		}
@@ -3108,21 +3147,31 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	}
 
 	/**
-	 * Get the default searchable fields for this object,
-	 * as defined in the $searchable_fields list. If searchable
-	 * fields are not defined on the data object, uses a default
-	 * selection of summary fields.
+	 * Get the default searchable fields for this object, as defined in the 
+	 * $searchable_fields list. If searchable fields are not defined on the 
+	 * data object, uses a default selection of summary fields.
 	 *
 	 * @return array
 	 */
 	public function searchableFields() {
 		// can have mixed format, need to make consistent in most verbose form
 		$fields = $this->stat('searchable_fields');
-		
 		$labels = $this->fieldLabels();
 		
 		// fallback to summary fields
-		if(!$fields) $fields = array_keys($this->summaryFields());
+		if(!$fields) {
+			$summaryFields = array_keys($this->summaryFields());
+			$fields = array();
+
+			// remove the custom getters as the search should not include.
+			if($summaryFields) {
+				foreach($summaryFields as $key => $name) {
+					if($this->hasDatabaseField($name) || $this->relObject($name)) {
+						$fields[] = $name;
+					}
+				}
+			}
+		}
 		
 		// we need to make sure the format is unified before
 		// augmenting fields, so extensions can apply consistent checks

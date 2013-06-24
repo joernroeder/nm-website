@@ -15,6 +15,7 @@
 class SS_ClassManifest {
 
 	const CONF_FILE = '_config.php';
+	const CONF_DIR = '_config';
 
 	protected $base;
 	protected $tests;
@@ -28,6 +29,7 @@ class SS_ClassManifest {
 	protected $interfaces   = array();
 	protected $implementors = array();
 	protected $configs      = array();
+	protected $configDirs   = array();
 
 	/**
 	 * @return TokenisedRegularExpression
@@ -128,6 +130,7 @@ class SS_ClassManifest {
 			$this->interfaces   = $data['interfaces'];
 			$this->implementors = $data['implementors'];
 			$this->configs      = $data['configs'];
+			$this->configDirs   = $data['configDirs'];
 		} else {
 			$this->regenerate($cache);
 		}
@@ -245,15 +248,28 @@ class SS_ClassManifest {
 
 	/**
 	 * Returns an array of module names mapped to their paths.
-	 * "Modules" in SilverStripe are simply directories with a _config.php file.
+	 *
+	 * "Modules" in SilverStripe are simply directories with a _config.php 
+	 * file.
 	 *
 	 * @return array
 	 */
 	public function getModules() {
 		$modules = array();
-		foreach($this->configs as $configPath) {
-			$modules[basename(dirname($configPath))] = dirname($configPath);
+		
+		if($this->configs) {
+			foreach($this->configs as $configPath) {
+				$modules[basename(dirname($configPath))] = dirname($configPath);
+			}
 		}
+
+		if($this->configDirs) {
+			foreach($this->configDirs as $configDir) {
+				$path = preg_replace('/\/_config$/', '', dirname($configDir));
+				$modules[basename($path)] = $path;
+			}
+		}
+
 		return $modules;
 	}
 
@@ -265,7 +281,7 @@ class SS_ClassManifest {
 	public function regenerate($cache = true) {
 		$reset = array(
 			'classes', 'roots', 'children', 'descendants', 'interfaces',
-			'implementors', 'configs'
+			'implementors', 'configs', 'configDirs'
 		);
 
 		// Reset the manifest so stale info doesn't cause errors.
@@ -278,7 +294,8 @@ class SS_ClassManifest {
 			'name_regex'    => '/^(_config.php|[^_].*\.php)$/',
 			'ignore_files'  => array('index.php', 'main.php', 'cli-script.php'),
 			'ignore_tests'  => !$this->tests,
-			'file_callback' => array($this, 'handleFile')
+			'file_callback' => array($this, 'handleFile'),
+			'dir_callback' => array($this, 'handleDir')
 		));
 		$finder->find($this->base);
 
@@ -292,9 +309,16 @@ class SS_ClassManifest {
 				'descendants'  => $this->descendants,
 				'interfaces'   => $this->interfaces,
 				'implementors' => $this->implementors,
-				'configs'      => $this->configs
+				'configs'      => $this->configs,
+				'configDirs'   => $this->configDirs
 			);
 			$this->cache->save($data, $this->cacheKey);
+		}
+	}
+
+	public function handleDir($basename, $pathname, $depth) {
+		if ($basename == self::CONF_DIR) {
+			$this->configDirs[] = $pathname;
 		}
 	}
 
