@@ -840,6 +840,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.transition(~"background-color .2s .1s ease-in-out");
 		cursor: pointer;
 
+		&:hover,
 		&:focus {
 			background: rgba(255, 255, 255, .2);
 			cursor: auto;
@@ -852,7 +853,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 .editor-popover {
 
 	&.currentperson-bio {
-		border-right: 1px solid mix(@bgColor, @editorSidebarBg);
+		border: 1px solid mix(@bgColor, @editorSidebarBg);
+		border-left: none;
 	}
 }
 

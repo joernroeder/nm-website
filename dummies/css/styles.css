@@ -1466,12 +1466,14 @@ x:-o-prefocus,
   transition: background-color .2s .1s ease-in-out;
   cursor: pointer;
 }
+.editor-popover textarea.preview:hover,
 .editor-popover textarea.preview:focus {
   background: rgba(255, 255, 255, 0.2);
   cursor: auto;
 }
 .editor-popover.currentperson-bio {
-  border-right: 1px solid #868686;
+  border: 1px solid #868686;
+  border-left: none;
 }
 /*#qtip-0.markdowneditable {
 	left: 10px !important;

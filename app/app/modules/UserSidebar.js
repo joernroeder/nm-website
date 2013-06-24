@@ -391,23 +391,12 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
             _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
             personImg = app.CurrentMemberPerson.get('Image');
             if (id !== personImg && (!personImg || id !== personImg.id)) {
-              return app.CurrentMemberPerson.save('Image', id);
+              return app.CurrentMemberPerson.save('Image', i);
             }
           }
         }
       });
     },
-    /*
-    			initBioEditor: ->
-    				$bio = @.$el.find '#bio'
-    				$textarea = $bio.find '.markdown-editor'
-    				$preview = $bio.find '.markdown-editor-preview'
-    				@.bioEditor = bioEditor = new JJMarkdownEditor $textarea,
-    					preview: $preview
-    					dragAndDropAllowed: false
-    					customParsers: []
-    */
-
     onContentScroll: function() {
       var bio;
 
@@ -415,28 +404,9 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return bio.api.reposition();
     },
     initMetaEditor: function() {
-      var bio, editor;
+      var editor;
 
       this.metaEditor = editor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
-      /*
-      				markdownEditables = @.metaEditor.getComponentsByClassName 'MarkdownEditable'
-      				console.log markdownEditables
-      
-      				markdownEditables2 = @.metaEditor.getComponentsByType 'Markdown'
-      				console.log markdownEditables2
-      */
-
-      bio = this.metaEditor.getComponentByName('CurrentPerson.Bio');
-      console.log(bio);
-      bio.updateOptions({
-        position: {
-          my: 'top right',
-          at: 'top left',
-          'adjust.x': -24,
-          'adjust.resize': true,
-          'adjust.method': 'flip shift'
-        }
-      });
       return editor.on('stateUpdate', function(e) {
         var key, val, _ref, _results;
 
