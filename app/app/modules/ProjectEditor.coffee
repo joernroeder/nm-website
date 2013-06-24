@@ -81,6 +81,7 @@ define [
 						DataRetrieval.forDocImage(data[0].id).done (model) ->
 							setPreviewImage model, data[0].url
 
+			@
 
 		afterRender: ->
 			@initDropzone()

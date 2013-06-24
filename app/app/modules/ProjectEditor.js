@@ -53,7 +53,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
     initDropzone: function() {
       var _this = this;
 
-      return app.ProjectEditor.PreviewImageZone = this.uploadZone = new JJSingleImageUploadZone('.preview-image', {
+      app.ProjectEditor.PreviewImageZone = this.uploadZone = new JJSingleImageUploadZone('.preview-image', {
         url: app.Config.DocImageUrl,
         additionalData: {
           projectId: app.ProjectEditor.model.id,
@@ -97,6 +97,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
           }
         }
       });
+      return this;
     },
     afterRender: function() {
       return this.initDropzone();
