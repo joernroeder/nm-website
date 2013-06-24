@@ -173,8 +173,6 @@ define [
 
 			# just get a regular DocImage
 			forDocImage: (id) ->
-				console.log id
-				debugger
 				dfd = new $.Deferred()
 				if existModel = app.Collections.DocImage.get(id)
 					dfd.resolve existModel

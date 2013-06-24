@@ -198,8 +198,6 @@ define(['app'], function(app) {
     forDocImage: function(id) {
       var dfd, existModel;
 
-      console.log(id);
-      debugger;
       dfd = new $.Deferred();
       if (existModel = app.Collections.DocImage.get(id)) {
         dfd.resolve(existModel);
