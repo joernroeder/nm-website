@@ -997,20 +997,8 @@ var __hasProp = {}.hasOwnProperty,
       JJPopoverEditable.__super__.init.call(this, element);
       element.qtip({
         events: {
-          visible: function(event, api) {
-            var $input;
-
-            $input = $('input, textarea', _this.api.tooltip).eq(0);
-            $input.selectRange($input.val().length);
-            if (_this.closeOnOuterClick) {
-              _this.api.tooltip.one(_this.getNamespacedEventName('outerClick'), function() {
-                return _this.close();
-              });
-            }
-            return _this;
-          },
           show: function(event, api) {
-            var key, pos, _i, _len, _ref;
+            var checkInput, key, pos, timer, _i, _len, _ref;
 
             pos = _this.getPosition();
             _ref = Object.keys(pos);
@@ -1018,6 +1006,34 @@ var __hasProp = {}.hasOwnProperty,
               key = _ref[_i];
               api.set("position." + key, pos[key]);
             }
+            checkInput = function() {
+              var $input;
+
+              $input = $('input, textarea', _this.api.tooltip).eq(0);
+              if ($input.length) {
+                return $input;
+              } else {
+                return false;
+              }
+            };
+            timer = function(delay) {
+              return setTimeout(function() {
+                var $input;
+
+                $input = checkInput();
+                if (!$input) {
+                  return timer(50);
+                } else {
+                  $input.selectRange($input.val().length);
+                  if (_this.closeOnOuterClick) {
+                    return _this.api.tooltip.one(_this.getNamespacedEventName('outerClick'), function() {
+                      return _this.close();
+                    });
+                  }
+                }
+              }, delay);
+            };
+            timer(300);
             return true;
           }
         },

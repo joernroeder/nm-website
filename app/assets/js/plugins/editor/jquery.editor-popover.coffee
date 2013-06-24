@@ -746,24 +746,35 @@ do ($ = jQuery) ->
 
 			element.qtip
 				events:
-					visible: (event, api) =>
-						# set cursor to the end of the first input or textarea element
-						$input = $('input, textarea', @api.tooltip).eq 0
-						$input.selectRange $input.val().length
-
-						# bind outer click to close the popup
-						if @closeOnOuterClick
-							@api.tooltip.one @getNamespacedEventName('outerClick'), =>
-								@close()
-
-						@
-
 					show: (event, api) =>
 						pos = @getPosition()
 						for key in Object.keys(pos)
 							api.set "position.#{key}", pos[key]
 
-						true
+						checkInput = =>
+							$input = $('input, textarea', @api.tooltip).eq 0
+
+							return if $input.length then $input else false
+
+						timer = (delay) =>
+							setTimeout =>
+								$input = checkInput()
+								if not $input 
+									timer 50
+								else
+									# set cursor to the end of the first input or textarea element
+									$input.selectRange $input.val().length
+
+									# bind outer click to close the popup
+									if @closeOnOuterClick
+										@api.tooltip.one @getNamespacedEventName('outerClick'), =>
+											@close()
+
+							, delay
+
+						timer 300
+
+						true					
 				
 				content: 
 					text: =>
