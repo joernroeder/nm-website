@@ -14,9 +14,9 @@ define [
 	'modules/About'
 	'modules/ProjectSearch'
 	'modules/DataRetrieval'
-	'modules/Editor'
+	'modules/NewProject'
 	'modules/ProjectEditor'
-], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch, DataRetrieval, Editor, ProjectEditor) ->
+], (app, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, PageError, Portfolio, Calendar, About, ProjectSearch, DataRetrieval, NewProject, ProjectEditor) ->
 
 	###*
 	 *
@@ -278,7 +278,7 @@ define [
 
 			mainDfd.done ->
 				layout = app.useLayout 'main'
-				layout.setViewAndRenderMaybe '', new Editor.Views.NewProject()
+				layout.setViewAndRenderMaybe '', new NewProject.Views.NewProject()
 
 		# editor page of a project
 		showEditProjectPage: (uglyHash) ->

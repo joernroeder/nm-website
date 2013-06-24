@@ -2,9 +2,9 @@ define [
 		'app'
 ], (app) ->
 
-	Editor = app.module()
+	NewProject = app.module()
 
-	Editor.Views.NewProject = Backbone.View.extend
+	NewProject.Views.NewProject = Backbone.View.extend
 		tagName: 'div'
 		template: 'security/create-project'
 
@@ -102,4 +102,4 @@ define [
 
 			false
 
-	Editor
+	NewProject
