@@ -695,6 +695,13 @@ do ($ = jQuery) ->
 		getOptions: ->
 			@_options
 
+		updateOptions: (options) ->
+			@_options = $.extend true, @_options, options
+			@onOptionsUpdate()
+
+		onOptionsUpdate: ->
+
+
 		render: ->
 			if @element
 				@element.html @getValueOrPlaceholder()
