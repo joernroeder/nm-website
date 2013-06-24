@@ -1656,7 +1656,7 @@ x:-o-prefocus,
 .editor-sidebar h1,
 .editor-sidebar h2,
 .editor-sidebar h3 {
-  color: #fff;
+  color: #cccccc;
 }
 .editor-sidebar a {
   color: #262626;
@@ -1667,7 +1667,7 @@ x:-o-prefocus,
   -o-transition: color .3s ease-out;
   -ms-transition: color .3s ease-out;
   transition: color .3s ease-out;
-  color: #fff;
+  color: #cccccc;
 }
 .editor-sidebar a:before,
 .editor-sidebar a:after {
@@ -1971,12 +1971,19 @@ x:-o-prefocus,
   padding: 0.375em;
   border: none;
   margin-bottom: 0.75em;
-  color: #fff;
+  color: #cccccc;
   -webkit-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   -moz-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   -o-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   -ms-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   transition: color .2s ease-in-out, background-color .2s ease-in-out;
+}
+.editor-sidebar input[type="text"]:hover,
+.editor-sidebar input[type="email"]:hover,
+.editor-sidebar input[type="tel"]:hover,
+.editor-sidebar input[type="password"]:hover,
+.editor-sidebar *[data-editor-type][editor-handled-by]:hover {
+  background: #3c3c29;
 }
 .editor-sidebar input[type="text"]:focus,
 .editor-sidebar input[type="email"]:focus,
