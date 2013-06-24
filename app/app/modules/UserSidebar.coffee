@@ -361,6 +361,16 @@ define [
 					'MarkdownEditable'
 					'SplitMarkdownEditable'
 				]
+
+				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
+
+				bio.updateOptions
+					position:
+						my: 'top right'
+						at: 'top left'
+						'adjust.x': -24
+						'adjust.resize': true
+						'adjust.method': 'flip shift'
 				
 				editor.on 'stateUpdate', (e) ->
 					for key, val of e.CurrentPerson
