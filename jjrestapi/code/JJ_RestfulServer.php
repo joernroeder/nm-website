@@ -278,9 +278,15 @@ class JJ_RestfulServer extends RestfulServer {
 		
 		// $obj can be either a DataObject or a SS_List,
 		// depending on the request
+		
+		// get LastEdited aggregate
+		$aggregate = null;
+
 		if ($id) {
 			// Format: /api/v1/<MyClass>/<ID>
-			$obj = $this->getObjectQuery($className, array($id), $params)->first();
+			$aggregate = $this->getAggregate($className, array($id));
+
+			$obj = $this->getObjectQuery($className, array($id), $params, $aggregate)->first();
 
 			if (!$obj) return $this->notFound();
 			if (!$obj->canView()) return $this->permissionFailure();
@@ -288,7 +294,9 @@ class JJ_RestfulServer extends RestfulServer {
 			
 		} else {
 			// Format: /api/v1/<MyClass>
-			$obj = $this->getObjectsQuery($className, $params, $sort, $limit);
+			$aggregate = $this->getAggregate($className);
+
+			$obj = $this->getObjectsQuery($className, $params, $sort, $limit, $aggregate);
 		}
 
 		$this->addContentTypeHeader();
@@ -303,18 +311,18 @@ class JJ_RestfulServer extends RestfulServer {
 		$md5Obj = md5($obj);
 		$md5Fields = md5($fields);
 		$md5Context = md5($context->getContext());
-		Debug::dump($obj->LastEdited);
-		$md5LastEdited = isset($obj->LastEdited) ? md5($obj->LastEdited) . '_' : '';
-		Debug::dump($md5LastEdited);
+		
 		$md5ResponseFormatter = md5($responseFormatter->class);
 		$currentUserId = (int) Member::currentUserId();
-
-		$cacheKey = md5($md5LastEdited . $md5Obj . '_' . $id . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
+		//Debug::dump($obj->LastEdited);
+		$cacheKey = md5($aggregate . '_' . $md5Obj . '_' . $id . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
+		//Debug::dump($cacheKey);
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
 		if ($result) {
 			$result = unserialize($result);
+
 		}
 		else {
 			if ($obj instanceof ArrayList) {
@@ -335,6 +343,18 @@ class JJ_RestfulServer extends RestfulServer {
 		return $result;
 	}
 
+	protected function getAggregate($className, $ids = null, $cols = array('LastEdited')) {
+		$implStatement = '';
+		if ($ids) {
+			$implStatement = 'ID IN (' . implode(',', $ids) . ')';
+		}
+		
+		$aggregate = new JJ_Aggregate($className, $implStatement);
+		
+		return $aggregate->XML_val('Max', $cols);
+	}
+
+
 	// ! Filter/Search
 
 	/**
@@ -346,13 +366,11 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @param array $params
 	 * @return DataList
 	 */
-	protected function getObjectQuery($className, $ids, $params) {
-		$implIds = implode(',', $ids);
-		$aggregate = new Aggregate($className, "ID IN ($implIds)");
-		Debug::dump($aggregate->XML_val('Max', array('LastEdited')));
+	protected function getObjectQuery($className, $ids, $params, $aggregate = null) {
+		//Debug::dump($aggregate->XML_val('Max', array('LastEdited')));
 
 
-		$cacheKey =  md5(implode('_', array_merge($ids, $params))) . '_ObjectQuery';
+		$cacheKey =  md5(implode('_', array_merge($ids, $params, array($aggregate)))) . '_ObjectQuery';
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
@@ -383,7 +401,7 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @param int|array $limit
 	 * @return SQLQuery
 	 */
-	protected function getObjectsQuery($className, $params, $sort, $limit) {
+	protected function getObjectsQuery($className, $params, $sort, $limit, $aggregate = null) {
 		$ids = array();
 
 		// @todo: check that there are no more search params
@@ -400,11 +418,10 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 
 		if (!empty($ids)) {
-			// @todo: check cache
-			return $this->getObjectQuery($className, $ids, $params);
+			return $this->getObjectQuery($className, $ids, $params, $aggregate);
 		}
 		else {
-			return $this->getSearchQuery($className, $params, $sort, $limit);	
+			return $this->getSearchQuery($className, $params, $sort, $limit, $aggregate);	
 		}
 	}
 
@@ -447,7 +464,7 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @param array $params
 	 * @return SS_List
 	 */
-	protected function getSearchQuery($className, $params = null, $sort = null, $limit = null, $existingQuery = null) {
+	protected function getSearchQuery($className, $params = null, $sort = null, $limit = null, $aggregate = null) {
 		$context = $this->getContext();
 		$sing = singleton($className);
 
@@ -466,7 +483,7 @@ class JJ_RestfulServer extends RestfulServer {
 			$searchContext = $sing->getApiSearchContext($context);
 		}
 
-		$cacheKey = $this->getSearchQueryCacheKey($searchContext, $context, $params, $sort, $limit, $existingQuery);
+		$cacheKey = $this->getSearchQueryCacheKey($searchContext, $context, $params, $sort, $limit, $aggregate);
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
@@ -507,14 +524,14 @@ class JJ_RestfulServer extends RestfulServer {
 	 * 
 	 * @return string	generated cache key
 	 */
-	protected function getSearchQueryCacheKey($searchContext, $context, $searchParams, $sort = array(), $limit = false, $existingQuery = null) {
+	protected function getSearchQueryCacheKey($searchContext, $context, $searchParams, $sort = array(), $limit = false, $aggregate = null) {
 		$cacheKey = $searchContext->class . '_' . $context->getContext() . '_' . Member::currentUserID() . '_';
 
 		if (isset($searchParams['url'])) {
 			unset($searchParams['url']);
 		}
 
-		$paramsLimit = array_merge($searchParams, $sort, $limit);
+		$paramsLimit = array_merge($searchParams, $sort, $limit, array($aggregate));
 
 		foreach ($paramsLimit as $key => $value) {
 			$cacheKey .= '-' . $key .'_' . $value;
