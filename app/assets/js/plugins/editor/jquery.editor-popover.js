@@ -478,6 +478,75 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     /*
+    		 # returns an array with all components from the given className
+    		 #
+    		 # @param [string] type
+    		 #
+    		 # @return array
+    */
+
+
+    JJEditor.prototype.getComponentsByClassName = function(className) {
+      var component, components, id, results;
+
+      components = this.getComponents();
+      results = [];
+      for (id in components) {
+        component = components[id];
+        if (component.constructor.name === className) {
+          results.push(component);
+        }
+      }
+      return results;
+    };
+
+    /*
+    		 # returns an array with all components from the given type
+    		 #
+    		 # @param [string] type
+    		 #
+    		 # @return array
+    */
+
+
+    JJEditor.prototype.getComponentsByType = function(type) {
+      var component, components, id, results;
+
+      components = this.getComponents();
+      results = [];
+      for (id in components) {
+        component = components[id];
+        if (-1 !== $.inArray(type.toLowerCase(), component.contentTypes)) {
+          results.push(component);
+        }
+      }
+      return results;
+    };
+
+    /*
+    		 # returns a Editor-Component by name
+    		 #
+    		 # @param [string] fullName
+    		 #
+    		 # @return JJEditable
+    */
+
+
+    JJEditor.prototype.getComponentByName = function(fullName) {
+      var component, components, id;
+
+      components = this.getComponents();
+      for (id in components) {
+        component = components[id];
+        console.log(component.getDataFullName());
+        if (component.getDataFullName() === fullName) {
+          return component;
+        }
+      }
+      return null;
+    };
+
+    /*
     		 #
     		 # @private
     		 #
@@ -874,6 +943,13 @@ var __hasProp = {}.hasOwnProperty,
       return this._options;
     };
 
+    JJEditable.prototype.updateOptions = function(options) {
+      this._options = $.extend(true, this._options, options);
+      return this.onOptionsUpdate();
+    };
+
+    JJEditable.prototype.onOptionsUpdate = function() {};
+
     JJEditable.prototype.render = function() {
       if (this.element) {
         return this.element.html(this.getValueOrPlaceholder());
@@ -933,6 +1009,17 @@ var __hasProp = {}.hasOwnProperty,
               });
             }
             return _this;
+          },
+          show: function(event, api) {
+            var key, pos, _i, _len, _ref;
+
+            pos = _this.getPosition();
+            _ref = Object.keys(pos);
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              key = _ref[_i];
+              api.set("position." + key, pos[key]);
+            }
+            return true;
           }
         },
         content: {
@@ -978,6 +1065,16 @@ var __hasProp = {}.hasOwnProperty,
 
     JJPopoverEditable.prototype.getValueFromContent = function() {
       return this.element.html();
+    };
+
+    JJPopoverEditable.prototype.onOptionsUpdate = function() {};
+
+    JJPopoverEditable.prototype.getPosition = function() {
+      if (this._options.position) {
+        return this._options.position;
+      } else {
+        return this.position;
+      }
     };
 
     JJPopoverEditable.prototype.open = function() {

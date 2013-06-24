@@ -333,6 +333,57 @@ do ($ = jQuery) ->
 		getComponents: ->
 			_components
 
+		###
+		 # returns an array with all components from the given className
+		 #
+		 # @param [string] type
+		 #
+		 # @return array
+		###
+		getComponentsByClassName: (className) ->
+			components = @getComponents()
+			results = []
+
+			for id, component of components
+				if component.constructor.name is className
+					results.push component
+
+			results
+
+		###
+		 # returns an array with all components from the given type
+		 #
+		 # @param [string] type
+		 #
+		 # @return array
+		###
+		getComponentsByType: (type) ->
+			components = @getComponents()
+			results = []
+
+			for id, component of components
+				if -1 isnt $.inArray type.toLowerCase(), component.contentTypes
+					results.push component
+
+			results
+
+		###
+		 # returns a Editor-Component by name
+		 #
+		 # @param [string] fullName
+		 #
+		 # @return JJEditable
+		###
+		getComponentByName: (fullName) ->
+			components = @getComponents()
+
+			for id, component of components
+				console.log component.getDataFullName()
+				if component.getDataFullName() is fullName
+					return component
+
+			null	
+
 
 		###
 		 #
