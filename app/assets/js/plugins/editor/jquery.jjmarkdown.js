@@ -3,7 +3,7 @@
 /**
  *
  * JJMarkdownEditor 
- * v.0.0.1
+ * v.0.0.2
  *
  * (2013)
  * 
@@ -46,23 +46,17 @@ var __hasProp = {}.hasOwnProperty,
       imageUrl: '/imagery/images/docimage'
     };
 
-    JJMarkdownEditor.prototype.$input = null;
-
-    JJMarkdownEditor.prototype.$preview = null;
-
-    JJMarkdownEditor.prototype.currentDrag = null;
-
-    JJMarkdownEditor.prototype.inlineElementDragged = null;
-
-    JJMarkdownEditor.prototype.dragCount = 0;
-
-    JJMarkdownEditor.prototype.fileDragPermitted = true;
-
-    JJMarkdownEditor.prototype.pendingAjax = [];
-
-    JJMarkdownEditor.prototype.customParsers = {};
-
     function JJMarkdownEditor(selector, opts) {
+      var $input;
+
+      $input = null;
+      this.$preview = null;
+      this.currentDrag = null;
+      this.inlineElementDragged = null;
+      this.dragCount = 0;
+      this.fileDragPermitted = true;
+      this.pendingAjax = [];
+      this.customParsers = {};
       this.options = $.extend({}, this.defaults, opts);
       this.$input = selector instanceof jQuery ? selector : $(selector);
       this.$input._val = this.$input[this.options.contentGetter];

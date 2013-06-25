@@ -3,7 +3,7 @@
 ###*
  *
  * JJMarkdownEditor 
- * v.0.0.1
+ * v.0.0.2
  *
  * (2013)
  * 
@@ -39,18 +39,21 @@ do ($ = jQuery) ->
 			onBlur				: null														# Method to call when the input area loses focus
 			imageUrl			: '/imagery/images/docimage'								# URL to post the images to
 
-		$input : null
-		$preview: null
-
-		currentDrag : null
-		inlineElementDragged : null
-		dragCount: 0
-		fileDragPermitted: true
-
-		pendingAjax : []
-		customParsers : {}
 
 		constructor : (selector, opts) ->
+			# init member vars
+			$input = null
+			@$preview = null
+
+			@currentDrag = null
+			@inlineElementDragged = null
+			@dragCount = 0
+			@fileDragPermitted = true
+
+			@pendingAjax = []
+			@customParsers = {}
+
+
 			@.options = $.extend {}, @.defaults, opts
 			@.$input = if selector instanceof jQuery then selector else $(selector)
 			@.$input._val = @.$input[@.options.contentGetter]
@@ -372,7 +375,8 @@ do ($ = jQuery) ->
 		_tempReplacements: null
 		_raw : null
 
-		constructor: (opts) ->
+		constructor: (opts) ->			
+
 			if opts
 				for a, b of opts
 					@[a] = b
