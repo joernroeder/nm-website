@@ -67,24 +67,27 @@ do ($ = jQuery) ->
 	# ! --- JJEditor --------------------------------------
 
 	class JJEditor
-		_contentTypes	: {}
-		_components		: {}
-		_storage		: {}
-		_events			: {}
+		members: ->
+			@_contentTypes	= {}
+			@_components	= {}
+			@_storage		= {}
+			@_events		= {}
 
-		debug: true
+			@debug = false
 
-		attr:
-			_namespace: 'editor-'
-			type: 'type'
-			name: 'name'
-			scope: 'scope'
-			placeholder: 'placeholder'
-			options: 'options'
-			handledBy: 'handled-by'
-			componentId: 'component-id'
-		
+			@attr =
+				_namespace: 'editor-'
+				type: 'type'
+				name: 'name'
+				scope: 'scope'
+				placeholder: 'placeholder'
+				options: 'options'
+				handledBy: 'handled-by'
+				componentId: 'component-id'
+
 		constructor: (scope, components) ->
+			@members()
+
 			if components is undefined
 				components = scope
 				scope = $ document
@@ -268,8 +271,6 @@ do ($ = jQuery) ->
 
 			# destroy components
 			for id, component of @getComponents()
-				console.log component
-				console.log @
 				destroyComponent.call @, component
 
 			# remove bindings
@@ -279,10 +280,6 @@ do ($ = jQuery) ->
 				callbacks.disable()
 				callbacks.empty()
 
-			@_contentTypes = {}
-			console.log '@_contentTypes'
-			console.log @_contentTypes
-			debugger
 			false
 
 
@@ -299,9 +296,7 @@ do ($ = jQuery) ->
 				throw new ReferenceError "The Component '#{name}' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?"
 
 			component = new window.editorComponents[name](@)
-			console.log @_contentTypes
 			$.map component.contentTypes, (type) =>
-				console.log type
 				addContentType.call @, type, name
 
 		###

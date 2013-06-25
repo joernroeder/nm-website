@@ -97,30 +97,28 @@ var __hasProp = {}.hasOwnProperty,
   JJEditor = (function() {
     var addComponent, addContentType, createComponent, destroyComponent, extractScope, getComponentByContentType, trimObject;
 
-    JJEditor.prototype._contentTypes = {};
-
-    JJEditor.prototype._components = {};
-
-    JJEditor.prototype._storage = {};
-
-    JJEditor.prototype._events = {};
-
-    JJEditor.prototype.debug = true;
-
-    JJEditor.prototype.attr = {
-      _namespace: 'editor-',
-      type: 'type',
-      name: 'name',
-      scope: 'scope',
-      placeholder: 'placeholder',
-      options: 'options',
-      handledBy: 'handled-by',
-      componentId: 'component-id'
+    JJEditor.prototype.members = function() {
+      this._contentTypes = {};
+      this._components = {};
+      this._storage = {};
+      this._events = {};
+      this.debug = false;
+      return this.attr = {
+        _namespace: 'editor-',
+        type: 'type',
+        name: 'name',
+        scope: 'scope',
+        placeholder: 'placeholder',
+        options: 'options',
+        handledBy: 'handled-by',
+        componentId: 'component-id'
+      };
     };
 
     function JJEditor(scope, components) {
       var _this = this;
 
+      this.members();
       if (components === void 0) {
         components = scope;
         scope = $(document);
@@ -382,8 +380,6 @@ var __hasProp = {}.hasOwnProperty,
       _ref = this.getComponents();
       for (id in _ref) {
         component = _ref[id];
-        console.log(component);
-        console.log(this);
         destroyComponent.call(this, component);
       }
       this.off();
@@ -393,10 +389,6 @@ var __hasProp = {}.hasOwnProperty,
         callbacks.disable();
         callbacks.empty();
       }
-      this._contentTypes = {};
-      console.log('@_contentTypes');
-      console.log(this._contentTypes);
-      debugger;
       return false;
     };
 
@@ -416,9 +408,7 @@ var __hasProp = {}.hasOwnProperty,
         throw new ReferenceError("The Component '" + name + "' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?");
       }
       component = new window.editorComponents[name](this);
-      console.log(this._contentTypes);
       return $.map(component.contentTypes, function(type) {
-        console.log(type);
         return addContentType.call(_this, type, name);
       });
     };
