@@ -2522,6 +2522,9 @@ form.create-project button {
 .editor-project-preview .dropzone.preview-image.filled:before {
   opacity: 0;
 }
+.editor-project-preview .dropzone.preview-image:not(.filled) {
+  height: 280px;
+}
 .editor-project-preview .dropzone.preview-image.dragover {
   margin: -0.625em;
   border-width: 0.625em;
