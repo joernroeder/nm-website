@@ -1697,10 +1697,10 @@ form.create-project {
 	display: none
 }
 
+@editorProjectPreview_DropzoneDim: 200;
 .editor-project-preview {
-	@dim: 200;
-	@dropzoneWidth: @dim / @em;
-	@dropzoneHeight: @dim / @em;
+	@dropzoneWidth: @editorProjectPreview_DropzoneDim / @em;
+	@dropzoneHeight: @editorProjectPreview_DropzoneDim / @em;
 	//border: 1px solid red;
 
 	.dropzone.preview-image {
@@ -1722,7 +1722,7 @@ form.create-project {
 		
 		&:before {
 			position: relative;
-			top: @dim / 2 * 1px;
+			top: @editorProjectPreview_DropzoneDim / 2 * 1px;
 			display: block;
 			text-align: center;
 			.icon-font;
@@ -1782,7 +1782,7 @@ form.create-project {
 body.dragover .editor-project-preview {
 
 	.dropzone.preview-image {
-		min-height: 280px;
+		min-height: @editorProjectPreview_DropzoneDim / @em;
 		background: darken(@bgColor, 5%);
 
 		&:before {

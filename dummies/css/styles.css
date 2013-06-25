@@ -2558,7 +2558,7 @@ form.create-project button {
   padding-left: 13.75em;
 }
 body.dragover .editor-project-preview .dropzone.preview-image {
-  min-height: 280px;
+  min-height: 12.5em;
   background: #d9d9d9;
 }
 body.dragover .editor-project-preview .dropzone.preview-image:before {
