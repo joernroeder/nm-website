@@ -547,10 +547,12 @@ define [
 				app.ProjectEditor.PreviewImageZone.setAsDraggable $img
 
 			liveRemoval: ->
+				app.ProjectEditor.galleryImageRemoved @model.id
+
 				# get all gallery item views
 				_.each @.__manager__.parent.views, (viewGroups) =>
 					_.each viewGroups, (view) =>
-						if view.model.id is @.model.id and view isnt @
+						if view.model.id is @model.id and view isnt @
 							view.remove()
 				@.remove()
 

@@ -21,6 +21,9 @@ define [
 		toggleView: ->
 			@containerView.toggleView()
 
+		galleryImageRemoved: (id) ->
+			if @model.get('PreviewImage').id is id
+				@previewView.removePreviewImage()
 
 
 	ProjectEditor.Views.Container = Backbone.View.extend
@@ -41,11 +44,11 @@ define [
 		tagName: 'article'
 		template: 'security/editor-project-preview'
 
-		getFilterID: ->
-			"#{@model.get('ClassName')}-#{@model.id}"
-
 		cleanup: ->
 			@uploadZone.cleanup()
+
+		getFilterID: ->
+			"#{@model.get('ClassName')}-#{@model.id}"
 
 		initDropzone: ->
 			app.ProjectEditor.PreviewImageZone = @uploadZone = new JJSingleImageUploadZone '.preview-image',
@@ -83,6 +86,9 @@ define [
 							setPreviewImage model, data[0].url
 
 			@
+
+		removePreviewImage: ->
+			@uploadZone.$dropzone.empty()
 
 		afterRender: ->
 			@initDropzone()

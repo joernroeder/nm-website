@@ -625,6 +625,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     liveRemoval: function() {
       var _this = this;
 
+      app.ProjectEditor.galleryImageRemoved(this.model.id);
       _.each(this.__manager__.parent.views, function(viewGroups) {
         return _.each(viewGroups, function(view) {
           if (view.model.id === _this.model.id && view !== _this) {

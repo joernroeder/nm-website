@@ -26,6 +26,12 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
       return this.containerView.toggleView();
     };
 
+    Inst.prototype.galleryImageRemoved = function(id) {
+      if (this.model.get('PreviewImage').id === id) {
+        return this.previewView.removePreviewImage();
+      }
+    };
+
     return Inst;
 
   })();
@@ -47,11 +53,11 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
   ProjectEditor.Views.Preview = Backbone.View.extend({
     tagName: 'article',
     template: 'security/editor-project-preview',
-    getFilterID: function() {
-      return "" + (this.model.get('ClassName')) + "-" + this.model.id;
-    },
     cleanup: function() {
       return this.uploadZone.cleanup();
+    },
+    getFilterID: function() {
+      return "" + (this.model.get('ClassName')) + "-" + this.model.id;
     },
     initDropzone: function() {
       var _this = this;
@@ -101,6 +107,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
         }
       });
       return this;
+    },
+    removePreviewImage: function() {
+      return this.uploadZone.$dropzone.empty();
     },
     afterRender: function() {
       return this.initDropzone();
