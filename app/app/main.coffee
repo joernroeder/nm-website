@@ -280,13 +280,29 @@ require [
 	app.bindListeners()
 
 
-	# few Bacbkone extra functions
+	# few Backbone extra functions
 	Backbone.View.prototype.showMessageAt = (msg, $appendTo, className) ->
 		$el = $('<p class="' + className + '">' + msg + '</p>')
 		$el.appendTo $appendTo
 		setTimeout ->
 			$el.fadeOut().remove()
 		, 2000
+
+	# extra function to reject any pending save functions on the same model
+	Backbone.__pendingSaveReqs = []
+	Backbone.JJRelationalModel.prototype.rejectAndSave = ->
+		xhr = @.save.apply @, arguments
+
+		found = false
+		_.each Backbone.__pendingSaveReqs, (req) =>
+			if req.cid is @.cid
+				found = true
+				if req.xhr.readyState isnt 4 then req.xhr.abort()
+				req.xhr = xhr
+		
+		Backbone.__pendingSaveReqs.push({ cid: @.cid, xhr: xhr }) unless found
+		xhr
+
 
 	# ! KICK OFF
 

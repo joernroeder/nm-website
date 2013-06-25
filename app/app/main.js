@@ -360,6 +360,30 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       return $el.fadeOut().remove();
     }, 2000);
   };
+  Backbone.__pendingSaveReqs = [];
+  Backbone.JJRelationalModel.prototype.rejectAndSave = function() {
+    var found, xhr,
+      _this = this;
+
+    xhr = this.save.apply(this, arguments);
+    found = false;
+    _.each(Backbone.__pendingSaveReqs, function(req) {
+      if (req.cid === _this.cid) {
+        found = true;
+        if (req.xhr.readyState !== 4) {
+          req.xhr.abort();
+        }
+        return req.xhr = xhr;
+      }
+    });
+    if (!found) {
+      Backbone.__pendingSaveReqs.push({
+        cid: this.cid,
+        xhr: xhr
+      });
+    }
+    return xhr;
+  };
   $(function() {
     jQuery.event.props.push('dataTransfer');
     $(document).on('dragenter dragover dragleave drop', function(e) {
