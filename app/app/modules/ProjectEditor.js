@@ -78,7 +78,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
                 if (!_this.model.get('Images').get(model.id)) {
                   sideSubview.insertGalleryImage(_this.getFilterID(), {
                     url: thumbUrl,
-                    id: _this.model.id
+                    id: model.id
                   });
                 }
               }

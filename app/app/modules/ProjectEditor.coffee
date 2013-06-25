@@ -65,7 +65,7 @@ define [
 						if sideSubview = Auth.Cache.userWidget.subView
 							if sideSubview.isGallery and sideSubview.isOpen
 								if not @model.get('Images').get(model.id)
-									sideSubview.insertGalleryImage @getFilterID(), { url: thumbUrl, id: @model.id }
+									sideSubview.insertGalleryImage @getFilterID(), { url: thumbUrl, id: model.id }
 
 						if @model.get('PreviewImage') isnt model
 							@model.set 'PreviewImage', model
