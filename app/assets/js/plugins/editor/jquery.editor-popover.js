@@ -382,17 +382,17 @@ var __hasProp = {}.hasOwnProperty,
       if (this.debug) {
         console.log('going to destroy the editor and remove all');
       }
-      _ref = this.getComponents();
-      for (id in _ref) {
-        component = _ref[id];
-        destroyComponent.call(this, component);
-      }
       this.off();
-      _ref1 = this._events;
-      for (name in _ref1) {
-        callbacks = _ref1[name];
+      _ref = this._events;
+      for (name in _ref) {
+        callbacks = _ref[name];
         callbacks.disable();
         callbacks.empty();
+      }
+      _ref1 = this.getComponents();
+      for (id in _ref1) {
+        component = _ref1[id];
+        destroyComponent.call(this, component);
       }
       return false;
     };

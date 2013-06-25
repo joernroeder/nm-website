@@ -268,16 +268,16 @@ do ($ = jQuery) ->
 		destroy: ->
 			console.log 'going to destroy the editor and remove all' if @debug
 
-			# destroy components
-			for id, component of @getComponents()
-				destroyComponent.call @, component
-
 			# remove bindings
 			@.off()
 
 			for name, callbacks of @_events
 				callbacks.disable()
 				callbacks.empty()
+
+			# destroy components
+			for id, component of @getComponents()
+				destroyComponent.call @, component
 
 			false
 
