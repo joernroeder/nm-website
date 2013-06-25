@@ -19,3 +19,4 @@ Director:
     'api/v2/Auth': 'Authentication_RestApiController'
     '_md_//$Action/$ID/$OtherID': 'MarkdownEditor_Controller'
     'imagery': 'Gallery_Controller'
+    'lists': 'Lists_Controller'
