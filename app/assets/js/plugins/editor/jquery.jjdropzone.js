@@ -22,18 +22,18 @@ var __hasProp = {}.hasOwnProperty,
     });
   };
   $.globalDragStart.add(function(e) {
-    if ($.dragLeaveTimout) {
-      clearTimeout($.dragLeaveTimout);
+    if ($.dragLeaveTimeout) {
+      clearTimeout($.dragLeaveTimeout);
     }
     return $('body').addClass('dragover drag-' + e.type);
   });
   $.globalDragEnd.add(function(e) {
-    if ($.dragLeaveTimout) {
-      clearTimeout($.dragLeaveTimout);
+    if ($.dragLeaveTimeout) {
+      clearTimeout($.dragLeaveTimeout);
     }
     return $.dragLeaveTimeout = setTimeout(function() {
       return $('body').removeClass('dragover drag-' + e.type);
-    }, 100);
+    }, 200);
   });
   JJUploadZone = (function() {
     JJUploadZone.prototype.fileMatch = 'image.*';

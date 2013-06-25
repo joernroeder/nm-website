@@ -15,14 +15,16 @@ do ($ = jQuery) ->
 			target: target
 
 	$.globalDragStart.add (e) ->
-		clearTimeout($.dragLeaveTimout) if $.dragLeaveTimout
+		clearTimeout($.dragLeaveTimeout) if $.dragLeaveTimeout
+		
 		$('body').addClass 'dragover drag-' + e.type
 
 	$.globalDragEnd.add (e) ->
-		clearTimeout($.dragLeaveTimout) if $.dragLeaveTimout
+		clearTimeout($.dragLeaveTimeout) if $.dragLeaveTimeout
+
 		$.dragLeaveTimeout = setTimeout ->
 			$('body').removeClass 'dragover drag-' + e.type
-		, 100
+		, 200
 
 
 	# ! ---
