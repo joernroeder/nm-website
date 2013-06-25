@@ -132,20 +132,34 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       var _this = this;
 
       this.$el.addClass('open');
-      $('body').addClass('editor-sidebar-open');
+      this.$body.addClass('editor-sidebar-open').trigger({
+        type: 'toggle.editor-sidebar',
+        name: 'open'
+      });
       return setTimeout(function() {
         _this.triggerSubview('opened', switched);
-        return _this.$el.addClass('opened');
+        _this.$el.addClass('opened');
+        return _this.$body.trigger({
+          type: 'toggle.editor-sidebar',
+          name: 'opened'
+        });
       }, 300);
     },
     close: function() {
       var _this = this;
 
       this.triggerSubview('close');
-      $('body').removeClass('editor-sidebar-open');
+      this.$body.removeClass('editor-sidebar-open').trigger({
+        type: 'toggle.editor-sidebar',
+        name: 'closing'
+      });
       this.$el.removeClass('open').find('nav .active').removeClass('active');
       return setTimeout(function() {
-        return _this.$el.removeClass('opened');
+        _this.$el.removeClass('opened');
+        return _this.$body.trigger({
+          type: 'toggle.editor-sidebar',
+          name: 'close'
+        });
       }, 300);
     },
     toggle: function() {
@@ -176,6 +190,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return spinner.inst.stop();
     },
     afterRender: function() {
+      this.$body = $('body');
       return this.initSpinner();
     }
   });

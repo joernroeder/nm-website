@@ -1074,8 +1074,13 @@ var __hasProp = {}.hasOwnProperty,
           return _this.close();
         }
       });
-      return element.on(this.getNamespacedEventName('click'), function() {
+      element.on(this.getNamespacedEventName('click'), function() {
         return _this.toggle();
+      });
+      return $('body').on(this.getNamespacedEventName('toggle.editor-sidebar'), function(e) {
+        if (e.name === 'opened' || e.name === 'close') {
+          return _this.autoReposition();
+        }
       });
     };
 
@@ -1178,6 +1183,9 @@ var __hasProp = {}.hasOwnProperty,
         clearTimeout(this.repositionOnChangeTimeout);
       }
       this.repositionOnChangeTimeout = setTimeout(function() {
+        if (_this.debug) {
+          console.log('JJPopoverEditable: Popover reposition');
+        }
         return _this.element.qtip('reposition');
       }, 100);
       return true;
@@ -1186,6 +1194,7 @@ var __hasProp = {}.hasOwnProperty,
     JJPopoverEditable.prototype.destroy = function() {
       this.api.tooltip.unbind(this.getNamespacedEventName('outerClick'));
       this.element.off(this.getNamespacedEventName('click'));
+      $('body').off(this.getNamespacedEventName('toggle.editor-sidebar'));
       return JJPopoverEditable.__super__.destroy.call(this);
     };
 

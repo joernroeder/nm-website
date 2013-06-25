@@ -128,18 +128,34 @@ define [
 
 			open: (switched) ->
 				@.$el.addClass 'open'
-				$('body').addClass 'editor-sidebar-open'
+				@.$body
+					.addClass('editor-sidebar-open')
+					.trigger
+						type: 'toggle.editor-sidebar'
+						name: 'open'
+
 				setTimeout =>
 					@.triggerSubview 'opened', switched
 					@.$el.addClass 'opened'
+					@.$body.trigger
+						type: 'toggle.editor-sidebar'
+						name: 'opened'
 				, 300
 
 			close: ->
 				@.triggerSubview 'close'
-				$('body').removeClass 'editor-sidebar-open'
+				@.$body
+					.removeClass('editor-sidebar-open')
+					.trigger
+						type: 'toggle.editor-sidebar'
+						name: 'closing'
+
 				@.$el.removeClass('open').find('nav .active').removeClass('active')
 				setTimeout =>
 					@.$el.removeClass 'opened'
+					@.$body.trigger
+						type: 'toggle.editor-sidebar'
+						name: 'close'
 				, 300
 
 			toggle: ->
@@ -164,6 +180,7 @@ define [
 				spinner.inst.stop()
 
 			afterRender: ->
+				@.$body = $ 'body'
 				@.initSpinner()
 
 

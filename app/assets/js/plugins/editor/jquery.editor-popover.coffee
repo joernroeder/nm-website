@@ -830,6 +830,10 @@ do ($ = jQuery) ->
 			element.on @getNamespacedEventName('click'), =>
 				@toggle()
 
+			$('body').on @getNamespacedEventName('toggle.editor-sidebar'), (e) =>
+				if e.name is 'opened' or e.name is 'close'
+					@autoReposition()
+
 		getValueFromContent: ->
 			placeholder = @getPlaceholder()
 			value = @element.html()
@@ -888,6 +892,7 @@ do ($ = jQuery) ->
 				clearTimeout @repositionOnChangeTimeout
 
 			@repositionOnChangeTimeout = setTimeout =>
+				console.log 'JJPopoverEditable: Popover reposition' if @debug
 				@element.qtip 'reposition'
 			, 100
 
@@ -896,6 +901,8 @@ do ($ = jQuery) ->
 		destroy: ->
 			@api.tooltip.unbind @getNamespacedEventName('outerClick')
 			@element.off @getNamespacedEventName('click')
+
+			$('body').off @getNamespacedEventName('toggle.editor-sidebar')
 
 			super()
 
