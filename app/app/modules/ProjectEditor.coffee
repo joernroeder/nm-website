@@ -13,7 +13,8 @@ define [
 			@previewView  	= new ProjectEditor.Views.Preview { model: @model }
 			@mainView 		= new ProjectEditor.Views.Main { model: @model }
 			@modelJSON		= @model.toJSON()
-
+		
+		kickOffRender: ->
 			# pass container to layout and kick off
 			app.layout.setViewAndRenderMaybe '#project-editor', @containerView
 

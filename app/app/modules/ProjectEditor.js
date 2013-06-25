@@ -16,8 +16,11 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
         model: this.model
       });
       this.modelJSON = this.model.toJSON();
-      app.layout.setViewAndRenderMaybe('#project-editor', this.containerView);
     }
+
+    Inst.prototype.kickOffRender = function() {
+      return app.layout.setViewAndRenderMaybe('#project-editor', this.containerView);
+    };
 
     Inst.prototype.toggleView = function() {
       return this.containerView.toggleView();

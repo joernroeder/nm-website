@@ -357,7 +357,8 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         var layout;
 
         layout = app.useLayout('editor');
-        return app.ProjectEditor = new ProjectEditor.Inst(model);
+        app.ProjectEditor = new ProjectEditor.Inst(model);
+        return app.ProjectEditor.kickOffRender();
       });
     },
     catchAllRoute: function(url) {

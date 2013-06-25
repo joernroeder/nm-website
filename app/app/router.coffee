@@ -299,7 +299,9 @@ define [
 				Backbone.history.navigate '/login/', true
 			.done (model) ->
 				layout = app.useLayout 'editor'
+				
 				app.ProjectEditor = new ProjectEditor.Inst(model)
+				app.ProjectEditor.kickOffRender()
 
 				
 
