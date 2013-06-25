@@ -109,6 +109,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
     },
     initEditor: function() {
       this.editor = new JJEditor($('.meta'), ['InlineEditable', 'DateEditable', 'MarkdownEditable']);
+      this.editor.getComponentByName('ProjectPreview.Teaser').updateOptions({
+        customParsers: []
+      });
       this.editor.on('stateUpdate', function(e) {
         return console.log(e);
       });
