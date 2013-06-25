@@ -365,8 +365,6 @@ define [
 					'MarkdownEditable'
 					'SplitMarkdownEditable'
 				]
-
-				@metaEditor.getComponentByName('CurrentPerson.Bio').updateOptions {customParsers: []}
 				
 				#bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
 

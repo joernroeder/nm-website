@@ -99,8 +99,6 @@ define [
 				'MarkdownEditable'
 			]
 
-			@editor.getComponentByName('ProjectPreview.Teaser').updateOptions {customParsers: []}
-
 			@editor.on 'stateUpdate', (e) ->
 				console.log e
 

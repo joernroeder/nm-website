@@ -411,9 +411,6 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     },
     initMetaEditor: function() {
       this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
-      this.metaEditor.getComponentByName('CurrentPerson.Bio').updateOptions({
-        customParsers: []
-      });
       return this.metaEditor.on('stateUpdate', function(e) {
         var key, val, _changed, _ref;
 
