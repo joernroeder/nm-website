@@ -992,6 +992,9 @@ var __hasProp = {}.hasOwnProperty,
   })();
   /*
   	 # Abstract Popover Class
+  	 
+  	 # @options:
+  	 #	repositionOnChange: true/false auto update popover position
   */
 
   JJPopoverEditable = (function(_super) {
@@ -1001,7 +1004,8 @@ var __hasProp = {}.hasOwnProperty,
       JJPopoverEditable.__super__.members.call(this);
       this._popoverContent = '';
       this.popoverClasses = [];
-      return this.closeOnOuterClick = true;
+      this.closeOnOuterClick = true;
+      return this.repositionOnChangeTimeout = null;
     };
 
     function JJPopoverEditable(editor) {
@@ -1157,6 +1161,26 @@ var __hasProp = {}.hasOwnProperty,
 
     JJPopoverEditable.prototype.setPopoverContent = function(value) {
       return this._popoverContent = value;
+    };
+
+    /*
+    		 #
+    */
+
+
+    JJPopoverEditable.prototype.autoReposition = function() {
+      var _this = this;
+
+      if (!this._options.repositionOnChange) {
+        return;
+      }
+      if (this.repositionOnChangeTimeout) {
+        clearTimeout(this.repositionOnChangeTimeout);
+      }
+      this.repositionOnChangeTimeout = setTimeout(function() {
+        return _this.element.qtip('reposition');
+      }, 100);
+      return true;
     };
 
     JJPopoverEditable.prototype.destroy = function() {
@@ -1316,6 +1340,7 @@ var __hasProp = {}.hasOwnProperty,
           if (_this.markdownChangeTimeout) {
             clearTimeout(_this.markdownChangeTimeout);
           }
+          _this.autoReposition();
           return _this.markdownChangeTimeout = setTimeout(function() {
             _this.setValue(val);
             if (!val.raw) {

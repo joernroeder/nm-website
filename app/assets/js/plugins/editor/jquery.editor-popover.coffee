@@ -742,6 +742,9 @@ do ($ = jQuery) ->
 
 	###
 	 # Abstract Popover Class
+	 
+	 # @options:
+	 #	repositionOnChange: true/false auto update popover position
 	###
 	class JJPopoverEditable extends JJEditable
 
@@ -752,6 +755,7 @@ do ($ = jQuery) ->
 			@popoverClasses = []
 
 			@closeOnOuterClick = true
+			@repositionOnChangeTimeout = null
 		
 		constructor: (@editor) ->
 			if @.constructor.name is 'PopoverEditable'
@@ -873,6 +877,21 @@ do ($ = jQuery) ->
 		###
 		setPopoverContent: (value) ->
 			@_popoverContent = value
+
+		###
+		 #
+		###
+		autoReposition: ->
+			if not @_options.repositionOnChange then return
+
+			if @repositionOnChangeTimeout
+				clearTimeout @repositionOnChangeTimeout
+
+			@repositionOnChangeTimeout = setTimeout =>
+				@element.qtip 'reposition'
+			, 100
+
+			true
 
 		destroy: ->
 			@api.tooltip.unbind @getNamespacedEventName('outerClick')
@@ -1007,6 +1026,8 @@ do ($ = jQuery) ->
 					console.log 'markdown changed'
 					if @markdownChangeTimeout
 						clearTimeout @markdownChangeTimeout
+
+					@autoReposition()
 
 					@markdownChangeTimeout = setTimeout =>
 						@setValue val
