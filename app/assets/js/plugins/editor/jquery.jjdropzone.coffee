@@ -5,6 +5,8 @@ do ($ = jQuery) ->
 	$.globalDragStart = $.Callbacks()
 	$.globalDragEnd = $.Callbacks()
 
+	$.dragLeaveTimeout = null
+
 	$.fireGlobalDragEvent = (name, target, type = 'inline') ->
 		eventName = if name is 'dragstart' then 'Start' else 'End'
 
@@ -13,10 +15,14 @@ do ($ = jQuery) ->
 			target: target
 
 	$.globalDragStart.add (e) ->
+		clearTimeout($.dragLeaveTimout) if $.dragLeaveTimout
 		$('body').addClass 'dragover drag-' + e.type
 
 	$.globalDragEnd.add (e) ->
-		$('body').removeClass 'dragover drag-' + e.type
+		clearTimeout($.dragLeaveTimout) if $.dragLeaveTimout
+		$.dragLeaveTimeout = setTimeout ->
+			$('body').removeClass 'dragover drag-' + e.type
+		, 100
 
 
 	# ! ---

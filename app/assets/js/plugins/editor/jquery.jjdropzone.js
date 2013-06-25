@@ -8,6 +8,7 @@ var __hasProp = {}.hasOwnProperty,
 
   $.globalDragStart = $.Callbacks();
   $.globalDragEnd = $.Callbacks();
+  $.dragLeaveTimeout = null;
   $.fireGlobalDragEvent = function(name, target, type) {
     var eventName;
 
@@ -21,10 +22,18 @@ var __hasProp = {}.hasOwnProperty,
     });
   };
   $.globalDragStart.add(function(e) {
+    if ($.dragLeaveTimout) {
+      clearTimeout($.dragLeaveTimout);
+    }
     return $('body').addClass('dragover drag-' + e.type);
   });
   $.globalDragEnd.add(function(e) {
-    return $('body').removeClass('dragover drag-' + e.type);
+    if ($.dragLeaveTimout) {
+      clearTimeout($.dragLeaveTimout);
+    }
+    return $.dragLeaveTimeout = setTimeout(function() {
+      return $('body').removeClass('dragover drag-' + e.type);
+    }, 100);
   });
   JJUploadZone = (function() {
     JJUploadZone.prototype.fileMatch = 'image.*';
