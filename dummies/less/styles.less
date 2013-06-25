@@ -1345,8 +1345,8 @@ body.editor-sidebar-open {
 		margin-bottom: @line / 2 / @em;
 		color: @sidebarColor;
 
-		.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
 		.placeholder(darken(@gray, 20%));
+		.transition(~"color .2s ease-in-out, background .2s ease-in-out");
 
 		&:hover {
 			background: mix(lighten(@black, 5%), darken(@nmColor, 30%), 75%);
