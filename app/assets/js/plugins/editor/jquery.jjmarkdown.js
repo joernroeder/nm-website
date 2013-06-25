@@ -177,10 +177,6 @@ var __hasProp = {}.hasOwnProperty,
         }
       });
       raw = this.$input._val();
-      if (raw.length === 0) {
-        this.$preview.html(this.options.placeholder);
-        return;
-      }
       markdown = marked(raw);
       seeds = [];
       $.each(this.customParsers, function(i, parser) {
@@ -200,7 +196,11 @@ var __hasProp = {}.hasOwnProperty,
           return markdown = parser.parseMarkdown(markdown);
         });
         _this.$preview.trigger('markdown:replaced');
-        _this.$preview.html(markdown);
+        if (raw.length === 0) {
+          _this.$preview.html(_this.options.placeholder);
+        } else {
+          _this.$preview.html(markdown);
+        }
         _this.inlineDragAndDropSetup();
         if (_this.options.afterRender) {
           _this.options.afterRender();

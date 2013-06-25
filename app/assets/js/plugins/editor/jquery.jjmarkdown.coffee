@@ -159,10 +159,6 @@ do ($ = jQuery) ->
 			
 			raw = @.$input._val()
 
-			# set to placeholder if no content
-			if raw.length is 0
-				@.$preview.html @.options.placeholder
-				return
 
 			markdown = marked raw
 
@@ -182,7 +178,11 @@ do ($ = jQuery) ->
 					markdown = parser.parseMarkdown markdown
 
 				@.$preview.trigger 'markdown:replaced'
-				@.$preview.html markdown
+				# set to placeholder if no content
+				if raw.length is 0
+					@.$preview.html @.options.placeholder
+				else
+					@.$preview.html markdown
 				@.inlineDragAndDropSetup()
 
 				if @.options.afterRender then @.options.afterRender()
