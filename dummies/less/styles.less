@@ -1702,7 +1702,7 @@ form.create-project {
 		@bg: darken(@bgColor, 5%);
 		@borderWidth: 20 / @em;
 
-		position: relative;
+		position: absolute;
 		background: @bg; 
 		border: 0 solid @color;
 		.transition(~"all .15s ease-in");
@@ -1760,6 +1760,10 @@ form.create-project {
 			opacity: 1;
 			.transition(~"visibility 0s linear, opacity .15s linear");
 		}
+	}
+
+	.meta {
+		margin-left: 300px;
 	}
 }
 
