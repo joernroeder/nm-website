@@ -108,9 +108,31 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
       return this;
     },
     initEditor: function() {
+      var _this = this;
+
       this.editor = new JJEditor($('.meta'), ['InlineEditable', 'DateEditable', 'MarkdownEditable']);
       this.editor.on('stateUpdate', function(e) {
-        return console.log(e);
+        var key, val, _changed, _ref;
+
+        _changed = false;
+        console.log(e);
+        _ref = e.ProjectPreview;
+        for (key in _ref) {
+          val = _ref[key];
+          if (key === 'TeaserText' && val) {
+            val = val.raw;
+          }
+          if (!val) {
+            continue;
+          }
+          if (_this.model.get(key) !== val) {
+            _changed = true;
+            _this.model.set(key, val);
+          }
+        }
+        if (_changed) {
+          return _this.model.rejectAndSave();
+        }
       });
       return this;
     },

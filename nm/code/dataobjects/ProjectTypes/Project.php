@@ -181,6 +181,8 @@ class Project extends DataObject {
 		),
 		'edit'	=> array(
 			'Title',
+			'Date',
+			'TeaserText',
 			'Persons',
 			'PreviewImage',
 			'Images'

@@ -99,8 +99,17 @@ define [
 				'MarkdownEditable'
 			]
 
-			@editor.on 'stateUpdate', (e) ->
+			@editor.on 'stateUpdate', (e) =>
+				_changed = false
 				console.log e
+				for key, val of e.ProjectPreview
+					if key is 'TeaserText' and val then val = val.raw
+					if not val then continue
+					if @model.get(key) isnt val
+						_changed = true
+						@model.set key, val
+				@model.rejectAndSave() if _changed
+
 
 			@
 

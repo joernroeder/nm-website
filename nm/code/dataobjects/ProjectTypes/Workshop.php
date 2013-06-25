@@ -171,6 +171,9 @@ class Workshop extends DataObject {
 		),
 		'edit'	=> array(
 			'Title',
+			'StartDate',
+			'EndDate',
+			'TeaserText',
 			'Persons',
 			'PreviewImage',
 			'Images'
