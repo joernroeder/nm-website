@@ -92,7 +92,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
             if (_this.model.get('PreviewImage') !== model) {
               _this.model.set('PreviewImage', model);
               _this.model.get('Images').add(model);
-              return _this.model.save();
+              return _this.model.rejectAndSave();
             }
           };
           if (data instanceof Backbone.Model === true) {

@@ -73,7 +73,7 @@ define [
 						if @model.get('PreviewImage') isnt model
 							@model.set 'PreviewImage', model
 							@model.get('Images').add model
-							@model.save()
+							@model.rejectAndSave()
 					
 					if data instanceof Backbone.Model is true
 						$img = $("#editor-sidebar").find("li.DocImage img[data-id=\"#{data.id}\"]")
