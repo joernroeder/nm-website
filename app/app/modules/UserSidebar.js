@@ -132,6 +132,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       var _this = this;
 
       this.$el.addClass('open');
+      $('body').addClass('editor-sidebar-open');
       return setTimeout(function() {
         _this.triggerSubview('opened', switched);
         return _this.$el.addClass('opened');
@@ -141,6 +142,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       var _this = this;
 
       this.triggerSubview('close');
+      $('body').removeClass('editor-sidebar-open');
       this.$el.removeClass('open').find('nav .active').removeClass('active');
       return setTimeout(function() {
         return _this.$el.removeClass('opened');
@@ -257,7 +259,6 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
 
       delay = switched ? 0 : 300;
       this.isOpen = true;
-      $('body').addClass('editor-sidebar-open');
       return setTimeout(function() {
         return _this._setColumnCount();
       }, delay);
@@ -270,7 +271,6 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         _this = this;
 
       this.isOpen = false;
-      $('body').removeClass('editor-sidebar-open');
       prefColumnsCount = this._getColumnsCount();
       return setTimeout(function() {
         if (_this.$sidebarContent) {

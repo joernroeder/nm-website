@@ -128,7 +128,7 @@ define [
 
 			open: (switched) ->
 				@.$el.addClass 'open'
-
+				$('body').addClass 'editor-sidebar-open'
 				setTimeout =>
 					@.triggerSubview 'opened', switched
 					@.$el.addClass 'opened'
@@ -136,6 +136,7 @@ define [
 
 			close: ->
 				@.triggerSubview 'close'
+				$('body').removeClass 'editor-sidebar-open'
 				@.$el.removeClass('open').find('nav .active').removeClass('active')
 				setTimeout =>
 					@.$el.removeClass 'opened'
@@ -243,7 +244,6 @@ define [
 			_onOpened: (switched) ->
 				delay = if switched then 0 else 300
 				@.isOpen = true
-				$('body').addClass 'editor-sidebar-open'
 				setTimeout =>
 					@._setColumnCount()
 				, delay
@@ -253,7 +253,6 @@ define [
 
 			_onClose: ->
 				@.isOpen = false
-				$('body').removeClass 'editor-sidebar-open'
 				prefColumnsCount = @._getColumnsCount()
 				setTimeout =>
 					@.$sidebarContent.removeClass @.columnsPrefix + prefColumnsCount  if @.$sidebarContent

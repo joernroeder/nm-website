@@ -1316,6 +1316,13 @@ x:-o-prefocus,
   margin-top: 1.5em;
   list-style: none;
 }
+.editor {
+  -webkit-transition: width .15s ease-in-out;
+  -moz-transition: width .15s ease-in-out;
+  -o-transition: width .15s ease-in-out;
+  -ms-transition: width .15s ease-in-out;
+  transition: width .15s ease-in-out;
+}
 .editor .badge {
   padding: 0.75em 0.625em;
 }
@@ -1478,6 +1485,9 @@ x:-o-prefocus,
 /*#qtip-0.markdowneditable {
 	left: 10px !important;
 }*/
+body.editor-sidebar-open #layout.editor {
+  width: 75%;
+}
 #editor-sidebar-spinner {
   position: absolute;
   top: 50%;

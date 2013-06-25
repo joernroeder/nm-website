@@ -753,6 +753,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 // ! --- EDITOR --------------------------------------------
 
 .editor {
+	.transition(~"width .15s ease-in-out");
 
 	.badge {
 		padding: (@line / 2 / @em) (@badgePaddingHorizontal / 2 / @em);
@@ -865,6 +866,11 @@ x:-o-prefocus, .qtip .qtip-tip{
 /*#qtip-0.markdowneditable {
 	left: 10px !important;
 }*/
+body.editor-sidebar-open {
+	#layout.editor {
+		.columnsWidth(8, 6);
+	}
+}
 
 #editor-sidebar-spinner {
 	position: absolute;
