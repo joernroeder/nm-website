@@ -43,7 +43,8 @@ var __hasProp = {}.hasOwnProperty,
       afterRender: null,
       onChange: null,
       onBlur: null,
-      imageUrl: '/imagery/images/docimage'
+      imageUrl: '/imagery/images/docimage',
+      placeholder: 'PLACEHOLDER'
     };
 
     function JJMarkdownEditor(selector, opts) {
@@ -176,6 +177,10 @@ var __hasProp = {}.hasOwnProperty,
         }
       });
       raw = this.$input._val();
+      if (raw.length === 0) {
+        this.$preview.html(this.options.placeholder);
+        return;
+      }
       markdown = marked(raw);
       seeds = [];
       $.each(this.customParsers, function(i, parser) {

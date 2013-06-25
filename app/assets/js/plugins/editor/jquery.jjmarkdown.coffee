@@ -38,6 +38,7 @@ do ($ = jQuery) ->
 			onChange			: null														# Function to pass the data to, after the parsing has been done
 			onBlur				: null														# Method to call when the input area loses focus
 			imageUrl			: '/imagery/images/docimage'								# URL to post the images to
+			placeholder			: 'PLACEHOLDER'
 
 
 		constructor : (selector, opts) ->
@@ -157,6 +158,12 @@ do ($ = jQuery) ->
 				if pending.readyState isnt 4 and pending.abort then pending.abort()
 			
 			raw = @.$input._val()
+
+			# set to placeholder if no content
+			if raw.length is 0
+				@.$preview.html @.options.placeholder
+				return
+
 			markdown = marked raw
 
 			# Custom parsers, always need to pass the raw version
