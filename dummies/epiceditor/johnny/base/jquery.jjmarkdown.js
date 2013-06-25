@@ -519,7 +519,7 @@ var __hasProp = {}.hasOwnProperty,
 
     SingleImgMarkdownParser.prototype.rule = /\[img\s{1,}(.*?)\]/gi;
 
-    SingleImgMarkdownParser.prototype.url = '/imagery/images/docimage';
+    SingleImgMarkdownParser.prototype.url = '/imagery/images/docimage/';
 
     SingleImgMarkdownParser.prototype.parseFound = function(data) {
       return parseInt(data);
@@ -538,7 +538,7 @@ var __hasProp = {}.hasOwnProperty,
 
     OEmbedMarkdownParser.prototype.rule = /\[embed\s{1,}(.*?)\]/gi;
 
-    OEmbedMarkdownParser.prototype.url = '/_md_/oembed';
+    OEmbedMarkdownParser.prototype.url = '/_md_/oembed/';
 
     return OEmbedMarkdownParser;
 
