@@ -302,6 +302,9 @@ define [
 				# kill and pending requests and replace it with this
 				UserSidebar.setPendingReq req
 
+			###
+			 # @todo add active class to current item
+			###
 			initProjectList: ->
 				projects = []
 				for type in ['Projects', 'Exhibitions', 'Excursions', 'Workshops']

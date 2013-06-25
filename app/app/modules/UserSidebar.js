@@ -317,6 +317,10 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       });
       return UserSidebar.setPendingReq(req);
     },
+    /*
+    			 # @todo add active class to current item
+    */
+
     initProjectList: function() {
       var projects, type, _i, _len, _ref,
         _this = this;
