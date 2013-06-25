@@ -632,9 +632,9 @@ define [
 				if app.isEditor then @handleActive(app.ProjectEditor.model)
 
 			handleActive: (model) ->
-				@.$el.removeClass 'active'
+				@.$el.find('a').removeClass 'active'
 				if model.get('ClassName') is @model.ClassName and model.id is @model.ID
-					@.$el.addClass 'active'
+					@.$el.find('a').addClass 'active'
 
 
 
