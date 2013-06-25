@@ -899,7 +899,9 @@ do ($ = jQuery) ->
 			true
 
 		destroy: ->
-			@api.tooltip.unbind @getNamespacedEventName('outerClick')
+			if @api and @api.tooltip
+				@api.tooltip.unbind @getNamespacedEventName('outerClick')
+
 			@element.off @getNamespacedEventName('click')
 
 			$('body').off @getNamespacedEventName('toggle.editor-sidebar')

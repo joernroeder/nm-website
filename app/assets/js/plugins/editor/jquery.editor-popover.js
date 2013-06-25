@@ -1192,7 +1192,9 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJPopoverEditable.prototype.destroy = function() {
-      this.api.tooltip.unbind(this.getNamespacedEventName('outerClick'));
+      if (this.api && this.api.tooltip) {
+        this.api.tooltip.unbind(this.getNamespacedEventName('outerClick'));
+      }
       this.element.off(this.getNamespacedEventName('click'));
       $('body').off(this.getNamespacedEventName('toggle.editor-sidebar'));
       return JJPopoverEditable.__super__.destroy.call(this);
