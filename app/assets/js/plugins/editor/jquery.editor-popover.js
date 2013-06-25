@@ -1329,7 +1329,7 @@ var __hasProp = {}.hasOwnProperty,
       $text = $('<textarea>', {
         'class': this.previewClass
       });
-      value = this.getValueFromContent();
+      value = this.getValue();
       $text.val(value.raw);
       $preview = $('<div>', {
         'class': this.previewClass

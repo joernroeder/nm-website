@@ -1008,7 +1008,7 @@ do ($ = jQuery) ->
 			$text = $ '<textarea>',
 				'class': @previewClass
 
-			value = @getValueFromContent()
+			value = @getValue()
 			$text.val value.raw
 
 			$preview = $ '<div>', 
