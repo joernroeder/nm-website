@@ -303,6 +303,13 @@ require [
 		Backbone.__pendingSaveReqs.push({ cid: @.cid, xhr: xhr }) unless found
 		xhr
 
+	# Global Handlebars helpers
+	Handlebars.registerHelper 'stringCompare', (what1, what2, block) ->
+		if what1 is what2
+			return block @
+		else
+			return block.inverse @
+
 
 	# ! KICK OFF
 

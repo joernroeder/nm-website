@@ -2,8 +2,9 @@ define [
 		'app'
 		'modules/DataRetrieval'
 		'modules/Auth'
+		'modules/Portfolio'
 	],
-(app, DataRetrieval, Auth) ->
+(app, DataRetrieval, Auth, Portfolio) ->
 	ProjectEditor = app.module()
 
 	class ProjectEditor.Inst
@@ -91,11 +92,24 @@ define [
 
 			@
 
+		initEditor: ->
+			@editor = new JJEditor $('.meta'), [
+				'InlineEditable'
+				'DateEditable'
+				'MarkdownEditable'
+			]
+
+			@editor.on 'stateUpdate', (e) ->
+				console.log e
+
+			@
+
 		removePreviewImage: ->
 			@uploadZone.$dropzone.removeClass(@FILLED).empty()
 
 		afterRender: ->
 			@initDropzone()
+			@initEditor()
 
 		serialize: ->
 			app.ProjectEditor.modelJSON

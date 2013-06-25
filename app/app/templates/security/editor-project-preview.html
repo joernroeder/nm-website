@@ -1,17 +1,22 @@
-<style>
-	.preview-image.dropzone {
-		display: block;
-		min-width: 320px;
-		min-height: 320px;
-	}
-
-
-</style>
-
 <div class="preview-image {{#if PreviewImage}}filled{{/if}}">
 	{{#if PreviewImage}}
 		{{#with PreviewImage.Urls._320}}
 			<img src="{{Url}}" />
 		{{/with}}
 	{{/if}}
+</div>
+<div class="meta" data-editor-scope="\ProjectPreview">
+	<header>
+		<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
+		{{#stringCompare "Project" ClassName}}
+			<p><span data-editor-type="date" data-editor-name="Date" data-editor-options='{"date": {"format": "M, Y"}}'>Date</span></p>
+		{{else}}
+			<p>
+				<span data-editor-type="date" data-editor-name="StartDate" data-editor-options='{"date": {"format": "D, M, Y"}}'>StartDate</span> -
+				<span data-editor-type="date" data-editor-name="EndDate" data-editor-options='{"date": {"format": "D, M, Y"}}'>EndDate</span>
+			</p>
+			<p class="nice-date">{{niceDate}}</p>
+		{{/stringCompare}}
+	</header>
+	<p data-editor-type="markdown" data-editor-name="Teaser" data-editor-placeholder="Teaser">{{MarkdownedTeaser}}</p>
 </div>
