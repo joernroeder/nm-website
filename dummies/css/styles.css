@@ -2462,8 +2462,37 @@ form.create-project button {
 .editor-project-container > section:not(.active) {
   display: none;
 }
-.editor-project-preview {
-  border: 1px solid red;
+.editor-project-preview .dropzone.preview-image {
+  position: relative;
+  background: #d9d9d9;
+  border: 0 solid #f3f3f3;
+  -webkit-transition: all .15s ease-in;
+  -moz-transition: all .15s ease-in;
+  -o-transition: all .15s ease-in;
+  -ms-transition: all .15s ease-in;
+  transition: all .15s ease-in;
+}
+.editor-project-preview .dropzone.preview-image:before {
+  position: relative;
+  top: 150px;
+  display: block;
+  text-align: center;
+  font-family: 'Entypo';
+  font-weight: normal;
+  content: '\1F304';
+  font-size: 1000%;
+  color: #f3f3f3;
+}
+.editor-project-preview .dropzone.preview-image.dragover {
+  margin: -1.25em;
+  border-width: 1.25em;
+  background-color: #d9dba2 !important;
+}
+.editor-project-preview .dropzone.preview-image * {
+  display: none;
+}
+body.dragover .editor-project-preview .dropzone.preview-image * {
+  display: none;
 }
 #recycle-bin {
   background: #191919;

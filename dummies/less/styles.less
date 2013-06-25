@@ -1687,7 +1687,49 @@ form.create-project {
 }
 
 .editor-project-preview {
-	border: 1px solid red; 
+	//border: 1px solid red;
+
+	.dropzone.preview-image {
+		@color: lighten(@bgColor, 5%);
+		@bg: darken(@bgColor, 5%);
+		@borderWidth: 20 / @em;
+
+		position: relative;
+		background: @bg; 
+		//.box-sizing(content-box);
+		border: 0 solid @color;
+		.transition(~"all .15s ease-in");
+		
+		&:before {
+			position: relative;
+			top: 150px;
+			display: block;
+			text-align: center;
+			.icon-font;
+			content: '\1F304';
+			font-size: 1000%;
+			color: @color;
+		}
+
+		&.dragover {
+			margin: -@borderWidth;
+			border-width: @borderWidth;
+			background-color: mix(@bg, @nmColor, 70%) !important;
+		}
+		//border: 1px solid red;
+		* {
+			display: none;
+		}
+	}
+}
+
+body.dragover .editor-project-preview {
+
+	.dropzone.preview-image {
+		* {
+			display: none;
+		}
+	}
 }
 
 
