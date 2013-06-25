@@ -825,6 +825,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	&.markdown .qtip-content {
 		padding: @line / 2 / @em;
+		.box-sizing(border-box);
 	}
 
 	textarea.preview {
@@ -1786,6 +1787,19 @@ body.dragover .editor-project-preview {
 			visibility: hidden;
 			opacity: 0;
 		}
+	}
+}
+
+// Teaser Tooltip
+
+.editor-popover.projectpreview-teasertext {
+	height: 200px;
+	width: 50%;
+
+	textarea.preview {
+		position: relative;
+		min-height: 0;
+		height: 100%;
 	}
 }
 

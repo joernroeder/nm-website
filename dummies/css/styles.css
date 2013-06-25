@@ -1453,6 +1453,9 @@ x:-o-prefocus,
 }
 .editor-popover.markdown .qtip-content {
   padding: 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .editor-popover textarea.preview {
   font-family: 'AllerLight', 'Helvetica', sans-serif;
@@ -2565,6 +2568,15 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   transition: visibility 0s linear .15s, opacity .15s linear;
   visibility: hidden;
   opacity: 0;
+}
+.editor-popover.projectpreview-teasertext {
+  height: 200px;
+  width: 50%;
+}
+.editor-popover.projectpreview-teasertext textarea.preview {
+  position: relative;
+  min-height: 0;
+  height: 100%;
 }
 #recycle-bin {
   background: #191919;
