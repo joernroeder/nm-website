@@ -33,6 +33,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     GalleryUrl: 'imagery/gallery/',
     DocImageUrl: 'imagery/images/docimage/',
     PersonImageUrl: 'imagery/images/personimage/',
+    BasicListUrl: 'lists/all/',
     ChangeCredentialsUrl: 'api/v2/Auth/credentials/',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'

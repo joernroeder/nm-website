@@ -443,13 +443,13 @@ do ($ = jQuery) ->
 	class SingleImgMarkdownParser extends CustomMarkdownParser
 		className: 'DocImage'
 		rule: /\[img\s{1,}(.*?)\]/gi
-		url: '/imagery/images/docimage'
+		url: '/imagery/images/docimage/'
 		parseFound: (data) ->
 			parseInt data
 
 	class OEmbedMarkdownParser extends CustomMarkdownParser
 		rule: /\[embed\s{1,}(.*?)\]/gi
-		url: '/_md_/oembed'
+		url: '/_md_/oembed/'
 
 
 
