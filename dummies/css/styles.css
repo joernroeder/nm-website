@@ -2471,6 +2471,11 @@ form.create-project button {
   -o-transition: all .15s ease-in;
   -ms-transition: all .15s ease-in;
   transition: all .15s ease-in;
+  min-width: 280px;
+  min-height: 0;
+  width: 280px;
+  max-height: 280px;
+  line-height: 0;
 }
 .editor-project-preview .dropzone.preview-image:before {
   position: relative;
@@ -2482,17 +2487,59 @@ form.create-project button {
   content: '\1F304';
   font-size: 1000%;
   color: #f3f3f3;
+  opacity: 1;
+  -webkit-transition: opacity .25s linear;
+  -moz-transition: opacity .25s linear;
+  -o-transition: opacity .25s linear;
+  -ms-transition: opacity .25s linear;
+  transition: opacity .25s linear;
+}
+.editor-project-preview .dropzone.preview-image.filled:before {
+  opacity: 0;
 }
 .editor-project-preview .dropzone.preview-image.dragover {
   margin: -1.25em;
   border-width: 1.25em;
   background-color: #d9dba2 !important;
 }
+.editor-project-preview .dropzone.preview-image.uploading {
+  min-height: 280px;
+  background-color: #d9dba2 !important;
+}
+.editor-project-preview .dropzone.preview-image .progress {
+  background: #e1e54d;
+}
+.editor-project-preview .dropzone.preview-image img {
+  /*position: absolute;
+			display: block;
+			top: 0;
+			right: 0;*/
+
+  max-width: 100%;
+}
 .editor-project-preview .dropzone.preview-image * {
-  display: none;
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: visibility 0s linear, opacity .15s linear;
+  -moz-transition: visibility 0s linear, opacity .15s linear;
+  -o-transition: visibility 0s linear, opacity .15s linear;
+  -ms-transition: visibility 0s linear, opacity .15s linear;
+  transition: visibility 0s linear, opacity .15s linear;
+}
+body.dragover .editor-project-preview .dropzone.preview-image {
+  min-height: 280px;
+}
+body.dragover .editor-project-preview .dropzone.preview-image:before {
+  opacity: 1;
 }
 body.dragover .editor-project-preview .dropzone.preview-image * {
-  display: none;
+  -webkit-transition: visibility 0s linear .15s, opacity .15s linear;
+  -moz-transition: visibility 0s linear .15s, opacity .15s linear;
+  -o-transition: visibility 0s linear .15s, opacity .15s linear;
+  -ms-transition: visibility 0s linear .15s, opacity .15s linear;
+  transition: visibility 0s linear .15s, opacity .15s linear;
+  visibility: hidden;
+  opacity: 0;
 }
 #recycle-bin {
   background: #191919;
