@@ -81,7 +81,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
             _this.uploadZone.$dropzone.addClass(_this.FILLED).html("<img src=\"" + img.Url + "\" />");
             if (sideSubview = Auth.Cache.userWidget.subView) {
               if (sideSubview.isGallery && sideSubview.isOpen) {
-                if (!_this.model.get('Images').get(model.id)) {
+                if (_.indexOf(_this.model.get('Images').getIDArray(), model.id) < 0) {
                   sideSubview.insertGalleryImage(_this.getFilterID(), {
                     url: thumbUrl,
                     id: model.id

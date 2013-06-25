@@ -560,7 +560,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         responseHandler: function(data) {
           app.updateGalleryCache(data);
           return _.each(data, function(img) {
-            return _this.insertGalleryImage(img.FilterID, img);
+            _this.insertGalleryImage(img.FilterID, img);
+            return app.ProjectEditor.model.get('Images').add(img.id);
           });
         }
       });
@@ -718,9 +719,9 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       }
     },
     handleActive: function(model) {
-      this.$el.removeClass('active');
+      this.$el.find('a').removeClass('active');
       if (model.get('ClassName') === this.model.ClassName && model.id === this.model.ID) {
-        return this.$el.addClass('active');
+        return this.$el.find('a').addClass('active');
       }
     }
   });

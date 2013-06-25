@@ -75,7 +75,7 @@ define [
 						# insert into gallery if open and necessary
 						if sideSubview = Auth.Cache.userWidget.subView
 							if sideSubview.isGallery and sideSubview.isOpen
-								if not @model.get('Images').get(model.id)
+								if _.indexOf(@model.get('Images').getIDArray(), model.id) < 0
 									sideSubview.insertGalleryImage @getFilterID(), { url: thumbUrl, id: model.id }
 
 						if @model.get('PreviewImage') isnt model

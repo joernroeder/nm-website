@@ -498,6 +498,8 @@ define [
 						app.updateGalleryCache data
 						_.each data, (img) =>
 							@.insertGalleryImage img.FilterID, img
+							# add to current project's images (idQueue)
+							app.ProjectEditor.model.get('Images').add img.id
 
 				@.$el.parent().on 'dragenter', (e) =>
 					if not $('body').hasClass 'drag-inline'
