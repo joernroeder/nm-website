@@ -638,12 +638,40 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return this._cleanup();
     },
     afterRender: function() {
-      var $img;
+      var getSiblings,
+        _this = this;
 
       this._afterRender();
-      $img = this.$el.find('[data-md-tag]');
-      JJMarkdownEditor.setAsDraggable($img);
-      return app.ProjectEditor.PreviewImageZone.setAsDraggable($img);
+      this.$img = this.$el.find('[data-md-tag]');
+      getSiblings = function() {
+        var elementType, id;
+
+        console.log(_this.$img);
+        id = _this.$img.data('id');
+        elementType = _this.$img[0].tagName.toLowerCase();
+        console.log(elementType);
+        return _this.$el.closest('.editor-sidebar-content').find('[data-id=' + id + ']').filter(function(index) {
+          return this.tagName.toLowerCase() === elementType;
+        });
+      };
+      JJMarkdownEditor.setAsDraggable(this.$img);
+      app.ProjectEditor.PreviewImageZone.setAsDraggable(this.$img);
+      return this.$img.on('mouseover', function() {
+        var $siblings;
+
+        $siblings = getSiblings();
+        console.log($siblings);
+        if ($siblings.length) {
+          return $siblings.addClass('active');
+        }
+      }).on('mouseleave', function() {
+        var $siblings;
+
+        $siblings = getSiblings();
+        if ($siblings.length) {
+          return $siblings.removeClass('active');
+        }
+      });
     },
     liveRemoval: function() {
       var _this = this;

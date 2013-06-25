@@ -567,9 +567,35 @@ define [
 			afterRender: ->
 				@._afterRender()
 
-				$img = @.$el.find('[data-md-tag]')
-				JJMarkdownEditor.setAsDraggable $img
-				app.ProjectEditor.PreviewImageZone.setAsDraggable $img
+				@.$img = @.$el.find '[data-md-tag]'
+
+				getSiblings = =>
+					console.log @.$img
+					id = @.$img.data 'id'
+					elementType = @.$img[0].tagName.toLowerCase()
+					console.log elementType
+
+					@.$el.closest('.editor-sidebar-content')
+						.find('[data-id=' + id + ']')
+						#.not(@.$img)
+						.filter (index) ->
+							@.tagName.toLowerCase() is elementType
+				
+
+				JJMarkdownEditor.setAsDraggable @.$img
+				app.ProjectEditor.PreviewImageZone.setAsDraggable @.$img
+
+				@.$img.on('mouseover', =>
+					$siblings = getSiblings()
+					console.log $siblings
+					if $siblings.length
+						$siblings.addClass 'active'
+				)
+				.on 'mouseleave', =>
+					$siblings = getSiblings()
+					if $siblings.length
+						$siblings.removeClass 'active'
+
 
 			liveRemoval: ->
 				app.ProjectEditor.galleryImageRemoved @model.id
