@@ -2517,8 +2517,8 @@ form.create-project button {
   opacity: 0;
 }
 .editor-project-preview .dropzone.preview-image.dragover {
-  margin: -1.25em;
-  border-width: 1.25em;
+  margin: -0.625em;
+  border-width: 0.625em;
   background-color: #d9dba2 !important;
 }
 .editor-project-preview .dropzone.preview-image.uploading {
