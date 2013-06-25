@@ -127,7 +127,6 @@ var __hasProp = {}.hasOwnProperty,
       if (this.debug) {
         console.group('EDITOR: add Components');
       }
-      console.log(this._contentTypes);
       $.map(components, function(component) {
         if (_this.debug) {
           console.log('- ' + component);
@@ -176,7 +175,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJEditor.prototype.trigger = function(name, eventData) {
-      if (name.indexOf(':' !== -1 && this.debug)) {
+      if (this.debug && name.indexOf(':' !== -1)) {
         console.group('EDITOR: trigger ' + name);
         console.log(eventData);
         console.groupEnd();
@@ -205,8 +204,12 @@ var __hasProp = {}.hasOwnProperty,
         console.groupEnd();
       }
       if (!silent) {
-        console.log(this._storage);
-        console.log(this.getState());
+        if (this.debug) {
+          console.log(this._storage);
+        }
+        if (this.debug) {
+          console.log(this.getState());
+        }
         return this.trigger('stateUpdate', this._storage);
       }
     };
@@ -376,7 +379,9 @@ var __hasProp = {}.hasOwnProperty,
     JJEditor.prototype.destroy = function() {
       var callbacks, component, id, name, _ref, _ref1;
 
-      console.log('going to destroy the editor and remove all');
+      if (this.debug) {
+        console.log('going to destroy the editor and remove all');
+      }
       _ref = this.getComponents();
       for (id in _ref) {
         component = _ref[id];

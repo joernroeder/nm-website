@@ -95,7 +95,6 @@ do ($ = jQuery) ->
 			@scope = if scope instanceof jQuery then scope else $ scope
 
 			console.group 'EDITOR: add Components' if @debug
-			console.log @_contentTypes
 			$.map components, (component) =>
 				console.log '- ' + component if @debug
 				addComponent.call @, component
@@ -132,7 +131,7 @@ do ($ = jQuery) ->
 			@_events[name].remove callback
 
 		trigger: (name, eventData) ->
-			if name.indexOf ':' isnt -1 and @debug
+			if  @debug and name.indexOf ':' isnt -1
 				console.group 'EDITOR: trigger ' + name
 				console.log eventData
 				console.groupEnd()
@@ -152,8 +151,8 @@ do ($ = jQuery) ->
 			console.groupEnd() if @debug
 
 			if not silent
-				console.log @_storage
-				console.log @getState()
+				console.log @_storage if @debug
+				console.log @getState() if @debug
 				@trigger 'stateUpdate', @_storage
 
 		getState: ->
@@ -267,7 +266,7 @@ do ($ = jQuery) ->
 		 # removes all component bindings and destroys the editor.
 		###
 		destroy: ->
-			console.log 'going to destroy the editor and remove all'
+			console.log 'going to destroy the editor and remove all' if @debug
 
 			# destroy components
 			for id, component of @getComponents()
