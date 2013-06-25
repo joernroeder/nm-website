@@ -2493,21 +2493,21 @@ form.create-project button {
   -ms-transition: all .15s ease-in;
   transition: all .15s ease-in;
   min-height: 0;
-  width: 14.375em;
-  max-height: 14.375em;
+  width: 12.5em;
+  max-height: 12.5em;
   line-height: 0;
   text-align: right;
   display: block;
 }
 .editor-project-preview .dropzone.preview-image:before {
   position: relative;
-  top: 115px;
+  top: 100px;
   display: block;
   text-align: center;
   font-family: 'Entypo';
   font-weight: normal;
   content: '\1F304';
-  font-size: 1000%;
+  font-size: 900%;
   color: #f3f3f3;
   opacity: 1;
   -webkit-transition: opacity .25s linear;
@@ -2523,7 +2523,7 @@ form.create-project button {
   opacity: 0;
 }
 .editor-project-preview .dropzone.preview-image:not(.filled) {
-  height: 14.375em;
+  height: 12.5em;
 }
 .editor-project-preview .dropzone.preview-image.dragover {
   margin: -0.625em;
@@ -2531,7 +2531,7 @@ form.create-project button {
   background-color: #ebedb4 !important;
 }
 .editor-project-preview .dropzone.preview-image.uploading {
-  min-height: 14.375em;
+  min-height: 12.5em;
   background-color: #ebedb4 !important;
 }
 .editor-project-preview .dropzone.preview-image .progress {
@@ -2539,7 +2539,7 @@ form.create-project button {
 }
 .editor-project-preview .dropzone.preview-image img {
   max-width: 100%;
-  max-height: 14.375em;
+  max-height: 12.5em;
 }
 .editor-project-preview .dropzone.preview-image * {
   visibility: visible;
@@ -2555,7 +2555,7 @@ form.create-project button {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding-left: 15.625em;
+  padding-left: 13.75em;
 }
 body.dragover .editor-project-preview .dropzone.preview-image {
   min-height: 280px;
