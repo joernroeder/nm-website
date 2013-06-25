@@ -638,7 +638,7 @@ do ($ = jQuery) ->
 
 		getPlaceholder: ->
 			placeholder = @element.data @editor.getAttr('placeholder')
-			return if placeholder then placeholder else 'PLACEHOLDER'
+			return if placeholder then placeholder else @getDataName()
 
 		getValueOrPlaceholder: ->
 			value = @getValue()
@@ -963,16 +963,42 @@ do ($ = jQuery) ->
 
 		init: (element) ->
 			@$input = $ '<input type="text">'
+			$datepicker = $ '<div class="datepicker">'
+			$content = $('<div>')
+				.append(@$input)
+				.append $datepicker
 
 			super element
 
-			@$input.on @getNamespacedEventName('keyup'), (e) =>
-				@updateValue()
+			@$input.Zebra_DatePicker
+				format: 'm Y'
+				always_visible: $datepicker
+				onChange: (view, elements) =>
+					@$input.change()
 
-			@setPopoverContent @.$input
+			@$input.on @getNamespacedEventName('change'), (e) =>
+				@updateValue()
+			
+			@setPopoverContent $content
+
+		close: ->
+			@updateValue()
+
+			super()
+
+		updateValue: (silent) ->
+			super silent
+
+			@element.html @getValueOrPlaceholder()
 
 		getValueFromContent: ->
-			@$input.val()
+			val = @$input.val()
+
+			if val
+				dates = val.split ' '
+				return dates[1] + '-' + dates[0] + '-01'
+			else
+				 return ''
 
 		setValueToContent: (val, isPlaceholder) ->
 			if not isPlaceholder

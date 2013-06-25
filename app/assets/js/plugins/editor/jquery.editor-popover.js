@@ -868,7 +868,7 @@ var __hasProp = {}.hasOwnProperty,
       if (placeholder) {
         return placeholder;
       } else {
-        return 'PLACEHOLDER';
+        return this.getDataName();
       }
     };
 
@@ -1271,18 +1271,46 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     DateEditable.prototype.init = function(element) {
-      var _this = this;
+      var $content, $datepicker,
+        _this = this;
 
       this.$input = $('<input type="text">');
+      $datepicker = $('<div class="datepicker">');
+      $content = $('<div>').append(this.$input).append($datepicker);
       DateEditable.__super__.init.call(this, element);
-      this.$input.on(this.getNamespacedEventName('keyup'), function(e) {
+      this.$input.Zebra_DatePicker({
+        format: 'm Y',
+        always_visible: $datepicker,
+        onChange: function(view, elements) {
+          return _this.$input.change();
+        }
+      });
+      this.$input.on(this.getNamespacedEventName('change'), function(e) {
         return _this.updateValue();
       });
-      return this.setPopoverContent(this.$input);
+      return this.setPopoverContent($content);
+    };
+
+    DateEditable.prototype.close = function() {
+      this.updateValue();
+      return DateEditable.__super__.close.call(this);
+    };
+
+    DateEditable.prototype.updateValue = function(silent) {
+      DateEditable.__super__.updateValue.call(this, silent);
+      return this.element.html(this.getValueOrPlaceholder());
     };
 
     DateEditable.prototype.getValueFromContent = function() {
-      return this.$input.val();
+      var dates, val;
+
+      val = this.$input.val();
+      if (val) {
+        dates = val.split(' ');
+        return dates[1] + '-' + dates[0] + '-01';
+      } else {
+        return '';
+      }
     };
 
     DateEditable.prototype.setValueToContent = function(val, isPlaceholder) {

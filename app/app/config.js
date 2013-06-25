@@ -35,7 +35,7 @@ require.config({
     'plugins/editor/jquery.editor-sidebar': ['plugins/misc/misc'],
     'plugins/editor/jquery.jjdropzone': ['plugins/editor/jquery.jjfileupload'],
     'plugins/editor/jquery.jjmarkdown': ['plugins/editor/jquery.jjdropzone', 'plugins/editor/jquery.tabby', 'plugins/editor/jquery.jjfileupload', 'plugins/editor/marked_jjedit'],
-    'plugins/editor/jquery.editor-popover': ['plugins/editor/jquery.jjmarkdown'],
+    'plugins/editor/jquery.editor-popover': ['plugins/editor/jquery.jjmarkdown', 'plugins/misc/zebra_datepicker.src'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone']

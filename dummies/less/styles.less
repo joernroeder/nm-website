@@ -19,6 +19,7 @@
 @import 'lesshat';			// LESSHat 					http://lesshat.com
 @import 'ggs';				// golden grid system		http://goldengridsystem.com
 @import 'tooltip';
+@import 'datepicker';
 
 
 // ! - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -860,6 +861,15 @@ x:-o-prefocus, .qtip .qtip-tip{
 	&.currentperson-bio {
 		border: 1px solid mix(@bgColor, @editorSidebarBg);
 		border-left: none;
+	}
+
+	&.dateeditable {
+		input {
+			display: none;
+		}
+		.Zebra_DatePicker {
+			position: relative;
+		}
 	}
 }
 
