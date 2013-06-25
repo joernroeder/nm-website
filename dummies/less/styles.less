@@ -1698,7 +1698,9 @@ form.create-project {
 }
 
 .editor-project-preview {
-	@dropzoneWidth: 280 / @em;
+	@dim: 230;
+	@dropzoneWidth: @dim / @em;
+	@dropzoneHeight: @dim / @em;
 	//border: 1px solid red;
 
 	.dropzone.preview-image {
@@ -1720,7 +1722,7 @@ form.create-project {
 		
 		&:before {
 			position: relative;
-			top: 150px;
+			top: @dim / 2 * 1px;
 			display: block;
 			text-align: center;
 			.icon-font;
@@ -1740,7 +1742,7 @@ form.create-project {
 		}
 
 		&:not(.filled) {
-			height: 280px;
+			height: @dropzoneHeight;
 		}
 
 		&.dragover {
@@ -1750,7 +1752,7 @@ form.create-project {
 		}
 
 		&.uploading {
-			min-height: 280px;
+			min-height: @dropzoneHeight;
 			background-color: @hoverColor !important;
 		}
 
@@ -1760,7 +1762,7 @@ form.create-project {
 
 		img {
 			max-width: 100%;
-			max-height: 280px;
+			max-height: @dropzoneHeight;
 		}
 
 		* {
