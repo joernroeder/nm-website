@@ -182,7 +182,8 @@ class Excursion extends DataObject {
 		'edit'	=> array(
 			'Title',
 			'Persons',
-			'PreviewImage'
+			'PreviewImage',
+			'Images'
 		)
 	);
 

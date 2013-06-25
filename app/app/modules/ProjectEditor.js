@@ -90,7 +90,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
             }
           };
           if (data instanceof Backbone.Model === true) {
-            $img = $("[data-filter-id=\"" + (_this.getFilterID()) + "\"]").find("img[data-id=\"" + data.id + "\"]");
+            $img = $("#editor-sidebar").find("li.DocImage img[data-id=\"" + data.id + "\"]");
             return setPreviewImage(data, $img.attr('src'));
           } else {
             app.updateGalleryCache(data);

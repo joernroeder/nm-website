@@ -181,7 +181,8 @@ class Exhibition extends DataObject {
 		'edit'	=> array(
 			'Title',
 			'Persons',
-			'PreviewImage'
+			'PreviewImage',
+			'Images'
 		)
 	);
 

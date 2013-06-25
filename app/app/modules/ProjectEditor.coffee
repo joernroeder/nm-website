@@ -71,9 +71,9 @@ define [
 							@model.set 'PreviewImage', model
 							@model.get('Images').add model
 							@model.save()
-
+					
 					if data instanceof Backbone.Model is true
-						$img = $("[data-filter-id=\"#{@getFilterID()}\"]").find("img[data-id=\"#{data.id}\"]")
+						$img = $("#editor-sidebar").find("li.DocImage img[data-id=\"#{data.id}\"]")
 						
 						setPreviewImage data, $img.attr('src')
 					else
