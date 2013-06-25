@@ -753,7 +753,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 // ! --- EDITOR --------------------------------------------
 
 .editor {
-	.transition(~"width .15s ease-in-out");
+	.transition(~"width .35s ease-in-out");
 
 	.badge {
 		padding: (@line / 2 / @em) (@badgePaddingHorizontal / 2 / @em);
@@ -869,6 +869,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 body.editor-sidebar-open {
 	#layout.editor {
 		.columnsWidth(8, 6);
+		.transition(~"width .25s ease-in-out");
 	}
 }
 
@@ -1710,6 +1711,7 @@ form.create-project {
 		width: 280px;// / @em;
 		max-height: 280px; // remove / @em;
 		line-height: 0;
+		text-align: right;
 		
 		&:before {
 			position: relative;
@@ -1724,8 +1726,12 @@ form.create-project {
 			.transition(~"opacity .25s linear");
 		}
 
-		&.filled:before {
-			opacity: 0;
+		&.filled {
+			background-color: @bgColor;
+
+			&:before {
+				opacity: 0;
+			}
 		}
 
 		&.dragover {
@@ -1745,6 +1751,7 @@ form.create-project {
 
 		img {
 			max-width: 100%;
+			max-height: 280px;
 		}
 
 		* {
@@ -1759,6 +1766,7 @@ body.dragover .editor-project-preview {
 
 	.dropzone.preview-image {
 		min-height: 280px;
+		background: darken(@bgColor, 5%);
 
 		&:before {
 			opacity: 1;
