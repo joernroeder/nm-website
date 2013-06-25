@@ -349,7 +349,7 @@ define [
 							personImg = app.CurrentMemberPerson.get 'Image'
 							if id isnt personImg and (not personImg or id isnt personImg.id)
 								# new image
-								app.CurrentMemberPerson.save 'Image', i
+								app.CurrentMemberPerson.rejectAndSave 'Image', i
 
 			onContentScroll: ->
 				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
@@ -361,7 +361,7 @@ define [
 					'MarkdownEditable'
 					'SplitMarkdownEditable'
 				]
-
+				
 				#bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
 
 				#console.log 'update options'
@@ -374,10 +374,14 @@ define [
 				#		'adjust.method': 'flip shift'
 				
 				@metaEditor.on 'stateUpdate', (e) ->
+					_changed = false
 					for key, val of e.CurrentPerson
 						if key is 'Bio' and val then val = val.raw
+						val = "" if val is null
 						if app.CurrentMemberPerson.get(key) isnt val
-							app.CurrentMemberPerson.save key, val
+							_changed = true
+							app.CurrentMemberPerson.set key, val
+					app.CurrentMemberPerson.rejectAndSave() if _changed
 
 			afterRender: ->
 				@._afterRender()

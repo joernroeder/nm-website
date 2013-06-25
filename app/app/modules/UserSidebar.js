@@ -391,7 +391,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
             _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
             personImg = app.CurrentMemberPerson.get('Image');
             if (id !== personImg && (!personImg || id !== personImg.id)) {
-              return app.CurrentMemberPerson.save('Image', i);
+              return app.CurrentMemberPerson.rejectAndSave('Image', i);
             }
           }
         }
@@ -406,22 +406,26 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     initMetaEditor: function() {
       this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
       return this.metaEditor.on('stateUpdate', function(e) {
-        var key, val, _ref, _results;
+        var key, val, _changed, _ref;
 
+        _changed = false;
         _ref = e.CurrentPerson;
-        _results = [];
         for (key in _ref) {
           val = _ref[key];
           if (key === 'Bio' && val) {
             val = val.raw;
           }
+          if (val === null) {
+            val = "";
+          }
           if (app.CurrentMemberPerson.get(key) !== val) {
-            _results.push(app.CurrentMemberPerson.save(key, val));
-          } else {
-            _results.push(void 0);
+            _changed = true;
+            app.CurrentMemberPerson.set(key, val);
           }
         }
-        return _results;
+        if (_changed) {
+          return app.CurrentMemberPerson.rejectAndSave();
+        }
       });
     },
     afterRender: function() {
