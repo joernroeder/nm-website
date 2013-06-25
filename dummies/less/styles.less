@@ -1491,26 +1491,32 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 }
 
-body.dragover #uploadzone {
-	display: block !important;
+body.dragover {
+	cursor: move !important;
 
-	&.uploading,
-	&.dragover {
+	#uploadzone {
 		display: block !important;
-	}
-}
 
-body.drag-inline.dragover #uploadzone {
-	display: none !important;
-
-	&.uploading,
-	&.dragover {
-		display: none !important;
-		.transition(none) !important;
+		&.uploading,
+		&.dragover {
+			display: block !important;
+		}
 	}
 
-	.progress {
-		.transition(none) !important;
+	&.drag-inline {
+		#uploadzone {
+			display: none !important;
+
+			&.uploading,
+			&.dragover {
+				display: none !important;
+				.transition(none) !important;
+			}
+
+			.progress {
+				.transition(none) !important;
+			}
+		}
 	}
 }
 

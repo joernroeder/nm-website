@@ -95,15 +95,15 @@ var __hasProp = {}.hasOwnProperty,
     });
   };
   JJEditor = (function() {
-    var addComponent, addContentType, createComponent, destroyComponent, extractScope, getComponentByContentType, trimObject, _components, _contentTypes, _events, _storage;
+    var addComponent, addContentType, createComponent, destroyComponent, extractScope, getComponentByContentType, trimObject;
 
-    _contentTypes = {};
+    JJEditor.prototype._contentTypes = {};
 
-    _components = {};
+    JJEditor.prototype._components = {};
 
-    _storage = {};
+    JJEditor.prototype._storage = {};
 
-    _events = {};
+    JJEditor.prototype._events = {};
 
     JJEditor.prototype.debug = true;
 
@@ -129,11 +129,12 @@ var __hasProp = {}.hasOwnProperty,
       if (this.debug) {
         console.group('EDITOR: add Components');
       }
+      console.log(this._contentTypes);
       $.map(components, function(component) {
         if (_this.debug) {
           console.log('- ' + component);
         }
-        return addComponent(component);
+        return addComponent.call(_this, component);
       });
       if (this.debug) {
         console.groupEnd();
@@ -163,17 +164,17 @@ var __hasProp = {}.hasOwnProperty,
 
 
     JJEditor.prototype.on = function(name, callback) {
-      if (!_events[name]) {
-        _events[name] = $.Callbacks('unique');
+      if (!this._events[name]) {
+        this._events[name] = $.Callbacks('unique');
       }
-      return _events[name].add(callback);
+      return this._events[name].add(callback);
     };
 
     JJEditor.prototype.off = function(name, callback) {
-      if (!_events[name]) {
+      if (!this._events[name]) {
         return;
       }
-      return _events[name].remove(callback);
+      return this._events[name].remove(callback);
     };
 
     JJEditor.prototype.trigger = function(name, eventData) {
@@ -182,8 +183,8 @@ var __hasProp = {}.hasOwnProperty,
         console.log(eventData);
         console.groupEnd();
       }
-      if (_events[name]) {
-        return _events[name].fire(eventData);
+      if (this._events[name]) {
+        return this._events[name].fire(eventData);
       }
     };
 
@@ -198,22 +199,22 @@ var __hasProp = {}.hasOwnProperty,
       }
       obj = {};
       obj[scope] = value;
-      _storage = $.extend(true, _storage, extractScope.call(this, obj));
+      this._storage = $.extend(true, this._storage, extractScope.call(this, obj));
       if (this.debug) {
-        console.log(_storage);
+        console.log(this._storage);
       }
       if (this.debug) {
         console.groupEnd();
       }
       if (!silent) {
-        console.log(_storage);
+        console.log(this._storage);
         console.log(this.getState());
-        return this.trigger('stateUpdate', _storage);
+        return this.trigger('stateUpdate', this._storage);
       }
     };
 
     JJEditor.prototype.getState = function() {
-      return _storage;
+      return this._storage;
     };
 
     /*
@@ -236,7 +237,7 @@ var __hasProp = {}.hasOwnProperty,
         }
         return component;
       }
-      if (-1 !== $.inArray(contentType, Object.keys(_contentTypes))) {
+      if (-1 !== $.inArray(contentType, Object.keys(this._contentTypes))) {
         component = getComponentByContentType.call(this, contentType);
         $el.data(this.getAttr('componentId'), component.id);
         component.init($el);
@@ -375,20 +376,27 @@ var __hasProp = {}.hasOwnProperty,
 
 
     JJEditor.prototype.destroy = function() {
-      var callbacks, component, id, name, _ref;
+      var callbacks, component, id, name, _ref, _ref1;
 
       console.log('going to destroy the editor and remove all');
       _ref = this.getComponents();
       for (id in _ref) {
         component = _ref[id];
+        console.log(component);
+        console.log(this);
         destroyComponent.call(this, component);
       }
       this.off();
-      for (name in _events) {
-        callbacks = _events[name];
+      _ref1 = this._events;
+      for (name in _ref1) {
+        callbacks = _ref1[name];
         callbacks.disable();
         callbacks.empty();
       }
+      this._contentTypes = {};
+      console.log('@_contentTypes');
+      console.log(this._contentTypes);
+      debugger;
       return false;
     };
 
@@ -408,8 +416,10 @@ var __hasProp = {}.hasOwnProperty,
         throw new ReferenceError("The Component '" + name + "' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?");
       }
       component = new window.editorComponents[name](this);
+      console.log(this._contentTypes);
       return $.map(component.contentTypes, function(type) {
-        return addContentType(type, name);
+        console.log(type);
+        return addContentType.call(_this, type, name);
       });
     };
 
@@ -422,7 +432,7 @@ var __hasProp = {}.hasOwnProperty,
       var componentName, lowerType;
 
       lowerType = type.toLowerCase();
-      componentName = _contentTypes[lowerType];
+      componentName = this._contentTypes[lowerType];
       if (componentName) {
         return createComponent.call(this, componentName);
       } else {
@@ -440,7 +450,7 @@ var __hasProp = {}.hasOwnProperty,
 
       if (window.editorComponents[name]) {
         component = new window.editorComponents[name](this);
-        _components[component.id] = component;
+        this._components[component.id] = component;
         return component;
       } else {
         return null;
@@ -454,27 +464,33 @@ var __hasProp = {}.hasOwnProperty,
 
 
     destroyComponent = function(component) {
-      var id;
+      var id,
+        _this = this;
 
       id = component.getId();
       if (this.debug) {
         console.log('EDITOR: destroy component %s', component.getDataFullName());
       }
       component.destroy();
-      _components[id] = null;
-      return delete _components[id];
+      this._components[id] = null;
+      $.map(component.contentTypes, function(type) {
+        if (_this._contentTypes[type]) {
+          return delete _this._contentTypes[type];
+        }
+      });
+      return delete this._components[id];
     };
 
     JJEditor.prototype.getComponent = function(id) {
-      if (_components[id]) {
-        return _components[id];
+      if (this._components[id]) {
+        return this._components[id];
       } else {
         return null;
       }
     };
 
     JJEditor.prototype.getComponents = function() {
-      return _components;
+      return this._components;
     };
 
     /*
@@ -558,10 +574,10 @@ var __hasProp = {}.hasOwnProperty,
       var lowerType;
 
       lowerType = type.toLowerCase();
-      if (_contentTypes[lowerType]) {
-        throw new Error('Another Component (' + _contentTypes[lowerType] + ') is already handling the content-type "' + type + '"');
+      if (this._contentTypes[lowerType]) {
+        return console.error('Another Component (' + this._contentTypes[lowerType] + ') is already handling the content-type "' + type + '"');
       } else {
-        return _contentTypes[lowerType] = componentName;
+        return this._contentTypes[lowerType] = componentName;
       }
     };
 

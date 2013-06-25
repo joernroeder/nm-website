@@ -2188,6 +2188,9 @@ x:-o-prefocus,
   -o-transition-timing-function: cubic-bezier(0.675, -0.17, 0.41, 1.65);
   transition-timing-function: cubic-bezier(0.675, -0.17, 0.41, 1.65);
 }
+body.dragover {
+  cursor: move !important;
+}
 body.dragover #uploadzone {
   display: block !important;
 }
@@ -2195,11 +2198,11 @@ body.dragover #uploadzone.uploading,
 body.dragover #uploadzone.dragover {
   display: block !important;
 }
-body.drag-inline.dragover #uploadzone {
+body.dragover.drag-inline #uploadzone {
   display: none !important;
 }
-body.drag-inline.dragover #uploadzone.uploading,
-body.drag-inline.dragover #uploadzone.dragover {
+body.dragover.drag-inline #uploadzone.uploading,
+body.dragover.drag-inline #uploadzone.dragover {
   display: none !important;
   -webkit-transition: none;
   -moz-transition: none;
@@ -2207,7 +2210,7 @@ body.drag-inline.dragover #uploadzone.dragover {
   -ms-transition: none;
   transition: none;
 }
-body.drag-inline.dragover #uploadzone .progress {
+body.dragover.drag-inline #uploadzone .progress {
   -webkit-transition: none;
   -moz-transition: none;
   -o-transition: none;

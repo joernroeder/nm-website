@@ -356,7 +356,7 @@ define [
 				bio.api.reposition()
 
 			initMetaEditor: ->
-				@.metaEditor = editor = new JJEditor $('.meta-info'), [
+				@.metaEditor = new JJEditor $('.meta-info'), [
 					'InlineEditable'
 					'MarkdownEditable'
 					'SplitMarkdownEditable'
@@ -373,7 +373,7 @@ define [
 				#		'adjust.resize': true
 				#		'adjust.method': 'flip shift'
 				
-				editor.on 'stateUpdate', (e) ->
+				@metaEditor.on 'stateUpdate', (e) ->
 					for key, val of e.CurrentPerson
 						if key is 'Bio' and val then val = val.raw
 						if app.CurrentMemberPerson.get(key) isnt val

@@ -67,10 +67,10 @@ do ($ = jQuery) ->
 	# ! --- JJEditor --------------------------------------
 
 	class JJEditor
-		_contentTypes = {}
-		_components = {}
-		_storage = {}
-		_events = {}
+		_contentTypes	: {}
+		_components		: {}
+		_storage		: {}
+		_events			: {}
 
 		debug: true
 
@@ -92,9 +92,10 @@ do ($ = jQuery) ->
 			@scope = if scope instanceof jQuery then scope else $ scope
 
 			console.group 'EDITOR: add Components' if @debug
+			console.log @_contentTypes
 			$.map components, (component) =>
 				console.log '- ' + component if @debug
-				addComponent component
+				addComponent.call @, component
 			
 			console.groupEnd() if @debug
 
@@ -118,14 +119,14 @@ do ($ = jQuery) ->
 		 # @see http://stackoverflow.com/questions/9099555/jquery-bind-events-on-plain-javascript-objects
 		###
 		on: (name, callback) ->
-			if not _events[name]
-				_events[name] = $.Callbacks 'unique'
+			if not @_events[name]
+				@_events[name] = $.Callbacks 'unique'
 
-			_events[name].add callback
+			@_events[name].add callback
 
 		off: (name, callback) ->
-			if not _events[name] then return
-			_events[name].remove callback
+			if not @_events[name] then return
+			@_events[name].remove callback
 
 		trigger: (name, eventData) ->
 			if name.indexOf ':' isnt -1 and @debug
@@ -133,7 +134,7 @@ do ($ = jQuery) ->
 				console.log eventData
 				console.groupEnd()
 
-			if _events[name] then _events[name].fire eventData
+			if @_events[name] then @_events[name].fire eventData
 
 		updateState: (scope, value, silent) ->
 			console.group 'EDITOR: update state' if @debug
@@ -141,19 +142,19 @@ do ($ = jQuery) ->
 
 			obj = {}
 			obj[scope] = value
-			_storage = $.extend true, _storage, extractScope.call(@, obj)
-			#_storage = trimObject.call @, _storage
+			@_storage = $.extend true, @_storage, extractScope.call(@, obj)
+			#@_storage = trimObject.call @, @_storage
 
-			console.log _storage if @debug
+			console.log @_storage if @debug
 			console.groupEnd() if @debug
 
 			if not silent
-				console.log _storage
+				console.log @_storage
 				console.log @getState()
-				@trigger 'stateUpdate', _storage
+				@trigger 'stateUpdate', @_storage
 
 		getState: ->
-			_storage
+			@_storage
 
 
 		# --- Dynamic Elements ----------------------------
@@ -173,7 +174,7 @@ do ($ = jQuery) ->
 				console.log 'already handled by the editor!' if @debug
 				return component
 
-			if -1 isnt $.inArray(contentType, Object.keys(_contentTypes))
+			if -1 isnt $.inArray(contentType, Object.keys(@_contentTypes))
 				component = getComponentByContentType.call @, contentType
 
 				$el.data @getAttr('componentId'), component.id
@@ -267,15 +268,21 @@ do ($ = jQuery) ->
 
 			# destroy components
 			for id, component of @getComponents()
+				console.log component
+				console.log @
 				destroyComponent.call @, component
 
 			# remove bindings
 			@.off()
 
-			for name, callbacks of _events
+			for name, callbacks of @_events
 				callbacks.disable()
 				callbacks.empty()
 
+			@_contentTypes = {}
+			console.log '@_contentTypes'
+			console.log @_contentTypes
+			debugger
 			false
 
 
@@ -292,15 +299,17 @@ do ($ = jQuery) ->
 				throw new ReferenceError "The Component '#{name}' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?"
 
 			component = new window.editorComponents[name](@)
+			console.log @_contentTypes
 			$.map component.contentTypes, (type) =>
-				addContentType type, name
+				console.log type
+				addContentType.call @, type, name
 
 		###
 		 # @private
 		###
 		getComponentByContentType = (type) ->
 			lowerType = type.toLowerCase()
-			componentName = _contentTypes[lowerType]
+			componentName = @_contentTypes[lowerType]
 			
 			return if componentName then createComponent.call @, componentName else null
 
@@ -310,7 +319,7 @@ do ($ = jQuery) ->
 		createComponent = (name) ->
 			if window.editorComponents[name]
 				component = new window.editorComponents[name](@)
-				_components[component.id] = component
+				@_components[component.id] = component
 				return component
 
 			else
@@ -321,17 +330,22 @@ do ($ = jQuery) ->
 		 #
 		###
 		destroyComponent = (component) ->
+
 			id = component.getId()
 			console.log 'EDITOR: destroy component %s', component.getDataFullName() if @debug
 			component.destroy()
-			_components[id] = null
-			delete _components[id]
+			@_components[id] = null
+			$.map component.contentTypes, (type) =>
+				if @_contentTypes[type]
+					delete @_contentTypes[type]
+			
+			delete @_components[id]
 
 		getComponent: (id) ->
-			if _components[id] then _components[id] else null
+			if @_components[id] then @_components[id] else null
 
 		getComponents: ->
-			_components
+			@_components
 
 		###
 		 # returns an array with all components from the given className
@@ -393,10 +407,10 @@ do ($ = jQuery) ->
 		###
 		addContentType = (type, componentName) ->
 			lowerType = type.toLowerCase()
-			if _contentTypes[lowerType]
-				throw new Error 'Another Component (' + _contentTypes[lowerType] + ') is already handling the content-type "' + type + '"'
+			if @_contentTypes[lowerType]
+				console.error 'Another Component (' + @_contentTypes[lowerType] + ') is already handling the content-type "' + type + '"'
 			else
-				_contentTypes[lowerType] = componentName
+				@_contentTypes[lowerType] = componentName
 
 		###
 		 #
