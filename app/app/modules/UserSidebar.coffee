@@ -243,6 +243,7 @@ define [
 			_onOpened: (switched) ->
 				delay = if switched then 0 else 300
 				@.isOpen = true
+				$('body').addClass 'editor-sidebar-open'
 				setTimeout =>
 					@._setColumnCount()
 				, delay
@@ -252,6 +253,7 @@ define [
 
 			_onClose: ->
 				@.isOpen = false
+				$('body').removeClass 'editor-sidebar-open'
 				prefColumnsCount = @._getColumnsCount()
 				setTimeout =>
 					@.$sidebarContent.removeClass @.columnsPrefix + prefColumnsCount  if @.$sidebarContent
