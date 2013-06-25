@@ -8,10 +8,10 @@
 
 </style>
 
-<div class="preview-image">
+<div class="preview-image {{#if PreviewImage}}filled{{/if}}">
 	{{#if PreviewImage}}
 		{{#with PreviewImage.Urls._320}}
-			<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>
+			<img src="{{Url}}" />
 		{{/with}}
 	{{/if}}
 </div>

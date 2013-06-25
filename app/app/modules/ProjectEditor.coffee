@@ -31,18 +31,21 @@ define [
 		className: 'editor-project-container'
 		template: 'security/editor-project-container'
 
+		ACTIVE: 'active'
+
 		beforeRender: ->
 			@setView '.editor-project-main', app.ProjectEditor.mainView
 			@setView '.editor-project-preview', app.ProjectEditor.previewView
 
 		toggleView: ->
-			ACTIVE = 'active'
-			$('.editor-project-main, .editor-project-preview').toggleClass(ACTIVE)
+			$('.editor-project-main, .editor-project-preview').toggleClass(@ACTIVE)
 
 
 	ProjectEditor.Views.Preview = Backbone.View.extend
 		tagName: 'article'
 		template: 'security/editor-project-preview'
+
+		FILLED: 'filled'
 
 		cleanup: ->
 			@uploadZone.cleanup()
@@ -51,6 +54,7 @@ define [
 			"#{@model.get('ClassName')}-#{@model.id}"
 
 		initDropzone: ->
+
 			app.ProjectEditor.PreviewImageZone = @uploadZone = new JJSingleImageUploadZone '.preview-image',
 				url: app.Config.DocImageUrl
 				additionalData:
@@ -62,7 +66,7 @@ define [
 
 					setPreviewImage = (model, thumbUrl) =>
 						img = model.get('Urls')['_320']
-						@uploadZone.$dropzone.html "<img src=\"#{ img.Url }\" width=\"#{ img.Width }\" height=\"#{ img.Height }\">"
+						@uploadZone.$dropzone.addClass(@FILLED).html "<img src=\"#{ img.Url }\" />"
 
 						# insert into gallery if open and necessary
 						if sideSubview = Auth.Cache.userWidget.subView
@@ -88,7 +92,7 @@ define [
 			@
 
 		removePreviewImage: ->
-			@uploadZone.$dropzone.empty()
+			@uploadZone.$dropzone.removeClass(@FILLED).empty()
 
 		afterRender: ->
 			@initDropzone()

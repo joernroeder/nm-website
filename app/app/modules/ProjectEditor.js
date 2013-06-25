@@ -39,20 +39,19 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
     tagName: 'div',
     className: 'editor-project-container',
     template: 'security/editor-project-container',
+    ACTIVE: 'active',
     beforeRender: function() {
       this.setView('.editor-project-main', app.ProjectEditor.mainView);
       return this.setView('.editor-project-preview', app.ProjectEditor.previewView);
     },
     toggleView: function() {
-      var ACTIVE;
-
-      ACTIVE = 'active';
-      return $('.editor-project-main, .editor-project-preview').toggleClass(ACTIVE);
+      return $('.editor-project-main, .editor-project-preview').toggleClass(this.ACTIVE);
     }
   });
   ProjectEditor.Views.Preview = Backbone.View.extend({
     tagName: 'article',
     template: 'security/editor-project-preview',
+    FILLED: 'filled',
     cleanup: function() {
       return this.uploadZone.cleanup();
     },
@@ -78,7 +77,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
             var img, sideSubview;
 
             img = model.get('Urls')['_320'];
-            _this.uploadZone.$dropzone.html("<img src=\"" + img.Url + "\" width=\"" + img.Width + "\" height=\"" + img.Height + "\">");
+            _this.uploadZone.$dropzone.addClass(_this.FILLED).html("<img src=\"" + img.Url + "\" />");
             if (sideSubview = Auth.Cache.userWidget.subView) {
               if (sideSubview.isGallery && sideSubview.isOpen) {
                 if (!_this.model.get('Images').get(model.id)) {
@@ -109,7 +108,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth'], function(app, DataRetri
       return this;
     },
     removePreviewImage: function() {
-      return this.uploadZone.$dropzone.empty();
+      return this.uploadZone.$dropzone.removeClass(this.FILLED).empty();
     },
     afterRender: function() {
       return this.initDropzone();
