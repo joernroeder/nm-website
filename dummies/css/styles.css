@@ -1977,6 +1977,43 @@ x:-o-prefocus,
   -o-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   -ms-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   transition: color .2s ease-in-out, background-color .2s ease-in-out;
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+}
+.editor-sidebar input[type="text"]::-webkit-input-placeholder,
+.editor-sidebar input[type="email"]::-webkit-input-placeholder,
+.editor-sidebar input[type="tel"]::-webkit-input-placeholder,
+.editor-sidebar input[type="password"]::-webkit-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]::-webkit-input-placeholder {
+  color: #5e5e5e;
+}
+.editor-sidebar input[type="text"]::-moz-placeholder,
+.editor-sidebar input[type="email"]::-moz-placeholder,
+.editor-sidebar input[type="tel"]::-moz-placeholder,
+.editor-sidebar input[type="password"]::-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]::-moz-placeholder {
+  color: #5e5e5e;
+}
+.editor-sidebar input[type="text"]:-ms-input-placeholder,
+.editor-sidebar input[type="email"]:-ms-input-placeholder,
+.editor-sidebar input[type="tel"]:-ms-input-placeholder,
+.editor-sidebar input[type="password"]:-ms-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:-ms-input-placeholder {
+  color: #5e5e5e;
+}
+.editor-sidebar input[type="text"]:-moz-placeholder,
+.editor-sidebar input[type="email"]:-moz-placeholder,
+.editor-sidebar input[type="tel"]:-moz-placeholder,
+.editor-sidebar input[type="password"]:-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:-moz-placeholder {
+  color: #5e5e5e;
 }
 .editor-sidebar input[type="text"]:hover,
 .editor-sidebar input[type="email"]:hover,
@@ -1984,6 +2021,43 @@ x:-o-prefocus,
 .editor-sidebar input[type="password"]:hover,
 .editor-sidebar *[data-editor-type][editor-handled-by]:hover {
   background: #3c3c29;
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+}
+.editor-sidebar input[type="text"]:hover::-webkit-input-placeholder,
+.editor-sidebar input[type="email"]:hover::-webkit-input-placeholder,
+.editor-sidebar input[type="tel"]:hover::-webkit-input-placeholder,
+.editor-sidebar input[type="password"]:hover::-webkit-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:hover::-webkit-input-placeholder {
+  color: #919191;
+}
+.editor-sidebar input[type="text"]:hover::-moz-placeholder,
+.editor-sidebar input[type="email"]:hover::-moz-placeholder,
+.editor-sidebar input[type="tel"]:hover::-moz-placeholder,
+.editor-sidebar input[type="password"]:hover::-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:hover::-moz-placeholder {
+  color: #919191;
+}
+.editor-sidebar input[type="text"]:hover:-ms-input-placeholder,
+.editor-sidebar input[type="email"]:hover:-ms-input-placeholder,
+.editor-sidebar input[type="tel"]:hover:-ms-input-placeholder,
+.editor-sidebar input[type="password"]:hover:-ms-input-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:hover:-ms-input-placeholder {
+  color: #919191;
+}
+.editor-sidebar input[type="text"]:hover:-moz-placeholder,
+.editor-sidebar input[type="email"]:hover:-moz-placeholder,
+.editor-sidebar input[type="tel"]:hover:-moz-placeholder,
+.editor-sidebar input[type="password"]:hover:-moz-placeholder,
+.editor-sidebar *[data-editor-type][editor-handled-by]:hover:-moz-placeholder {
+  color: #919191;
 }
 .editor-sidebar input[type="text"]:focus,
 .editor-sidebar input[type="email"]:focus,
@@ -2197,6 +2271,9 @@ body.dragover #uploadzone {
 body.dragover #uploadzone.uploading,
 body.dragover #uploadzone.dragover {
   display: block !important;
+}
+body.dragover.drag-inline {
+  cursor: move !important;
 }
 body.dragover.drag-inline #uploadzone {
   display: none !important;

@@ -1339,9 +1339,11 @@ x:-o-prefocus, .qtip .qtip-tip{
 		color: @sidebarColor;
 
 		.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
+		.placeholder(darken(@gray, 20%));
 
 		&:hover {
 			background: mix(lighten(@black, 5%), darken(@nmColor, 30%), 75%);
+			.placeholder(@gray);
 		}
 
 		&:focus,
@@ -1504,6 +1506,8 @@ body.dragover {
 	}
 
 	&.drag-inline {
+		cursor: move !important;
+
 		#uploadzone {
 			display: none !important;
 
