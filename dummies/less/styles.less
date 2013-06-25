@@ -792,6 +792,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.gravity-item();
 		opacity: 1;
 		.clearfix;
+		width: 100%;
 
 		&> a,
 		section.meta {
@@ -810,11 +811,12 @@ x:-o-prefocus, .qtip .qtip-tip{
 *[data-editor-type][editor-handled-by] {
 	cursor: pointer;
 	.transition(~"background-color .2s ease-in-out");
-	background: lighten(@nmColor, 25%);
+	background: @editorEditableBg;
+	outline: none;
 
 	&.active,
 	&:hover {
-		background: @nmColor;
+		background: @editorEditableHover;
 		color: @black;
 	}
 }
@@ -1699,8 +1701,8 @@ form.create-project {
 
 	.dropzone.preview-image {
 		@color: lighten(@bgColor, 5%);
-		@hoverColor: mix(@bg, @nmColor, 70%);
-		@bg: darken(@bgColor, 5%);
+		@hoverColor: @editorEditableHover;
+		@bg: @editorDropzoneBg;
 		@borderWidth: 10 / @em;
 
 		position: absolute;
@@ -1763,7 +1765,9 @@ form.create-project {
 	}
 
 	.meta {
-		margin-left: @dropzoneWidth + (20 / @em);
+		width: 100%;
+		.box-sizing(border-box);
+		padding-left: @dropzoneWidth + (20 / @em);
 	}
 }
 
