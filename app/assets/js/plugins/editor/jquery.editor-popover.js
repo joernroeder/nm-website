@@ -651,20 +651,18 @@ var __hasProp = {}.hasOwnProperty,
   JJEditable = (function() {
     var getEventName;
 
-    JJEditable.prototype._prevValue = '';
-
-    JJEditable.prototype._value = '';
-
-    JJEditable.prototype._options = {};
-
-    JJEditable.prototype._dataName = '';
-
-    JJEditable.prototype._dataFullName = '';
-
-    JJEditable.prototype.contentTypes = [];
+    JJEditable.prototype.members = function() {
+      this._prevValue = '';
+      this._value = '';
+      this._options = {};
+      this._dataName = '';
+      this._dataFullName = '';
+      return this.contentTypes = [];
+    };
 
     function JJEditable(editor) {
       this.editor = editor;
+      this.members();
       this.name = this.constructor.name.toLowerCase();
       this.id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r, v;
@@ -679,11 +677,19 @@ var __hasProp = {}.hasOwnProperty,
     }
 
     JJEditable.prototype.init = function(element) {
+      var val;
+
       this.element = element;
       this.setDataName(element.data(this.editor.getAttr('name')));
       this.updateOptions(element.data(this.editor.getAttr('options')), true);
       element.attr(this.editor.getAttr('handledBy'), this.id);
-      return this.updateValue(true);
+      this.updateValue(true);
+      val = this.getValue();
+      if (val && this.isValidValue(val)) {
+        return this.setValueToContent(val);
+      } else {
+        return this.setValueToContent(this.getPlaceholder(), true);
+      }
     };
 
     /*
@@ -845,12 +851,20 @@ var __hasProp = {}.hasOwnProperty,
       return null;
     };
 
+    JJEditable.prototype.setValueToContent = function(val, isPlaceholder) {};
+
+    JJEditable.prototype.isValidValue = function(val) {
+      if (val) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     JJEditable.prototype.getPlaceholder = function() {
       var placeholder;
 
-      console.log(this.editor.getAttr('placeholder'));
       placeholder = this.element.data(this.editor.getAttr('placeholder'));
-      console.log(placeholder);
       if (placeholder) {
         return placeholder;
       } else {
@@ -983,11 +997,12 @@ var __hasProp = {}.hasOwnProperty,
   JJPopoverEditable = (function(_super) {
     __extends(JJPopoverEditable, _super);
 
-    JJPopoverEditable.prototype._popoverContent = '';
-
-    JJPopoverEditable.prototype.popoverClasses = [];
-
-    JJPopoverEditable.prototype.closeOnOuterClick = true;
+    JJPopoverEditable.prototype.members = function() {
+      JJPopoverEditable.__super__.members.call(this);
+      this._popoverContent = '';
+      this.popoverClasses = [];
+      return this.closeOnOuterClick = true;
+    };
 
     function JJPopoverEditable(editor) {
       this.editor = editor;
@@ -1010,9 +1025,6 @@ var __hasProp = {}.hasOwnProperty,
         }
       };
       JJPopoverEditable.__super__.init.call(this, element);
-      if (!element.html().length) {
-        element.html(this.getPlaceholder());
-      }
       element.qtip({
         events: {
           render: function(event, api) {},
@@ -1064,7 +1076,19 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJPopoverEditable.prototype.getValueFromContent = function() {
-      return this.element.html();
+      var placeholder, value;
+
+      placeholder = this.getPlaceholder();
+      value = this.element.html();
+      if (placeholder === value) {
+        return "";
+      } else {
+        return value;
+      }
+    };
+
+    JJPopoverEditable.prototype.setValueToContent = function(val, isPlaceholder) {
+      return this.element.html(val);
     };
 
     JJPopoverEditable.prototype.onOptionsUpdate = function() {
@@ -1156,7 +1180,10 @@ var __hasProp = {}.hasOwnProperty,
       return _ref;
     }
 
-    InlineEditable.prototype.contentTypes = ['inline'];
+    InlineEditable.prototype.members = function() {
+      InlineEditable.__super__.members.call(this);
+      return this.contentTypes = ['inline'];
+    };
 
     InlineEditable.prototype.init = function(element) {
       var _this = this;
@@ -1171,6 +1198,10 @@ var __hasProp = {}.hasOwnProperty,
 
     InlineEditable.prototype.getValueFromContent = function() {
       return this.element.text();
+    };
+
+    InlineEditable.prototype.setValueToContent = function(val, isPlaceholder) {
+      return this.element.html(val);
     };
 
     InlineEditable.prototype.destroy = function() {
@@ -1194,14 +1225,15 @@ var __hasProp = {}.hasOwnProperty,
       return _ref1;
     }
 
-    DateEditable.prototype.contentTypes = ['date'];
-
-    DateEditable.prototype.position = {
-      at: 'top left',
-      my: 'bottom left'
+    DateEditable.prototype.members = function() {
+      DateEditable.__super__.members.call(this);
+      this.contentTypes = ['date'];
+      this.position = {
+        at: 'top left',
+        my: 'bottom left'
+      };
+      return this.format = 'Y';
     };
-
-    DateEditable.prototype.format = 'Y';
 
     DateEditable.prototype.init = function(element) {
       var _this = this;
@@ -1216,6 +1248,12 @@ var __hasProp = {}.hasOwnProperty,
 
     DateEditable.prototype.getValueFromContent = function() {
       return this.$input.val();
+    };
+
+    DateEditable.prototype.setValueToContent = function(val, isPlaceholder) {
+      if (!isPlaceholder) {
+        return this.input.val(val);
+      }
     };
 
     DateEditable.prototype.destroy = function() {
@@ -1238,18 +1276,17 @@ var __hasProp = {}.hasOwnProperty,
       return _ref2;
     }
 
-    MarkdownEditable.prototype.contentTypes = ['markdown'];
-
-    MarkdownEditable.prototype.markdown = null;
-
-    MarkdownEditable.prototype.markdownChangeTimeout = null;
-
-    MarkdownEditable.prototype.previewClass = 'preview';
-
-    MarkdownEditable.prototype.popoverClasses = ['markdown'];
+    MarkdownEditable.prototype.members = function() {
+      MarkdownEditable.__super__.members.call(this);
+      this.contentTypes = ['markdown'];
+      this.markdown = null;
+      this.markdownChangeTimeout = null;
+      this.previewClass = 'preview';
+      return this.popoverClasses = ['markdown'];
+    };
 
     MarkdownEditable.prototype.init = function(element) {
-      var $preview, $text, initialTriggerDone, options,
+      var $preview, $text, initialTriggerDone, options, value,
         _this = this;
 
       MarkdownEditable.__super__.init.call(this, element);
@@ -1259,13 +1296,15 @@ var __hasProp = {}.hasOwnProperty,
       $text = $('<textarea>', {
         'class': this.previewClass
       });
-      $text.val(element.text());
+      value = this.getValueFromContent();
+      $text.val(value.raw);
       $preview = $('<div>', {
         'class': this.previewClass
       });
       this.setPopoverContent($text);
       initialTriggerDone = false;
       options = {
+        placeholder: this.getPlaceholder(),
         preview: element,
         contentGetter: 'val',
         onChange: function(val) {
@@ -1289,10 +1328,28 @@ var __hasProp = {}.hasOwnProperty,
       return this.markdown = new JJMarkdownEditor($text, options);
     };
 
+    MarkdownEditable.prototype.isValidValue = function(val) {
+      if (val && val.raw) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     MarkdownEditable.prototype.getValueFromContent = function() {
-      return {
-        raw: this.element.text()
-      };
+      var placeholder, value;
+
+      placeholder = this.getPlaceholder();
+      value = this.element.text();
+      if (placeholder !== value) {
+        return {
+          raw: value
+        };
+      } else {
+        return {
+          raw: ''
+        };
+      }
     };
 
     MarkdownEditable.prototype.destroy = function() {
@@ -1313,9 +1370,11 @@ var __hasProp = {}.hasOwnProperty,
       return _ref3;
     }
 
-    SplitMarkdownEditable.prototype.contentTypes = ['markdown-split'];
-
-    SplitMarkdownEditable.prototype.previewClass = 'preview split';
+    SplitMarkdownEditable.prototype.members = function() {
+      SplitMarkdownEditable.__super__.members.call(this);
+      this.contentTypes = ['markdown-split'];
+      return this.previewClass = 'preview split';
+    };
 
     return SplitMarkdownEditable;
 

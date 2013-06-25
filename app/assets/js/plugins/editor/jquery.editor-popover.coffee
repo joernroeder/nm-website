@@ -468,15 +468,19 @@ do ($ = jQuery) ->
 	###
 	class JJEditable 
 
-		_prevValue: ''
-		_value: ''
-		_options: {}
-		_dataName: ''
-		_dataFullName: ''
+		members: ->
+			@_prevValue = ''
+			@_value = ''
+			@_options = {}
+			@_dataName = ''
+			@_dataFullName = ''
 
-		contentTypes: []
+			@contentTypes = []
+
 
 		constructor: (@editor) ->
+			@members()
+
 			@name = @.constructor.name.toLowerCase()
 			#@setValue @name
 
@@ -496,6 +500,12 @@ do ($ = jQuery) ->
 			element.attr @editor.getAttr('handledBy'), @id
 
 			@updateValue true
+			val = @getValue()
+
+			if val and @isValidValue val
+				@setValueToContent val
+			else
+				@setValueToContent @getPlaceholder(), true
 
 		###
 		 # returns a namespaced event name
@@ -621,11 +631,14 @@ do ($ = jQuery) ->
 		getValueFromContent: ->
 			null
 
+		setValueToContent: (val, isPlaceholder) ->
+
+		isValidValue: (val) ->
+			return if val then true else false
+
 		getPlaceholder: ->
-			console.log @editor.getAttr('placeholder')
 			placeholder = @element.data @editor.getAttr('placeholder')
-			console.log placeholder
-			if placeholder then placeholder else 'PLACEHOLDER'
+			return if placeholder then placeholder else 'PLACEHOLDER'
 
 		getValueOrPlaceholder: ->
 			value = @getValue()
@@ -732,10 +745,13 @@ do ($ = jQuery) ->
 	###
 	class JJPopoverEditable extends JJEditable
 
-		_popoverContent: ''
-		popoverClasses: []
+		members: ->
+			super()
+			
+			@_popoverContent = ''
+			@popoverClasses = []
 
-		closeOnOuterClick: true
+			@closeOnOuterClick = true
 		
 		constructor: (@editor) ->
 			if @.constructor.name is 'PopoverEditable'
@@ -754,9 +770,6 @@ do ($ = jQuery) ->
 					method: 'flip shift'
 
 			super element
-
-			if not element.html().length
-				element.html @getPlaceholder()
 
 			element.qtip
 				events:
@@ -814,7 +827,13 @@ do ($ = jQuery) ->
 				@toggle()
 
 		getValueFromContent: ->
-			@element.html()
+			placeholder = @getPlaceholder()
+			value = @element.html()
+
+			return if placeholder is value then "" else value
+
+		setValueToContent: (val, isPlaceholder) ->
+			@element.html val
 
 		onOptionsUpdate: ->
 			pos = @getPosition()
@@ -869,7 +888,10 @@ do ($ = jQuery) ->
 	###
 	class InlineEditable extends JJEditable
 
-		contentTypes: ['inline']
+		members: ->
+			super()
+
+			@contentTypes = ['inline']
 
 		init: (element) ->
 			super element
@@ -885,6 +907,9 @@ do ($ = jQuery) ->
 		getValueFromContent: ->
 			@element.text()
 
+		setValueToContent: (val, isPlaceholder) ->
+			@element.html val
+
 		destroy: ->
 			@element.removeAttr('contenteditable')
 			@element.off @getNamespacedEventName('keyup click focus')
@@ -897,13 +922,16 @@ do ($ = jQuery) ->
 	###
 	class DateEditable extends JJPopoverEditable
 
-		contentTypes: ['date']
+		members: ->
+			super()
+			
+			@contentTypes = ['date']
 		
-		position:
-			at: 'top left'
-			my: 'bottom left'
+			@position =
+				at: 'top left'
+				my: 'bottom left'
 
-		format: 'Y'
+			@format = 'Y'
 
 		init: (element) ->
 			@$input = $ '<input type="text">'
@@ -918,6 +946,11 @@ do ($ = jQuery) ->
 		getValueFromContent: ->
 			@$input.val()
 
+		setValueToContent: (val, isPlaceholder) ->
+			if not isPlaceholder
+				@input.val val
+
+
 		destroy: ->
 			@$input.off @getNamespacedEventName('keyup')
 
@@ -929,12 +962,15 @@ do ($ = jQuery) ->
 	###
 	class MarkdownEditable extends JJPopoverEditable
 
-		contentTypes: ['markdown']
-		markdown: null
-		markdownChangeTimeout: null
+		members: ->
+			super()
 
-		previewClass: 'preview'
-		popoverClasses: ['markdown']
+			@contentTypes = ['markdown']
+			@markdown = null
+			@markdownChangeTimeout = null
+
+			@previewClass = 'preview'
+			@popoverClasses = ['markdown']
 
 		init: (element) ->
 			super element
@@ -946,7 +982,8 @@ do ($ = jQuery) ->
 			$text = $ '<textarea>',
 				'class': @previewClass
 
-			$text.val element.text()
+			value = @getValueFromContent()
+			$text.val value.raw
 
 			$preview = $ '<div>', 
 				'class': @previewClass
@@ -958,6 +995,7 @@ do ($ = jQuery) ->
 			initialTriggerDone = false
 
 			options = 
+				placeholder: @getPlaceholder()
 				preview : element
 				contentGetter: 'val'
 				onChange: (val) =>
@@ -980,8 +1018,14 @@ do ($ = jQuery) ->
 			
 			@markdown = new JJMarkdownEditor $text, options
 
+		isValidValue: (val) ->
+			return if val and val.raw then true else false
+
 		getValueFromContent: ->
-			raw: @element.text()
+			placeholder = @getPlaceholder()
+			value = @element.text()
+			
+			return if placeholder isnt value then raw: value  else raw: ''
 		
 		destroy: ->
 			@element.off @getNamespacedEventName('focus')
@@ -993,9 +1037,11 @@ do ($ = jQuery) ->
 
 	class SplitMarkdownEditable extends MarkdownEditable
 		
-		contentTypes: ['markdown-split']
-		
-		previewClass: 'preview split'
+		members: ->
+			super()
+			
+			@contentTypes = ['markdown-split']
+			@previewClass = 'preview split'
 
 
 
