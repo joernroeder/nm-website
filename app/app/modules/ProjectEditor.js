@@ -152,6 +152,16 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
     template: 'security/editor-project-main',
     serialize: function() {
       return app.ProjectEditor.modelJSON;
+    },
+    afterRender: function() {
+      var _this = this;
+
+      return $.getJSON(app.Config.BasicListUrl).done(function(res) {
+        if (_.isObject(res)) {
+          _this.basicList = res;
+        }
+        return console.log(_this.basicList);
+      });
     }
   });
   return ProjectEditor;
