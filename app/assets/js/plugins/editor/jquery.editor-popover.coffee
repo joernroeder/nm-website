@@ -491,7 +491,7 @@ do ($ = jQuery) ->
 
 		# kick off your stuff from here!
 		init: (@element) ->
-			@setDataName element.data @editor.getAttr('name') 
+			@setDataName element.data(@editor.getAttr('name'))
 			@updateOptions element.data(@editor.getAttr('options')), true
 			element.attr @editor.getAttr('handledBy'), @id
 
@@ -622,7 +622,9 @@ do ($ = jQuery) ->
 			null
 
 		getPlaceholder: ->
-			placeholder = @element.attr @editor.getAttr 'placeholder'
+			console.log @editor.getAttr('placeholder')
+			placeholder = @element.data @editor.getAttr('placeholder')
+			console.log placeholder
 			if placeholder then placeholder else 'PLACEHOLDER'
 
 		getValueOrPlaceholder: ->
@@ -753,9 +755,8 @@ do ($ = jQuery) ->
 
 			super element
 
-			#@.setValue element.html(), 
-			
-			element.data()
+			if not element.html().length
+				element.html @getPlaceholder()
 
 			element.qtip
 				events:

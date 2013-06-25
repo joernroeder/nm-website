@@ -848,7 +848,9 @@ var __hasProp = {}.hasOwnProperty,
     JJEditable.prototype.getPlaceholder = function() {
       var placeholder;
 
-      placeholder = this.element.attr(this.editor.getAttr('placeholder'));
+      console.log(this.editor.getAttr('placeholder'));
+      placeholder = this.element.data(this.editor.getAttr('placeholder'));
+      console.log(placeholder);
       if (placeholder) {
         return placeholder;
       } else {
@@ -1008,7 +1010,9 @@ var __hasProp = {}.hasOwnProperty,
         }
       };
       JJPopoverEditable.__super__.init.call(this, element);
-      element.data();
+      if (!element.html().length) {
+        element.html(this.getPlaceholder());
+      }
       element.qtip({
         events: {
           render: function(event, api) {},
