@@ -2492,6 +2492,7 @@ form.create-project button {
   max-height: 280px;
   line-height: 0;
   text-align: right;
+  display: block;
 }
 .editor-project-preview .dropzone.preview-image:before {
   position: relative;
