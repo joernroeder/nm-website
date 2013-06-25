@@ -1694,6 +1694,7 @@ form.create-project {
 }
 
 .editor-project-preview {
+	@dropzoneWidth: 280 / @em;
 	//border: 1px solid red;
 
 	.dropzone.preview-image {
@@ -1706,10 +1707,9 @@ form.create-project {
 		background: @bg; 
 		border: 0 solid @color;
 		.transition(~"all .15s ease-in");
-		min-width: 280px; // remove
 		min-height: 0;
-		width: 280px;// / @em;
-		max-height: 280px; // remove / @em;
+		width: @dropzoneWidth;
+		max-height: @dropzoneWidth; 
 		line-height: 0;
 		text-align: right;
 		display: block;
@@ -1763,7 +1763,7 @@ form.create-project {
 	}
 
 	.meta {
-		margin-left: 300px;
+		margin-left: @dropzoneWidth + (20 / @em);
 	}
 }
 

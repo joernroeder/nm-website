@@ -2486,10 +2486,9 @@ form.create-project button {
   -o-transition: all .15s ease-in;
   -ms-transition: all .15s ease-in;
   transition: all .15s ease-in;
-  min-width: 280px;
   min-height: 0;
-  width: 280px;
-  max-height: 280px;
+  width: 17.5em;
+  max-height: 17.5em;
   line-height: 0;
   text-align: right;
   display: block;
@@ -2543,7 +2542,7 @@ form.create-project button {
   transition: visibility 0s linear, opacity .15s linear;
 }
 .editor-project-preview .meta {
-  margin-left: 300px;
+  margin-left: 18.75em;
 }
 body.dragover .editor-project-preview .dropzone.preview-image {
   min-height: 280px;
