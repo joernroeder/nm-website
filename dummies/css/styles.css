@@ -1795,7 +1795,8 @@ body.editor-sidebar-open #layout.editor {
   -ms-transition: color .2s ease-in-out, background-color .2s ease-in-out;
   transition: color .2s ease-in-out, background-color .2s ease-in-out;
 }
-.editor-sidebar .project-list li a:hover {
+.editor-sidebar .project-list li a:hover,
+.editor-sidebar .project-list li a.active {
   color: #d9df20;
   background: #1e1e1e;
 }
@@ -1824,10 +1825,12 @@ body.editor-sidebar-open #layout.editor {
   display: block;
   width: 100%;
 }
-.editor-sidebar .image-list a:hover {
+.editor-sidebar .image-list a:hover,
+.editor-sidebar .image-list a.active {
   background: #d9df20;
 }
-.editor-sidebar .image-list a:hover > * {
+.editor-sidebar .image-list a:hover > *,
+.editor-sidebar .image-list a.active > * {
   opacity: .8;
 }
 .editor-sidebar .image-list a.selected {

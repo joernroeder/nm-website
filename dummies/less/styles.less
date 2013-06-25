@@ -1104,7 +1104,8 @@ body.editor-sidebar-open {
 
 				.transition(~"color .2s ease-in-out, background-color .2s ease-in-out");
 
-				&:hover {
+				&:hover,
+				&.active {
 					color: @nmColor;
 					background: darken(@black, 3%);
 				}
@@ -1141,7 +1142,8 @@ body.editor-sidebar-open {
 			display: block;
 			width: 100%;
 
-			&:hover {
+			&:hover,
+			&.active {
 				background: @nmColor;
 				& > * {
 					opacity: .8;
