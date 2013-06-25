@@ -677,7 +677,24 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     }
   });
   UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend({
-    template: 'security/editor-sidebar-project-item'
+    template: 'security/editor-sidebar-project-item',
+    cleanup: function() {
+      return Backbone.Events.off('projectEdited', this.handleActive);
+    },
+    initialize: function() {
+      return Backbone.Events.on('projectEdited', this.handleActive, this);
+    },
+    afterRender: function() {
+      if (app.isEditor) {
+        return this.handleActive(app.ProjectEditor.model);
+      }
+    },
+    handleActive: function(model) {
+      this.$el.removeClass('active');
+      if (model.get('ClassName') === this.model.ClassName && model.id === this.model.ID) {
+        return this.$el.addClass('active');
+      }
+    }
   });
   return UserSidebar;
 });

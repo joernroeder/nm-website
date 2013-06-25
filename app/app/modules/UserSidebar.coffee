@@ -597,6 +597,18 @@ define [
 
 		UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-project-item'
+			cleanup: ->
+				Backbone.Events.off 'projectEdited', @handleActive
+			initialize: ->
+				Backbone.Events.on 'projectEdited', @handleActive, @
+
+			afterRender: ->
+				if app.isEditor then @handleActive(app.ProjectEditor.model)
+
+			handleActive: (model) ->
+				@.$el.removeClass 'active'
+				if model.get('ClassName') is @model.ClassName and model.id is @model.ID
+					@.$el.addClass 'active'
 
 
 

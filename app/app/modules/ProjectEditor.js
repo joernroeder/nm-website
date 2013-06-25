@@ -16,6 +16,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
         model: this.model
       });
       this.modelJSON = this.model.toJSON();
+      Backbone.Events.trigger('projectEdited', this.model);
     }
 
     Inst.prototype.kickOffRender = function() {

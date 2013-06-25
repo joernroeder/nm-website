@@ -14,6 +14,9 @@ define [
 			@previewView  	= new ProjectEditor.Views.Preview { model: @model }
 			@mainView 		= new ProjectEditor.Views.Main { model: @model }
 			@modelJSON		= @model.toJSON()
+
+			# trigger globally that we edit a project now
+			Backbone.Events.trigger 'projectEdited', @model
 		
 		kickOffRender: ->
 			# pass container to layout and kick off
