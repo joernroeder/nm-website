@@ -1524,7 +1524,7 @@ body.dragover {
 	}
 }
 
-// ! create project
+// ! --- 1. create project ------------
 
 .project-type-list {
 	position: absolute;
@@ -1680,8 +1680,24 @@ form.create-project {
 	}
 }
 
+// ! --- 2. overview editor -----------
 
-// ! recycle bin
+.editor-project-container > section:not(.active) {
+	display: none
+}
+
+.editor-project-preview {
+	border: 1px solid red; 
+}
+
+
+// ! --- 3. detail editor -------------
+
+.editor-project-main {
+
+}
+
+// ! --- recycle bin
 
 #recycle-bin {
 	@width: 250px;

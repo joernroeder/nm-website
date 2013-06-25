@@ -2459,6 +2459,12 @@ form.create-project button {
   box-sizing: border-box;
   width: 34%;
 }
+.editor-project-container > section:not(.active) {
+  display: none;
+}
+.editor-project-preview {
+  border: 1px solid red;
+}
 #recycle-bin {
   background: #191919;
   width: 250px;
