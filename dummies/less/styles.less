@@ -1697,13 +1697,12 @@ form.create-project {
 
 		position: relative;
 		background: @bg; 
-		//.box-sizing(content-box);
 		border: 0 solid @color;
 		.transition(~"all .15s ease-in");
-		min-width: 280px;
+		min-width: 280px; // remove
 		min-height: 0;
 		width: 280px;// / @em;
-		max-height: 280px; // / @em;
+		max-height: 280px; // remove / @em;
 		line-height: 0;
 		
 		&:before {
@@ -1739,12 +1738,7 @@ form.create-project {
 		}
 
 		img {
-			/*position: absolute;
-			display: block;
-			top: 0;
-			right: 0;*/
 			max-width: 100%;
-			//max-height: 100%;
 		}
 
 		* {
@@ -1766,9 +1760,6 @@ body.dragover .editor-project-preview {
 
 		* {
 			.transition(~"visibility 0s linear .15s, opacity .15s linear");
-			//.transition-delay(1s);
-			//.transition(~"visibility 0s linear 0, opacity .15s linear");
-			//display: none;
 			visibility: hidden;
 			opacity: 0;
 		}

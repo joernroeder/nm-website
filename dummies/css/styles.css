@@ -2510,11 +2510,6 @@ form.create-project button {
   background: #e1e54d;
 }
 .editor-project-preview .dropzone.preview-image img {
-  /*position: absolute;
-			display: block;
-			top: 0;
-			right: 0;*/
-
   max-width: 100%;
 }
 .editor-project-preview .dropzone.preview-image * {
