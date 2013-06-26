@@ -208,11 +208,28 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
 
       this.initEditor();
       return $.getJSON(app.Config.BasicListUrl).done(function(res) {
+        var selectables;
+
         if (_.isObject(res)) {
           _this.basicList = res;
         }
         console.log('populate lists');
-        return console.log(_this.basicList);
+        console.log(_this.basicList);
+        selectables = _this.editor.getComponentsByType('select');
+        if (selectables) {
+          $.each(selectables, function(i, selectable) {
+            var name;
+
+            console.log(selectable);
+            name = selectable.getDataName();
+            if (_this.basicList[name]) {
+              console.log('update source');
+              selectable.setSource(_this.basicList[name]);
+              return selectable.setValue([1]);
+            }
+          });
+        }
+        return false;
       });
     }
   });

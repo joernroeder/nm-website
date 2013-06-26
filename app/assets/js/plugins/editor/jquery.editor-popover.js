@@ -1553,20 +1553,23 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.createPopupContent = function() {
-      var $input, $label, i, source, _ref5,
+      var $input, $label, i, id, idAttr, source, title, _ref5,
         _this = this;
 
       this.$set.empty();
       _ref5 = this.getSource();
       for (i in _ref5) {
         source = _ref5[i];
-        $label = $('<label class="selectable-item">' + source.title + '<label>');
-        $input = $('<input type="checkbox" name="' + this.getDataName() + '" value="' + source.id + '">');
-        if (-1 !== this.getValueIndex(source.id)) {
+        id = source.id || source.ID;
+        title = source.title || source.Title;
+        idAttr = this.getDataName().toLowerCase() + '-item-' + id;
+        $label = $('<label class="selectable-item" for="' + idAttr + '">' + title + '<label>');
+        $input = $('<input type="checkbox" name="' + this.getDataName() + '" value="' + id + '" id="' + idAttr + '">');
+        if (-1 !== this.getValueIndex(id)) {
           $input.prop('checked', true);
         }
         $input.on(this.getNamespacedEventName('change'), function(e) {
-          var $target, changed, id, index, value;
+          var $target, changed, index, value;
 
           value = _this.getValue();
           $target = $(e.target);
@@ -1615,8 +1618,8 @@ var __hasProp = {}.hasOwnProperty,
 
     SelectEditable.prototype.setSource = function(_source) {
       this._source = _source;
-      this.createPopupContent();
-      return this.cleanupValue();
+      this.cleanupValue();
+      return this.createPopupContent();
     };
 
     SelectEditable.prototype.getValueIndex = function(id) {
@@ -1632,14 +1635,15 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.getValueFromContent = function() {
-      var i, source, titles, values, _ref5;
+      var i, source, title, titles, values, _ref5;
 
       titles = this.element.text().split(this.getSeperator());
       values = [];
       _ref5 = this.getSource();
       for (i in _ref5) {
         source = _ref5[i];
-        if (-1 !== $.inArray(source.title, titles)) {
+        title = source.title || source.Title;
+        if (-1 !== $.inArray(title, titles)) {
           values.push(source.id);
         }
       }
@@ -1647,7 +1651,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.cleanupValue = function() {
-      var found, i, j, source, val, value, _ref5;
+      var found, i, id, j, source, val, value, _ref5;
 
       value = this.getValue();
       for (i in value) {
@@ -1656,7 +1660,8 @@ var __hasProp = {}.hasOwnProperty,
         _ref5 = this.getSource();
         for (j in _ref5) {
           source = _ref5[j];
-          if (val === source.id) {
+          id = source.id || source.ID;
+          if (val === id) {
             found = true;
           }
         }
@@ -1674,15 +1679,22 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.setValueToContent = function(val, isPlaceholder) {
-      var i, source, titles, _ref5;
+      var i, id, input, source, title, titles, _ref5;
 
       titles = [];
       if (val) {
         _ref5 = this.getSource();
         for (i in _ref5) {
           source = _ref5[i];
-          if (-1 !== $.inArray(source.id, val)) {
-            titles.push(source.title);
+          console.log(source);
+          id = source.id || source.ID;
+          if (-1 !== $.inArray(id, val)) {
+            title = source.title || source.Title;
+            titles.push(title);
+            if (this.$set) {
+              input = this.$set.find('#' + this.getDataName().toLowerCase() + '-item-' + id);
+              input.prop('checked', true);
+            }
           }
         }
         return this.element.html(titles.join(this.getSeperator()));

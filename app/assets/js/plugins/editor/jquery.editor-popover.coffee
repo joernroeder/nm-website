@@ -1216,10 +1216,13 @@ do ($ = jQuery) ->
 			@$set.empty()
 
 			for i, source of @getSource()
-				$label = $ '<label class="selectable-item">' + source.title + '<label>'
-				$input = $ '<input type="checkbox" name="' + @getDataName() + '" value="' + source.id + '">'
+				id = source.id or source.ID
+				title = source.title or source.Title
+				idAttr = @getDataName().toLowerCase() + '-item-' + id
+				$label = $ '<label class="selectable-item" for="' + idAttr + '">' + title + '<label>'
+				$input = $ '<input type="checkbox" name="' + @getDataName() + '" value="' + id + '" id="' + idAttr + '">'
 
-				$input.prop 'checked', true if -1 isnt @getValueIndex source.id
+				$input.prop 'checked', true if -1 isnt @getValueIndex id
 				
 				$input.on @getNamespacedEventName('change'), (e) =>
 					value = @getValue()
@@ -1257,8 +1260,8 @@ do ($ = jQuery) ->
 			@_source
 
 		setSource: (@_source) ->
-			@createPopupContent()
 			@cleanupValue()
+			@createPopupContent()
 
 		getValueIndex: (id) ->
 			$.inArray id, @getValue()
@@ -1270,7 +1273,8 @@ do ($ = jQuery) ->
 			titles = @element.text().split @getSeperator()
 			values = []
 			for i, source of @getSource()
-				if -1 isnt $.inArray source.title, titles
+				title = source.title or source.Title
+				if -1 isnt $.inArray title, titles
 					values.push source.id
 
 			values
@@ -1280,7 +1284,8 @@ do ($ = jQuery) ->
 			for i, val of value
 				found = false
 				for j, source of @getSource()
-					found = true if val is source.id
+					id = source.id or source.ID
+					found = true if val is id
 
 				value.splice i, 1 if not found
 
@@ -1296,8 +1301,17 @@ do ($ = jQuery) ->
 			titles = []
 			if val
 				for i, source of @getSource()
-					if -1 isnt $.inArray source.id, val
-						titles.push source.title
+					console.log source
+					id = source.id or source.ID
+
+					if -1 isnt $.inArray id, val
+						title = source.title or source.Title
+						titles.push title
+
+						#update tooltip
+						if @$set
+							input = @$set.find('#' + @getDataName().toLowerCase() + '-item-' + id)
+							input.prop 'checked', true
 
 
 				@element.html titles.join(@getSeperator())

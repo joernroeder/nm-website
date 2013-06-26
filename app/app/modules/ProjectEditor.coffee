@@ -190,6 +190,16 @@ define [
 					@basicList = res
 				console.log 'populate lists'
 				console.log @basicList
+				selectables = @editor.getComponentsByType 'select'
+				if selectables
+					$.each selectables, (i, selectable) =>
+						console.log selectable
+						name = selectable.getDataName()
+						if @basicList[name]
+							console.log 'update source'
+							selectable.setSource @basicList[name]
+							selectable.setValue [1]
 
+				false
 
 	ProjectEditor
