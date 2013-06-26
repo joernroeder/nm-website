@@ -53,7 +53,7 @@ do ($ = jQuery) ->
 	$.fn.selectRange = (start, end) ->
 		end = start unless end
 		@each ->
-			if 'selectionStart' in @
+			if @['setSelectionRange']
 				@focus()
 				@setSelectionRange start, end
 			else if @createTextRange
@@ -799,7 +799,11 @@ do ($ = jQuery) ->
 					visible: =>
 						$input = $('input, textarea', @api.tooltip).eq 0
 						# set cursor to the end of the first input or textarea element
-						$input.selectRange $input.val().length
+						try 
+							$input.selectRange $input.val().length
+						catch e
+							false
+
 						# bind outer click to close the popup
 						if @closeOnOuterClick
 							@api.tooltip.one @getNamespacedEventName('outerClick'), =>

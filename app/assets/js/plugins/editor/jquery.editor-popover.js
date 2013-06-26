@@ -9,8 +9,7 @@
  #  例： $("#notification-list").outerClick(function (event) { ... });
 */
 
-var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-  __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($, elements, OUTER_CLICK) {
@@ -83,7 +82,7 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
     return this.each(function() {
       var range;
 
-      if (__indexOf.call(this, 'selectionStart') >= 0) {
+      if (this['setSelectionRange']) {
         this.focus();
         return this.setSelectionRange(start, end);
       } else if (this.createTextRange) {
@@ -1044,10 +1043,15 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
         events: {
           render: function(event, api) {},
           visible: function() {
-            var $input;
+            var $input, e;
 
             $input = $('input, textarea', _this.api.tooltip).eq(0);
-            $input.selectRange($input.val().length);
+            try {
+              $input.selectRange($input.val().length);
+            } catch (_error) {
+              e = _error;
+              false;
+            }
             if (_this.closeOnOuterClick) {
               _this.api.tooltip.one(_this.getNamespacedEventName('outerClick'), function() {
                 return _this.close();
