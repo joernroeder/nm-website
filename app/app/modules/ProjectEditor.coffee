@@ -137,7 +137,7 @@ define [
 				'SplitMarkdownEditable'
 			]
 
-			@editor.on 'statUpdate', (e) =>
+			@editor.on 'stateUpdate', (e) =>
 				console.log e
 
 			@

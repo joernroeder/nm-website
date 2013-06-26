@@ -154,7 +154,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
       var _this = this;
 
       this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable']);
-      this.editor.on('statUpdate', function(e) {
+      this.editor.on('stateUpdate', function(e) {
         return console.log(e);
       });
       return this;

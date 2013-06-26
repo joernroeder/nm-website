@@ -34,7 +34,8 @@ do ($ = jQuery) ->
 			contentGetter		: 'val'														# Defines how to retrieve the input area's data. Default is 'val' (thus $input.val())
 			customParsers		: ['SingleImgMarkdownParser', 'OEmbedMarkdownParser']		# Defines which custom markdown parsers are active 
 			customParserOptions	: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
-			afterRender			: null														# Method to call after the markdown rendering has been done
+			afterRender			: ->
+				if window.picturefill then window.picturefill()								# Method to call after the markdown rendering has been done
 			onChange			: null														# Function to pass the data to, after the parsing has been done
 			onBlur				: null														# Method to call when the input area loses focus
 			imageUrl			: '/imagery/images/docimage'								# URL to post the images to

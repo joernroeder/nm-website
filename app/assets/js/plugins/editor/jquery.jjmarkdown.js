@@ -40,7 +40,11 @@ var __hasProp = {}.hasOwnProperty,
       contentGetter: 'val',
       customParsers: ['SingleImgMarkdownParser', 'OEmbedMarkdownParser'],
       customParserOptions: {},
-      afterRender: null,
+      afterRender: function() {
+        if (window.picturefill) {
+          return window.picturefill();
+        }
+      },
       onChange: null,
       onBlur: null,
       imageUrl: '/imagery/images/docimage',
