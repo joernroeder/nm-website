@@ -781,7 +781,7 @@ do ($ = jQuery) ->
 						resize: true # @todo: own resize method
 						method: 'flip shift'
 
-			@_options.repositionOnChange = true if not @_options.repositionOnChange
+			@_options.repositionOnChange = true if @_options.repositionOnChange is undefined
 
 			super element
 
@@ -1144,13 +1144,17 @@ do ($ = jQuery) ->
 			@_options.position =
 				#at: 'bottom left'
 				#my: 'top left'
-				my: 'top right'
+				my: 'top left'
 				at: 'top left'
+				type: 'fixed'
+				target: [0,0]
 	
 				adjust:
-					x: -10
+					x: 0
 					y: 0
 					method: 'none' # manual width handling @onMove
+
+			#@_options.repositionOnChange = false
 
 			super element
 
@@ -1169,11 +1173,8 @@ do ($ = jQuery) ->
 		updateTooltipDimensions: (e) ->
 			elPos = @element.offset()
 			
-			@api.tooltip.css
-				'margin-top': -elPos.top
-
 			@api.set('style.height', $(window).height() + top)
-			@api.set('style.width', elPos.left + @getOptions().position.adjust.x)
+			@api.set('style.width', elPos.left - 10)
 
 			true
 

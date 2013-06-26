@@ -1036,7 +1036,7 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
           }
         };
       }
-      if (!this._options.repositionOnChange) {
+      if (this._options.repositionOnChange === void 0) {
         this._options.repositionOnChange = true;
       }
       JJPopoverEditable.__super__.init.call(this, element);
@@ -1480,10 +1480,12 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 
     SplitMarkdownEditable.prototype.init = function(element) {
       this._options.position = {
-        my: 'top right',
+        my: 'top left',
         at: 'top left',
+        type: 'fixed',
+        target: [0, 0],
         adjust: {
-          x: -10,
+          x: 0,
           y: 0,
           method: 'none'
         }
@@ -1506,11 +1508,8 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
       var elPos;
 
       elPos = this.element.offset();
-      this.api.tooltip.css({
-        'margin-top': -elPos.top
-      });
       this.api.set('style.height', $(window).height() + top);
-      this.api.set('style.width', elPos.left + this.getOptions().position.adjust.x);
+      this.api.set('style.width', elPos.left - 10);
       return true;
     };
 
