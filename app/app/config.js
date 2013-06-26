@@ -32,6 +32,7 @@ require.config({
     'plugins/misc/jquery.list': ['jquery'],
     'plugins/editor/jquery.jjfileupload': ['jquery'],
     'plugins/editor/jquery.tabby': ['jquery'],
+    'plugins/misc/zebra_datepicker.src': ['jquery'],
     'plugins/editor/jquery.editor-sidebar': ['plugins/misc/misc'],
     'plugins/editor/jquery.jjdropzone': ['plugins/editor/jquery.jjfileupload'],
     'plugins/editor/jquery.jjmarkdown': ['plugins/editor/jquery.jjdropzone', 'plugins/editor/jquery.tabby', 'plugins/editor/jquery.jjfileupload', 'plugins/editor/marked_jjedit'],
