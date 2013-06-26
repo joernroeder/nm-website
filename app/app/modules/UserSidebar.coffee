@@ -65,6 +65,13 @@ define [
 			events:
 				'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
 				'click .icon-switch': 'switchEditorView'
+				'click .icon-publish': 'clickPublish'
+
+			initialize: ->
+				Backbone.Events.on 'projectEdited', @handlePublishActive, @
+
+			cleanup: ->
+				Backbone.Events.off 'projectEdited', @handlePublishActive
 			
 			# !- Custom
 			
@@ -72,6 +79,20 @@ define [
 				e.preventDefault()
 				if app.isEditor then app.ProjectEditor.toggleView()
 				false
+
+			clickPublish: (e) ->
+				e.preventDefault()
+				if app.isEditor
+					toSet = if app.ProjectEditor.model.get('IsPublished') then false else true
+					method = if toSet then 'add' else 'remove'
+					app.ProjectEditor.model.save 'IsPublished', toSet
+					$(e.target)[method + 'Class']('published')
+				false
+
+			handlePublishActive: (model) ->
+				method = if model.get('IsPublished') then 'add' else 'remove'
+				@.$el.find('.icon-publish')[method + 'Class']('published')
+
 			
 			toggleSidebarCheck: (e) ->
 				e.preventDefault()
@@ -626,6 +647,7 @@ define [
 		UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend
 			template: 'security/editor-sidebar-project-item'
 			cleanup: ->
+				@._cleanup()
 				Backbone.Events.off 'projectEdited', @handleActive
 			initialize: ->
 				Backbone.Events.on 'projectEdited', @handleActive, @

@@ -53,7 +53,14 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     subView: null,
     events: {
       'click [data-editor-sidebar-content]': 'toggleSidebarCheck',
-      'click .icon-switch': 'switchEditorView'
+      'click .icon-switch': 'switchEditorView',
+      'click .icon-publish': 'clickPublish'
+    },
+    initialize: function() {
+      return Backbone.Events.on('projectEdited', this.handlePublishActive, this);
+    },
+    cleanup: function() {
+      return Backbone.Events.off('projectEdited', this.handlePublishActive);
     },
     switchEditorView: function(e) {
       e.preventDefault();
@@ -61,6 +68,24 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         app.ProjectEditor.toggleView();
       }
       return false;
+    },
+    clickPublish: function(e) {
+      var method, toSet;
+
+      e.preventDefault();
+      if (app.isEditor) {
+        toSet = app.ProjectEditor.model.get('IsPublished') ? false : true;
+        method = toSet ? 'add' : 'remove';
+        app.ProjectEditor.model.save('IsPublished', toSet);
+        $(e.target)[method + 'Class']('published');
+      }
+      return false;
+    },
+    handlePublishActive: function(model) {
+      var method;
+
+      method = model.get('IsPublished') ? 'add' : 'remove';
+      return this.$el.find('.icon-publish')[method + 'Class']('published');
     },
     toggleSidebarCheck: function(e) {
       var $target, subViewName, toShow;
@@ -708,6 +733,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
   UserSidebar.Views.ProjectItem = UserSidebar.Views.ListItem.extend({
     template: 'security/editor-sidebar-project-item',
     cleanup: function() {
+      this._cleanup();
       return Backbone.Events.off('projectEdited', this.handleActive);
     },
     initialize: function() {
