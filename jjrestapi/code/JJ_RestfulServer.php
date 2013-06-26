@@ -302,20 +302,17 @@ class JJ_RestfulServer extends RestfulServer {
 		$this->addContentTypeHeader();
 
 		$rawFields = $this->request->getVar('fields');
-		$fields = $rawFields ? explode(',', $rawFields) : null;
+		$fields = $rawFields ? explode(',', $rawFields) : '';
 		$context = $this->getContext($obj);
 
 		// check cached $obj
 		// if ($currentCacheKey_json)
 		
 		$md5Obj = md5($obj);
-		$md5Fields = md5($fields);
-		$md5Context = md5($context->getContext());
 		
-		$md5ResponseFormatter = md5($responseFormatter->class);
 		$currentUserId = (int) Member::currentUserId();
 		//Debug::dump($obj->LastEdited);
-		$cacheKey = md5($aggregate . '_' . $md5Obj . '_' . $id . '_' . $md5Fields . '_' . $md5Context . '_' . $md5ResponseFormatter . '_' . $currentUserId) . '_formatted';
+		$cacheKey = $this->convertToChacheKey($aggregate . '_' . $md5Obj . '_' . $id . '_' . $fields . '_' . $context->getContext() . '_' . $responseFormatter->class . '_' . $currentUserId) . '_formatted';
 		//Debug::dump($cacheKey);
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
@@ -369,8 +366,7 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function getObjectQuery($className, $ids, $params, $aggregate = null) {
 		//Debug::dump($aggregate->XML_val('Max', array('LastEdited')));
 
-
-		$cacheKey =  md5(implode('_', array_merge($ids, $params, array($aggregate)))) . '_ObjectQuery';
+		$cacheKey =  $this->convertToChacheKey(implode('_', array_merge($ids, $params, array($aggregate))) . '_ObjectQuery');
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
@@ -537,8 +533,11 @@ class JJ_RestfulServer extends RestfulServer {
 			$cacheKey .= '-' . $key .'_' . $value;
 		}
 
-		// @todo replace . and - via regular expression
-		return md5($cacheKey) . '_SearchQuery';
+		return $this->convertToChacheKey($cacheKey . '_SearchQuery');
+	}
+
+	protected function convertToChacheKey($string) {
+		return preg_replace('/[^0-9a-zA-Z_]/', '', $string);
 	}
 
 	/**
