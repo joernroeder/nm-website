@@ -1030,6 +1030,9 @@ var __hasProp = {}.hasOwnProperty,
           }
         };
       }
+      if (!this._options.repositionOnChange) {
+        this._options.repositionOnChange = true;
+      }
       JJPopoverEditable.__super__.init.call(this, element);
       element.qtip({
         events: {

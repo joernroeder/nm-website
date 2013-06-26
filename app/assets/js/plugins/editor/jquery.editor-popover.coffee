@@ -774,6 +774,8 @@ do ($ = jQuery) ->
 						resize: true # @todo: own resize method
 						method: 'flip shift'
 
+			@_options.repositionOnChange = true if not @_options.repositionOnChange
+
 			super element
 
 			element.qtip
