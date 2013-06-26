@@ -38,7 +38,8 @@ do ($ = jQuery) ->
 			onChange			: null														# Function to pass the data to, after the parsing has been done
 			onBlur				: null														# Method to call when the input area loses focus
 			imageUrl			: '/imagery/images/docimage'								# URL to post the images to
-			placeholder			: 'PLACEHOLDER'
+			placeholder			: 'PLACEHOLDER'												# Placeholder text to show in preview area if textarea is empty
+			charlimit			: 0															# Max. length of input
 
 
 		constructor : (selector, opts) ->
@@ -120,6 +121,12 @@ do ($ = jQuery) ->
 			# Bind textarea edit. Timeout parses Markdown
 			$input.off('keyup').on 'keyup', (e) ->
 				$this = $ @
+
+				# check for charlimit
+				charlimit = _this.options.charlimit
+				if charlimit > 0 and $input._val().length > charlimit
+					$input._val $input._val().substring(0, charlimit)
+
 				if delayTimeout then clearTimeout delayTimeout
 				delayTimeout = setTimeout ->
 					_this.parseMarkdown()

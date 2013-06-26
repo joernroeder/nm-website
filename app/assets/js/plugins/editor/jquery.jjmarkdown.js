@@ -44,7 +44,8 @@ var __hasProp = {}.hasOwnProperty,
       onChange: null,
       onBlur: null,
       imageUrl: '/imagery/images/docimage',
-      placeholder: 'PLACEHOLDER'
+      placeholder: 'PLACEHOLDER',
+      charlimit: 0
     };
 
     function JJMarkdownEditor(selector, opts) {
@@ -134,9 +135,13 @@ var __hasProp = {}.hasOwnProperty,
       $input.tabby().trigger('keyup');
       this.delayTimeout = null;
       $input.off('keyup').on('keyup', function(e) {
-        var $this, delayTimeout;
+        var $this, charlimit, delayTimeout;
 
         $this = $(this);
+        charlimit = _this.options.charlimit;
+        if (charlimit > 0 && $input._val().length > charlimit) {
+          $input._val($input._val().substring(0, charlimit));
+        }
         if (delayTimeout) {
           clearTimeout(delayTimeout);
         }
