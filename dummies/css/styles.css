@@ -610,6 +610,9 @@ button.Zebra_DatePicker_Icon_Disabled {
 }
 .Zebra_DatePicker td {
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .Zebra_DatePicker table {
   border-collapse: collapse;

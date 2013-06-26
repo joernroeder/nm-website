@@ -1007,8 +1007,8 @@ do ($ = jQuery) ->
 			@element.html @contentFormattedValue
 
 		setValueToContent: (val, isPlaceholder) ->
-			if not isPlaceholder
-				@input.val val
+			if @$input.length and not isPlaceholder
+				@$input.val val
 
 		getFormat: ->
 			@getOptions().format or 'Y-m-d'

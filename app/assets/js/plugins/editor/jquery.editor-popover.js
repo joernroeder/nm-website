@@ -1318,8 +1318,8 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     DateEditable.prototype.setValueToContent = function(val, isPlaceholder) {
-      if (!isPlaceholder) {
-        return this.input.val(val);
+      if (this.$input.length && !isPlaceholder) {
+        return this.$input.val(val);
       }
     };
 
