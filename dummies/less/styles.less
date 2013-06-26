@@ -843,13 +843,17 @@ x:-o-prefocus, .qtip .qtip-tip{
 		width: 100%;
 		min-height: 400px;
 
-		.transition(~"background-color .2s .1s ease-in-out");
+		.transition(~"background .2s .1s ease-in-out, color .2s .1s ease-in-out");
 		cursor: pointer;
 
 		&:hover,
 		&:focus {
 			background: rgba(255, 255, 255, .2);
 			cursor: auto;
+		}
+
+		&:focus {
+			color: #fff;
 		}
 	}
 }
@@ -878,6 +882,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		textarea {
 			height: 100%;
+			color: @editorSidebarColor;
 		}
 	}
 

@@ -1599,17 +1599,20 @@ x:-o-prefocus,
   box-sizing: border-box;
   width: 100%;
   min-height: 400px;
-  -webkit-transition: background-color .2s .1s ease-in-out;
-  -moz-transition: background-color .2s .1s ease-in-out;
-  -o-transition: background-color .2s .1s ease-in-out;
-  -ms-transition: background-color .2s .1s ease-in-out;
-  transition: background-color .2s .1s ease-in-out;
+  -webkit-transition: background .2s .1s ease-in-out, color .2s .1s ease-in-out;
+  -moz-transition: background .2s .1s ease-in-out, color .2s .1s ease-in-out;
+  -o-transition: background .2s .1s ease-in-out, color .2s .1s ease-in-out;
+  -ms-transition: background .2s .1s ease-in-out, color .2s .1s ease-in-out;
+  transition: background .2s .1s ease-in-out, color .2s .1s ease-in-out;
   cursor: pointer;
 }
 .editor-popover textarea.preview:hover,
 .editor-popover textarea.preview:focus {
   background: rgba(255, 255, 255, 0.2);
   cursor: auto;
+}
+.editor-popover textarea.preview:focus {
+  color: #fff;
 }
 [data-editor-type="markdown-split"][editor-handled-by].active {
   background: #fff;
@@ -1628,6 +1631,7 @@ x:-o-prefocus,
 }
 .editor-popover.splitmarkdowneditable textarea {
   height: 100%;
+  color: #cccccc;
 }
 .editor-popover.selecteditable .selectable-item {
   display: block;
