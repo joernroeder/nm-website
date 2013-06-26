@@ -148,18 +148,29 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
     }
   });
   ProjectEditor.Views.Main = Backbone.View.extend({
-    tagName: 'div',
+    tagName: 'article',
     template: 'security/editor-project-main',
+    initEditor: function() {
+      var _this = this;
+
+      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable']);
+      this.editor.on('statUpdate', function(e) {
+        return console.log(e);
+      });
+      return this;
+    },
     serialize: function() {
       return app.ProjectEditor.modelJSON;
     },
     afterRender: function() {
       var _this = this;
 
+      this.initEditor();
       return $.getJSON(app.Config.BasicListUrl).done(function(res) {
         if (_.isObject(res)) {
           _this.basicList = res;
         }
+        console.log('populate lists');
         return console.log(_this.basicList);
       });
     }

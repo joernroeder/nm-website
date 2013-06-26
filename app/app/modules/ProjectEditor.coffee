@@ -127,17 +127,32 @@ define [
 
 
 	ProjectEditor.Views.Main = Backbone.View.extend
-		tagName: 'div'
+		tagName: 'article'
 		template: 'security/editor-project-main'
+
+		initEditor: ->
+			@editor = new JJEditor @.$el, [
+				'InlineEditable',
+				'DateEditable',
+				'SplitMarkdownEditable'
+			]
+
+			@editor.on 'statUpdate', (e) =>
+				console.log e
+
+			@
 
 		serialize: ->
 			app.ProjectEditor.modelJSON
 
 		afterRender: ->
+			@initEditor()
+
 			# We need to get the basic lists to populate our select boxes for Persons / Categories / Projects
 			$.getJSON(app.Config.BasicListUrl).done (res) =>
 				if _.isObject(res)
 					@basicList = res
+				console.log 'populate lists'
 				console.log @basicList
 
 

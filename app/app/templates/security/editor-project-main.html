@@ -1,2 +1,23 @@
-<h2>Main Editor View</h2>
-<h3>{{Title}}</h3>
+<!-- article -->
+<header data-editor-scope="\ProjectMain">
+	<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
+	<p>
+	{{#if IsGroup}}
+		Group project
+	{{else}}
+		{{{nameSummary Persons}}}
+	{{/if}}
+	</p>
+	<p>{{niceDate this}}</p>
+	{{#if Websites}}
+		<p>{{{commaSeparatedWebsites Websites}}}</p>
+	{{/if}}
+</header>
+<section data-editor-scope="\ProjectMain">
+	<p data-editor-type="markdown-split" data-editor-name="Text">{{Text}}</p>
+</section>
+<aside data-editor-scope="\ProjectMain">
+	Here project lists...
+</aside>
+
+<!-- /article -->
