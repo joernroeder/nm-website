@@ -50,6 +50,7 @@ define [
 	
 	RecycleBin.removeViewAndData = (toRecycle) ->
 		toRecycle.view.$el.trigger 'dragend'
+		$('body').removeClass 'drag-inline'
 		# handle gallery
 		if toRecycle.className is 'PersonImage' or toRecycle.className is 'DocImage'
 			app.removeFromGalleryCache toRecycle.className, toRecycle.model.id
