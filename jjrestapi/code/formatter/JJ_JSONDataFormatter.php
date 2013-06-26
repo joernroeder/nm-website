@@ -62,26 +62,11 @@ class JJ_JSONDataFormatter extends JSONDataFormatter implements JJ_DataFormatter
 	 * @return EmptyJSONObject
 	 */
 	public function convertDataObjectToJSONObject(DataObjectInterface $obj, $fields = null, $context = null, $depth = 0) {
-		
 		// check if canView
 		if(!$obj->canView()) return false;
 
 		// get the api fields
 		$apiFields = $obj->getApiFields($fields, $context);
-
-		// check if canViewContext the specific
-		if ($context) {
-			$subContext = $context->getSubContext();
-			$methodName = 'canView' . ($subContext ? ucfirst($subContext) : '') . 'Context';
-			if ($obj->hasMethod($methodName)) {
-				$methodResult = $obj->$methodName($apiFields);
-				if (!$methodResult) {
-					return false;
-				} else {
-					$apiFields = is_array($methodResult) ? $methodResult : $apiFields;
-				}
-			}
-		}
 
 		$depth++;
 

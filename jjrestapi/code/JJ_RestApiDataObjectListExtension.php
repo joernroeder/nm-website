@@ -171,6 +171,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	public function getApiFields($fields = null, $context = null) {
 		$dbFields = array();
 		$customFields = $fields ? $fields : $this->getApiContextFields($context);
+	
 
 		// if custom fields are specified, only select these
 		if (is_array($customFields)) {
@@ -275,12 +276,13 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 	 * @return object context with operation ('view') and context ('view.logged_in')
 	 */
 	public function getApiContext($operation = 'view') {
+
 		$methodName = 'get' . ucfirst($operation) . 'Context';
 
 		$owner = $this->owner instanceof DataList ? singleton($this->owner->dataClass) : $this->owner; 
 
 		$subContext = $owner->hasMethod($methodName) ? $owner->$methodName() : '';
-	
+		
 		return JJ_ApiContext::create_from_string($operation, $subContext);
 	}
 
@@ -313,7 +315,7 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		$con = $context->getContext();
 		// try to get subcontext (view.logged_in)
 		if (isset($apiAccess[$con])) {
-			return $apiAccess[$con];
+			return $this->scaffoldApiContextFields($apiAccess[$con], $context);
 		}
 		// throw warning
 		else {
@@ -321,11 +323,32 @@ class JJ_RestApiDataObjectListExtension extends DataExtension {
 		}
 
 		if (isset($fields[$className])) {
-			return array_key_exists($context, $fields[$className]) ? $fields[$className][$context] : $fields[$className];
+			$toScaffold = array_key_exists($context, $fields[$className]) ? $fields[$className][$context] : $fields[$className];
+			return $this->scaffoldApiContextFields($toScaffold, $context);
 		}
 		
-		return array();
+		return $this->scaffoldApiContextFields(array(), $context);
 	}
+
+	public function scaffoldApiContextFields($fields, $context) {
+		
+		$subContext = $context->getSubContext();
+		$methodName = 'canView' . ($subContext ? ucfirst($subContext) : '') . 'Context';
+		
+		if ($this->owner->hasMethod($methodName)) {
+			
+			$methodResult = $this->owner->$methodName($fields);
+			
+			if (!$methodResult) {
+				return false;
+			} else {
+				$fields = is_array($methodResult) ? $methodResult : $fields;
+			}
+		
+		}
+
+		return $fields;
+	} 
 
 
 	// ! API Search
