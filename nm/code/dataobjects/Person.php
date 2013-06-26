@@ -152,6 +152,7 @@ class Person extends DataObject {
 			'Projects.PreviewImage.Caption',
 			'Projects.PreviewImage.Urls',
 			'Projects.EditableByMember',
+			'Projects.Images',
 
 			'Workshops.ClassName',
 			'Workshops.UglyHash',
@@ -165,6 +166,7 @@ class Person extends DataObject {
 			'Workshops.PreviewImage.Caption',
 			'Workshops.PreviewImage.Urls',
 			'Workshops.EditableByMember',
+			'Workshops.Images',
 
 			'Exhibitions.ClassName',
 			'Exhibitions.UglyHash',
@@ -178,6 +180,7 @@ class Person extends DataObject {
 			'Exhibitions.PreviewImage.Caption',
 			'Exhibitions.PreviewImage.Urls',
 			'Exhibitions.EditableByMember',
+			'Exhibitions.Images',
 
 			'Excursions.ClassName',
 			'Excursions.UglyHash',
@@ -191,6 +194,7 @@ class Person extends DataObject {
 			'Excursions.PreviewImage.Caption',
 			'Excursions.PreviewImage.Urls',
 			'Excursions.EditableByMember',
+			'Excursions.Images',
 
 			'Templates.IsDetail',
 			'Templates.Url',
@@ -248,8 +252,9 @@ class Person extends DataObject {
 		$owner = $this->Member();
 		if ($currentMemberID && $owner && $owner->ID == $currentMemberID) return $fields;
 		
-		unset($fields['Phone'],$fields['Excursions.EditableByMember'],$fields['Workshops.EditableByMember'],$fields['Exhibitions.EditableByMember'],$fields['Projects.EditableByMember']);
-		return $fields;
+		$toUnset = array('Phone', 'Excursions.EditableByMember','Workshops.EditableByMember','Exhibitions.EditableByMember','Projects.EditableByMember', 'Projects.Images','Excursions.Images','Exhibitions.Images', 'Workshops.Images');
+		
+		return array_diff($fields, $toUnset);
 	}
 
 	/*public function canViewSecureContext($member = null) {

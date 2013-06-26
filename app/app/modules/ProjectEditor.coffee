@@ -24,11 +24,15 @@ define [
 			# pass container to layout and kick off
 			app.layout.setViewAndRenderMaybe '#project-editor', @containerView
 
+		getFilterID: ->
+			"#{@model.get('ClassName')}-#{@model.id}"
+
 		toggleView: ->
 			@containerView.toggleView()
 
 		galleryImageRemoved: (id) ->
-			if @model.get('PreviewImage').id is id
+			previewImage = @model.get('PreviewImage')
+			if previewImage and previewImage.id is id
 				@previewView.removePreviewImage()
 
 
@@ -60,9 +64,6 @@ define [
 		cleanup: ->
 			@uploadZone.cleanup()
 
-		getFilterID: ->
-			"#{@model.get('ClassName')}-#{@model.id}"
-
 		initDropzone: ->
 
 			app.ProjectEditor.PreviewImageZone = @uploadZone = new JJSingleImageUploadZone '.preview-image',
@@ -80,7 +81,7 @@ define [
 
 						# insert into gallery if open and necessary
 						if _.indexOf(@model.get('Images').getIDArray(), model.id) < 0
-							img = [{ FilterID: @getFilterID, UploadedToClass: 'DocImage', id: model.id, url: thumbUrl }]
+							img = [{ FilterID: app.ProjectEditor.getFilterID(), UploadedToClass: 'DocImage', id: model.id, url: thumbUrl }]
 							app.updateGalleryCache img
 							Backbone.Events.trigger 'DocImageAdded', img
 
@@ -166,15 +167,39 @@ define [
 					Backbone.Events.trigger 'DocImageAdded', data
 
 
-
-
 			@editor.on 'editor.open-split-markdown', ->
 				$('#layout').addClass 'open-split-markdown'
 			@editor.on 'editor.close-split-markdown', ->
 				$('#layout').removeClass 'open-split-markdown'
 
 			@editor.on 'stateUpdate', (e) =>
-				console.log e
+				_changed = false
+				for key, val of e.ProjectMain
+					if key is 'Text'
+						text = if val.raw then val.raw else ''
+						if text isnt @model.get('Text')
+							_changed = true
+							@model.set 'Text', text
+
+						# check if there are any images which aren't yet added to our project
+						# ghetto logic, sorry
+						_.each val.images.ids, (id, i) =>
+							found = false
+							@model.get('Images').each (projImage) =>
+								found = true if projImage.id is id
+							
+							if not found
+								DataRetrieval.forDocImage(id).done (model) =>
+									# add it to our model
+									@model.get('Images').add model
+									existImg = app.getFromGalleryCache('DocImage', model.id)
+								
+									theImg = [{ FilterID: app.ProjectEditor.getFilterID(), UploadedToClass: 'DocImage', id: model.id, url: existImg.url }]
+									app.updateGalleryCache theImg
+									Backbone.Events.trigger 'DocImageAdded', theImg
+
+
+				@model.rejectAndSave() if _changed
 
 			@
 

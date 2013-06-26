@@ -34,10 +34,10 @@ class DocImage extends SubdomainResponsiveImage {
 			'Title',
 			'Caption',
 			'Urls',
-			'Projects',
-			'Excursions',
-			'Exhibitions',
-			'Workshops'
+			'Projects.EditableByMember',
+			'Excursions.EditableByMember',
+			'Exhibitions.EditableByMember',
+			'Workshops.EditableByMember'
 		)
 	);
 
@@ -51,6 +51,17 @@ class DocImage extends SubdomainResponsiveImage {
 
 		return $urlNames;
 	}*/
+
+	public function canViewContext($fields) {
+		$currentMemberID = Member::currentUserID();
+		
+		if (!$currentMemberID) {
+			$toUnset = array('Excursions.EditableByMember', 'Exhibitions.EditableByMember', 'Workshops.EditableByMember', 'Projects.EditableByMember');
+			return array_diff($fields, $toUnset);
+		}	
+		
+		return $fields;
+	}
 
 	public function canDelete($member = null) {
 		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();

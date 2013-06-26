@@ -311,6 +311,29 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     }
     return true;
   };
+  app.getFromGalleryCache = function(className, id) {
+    var found,
+      _this = this;
+
+    found = null;
+    if (className === 'PersonImage') {
+      _.each(this.Cache.UserGallery.images.Person, function(img, i) {
+        if (img.id === id) {
+          return found = _this.Cache.UserGallery.images.Person[i];
+        }
+      });
+    }
+    if (className === 'DocImage') {
+      _.each(this.Cache.UserGallery.images.Projects, function(project, i) {
+        return _.each(project.Images, function(img, j) {
+          if (img.id === id) {
+            return found = _this.Cache.UserGallery.images.Projects[i].Images[j];
+          }
+        });
+      });
+    }
+    return found;
+  };
   app.initialLoggedInCheck = function() {
     return JJRestApi.getFromDomOrApi('current-member', {
       noAjax: true

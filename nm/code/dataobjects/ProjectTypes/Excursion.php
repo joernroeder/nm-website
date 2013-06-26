@@ -188,6 +188,7 @@ class Excursion extends DataObject {
 			'StartDate',
 			'EndDate',
 			'TeaserText',
+			'Text',
 			'Persons',
 			'PreviewImage',
 			'Images',

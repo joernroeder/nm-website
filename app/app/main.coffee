@@ -247,6 +247,18 @@ require [
 						delete @.Cache.UserGallery.images.Projects[i].Images[j]
 		true
 
+	app.getFromGalleryCache = (className, id) ->
+		found = null
+		if className is 'PersonImage'
+			_.each @.Cache.UserGallery.images.Person, (img, i) =>
+				if img.id is id
+					found = @.Cache.UserGallery.images.Person[i]
+		if className is 'DocImage'
+			_.each @.Cache.UserGallery.images.Projects, (project, i) =>
+				_.each project.Images, (img, j) =>
+					if img.id is id
+						found = @.Cache.UserGallery.images.Projects[i].Images[j]
+		found
 
 	app.initialLoggedInCheck = ->
 		JJRestApi.getFromDomOrApi('current-member', {noAjax: true}).done (data) ->

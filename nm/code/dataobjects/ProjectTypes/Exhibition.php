@@ -187,6 +187,7 @@ class Exhibition extends DataObject {
 			'StartDate',
 			'EndDate',
 			'TeaserText',
+			'Text',
 			'Persons',
 			'PreviewImage',
 			'Images',

@@ -187,6 +187,7 @@ class Project extends DataObject {
 			'Title',
 			'Date',
 			'TeaserText',
+			'Text',
 			'Persons',
 			'PreviewImage',
 			'Images',

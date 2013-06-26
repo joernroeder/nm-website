@@ -23,12 +23,19 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return app.layout.setViewAndRenderMaybe('#project-editor', this.containerView);
     };
 
+    Inst.prototype.getFilterID = function() {
+      return "" + (this.model.get('ClassName')) + "-" + this.model.id;
+    };
+
     Inst.prototype.toggleView = function() {
       return this.containerView.toggleView();
     };
 
     Inst.prototype.galleryImageRemoved = function(id) {
-      if (this.model.get('PreviewImage').id === id) {
+      var previewImage;
+
+      previewImage = this.model.get('PreviewImage');
+      if (previewImage && previewImage.id === id) {
         return this.previewView.removePreviewImage();
       }
     };
@@ -65,9 +72,6 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
     cleanup: function() {
       return this.uploadZone.cleanup();
     },
-    getFilterID: function() {
-      return "" + (this.model.get('ClassName')) + "-" + this.model.id;
-    },
     initDropzone: function() {
       var _this = this;
 
@@ -91,7 +95,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
             if (_.indexOf(_this.model.get('Images').getIDArray(), model.id) < 0) {
               img = [
                 {
-                  FilterID: _this.getFilterID,
+                  FilterID: app.ProjectEditor.getFilterID(),
                   UploadedToClass: 'DocImage',
                   id: model.id,
                   url: thumbUrl
@@ -196,7 +200,51 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         return $('#layout').removeClass('open-split-markdown');
       });
       this.editor.on('stateUpdate', function(e) {
-        return console.log(e);
+        var key, text, val, _changed, _ref;
+
+        _changed = false;
+        _ref = e.ProjectMain;
+        for (key in _ref) {
+          val = _ref[key];
+          if (key === 'Text') {
+            text = val.raw ? val.raw : '';
+            if (text !== _this.model.get('Text')) {
+              _changed = true;
+              _this.model.set('Text', text);
+            }
+            _.each(val.images.ids, function(id, i) {
+              var found;
+
+              found = false;
+              _this.model.get('Images').each(function(projImage) {
+                if (projImage.id === id) {
+                  return found = true;
+                }
+              });
+              if (!found) {
+                return DataRetrieval.forDocImage(id).done(function(model) {
+                  var existImg, theImg;
+
+                  _this.model.get('Images').add(model);
+                  existImg = app.getFromGalleryCache('DocImage', model.id);
+                  theImg = [
+                    {
+                      FilterID: app.ProjectEditor.getFilterID(),
+                      UploadedToClass: 'DocImage',
+                      id: model.id,
+                      url: existImg.url
+                    }
+                  ];
+                  app.updateGalleryCache(theImg);
+                  return Backbone.Events.trigger('DocImageAdded', theImg);
+                });
+              }
+            });
+          }
+        }
+        if (_changed) {
+          return _this.model.rejectAndSave();
+        }
       });
       return this;
     },

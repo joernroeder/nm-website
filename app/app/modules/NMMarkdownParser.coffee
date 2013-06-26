@@ -23,6 +23,7 @@ define [
 				# okay, so we have our models now, but we need to check if they may be seen anyway!
 				toShow = []
 				_.each models, (model) =>
+					console.log model
 					if model.isVisibleForMember() then toShow.push(model)
 				
 				# add to our data
@@ -31,9 +32,6 @@ define [
 					@data.push { id: img.id, tag: "<span><img src=\"#{src}\" /></span>" }
 
 				dfd.resolve()
-
-			# @todo: check if the showed image is already present in the currently edited project
-			# if no, add it in the gallery sidebar! DO THIS AFTER SAVE (not here)
 
 			dfd
 
