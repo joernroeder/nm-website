@@ -593,10 +593,8 @@ define [
 				@.$img = @.$el.find '[data-md-tag]'
 
 				getSiblings = =>
-					console.log @.$img
 					id = @.$img.data 'id'
 					elementType = @.$img[0].tagName.toLowerCase()
-					console.log elementType
 
 					@.$el.closest('.editor-sidebar-content')
 						.find('[data-id=' + id + ']')
@@ -610,7 +608,6 @@ define [
 
 				@.$img.on('mouseover', =>
 					$siblings = getSiblings()
-					console.log $siblings
 					if $siblings.length
 						$siblings.addClass 'active'
 				)
