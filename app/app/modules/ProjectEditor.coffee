@@ -44,6 +44,10 @@ define [
 			@setView '.editor-project-preview', app.ProjectEditor.previewView
 
 		toggleView: ->
+			for name, view of @views
+				if view.editor
+					view.editor.trigger 'editor.closepopovers'
+
 			$('.editor-project-main, .editor-project-preview').toggleClass(@ACTIVE)
 
 
@@ -138,6 +142,11 @@ define [
 				'DateEditable',
 				'SplitMarkdownEditable'
 			]
+
+			@editor.on 'editor.open-split-markdown', ->
+				$('#layout').addClass 'open-split-markdown'
+			@editor.on 'editor.close-split-markdown', ->
+				$('#layout').removeClass 'open-split-markdown'
 
 			@editor.on 'stateUpdate', (e) =>
 				console.log e

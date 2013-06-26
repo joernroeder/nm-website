@@ -754,7 +754,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 // ! --- EDITOR --------------------------------------------
 
 .editor {
-	.transition(~"width .35s ease-in-out");
+	.transition(~"width .35s ease-in-out, margin .35s ease-in-out");
 
 	.badge {
 		padding: (@line / 2 / @em) (@badgePaddingHorizontal / 2 / @em);
@@ -863,6 +863,17 @@ x:-o-prefocus, .qtip .qtip-tip{
 		border-left: none;
 	}
 
+	&.splitmarkdowneditable {
+		height: 100%;
+		max-width: inherit;
+		z-index: 999999999 !important;
+		//.transition(~"width .25s ease-in-out");
+
+		textarea {
+			height: 100%;
+		}
+	}
+
 	&.dateeditable {
 		.qtip-content {
 			padding: @line / 2 / @em;
@@ -959,8 +970,20 @@ x:-o-prefocus, .qtip .qtip-tip{
 body.editor-sidebar-open {
 	#layout.editor {
 		.columnsWidth(8, 6);
-		.transition(~"width .25s ease-in-out");
+		.transition-property(width, margin);
+
+		&.open-split-markdown {
+			margin-left: 100% * .1;
+			.transition-property(width);
+		}
 	}
+}
+
+.editor.open-split-markdown {
+	margin-left: 100% * .2; 
+	.columnsWidth(8, 6);
+	.transition-property(width);
+	//.transition(~"width .25s ease-in-out");
 }
 
 #editor-sidebar-spinner {
@@ -1900,8 +1923,23 @@ body.dragover .editor-project-preview {
 
 // ! --- 3. detail editor -------------
 
-.editor-project-main {
+.editor-project-main.detail {
+	article {
+		margin-right: 9%;
+	}
+}
 
+.editor-sidebar-open {
+	.open-split-markdown {
+		article {
+			section {
+				width: 100%;
+			}
+			aside {
+				display: none;
+			}
+		}
+	}
 }
 
 // ! --- recycle bin
@@ -1919,6 +1957,7 @@ body.dragover .editor-project-preview {
 	border: (@line / @em) solid @editorSidebarBg;
 	.box-sizing(border-box);
 	margin-top: -@height / 2;
+	z-index: 9999999999;
 
 	.icon-recycle-bin-02;
 	background-repeat: no-repeat;

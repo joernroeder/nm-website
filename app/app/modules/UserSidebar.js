@@ -672,10 +672,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       getSiblings = function() {
         var elementType, id;
 
-        console.log(_this.$img);
         id = _this.$img.data('id');
         elementType = _this.$img[0].tagName.toLowerCase();
-        console.log(elementType);
         return _this.$el.closest('.editor-sidebar-content').find('[data-id=' + id + ']').filter(function(index) {
           return this.tagName.toLowerCase() === elementType;
         });
@@ -686,7 +684,6 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         var $siblings;
 
         $siblings = getSiblings();
-        console.log($siblings);
         if ($siblings.length) {
           return $siblings.addClass('active');
         }

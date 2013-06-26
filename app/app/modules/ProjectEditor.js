@@ -46,6 +46,15 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return this.setView('.editor-project-preview', app.ProjectEditor.previewView);
     },
     toggleView: function() {
+      var name, view, _ref;
+
+      _ref = this.views;
+      for (name in _ref) {
+        view = _ref[name];
+        if (view.editor) {
+          view.editor.trigger('editor.closepopovers');
+        }
+      }
       return $('.editor-project-main, .editor-project-preview').toggleClass(this.ACTIVE);
     }
   });
@@ -154,6 +163,12 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       var _this = this;
 
       this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable']);
+      this.editor.on('editor.open-split-markdown', function() {
+        return $('#layout').addClass('open-split-markdown');
+      });
+      this.editor.on('editor.close-split-markdown', function() {
+        return $('#layout').removeClass('open-split-markdown');
+      });
       this.editor.on('stateUpdate', function(e) {
         return console.log(e);
       });

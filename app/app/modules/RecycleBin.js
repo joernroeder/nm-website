@@ -54,6 +54,7 @@ define(['app'], function(app) {
   };
   RecycleBin.removeViewAndData = function(toRecycle) {
     toRecycle.view.$el.trigger('dragend');
+    $('body').removeClass('drag-inline');
     if (toRecycle.className === 'PersonImage' || toRecycle.className === 'DocImage') {
       app.removeFromGalleryCache(toRecycle.className, toRecycle.model.id);
       return toRecycle.view.liveRemoval();
