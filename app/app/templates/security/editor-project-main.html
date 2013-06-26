@@ -1,4 +1,12 @@
 <!-- article -->
+<style type="text/css">
+	
+	[data-editor-name="Text"] .dropzone {
+		height: 100px;
+		background: red;
+	}
+
+</style>
 <header data-editor-scope="\ProjectMain">
 	<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
 	<p>
@@ -16,7 +24,7 @@
 <section data-editor-scope="\ProjectMain">
 
 	<div data-editor-type="markdown-split" data-editor-name="Text" data-editor-options='{"customParsers": {"images": "ImageMarkdownParser"}}'>{{Text}}</div>
-	
+
 </section>
 <aside data-editor-scope="\ProjectMain">
 	Here project lists...

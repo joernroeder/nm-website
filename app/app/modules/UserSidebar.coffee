@@ -603,7 +603,7 @@ define [
 							@.tagName.toLowerCase() is elementType
 				
 
-				JJMarkdownEditor.setAsDraggable @.$el.find(['[data-md-tag]'])
+				JJMarkdownEditor.setAsDraggable @.$img
 				app.ProjectEditor.PreviewImageZone.setAsDraggable @.$img
 
 				@.$img.on('mouseover', =>
