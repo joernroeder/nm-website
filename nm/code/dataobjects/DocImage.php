@@ -33,7 +33,11 @@ class DocImage extends SubdomainResponsiveImage {
 		'view' => array(
 			'Title',
 			'Caption',
-			'Urls'
+			'Urls',
+			'Projects',
+			'Excursions',
+			'Exhibitions',
+			'Workshops'
 		)
 	);
 
