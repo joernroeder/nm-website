@@ -874,6 +874,18 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
+	&.selecteditable {
+		.selectable-item {
+			display: block;
+			padding: (@line / 4 / @em) 0;
+			cursor: pointer;
+
+			input {
+				margin-right: @line / 4 / @em;
+			}
+		}
+	}
+
 	&.dateeditable {
 		.qtip-content {
 			padding: @line / 2 / @em;
@@ -1801,6 +1813,68 @@ form.create-project {
 	}
 }
 
+// ! --- Light Editor Dropzone --------
+
+.light-dropzone(@dropzoneWidth: 100%, @dropzoneHeight: 100px) {
+	@color: lighten(@bgColor, 5%);
+	@hoverColor: @editorEditableHover;
+	@bg: @editorDropzoneBg;
+	@borderWidth: 10 / @em;
+	position: absolute;
+	background: @bg; 
+	border: 0 solid @color;
+	.transition(~"all .15s ease-in");
+	min-height: 0;
+	width: @dropzoneWidth;
+	max-height: @dropzoneWidth; 
+	line-height: 0;
+	text-align: right;
+	display: block;
+	
+	&:before {
+		position: relative;
+		top: @editorProjectPreview_DropzoneDim / 2 * 1px;
+		display: block;
+		text-align: center;
+		.icon-font;
+		content: '\1F304';
+		font-size: 900%;
+		color: @color;
+		opacity: 1;
+		.transition(~"opacity .25s linear");
+	}
+	&.filled {
+		background-color: @bgColor;
+		&:before {
+			opacity: 0;
+		}
+	}
+	&:not(.filled) {
+		height: @dropzoneHeight;
+	}
+	&.dragover {
+		margin: -@borderWidth;
+		border-width: @borderWidth;
+		background-color: @hoverColor !important;
+	}
+	&.uploading {
+		min-height: @dropzoneHeight;
+		background-color: @hoverColor !important;
+	}
+	.progress {
+		background: lighten(@nmColor, 10%);
+	}
+	img {
+		max-width: 100%;
+		max-height: @dropzoneHeight;
+	}
+	* {
+		visibility: visible;
+		opacity: 1;
+		.transition(~"visibility 0s linear, opacity .15s linear");
+	}
+}
+
 // ! --- 2. overview editor -----------
 
 .editor-project-container > section:not(.active) {
@@ -1814,72 +1888,7 @@ form.create-project {
 	//border: 1px solid red;
 
 	.dropzone.preview-image {
-		@color: lighten(@bgColor, 5%);
-		@hoverColor: @editorEditableHover;
-		@bg: @editorDropzoneBg;
-		@borderWidth: 10 / @em;
-
-		position: absolute;
-		background: @bg; 
-		border: 0 solid @color;
-		.transition(~"all .15s ease-in");
-		min-height: 0;
-		width: @dropzoneWidth;
-		max-height: @dropzoneWidth; 
-		line-height: 0;
-		text-align: right;
-		display: block;
-		
-		&:before {
-			position: relative;
-			top: @editorProjectPreview_DropzoneDim / 2 * 1px;
-			display: block;
-			text-align: center;
-			.icon-font;
-			content: '\1F304';
-			font-size: 900%;
-			color: @color;
-			opacity: 1;
-			.transition(~"opacity .25s linear");
-		}
-
-		&.filled {
-			background-color: @bgColor;
-
-			&:before {
-				opacity: 0;
-			}
-		}
-
-		&:not(.filled) {
-			height: @dropzoneHeight;
-		}
-
-		&.dragover {
-			margin: -@borderWidth;
-			border-width: @borderWidth;
-			background-color: @hoverColor !important;
-		}
-
-		&.uploading {
-			min-height: @dropzoneHeight;
-			background-color: @hoverColor !important;
-		}
-
-		.progress {
-			background: lighten(@nmColor, 10%);
-		}
-
-		img {
-			max-width: 100%;
-			max-height: @dropzoneHeight;
-		}
-
-		* {
-			visibility: visible;
-			opacity: 1;
-			.transition(~"visibility 0s linear, opacity .15s linear");
-		}
+		.light-dropzone(@dropzoneWidth, @dropzoneHeight);
 	}
 
 	.meta {
@@ -1926,6 +1935,15 @@ body.dragover .editor-project-preview {
 .editor-project-main.detail {
 	article {
 		margin-right: 9%;
+	}
+
+	[data-editor-type='markdown'],
+	[data-editor-type='markdown-split'] {
+		position: relative;
+		.dropzone {
+			.light-dropzone(100%, 200 / @em);
+			position: relative;
+		}
 	}
 }
 

@@ -684,6 +684,9 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
       this.setDataName(element.data(this.editor.getAttr('name')));
       this.updateOptions(element.data(this.editor.getAttr('options')), true);
       element.attr(this.editor.getAttr('handledBy'), this.id);
+      if (this._options.elementClasses) {
+        element.addClass(this._options.elementClasses);
+      }
       this.updateValue(true);
       val = this.getValue();
       if (val && this.isValidValue(val)) {
@@ -1534,6 +1537,15 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
         _this = this;
 
       this._source = element.data(this.editor.attr._namespace + 'source' || {});
+      this._options.position = {
+        my: 'top left',
+        at: 'bottom left',
+        adjust: {
+          x: 0,
+          y: 0,
+          method: 'flip shift'
+        }
+      };
       SelectEditable.__super__.init.call(this, element);
       this.$set = $('<div class="selectable-set">');
       _ref5 = this.getSource();
@@ -1600,6 +1612,14 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 
     SelectEditable.prototype.getValueIndex = function(id) {
       return $.inArray(id, this.getValue());
+    };
+
+    SelectEditable.prototype.isValidValue = function(val) {
+      if (val && val.length) {
+        return true;
+      } else {
+        return false;
+      }
     };
 
     SelectEditable.prototype.getValueFromContent = function() {

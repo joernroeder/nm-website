@@ -499,6 +499,9 @@ do ($ = jQuery) ->
 			@updateOptions element.data(@editor.getAttr('options')), true
 			element.attr @editor.getAttr('handledBy'), @id
 
+			if @_options.elementClasses
+				element.addClass @_options.elementClasses
+
 			@updateValue true
 			val = @getValue()
 
@@ -1186,6 +1189,17 @@ do ($ = jQuery) ->
 		init: (element) ->
 			@_source = element.data @editor.attr._namespace + 'source' or {}
 
+			@_options.position =
+					#at: 'bottom left'
+					#my: 'top left'
+					my: 'top left'
+					at: 'bottom left'
+
+					adjust:
+						x: 0
+						y: 0
+						method: 'flip shift'
+
 			super element
 
 			@$set = $ '<div class="selectable-set">'
@@ -1237,6 +1251,9 @@ do ($ = jQuery) ->
 
 		getValueIndex: (id) ->
 			$.inArray id, @getValue()
+
+		isValidValue: (val) ->
+			if val and val.length then true else false
 
 		getValueFromContent: ->
 			titles = @element.text().split @getSeperator()
