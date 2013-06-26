@@ -220,12 +220,25 @@ define [
 				selectables = @editor.getComponentsByType 'select'
 				if selectables
 					$.each selectables, (i, selectable) =>
-						console.log selectable
 						name = selectable.getDataName()
 						if @basicList[name]
-							console.log 'update source'
-							selectable.setSource @basicList[name]
-							selectable.setValue [1]
+							list = @basicList[name]
+							values = []
+							att = this.model.get(name + 's')
+							if att
+								values = _.without this.model.get(name + 's').getIDArray()
+
+							if name is 'Person'
+								list = []
+								personId = app.CurrentMemberPerson.id
+								_.each @basicList[name], (person) ->
+									list.push person if person.ID isnt personId
+	
+								values = _.without this.model.get(name + 's').getIDArray(), personId
+
+							selectable.setSource list
+
+							selectable.setValue values
 
 				false
 

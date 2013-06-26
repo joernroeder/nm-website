@@ -268,14 +268,28 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         selectables = _this.editor.getComponentsByType('select');
         if (selectables) {
           $.each(selectables, function(i, selectable) {
-            var name;
+            var att, list, name, personId, values;
 
-            console.log(selectable);
             name = selectable.getDataName();
             if (_this.basicList[name]) {
-              console.log('update source');
-              selectable.setSource(_this.basicList[name]);
-              return selectable.setValue([1]);
+              list = _this.basicList[name];
+              values = [];
+              att = _this.model.get(name + 's');
+              if (att) {
+                values = _.without(_this.model.get(name + 's').getIDArray());
+              }
+              if (name === 'Person') {
+                list = [];
+                personId = app.CurrentMemberPerson.id;
+                _.each(_this.basicList[name], function(person) {
+                  if (person.ID !== personId) {
+                    return list.push(person);
+                  }
+                });
+                values = _.without(_this.model.get(name + 's').getIDArray(), personId);
+              }
+              selectable.setSource(list);
+              return selectable.setValue(values);
             }
           });
         }
