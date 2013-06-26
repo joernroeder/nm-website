@@ -117,6 +117,7 @@ class Project extends DataObject {
 			'UglyHash',
 			'Title',
 			'TeaserText',
+			'Date',
 			'FrontendDate',
 			'Text',
 			'MarkdownedText',
