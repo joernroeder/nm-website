@@ -36,7 +36,7 @@ define [
 
 				# insert the list items
 				for model in modelArray
-					if @.model.get('IsPublished')
+					if model.get('IsPublished')
 						@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: 'about/' + @.model.get('UrlSlug') })
 				# insert the person item
 				@.insertView '', new Person.Views.InfoItem({ model: @.model })

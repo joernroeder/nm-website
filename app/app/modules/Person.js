@@ -46,7 +46,7 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
       }
       for (_k = 0, _len2 = modelArray.length; _k < _len2; _k++) {
         model = modelArray[_k];
-        if (this.model.get('IsPublished')) {
+        if (model.get('IsPublished')) {
           this.insertView('', new Portfolio.Views.ListItem({
             model: model,
             linkTo: 'about/' + this.model.get('UrlSlug')
