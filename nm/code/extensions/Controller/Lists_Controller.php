@@ -68,8 +68,8 @@ class Lists_Controller extends Controller {
 			
 			if ($theAtt) {
 				$out[] = array(
-					'ID'	=> $obj->ID,
-					$att 	=> $theAtt
+					'ID'		=> $obj->ID,
+					'Title' 	=> $theAtt
 				);	
 			}
 			
