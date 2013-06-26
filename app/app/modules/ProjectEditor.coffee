@@ -142,6 +142,18 @@ define [
 				'SelectEditable'
 			]
 
+			test = @editor.getComponentByName 'ProjectMain.Test'
+			test.setSource [	
+					id: 10
+					title: "hans"
+				,
+					id: 1
+					title: "foo"
+				,
+					id: 20
+					title: "wurst"
+				]
+
 			# dynamic options update
 			markdownEditor = @editor.getComponentByName('ProjectMain.Text').markdown
 			_.extend markdownEditor.options,

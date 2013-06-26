@@ -1192,8 +1192,6 @@ do ($ = jQuery) ->
 			@_source = {}
 
 		init: (element) ->
-			@_source = element.data @editor.attr._namespace + 'source' or {}
-
 			@_options.position =
 					#at: 'bottom left'
 					#my: 'top left'
@@ -1205,9 +1203,17 @@ do ($ = jQuery) ->
 						y: 0
 						method: 'flip shift'
 
+			@_source = element.data(@editor.attr._namespace + 'source') or {}
+
 			super element
 
 			@$set = $ '<div class="selectable-set">'
+			@setPopoverContent @$set
+
+			@setSource @_source
+
+		createPopupContent: ->
+			@$set.empty()
 
 			for i, source of @getSource()
 				$label = $ '<label class="selectable-item">' + source.title + '<label>'
@@ -1234,16 +1240,14 @@ do ($ = jQuery) ->
 					if changed
 						@setValue value
 						console.log value
-						@render()
 					true
 
 				@$set.append $label.prepend($input)
-			
-			@setPopoverContent @$set
+
 			true
 
 		onOptionsUpdate: ->
-			@_source = @_options.source if @_options.source
+			@setSource @_options.source if @_options.source
 			@contentSeperator = @_options.contentSeperator if @_options.contentSeperator
 
 		getSeperator: ->
@@ -1253,6 +1257,8 @@ do ($ = jQuery) ->
 			@_source
 
 		setSource: (@_source) ->
+			@createPopupContent()
+			@cleanupValue()
 
 		getValueIndex: (id) ->
 			$.inArray id, @getValue()
@@ -1268,6 +1274,23 @@ do ($ = jQuery) ->
 					values.push source.id
 
 			values
+
+		cleanupValue: ->
+			value = @getValue()
+			for i, val of value
+				found = false
+				for j, source of @getSource()
+					found = true if val is source.id
+
+				value.splice i, 1 if not found
+
+			console.log value
+			@setValue value
+
+		setValue: (value, silent) ->
+			super value, silent
+			@render()
+
 
 		setValueToContent: (val, isPlaceholder) ->
 			titles = []

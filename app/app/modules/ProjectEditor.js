@@ -161,10 +161,23 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
     tagName: 'article',
     template: 'security/editor-project-main',
     initEditor: function() {
-      var markdownEditor,
+      var markdownEditor, test,
         _this = this;
 
       this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable']);
+      test = this.editor.getComponentByName('ProjectMain.Test');
+      test.setSource([
+        {
+          id: 10,
+          title: "hans"
+        }, {
+          id: 1,
+          title: "foo"
+        }, {
+          id: 20,
+          title: "wurst"
+        }
+      ]);
       markdownEditor = this.editor.getComponentByName('ProjectMain.Text').markdown;
       _.extend(markdownEditor.options, {
         additionalPOSTData: {

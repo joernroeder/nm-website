@@ -1536,10 +1536,6 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.init = function(element) {
-      var $input, $label, i, source, _ref5,
-        _this = this;
-
-      this._source = element.data(this.editor.attr._namespace + 'source' || {});
       this._options.position = {
         my: 'top left',
         at: 'bottom left',
@@ -1549,8 +1545,18 @@ var __hasProp = {}.hasOwnProperty,
           method: 'flip shift'
         }
       };
+      this._source = element.data(this.editor.attr._namespace + 'source') || {};
       SelectEditable.__super__.init.call(this, element);
       this.$set = $('<div class="selectable-set">');
+      this.setPopoverContent(this.$set);
+      return this.setSource(this._source);
+    };
+
+    SelectEditable.prototype.createPopupContent = function() {
+      var $input, $label, i, source, _ref5,
+        _this = this;
+
+      this.$set.empty();
       _ref5 = this.getSource();
       for (i in _ref5) {
         source = _ref5[i];
@@ -1582,19 +1588,17 @@ var __hasProp = {}.hasOwnProperty,
           if (changed) {
             _this.setValue(value);
             console.log(value);
-            _this.render();
           }
           return true;
         });
         this.$set.append($label.prepend($input));
       }
-      this.setPopoverContent(this.$set);
       return true;
     };
 
     SelectEditable.prototype.onOptionsUpdate = function() {
       if (this._options.source) {
-        this._source = this._options.source;
+        this.setSource(this._options.source);
       }
       if (this._options.contentSeperator) {
         return this.contentSeperator = this._options.contentSeperator;
@@ -1611,6 +1615,8 @@ var __hasProp = {}.hasOwnProperty,
 
     SelectEditable.prototype.setSource = function(_source) {
       this._source = _source;
+      this.createPopupContent();
+      return this.cleanupValue();
     };
 
     SelectEditable.prototype.getValueIndex = function(id) {
@@ -1638,6 +1644,33 @@ var __hasProp = {}.hasOwnProperty,
         }
       }
       return values;
+    };
+
+    SelectEditable.prototype.cleanupValue = function() {
+      var found, i, j, source, val, value, _ref5;
+
+      value = this.getValue();
+      for (i in value) {
+        val = value[i];
+        found = false;
+        _ref5 = this.getSource();
+        for (j in _ref5) {
+          source = _ref5[j];
+          if (val === source.id) {
+            found = true;
+          }
+        }
+        if (!found) {
+          value.splice(i, 1);
+        }
+      }
+      console.log(value);
+      return this.setValue(value);
+    };
+
+    SelectEditable.prototype.setValue = function(value, silent) {
+      SelectEditable.__super__.setValue.call(this, value, silent);
+      return this.render();
     };
 
     SelectEditable.prototype.setValueToContent = function(val, isPlaceholder) {
