@@ -116,7 +116,6 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
         var key, val, _changed, _ref;
 
         _changed = false;
-        console.log(e);
         _ref = e.ProjectPreview;
         for (key in _ref) {
           val = _ref[key];

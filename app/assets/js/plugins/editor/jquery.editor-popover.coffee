@@ -1058,7 +1058,7 @@ do ($ = jQuery) ->
 						initialTriggerDone = true
 						return
 
-					console.log 'markdown changed'
+					#console.log 'markdown changed'
 					if @markdownChangeTimeout
 						clearTimeout @markdownChangeTimeout
 

@@ -104,7 +104,6 @@ define [
 
 			@editor.on 'stateUpdate', (e) =>
 				_changed = false
-				console.log e
 				for key, val of e.ProjectPreview
 					if key is 'TeaserText' and val then val = val.raw
 					if not val then continue

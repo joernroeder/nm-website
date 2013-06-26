@@ -1375,7 +1375,6 @@ var __hasProp = {}.hasOwnProperty,
             initialTriggerDone = true;
             return;
           }
-          console.log('markdown changed');
           if (_this.markdownChangeTimeout) {
             clearTimeout(_this.markdownChangeTimeout);
           }
