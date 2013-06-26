@@ -32,7 +32,7 @@ do ($ = jQuery) ->
 			hideDropzoneDelay 	: 1000 														# Defines after which time the dropzone within the preview area fades out when the markdown field is left (in ms)
 			errorMsg 			: 'Sorry, but there has been an error.' 					# Default error message
 			contentGetter		: 'val'														# Defines how to retrieve the input area's data. Default is 'val' (thus $input.val())
-			customParsers		: ['SingleImgMarkdownParser', 'OEmbedMarkdownParser']		# Defines which custom markdown parsers are active 
+			customParsers		: {}														# Defines which custom markdown parsers are active 
 			customParserOptions	: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
 			afterRender			: ->
 				if window.picturefill then window.picturefill()								# Method to call after the markdown rendering has been done
@@ -104,11 +104,11 @@ do ($ = jQuery) ->
 		initialize : ->
 			
 			# setup the used custom parsers
-			$.each @.options.customParsers, (i, parser) =>
+			$.each @.options.customParsers, (key, parser) =>
 				p = window[parser]
 				if p
-					opts = @.options.customParserOptions[parser]
-					@.customParsers[parser] = new p(opts)
+					opts = @.options.customParserOptions[key]
+					@.customParsers[key] = new p(opts)
 
 			$input = @.$input
 			$preview = @.$preview
@@ -173,7 +173,8 @@ do ($ = jQuery) ->
 			# Custom parsers, always need to pass the raw version
 			seeds = []
 			$.each @.customParsers, (i, parser) =>
-				seed = parser.requestData raw
+				ids = parser.findIDs raw
+				seed = parser.getData ids
 				seeds.push seed
 				if not parser.noAjax then @.pendingAjax.push seed
 
@@ -195,7 +196,7 @@ do ($ = jQuery) ->
 
 				if @.options.afterRender then @.options.afterRender()
 				data = { raw:raw }
-				if @.customParsers.SingleImgMarkdownParser then data.images = @.customParsers.SingleImgMarkdownParser.returnIds()
+				if @.customParsers.images then data.images = @.customParsers.images.returnIds()
 				if @.options.onChange then @.options.onChange data
 
 		# this sets up the drag and drop for files
@@ -380,109 +381,117 @@ do ($ = jQuery) ->
 				val = [val.slice(0, pos), md, val.slice(pos)].join ''
 			@.$input._val val
 
-	# !- Custom Markdown parsers
+	# !- Custom Markdown parser
+	
+	CustomMarkdownParserInterface =
+		findIDs : (raw) ->				# returns array of identification
+		parseFound : (found) ->			# parses a found ID into the wished format
+		getUrl : (reqIds) ->			# returns the URL to fetch missing data from the server
+		getData : (ids) ->				# returns a $.Deferred, resolved should set @data to array of objects {id: , tag:}
+		parseMarkdown: (md) ->			# parses and returns the markdown
+		returnIds: ->					# returns an array of all currently used ids
 
 	class CustomMarkdownParser
-		rule: null
 		url: ''
-		defaultCache: []
-		usedIds: []
-		_tempReplacements: null
-		_raw : null
-
-		constructor: (opts) ->			
-
+		constructor: (opts) ->
+			@cache = []
 			if opts
-				for a, b of opts
+				for a,b of opts
 					@[a] = b
 
-		updateCache: (data) ->
-			@.defaultCache = @.defaultCache.concat data
 
-		fromCache: (id) ->
+	# implementation
+
+	CustomMarkdownParser.prototype.findIDs = (raw) ->
+		@_raw = raw
+		replacements = []
+		founds = []
+
+		while cap = @rule.exec raw
+			replacements.push cap
+			found = @parseFound cap[1]
+
+			if $.inArray(found, founds) < 0 then founds.push found
+
+		@._tempReplacements = replacements
+
+		founds
+
+	CustomMarkdownParser.prototype.parseFound = (found) ->
+		found
+
+	CustomMarkdownParser.prototype.getUrl = (reqIds) ->
+		@url + '?ids=' + reqIds.join(',')
+
+	CustomMarkdownParser.prototype.getData = (ids) ->
+
+		reqIds = []
+
+		# this is our array of data we pass to the parse markdown function
+		resolveData = []
+
+		dfd = new $.Deferred()
+
+		$.each ids, (i, id) =>
 			found = null
-			$.each @.defaultCache, (j, obj) ->
+			$.each @cache, (j, obj) ->
 				if obj.id is id then found = obj
 				return
-			found
+			if not found then reqIds.push(id) else resolveData.push(found)
+
+		if not reqIds.length
+			@data = resolveData
+			dfd.resolve()
+			return dfd
+
+		# get the missing data from the server
+		url = @getUrl reqIds
+		$.getJSON(url)
+			.done (data) =>
+				if $.isArray(data)
+					@cache = @cache.concat data
+					resolveData = resolveData.concat data
+
+					@data = resolveData
 
 
-		requestData: (raw) ->
-			@._raw = raw
-			replacements = []
-			founds = []
-			while cap = @.rule.exec raw
-				replacements.push cap
-				found = @.parseFound cap[1]
+	CustomMarkdownParser.prototype.parseMarkdown = (md) ->
 
-				if $.inArray(found, founds) < 0 then founds.push found
-
-			@._tempReplacements = replacements
-
-
-			dfd = new $.Deferred()
-			_this = @
-			reqIds = []
-			$.each founds, (i, id) =>
-				found = @.fromCache id
-				if not found then reqIds.push id
-
-			# get the missing images from the server
-			if not reqIds.length
-				dfd.resolve()
-				return dfd
-			url = @.url + '?ids=' + reqIds.join(',')
-
-			$.getJSON(url)
-				.done (data) =>
-					if $.isArray(data)
-						@.updateCache data
-
-		parseMarkdown: (md) ->
-			patternsUsed = []
-			raw = @._raw
-	
-			usedIds = []
-			$.each @._tempReplacements, (i, replace) =>
-				obj = @.fromCache(@.parseFound(replace[1]))
-				if obj
-					usedIds.push obj.id
-					# replace and insert the position within the editor
-					pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
-					tag = @.insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
-					tag = @.insertDataIntoRawTag tag, 'md-tag', pattern
-					md = md.replace replace[0], tag
-
-			@._raw = null
-			@._tempReplacements = null
-			@.usedIds = $.unique usedIds
-			md
-
-		parseFound: (data) ->
-			data
-
-		insertDataIntoRawTag : (rawTag, dataName, dataVal) ->
+		insertDataIntoRawTag = (rawTag, dataName, dataVal) ->
 			ltp = rawTag.indexOf '>'
 			[rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('')
 
-		returnIds: ->
-			out = {ids: @.usedIds}
-			if @.className then out.className = @.className
-			out
+		patternsUsed = []
+		raw = @._raw
+			
+		usedIds = []
+		$.each @._tempReplacements, (i, replace) =>
+			obj = null
+			id = @parseFound replace[1]
+			$.each @data, (j, o) ->
+				if o.id is id then obj = o
+				return
 
-	class SingleImgMarkdownParser extends CustomMarkdownParser
-		className: 'DocImage'
-		rule: /\[img\s{1,}(.*?)\]/gi
-		url: '/imagery/images/docimage'
-		parseFound: (data) ->
-			parseInt data
+			if obj
+				usedIds.push obj.id
+				# replace and insert the position within the editor
+				pattern = replace[0].replace('[', '\\[').replace(']', '\\]')
+				tag = insertDataIntoRawTag obj.tag, 'editor-pos' , replace['index']
+				tag = insertDataIntoRawTag tag, 'md-tag', pattern
+				md = md.replace replace[0], tag
 
-	class OEmbedMarkdownParser extends CustomMarkdownParser
-		rule: /\[embed\s{1,}(.*?)\]/gi
-		url: '/_md_/oembed'
+		# cleanup
+		@_raw = null
+		@_tempReplacements = null
+		@usedIds = $.unique usedIds
+		md
 
+	CustomMarkdownParser.prototype.returnIds = ->
+		out = {ids: @usedIds}
+		if @className then out.className = @className
+		out
 
 
 	window.JJMarkdownEditor = JJMarkdownEditor
-	window.SingleImgMarkdownParser = SingleImgMarkdownParser
-	window.OEmbedMarkdownParser = OEmbedMarkdownParser
+	window.CustomMarkdownParser = CustomMarkdownParser
+	

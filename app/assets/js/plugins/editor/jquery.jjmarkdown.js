@@ -15,12 +15,8 @@
  * 	- jquery.jjfileupload.js
  *
 */
-
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
 (function($) {
-  var CustomMarkdownParser, JJMarkdownEditor, OEmbedMarkdownParser, SingleImgMarkdownParser, _ref, _ref1;
+  var CustomMarkdownParser, CustomMarkdownParserInterface, JJMarkdownEditor;
 
   JJMarkdownEditor = (function() {
     /**
@@ -38,7 +34,7 @@ var __hasProp = {}.hasOwnProperty,
       hideDropzoneDelay: 1000,
       errorMsg: 'Sorry, but there has been an error.',
       contentGetter: 'val',
-      customParsers: ['SingleImgMarkdownParser', 'OEmbedMarkdownParser'],
+      customParsers: {},
       customParserOptions: {},
       afterRender: function() {
         if (window.picturefill) {
@@ -124,13 +120,13 @@ var __hasProp = {}.hasOwnProperty,
       var $els, $input, $preview, scrollArea,
         _this = this;
 
-      $.each(this.options.customParsers, function(i, parser) {
+      $.each(this.options.customParsers, function(key, parser) {
         var opts, p;
 
         p = window[parser];
         if (p) {
-          opts = _this.options.customParserOptions[parser];
-          return _this.customParsers[parser] = new p(opts);
+          opts = _this.options.customParserOptions[key];
+          return _this.customParsers[key] = new p(opts);
         }
       });
       $input = this.$input;
@@ -189,9 +185,10 @@ var __hasProp = {}.hasOwnProperty,
       markdown = marked(raw);
       seeds = [];
       $.each(this.customParsers, function(i, parser) {
-        var seed;
+        var ids, seed;
 
-        seed = parser.requestData(raw);
+        ids = parser.findIDs(raw);
+        seed = parser.getData(ids);
         seeds.push(seed);
         if (!parser.noAjax) {
           return _this.pendingAjax.push(seed);
@@ -217,8 +214,8 @@ var __hasProp = {}.hasOwnProperty,
         data = {
           raw: raw
         };
-        if (_this.customParsers.SingleImgMarkdownParser) {
-          data.images = _this.customParsers.SingleImgMarkdownParser.returnIds();
+        if (_this.customParsers.images) {
+          data.images = _this.customParsers.images.returnIds();
         }
         if (_this.options.onChange) {
           return _this.options.onChange(data);
@@ -399,22 +396,21 @@ var __hasProp = {}.hasOwnProperty,
     return JJMarkdownEditor;
 
   })();
+  CustomMarkdownParserInterface = {
+    findIDs: function(raw) {},
+    parseFound: function(found) {},
+    getUrl: function(reqIds) {},
+    getData: function(ids) {},
+    parseMarkdown: function(md) {},
+    returnIds: function() {}
+  };
   CustomMarkdownParser = (function() {
-    CustomMarkdownParser.prototype.rule = null;
-
     CustomMarkdownParser.prototype.url = '';
-
-    CustomMarkdownParser.prototype.defaultCache = [];
-
-    CustomMarkdownParser.prototype.usedIds = [];
-
-    CustomMarkdownParser.prototype._tempReplacements = null;
-
-    CustomMarkdownParser.prototype._raw = null;
 
     function CustomMarkdownParser(opts) {
       var a, b;
 
+      this.cache = [];
       if (opts) {
         for (a in opts) {
           b = opts[a];
@@ -423,146 +419,114 @@ var __hasProp = {}.hasOwnProperty,
       }
     }
 
-    CustomMarkdownParser.prototype.updateCache = function(data) {
-      return this.defaultCache = this.defaultCache.concat(data);
-    };
+    return CustomMarkdownParser;
 
-    CustomMarkdownParser.prototype.fromCache = function(id) {
+  })();
+  CustomMarkdownParser.prototype.findIDs = function(raw) {
+    var cap, found, founds, replacements;
+
+    this._raw = raw;
+    replacements = [];
+    founds = [];
+    while (cap = this.rule.exec(raw)) {
+      replacements.push(cap);
+      found = this.parseFound(cap[1]);
+      if ($.inArray(found, founds) < 0) {
+        founds.push(found);
+      }
+    }
+    this._tempReplacements = replacements;
+    return founds;
+  };
+  CustomMarkdownParser.prototype.parseFound = function(found) {
+    return found;
+  };
+  CustomMarkdownParser.prototype.getUrl = function(reqIds) {
+    return this.url + '?ids=' + reqIds.join(',');
+  };
+  CustomMarkdownParser.prototype.getData = function(ids) {
+    var dfd, reqIds, resolveData, url,
+      _this = this;
+
+    reqIds = [];
+    resolveData = [];
+    dfd = new $.Deferred();
+    $.each(ids, function(i, id) {
       var found;
 
       found = null;
-      $.each(this.defaultCache, function(j, obj) {
+      $.each(_this.cache, function(j, obj) {
         if (obj.id === id) {
           found = obj;
         }
       });
-      return found;
-    };
-
-    CustomMarkdownParser.prototype.requestData = function(raw) {
-      var cap, dfd, found, founds, replacements, reqIds, url,
-        _this = this;
-
-      this._raw = raw;
-      replacements = [];
-      founds = [];
-      while (cap = this.rule.exec(raw)) {
-        replacements.push(cap);
-        found = this.parseFound(cap[1]);
-        if ($.inArray(found, founds) < 0) {
-          founds.push(found);
-        }
+      if (!found) {
+        return reqIds.push(id);
+      } else {
+        return resolveData.push(found);
       }
-      this._tempReplacements = replacements;
-      dfd = new $.Deferred();
+    });
+    if (!reqIds.length) {
+      this.data = resolveData;
+      dfd.resolve();
+      return dfd;
+    }
+    url = this.getUrl(reqIds);
+    return $.getJSON(url).done(function(data) {
+      if ($.isArray(data)) {
+        _this.cache = _this.cache.concat(data);
+        resolveData = resolveData.concat(data);
+        return _this.data = resolveData;
+      }
+    });
+  };
+  CustomMarkdownParser.prototype.parseMarkdown = function(md) {
+    var insertDataIntoRawTag, patternsUsed, raw, usedIds,
       _this = this;
-      reqIds = [];
-      $.each(founds, function(i, id) {
-        found = _this.fromCache(id);
-        if (!found) {
-          return reqIds.push(id);
-        }
-      });
-      if (!reqIds.length) {
-        dfd.resolve();
-        return dfd;
-      }
-      url = this.url + '?ids=' + reqIds.join(',');
-      return $.getJSON(url).done(function(data) {
-        if ($.isArray(data)) {
-          return _this.updateCache(data);
-        }
-      });
-    };
 
-    CustomMarkdownParser.prototype.parseMarkdown = function(md) {
-      var patternsUsed, raw, usedIds,
-        _this = this;
-
-      patternsUsed = [];
-      raw = this._raw;
-      usedIds = [];
-      $.each(this._tempReplacements, function(i, replace) {
-        var obj, pattern, tag;
-
-        obj = _this.fromCache(_this.parseFound(replace[1]));
-        if (obj) {
-          usedIds.push(obj.id);
-          pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
-          tag = _this.insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
-          tag = _this.insertDataIntoRawTag(tag, 'md-tag', pattern);
-          return md = md.replace(replace[0], tag);
-        }
-      });
-      this._raw = null;
-      this._tempReplacements = null;
-      this.usedIds = $.unique(usedIds);
-      return md;
-    };
-
-    CustomMarkdownParser.prototype.parseFound = function(data) {
-      return data;
-    };
-
-    CustomMarkdownParser.prototype.insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
+    insertDataIntoRawTag = function(rawTag, dataName, dataVal) {
       var ltp;
 
       ltp = rawTag.indexOf('>');
       return [rawTag.slice(0, ltp), ' data-' + dataName + '="' + dataVal + '"', rawTag.slice(ltp)].join('');
     };
+    patternsUsed = [];
+    raw = this._raw;
+    usedIds = [];
+    $.each(this._tempReplacements, function(i, replace) {
+      var id, obj, pattern, tag;
 
-    CustomMarkdownParser.prototype.returnIds = function() {
-      var out;
-
-      out = {
-        ids: this.usedIds
-      };
-      if (this.className) {
-        out.className = this.className;
+      obj = null;
+      id = _this.parseFound(replace[1]);
+      $.each(_this.data, function(j, o) {
+        if (o.id === id) {
+          obj = o;
+        }
+      });
+      if (obj) {
+        usedIds.push(obj.id);
+        pattern = replace[0].replace('[', '\\[').replace(']', '\\]');
+        tag = insertDataIntoRawTag(obj.tag, 'editor-pos', replace['index']);
+        tag = insertDataIntoRawTag(tag, 'md-tag', pattern);
+        return md = md.replace(replace[0], tag);
       }
-      return out;
+    });
+    this._raw = null;
+    this._tempReplacements = null;
+    this.usedIds = $.unique(usedIds);
+    return md;
+  };
+  CustomMarkdownParser.prototype.returnIds = function() {
+    var out;
+
+    out = {
+      ids: this.usedIds
     };
-
-    return CustomMarkdownParser;
-
-  })();
-  SingleImgMarkdownParser = (function(_super) {
-    __extends(SingleImgMarkdownParser, _super);
-
-    function SingleImgMarkdownParser() {
-      _ref = SingleImgMarkdownParser.__super__.constructor.apply(this, arguments);
-      return _ref;
+    if (this.className) {
+      out.className = this.className;
     }
-
-    SingleImgMarkdownParser.prototype.className = 'DocImage';
-
-    SingleImgMarkdownParser.prototype.rule = /\[img\s{1,}(.*?)\]/gi;
-
-    SingleImgMarkdownParser.prototype.url = '/imagery/images/docimage';
-
-    SingleImgMarkdownParser.prototype.parseFound = function(data) {
-      return parseInt(data);
-    };
-
-    return SingleImgMarkdownParser;
-
-  })(CustomMarkdownParser);
-  OEmbedMarkdownParser = (function(_super) {
-    __extends(OEmbedMarkdownParser, _super);
-
-    function OEmbedMarkdownParser() {
-      _ref1 = OEmbedMarkdownParser.__super__.constructor.apply(this, arguments);
-      return _ref1;
-    }
-
-    OEmbedMarkdownParser.prototype.rule = /\[embed\s{1,}(.*?)\]/gi;
-
-    OEmbedMarkdownParser.prototype.url = '/_md_/oembed';
-
-    return OEmbedMarkdownParser;
-
-  })(CustomMarkdownParser);
+    return out;
+  };
   window.JJMarkdownEditor = JJMarkdownEditor;
-  window.SingleImgMarkdownParser = SingleImgMarkdownParser;
-  return window.OEmbedMarkdownParser = OEmbedMarkdownParser;
+  return window.CustomMarkdownParser = CustomMarkdownParser;
 })(jQuery);
