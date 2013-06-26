@@ -212,34 +212,36 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
               _changed = true;
               _this.model.set('Text', text);
             }
-            _.each(val.images.ids, function(id, i) {
-              var found;
+            if (val.images) {
+              _.each(val.images.ids, function(id, i) {
+                var found;
 
-              found = false;
-              _this.model.get('Images').each(function(projImage) {
-                if (projImage.id === id) {
-                  return found = true;
+                found = false;
+                _this.model.get('Images').each(function(projImage) {
+                  if (projImage.id === id) {
+                    return found = true;
+                  }
+                });
+                if (!found) {
+                  return DataRetrieval.forDocImage(id).done(function(model) {
+                    var existImg, theImg;
+
+                    _this.model.get('Images').add(model);
+                    existImg = app.getFromGalleryCache('DocImage', model.id);
+                    theImg = [
+                      {
+                        FilterID: app.ProjectEditor.getFilterID(),
+                        UploadedToClass: 'DocImage',
+                        id: model.id,
+                        url: existImg.url
+                      }
+                    ];
+                    app.updateGalleryCache(theImg);
+                    return Backbone.Events.trigger('DocImageAdded', theImg);
+                  });
                 }
               });
-              if (!found) {
-                return DataRetrieval.forDocImage(id).done(function(model) {
-                  var existImg, theImg;
-
-                  _this.model.get('Images').add(model);
-                  existImg = app.getFromGalleryCache('DocImage', model.id);
-                  theImg = [
-                    {
-                      FilterID: app.ProjectEditor.getFilterID(),
-                      UploadedToClass: 'DocImage',
-                      id: model.id,
-                      url: existImg.url
-                    }
-                  ];
-                  app.updateGalleryCache(theImg);
-                  return Backbone.Events.trigger('DocImageAdded', theImg);
-                });
-              }
-            });
+            }
           }
         }
         if (_changed) {
