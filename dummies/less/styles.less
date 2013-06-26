@@ -864,11 +864,87 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	&.dateeditable {
+		.qtip-content {
+			padding: @line / 2 / @em;
+		}
+
 		input {
 			display: none;
 		}
 		.Zebra_DatePicker {
 			position: relative;
+		}
+
+		.Zebra_DatePicker {
+			td {
+				.transition(~"color .15s ease-in-out, background .15s ease-in-out");
+			}
+
+			.dp_header {
+				background: darken(@black, 5%);
+				border-bottom: 1px solid darken(@nmColor, 30%);
+				.big-caps;
+			}
+
+			.dp_previous,
+			.dp_next {
+				color: darken(@editorSidebarColor, 30%);
+			}
+			.dp_caption {
+				color: @editorSidebarColor;
+			}
+			.dp_current {
+				color: #fff;
+			}
+			.dp_selected {
+
+			}
+			.dp_hover {
+				background: transparent;
+				color: #fff;
+			}
+
+			.dp_monthpicker,
+			.dp_yearpicker {
+				width: 100% !important;
+				font-size: @font-size * .9  / @em;
+				border-collapse: separate;
+				border-spacing: 4px 0;
+
+				td {
+					padding: 3px;
+					color: darken(@editorSidebarColor, 30%);
+
+					&.dp_current {
+						color: #fff;
+					}
+
+					&.dp_hover {
+						background: mix(lighten(@black, 5%), darken(@nmColor, 30%), 75%);
+						color: @editorSidebarColor;
+					}
+
+					&.dp_selected {
+						background: @nmColor;
+						color: @black;
+					}
+				}
+			}
+
+			.dp_footer {
+				width: 100% !important;
+				font-size: @font-size * .9  / @em;
+				background: darken(@black, 5%);
+				border-top: 1px solid darken(@nmColor, 30%);
+
+				td {
+					color: darken(@editorSidebarColor, 30%);
+
+					&.dp_hover {
+						color: #fff;
+					}
+				}
+			}
 		}
 	}
 }
@@ -894,7 +970,6 @@ body.editor-sidebar-open {
 }
 
 .editor-sidebar {
-	@sidebarColor: darken(#fff, 20%);
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -1050,12 +1125,12 @@ body.editor-sidebar-open {
 	}
 
 	h1, h2, h3 {
-		color: @sidebarColor;
+		color: @editorSidebarColor;
 	}
 
 	a {
 		.link();
-		color: @sidebarColor;
+		color: @editorSidebarColor;
 	}
 
 	select.filter {
@@ -1106,7 +1181,7 @@ body.editor-sidebar-open {
 			}
 
 			a {
-				color: @sidebarColor;
+				color: @editorSidebarColor;
 				display: block;
 				padding: (@line / 4 / @em) (@line / 2 / @em);
 				margin: 0 -(@line / 2 / @em);
@@ -1359,7 +1434,7 @@ body.editor-sidebar-open {
 		padding: @line / 4 / @em;
 		border: none;
 		margin-bottom: @line / 2 / @em;
-		color: @sidebarColor;
+		color: @editorSidebarColor;
 
 		.placeholder(darken(@gray, 20%));
 		.transition(~"color .2s ease-in-out, background .2s ease-in-out");

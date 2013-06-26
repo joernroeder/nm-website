@@ -764,14 +764,15 @@ do ($ = jQuery) ->
 			super editor
 
 		init: (element) ->
-			@_options.position =
-				at: 'right center'
-				my: 'left center'
+			if not @_options.position
+				@_options.position =
+					at: 'right center'
+					my: 'left center'
 
-				adjust:
-					x: 10
-					resize: true # @todo: own resize method
-					method: 'flip shift'
+					adjust:
+						x: 10
+						resize: true # @todo: own resize method
+						method: 'flip shift'
 
 			super element
 
@@ -953,13 +954,8 @@ do ($ = jQuery) ->
 		members: ->
 			super()
 			
-			@contentTypes = ['date']
-		
-			@position =
-				at: 'top left'
-				my: 'bottom left'
-
-			@format = 'Y'
+			@contentTypes = ['date']	
+			@contentFormattedValue = ''
 
 		init: (element) ->
 			@$input = $ '<input type="text">'
@@ -968,41 +964,57 @@ do ($ = jQuery) ->
 				.append(@$input)
 				.append $datepicker
 
+			@_options.position =
+					#at: 'bottom left'
+					#my: 'top left'
+					my: 'top right'
+					at: 'top left'
+
+					adjust:
+						x: -5
+						y: -18
+						resize: true # @todo: own resize method
+						method: 'flip shift'
+
 			super element
 
-			@$input.Zebra_DatePicker
-				format: 'm Y'
-				always_visible: $datepicker
-				onChange: (view, elements) =>
-					@$input.change()
+			@contentFormattedValue = @getPlaceholder()
 
-			@$input.on @getNamespacedEventName('change'), (e) =>
-				@updateValue()
+			@$input.Zebra_DatePicker
+				format: @getContentFormat()
+				always_visible: $datepicker
+				onChange: =>
+					if @api
+						@api.reposition()
+
+				onClear: =>
+					@contentFormattedValue = @getPlaceholder()
+					@setValue null
+					@render()
+
+				onSelect: (format, ymd, date) =>
+					@contentFormattedValue = format
+					@setValue ymd
 			
 			@setPopoverContent $content
-
-		close: ->
-			@updateValue()
-
-			super()
 
 		updateValue: (silent) ->
 			super silent
 
 			@element.html @getValueOrPlaceholder()
 
-		getValueFromContent: ->
-			val = @$input.val()
-
-			if val
-				dates = val.split ' '
-				return dates[1] + '-' + dates[0] + '-01'
-			else
-				 return ''
+		render: ->
+			@element.html @contentFormattedValue
 
 		setValueToContent: (val, isPlaceholder) ->
 			if not isPlaceholder
 				@input.val val
+
+		getFormat: ->
+			@getOptions().format or 'Y-m-d'
+
+		getContentFormat: ->
+			@getOptions().contentFormat or @getFormat()
 
 
 		destroy: ->

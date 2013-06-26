@@ -1,8 +1,12 @@
-.Zebra_DatePicker .dp_header .dp_previous,.Zebra_DatePicker .dp_header .dp_next {
-    width: 30px;
+.Zebra_DatePicker .dp_header .dp_previous,
+.Zebra_DatePicker .dp_header .dp_next {
+    width: 30 / @em;
 }
-.Zebra_DatePicker .dp_daypicker td,.Zebra_DatePicker .dp_daypicker th,.Zebra_DatePicker .dp_monthpicker td,.Zebra_DatePicker .dp_yearpicker td {
-    width: 30px;
+.Zebra_DatePicker .dp_daypicker td,
+.Zebra_DatePicker .dp_daypicker th,
+.Zebra_DatePicker .dp_monthpicker td,
+.Zebra_DatePicker .dp_yearpicker td {
+    width: 30 / @em;
 }
 .Zebra_DatePicker *,.Zebra_DatePicker *:after,.Zebra_DatePicker *:before {
     -moz-box-sizing: content-box !important;
@@ -14,11 +18,8 @@ button.Zebra_DatePicker_Icon_Disabled {
 }
 .Zebra_DatePicker {
     position: absolute;
-    background: #FFF;
-    border: 1px solid #999;
     display: none;
     z-index: 100;
-    padding: 5px;
     .dp_monthpicker {
         td {
             width: 33%;
@@ -33,12 +34,12 @@ button.Zebra_DatePicker_Icon_Disabled {
         cursor: default;
     }
     .dp_header {
+        background: red;
         .dp_hover {
             background: @nmColor;
             color: #373737;
         }
         .dp_caption {
-            font-weight: bold;
         }
         td {
 
@@ -52,7 +53,8 @@ button.Zebra_DatePicker_Icon_Disabled {
         color: #3A87AD;
     }
     td.dp_current {
-        color: @nmColor;
+        //background: @editorEditableHover;
+        //color: @nmColor;
     }
     td.dp_week_number {
         cursor: text;
@@ -85,7 +87,7 @@ button.Zebra_DatePicker_Icon_Disabled {
     }
     td.dp_selected {
         background: @nmColor;
-        color: @black !important;
+        color: @black;
     }
     td.dp_weekend {
 

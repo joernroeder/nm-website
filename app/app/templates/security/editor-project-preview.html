@@ -9,11 +9,12 @@
 	<header>
 		<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
 		{{#stringCompare "Project" ClassName}}
-			<p><span data-editor-type="date" data-editor-name="Date" data-editor-options='{"date": {"format": "M, Y"}}'>Date</span></p>
+			{{Date}}
+			<p><span data-editor-type="date" data-editor-name="Date" data-editor-options='{ "contentFormat": "M, Y"}'>{{Date}}</span></p>
 		{{else}}
 			<p>
-				<span data-editor-type="date" data-editor-name="StartDate" data-editor-options='{"date": {"format": "D, M, Y"}}'>StartDate</span> -
-				<span data-editor-type="date" data-editor-name="EndDate" data-editor-options='{"date": {"format": "D, M, Y"}}'>EndDate</span>
+				<span data-editor-type="date" data-editor-name="StartDate" data-editor-options='{"format": "D, M, Y"}'>StartDate</span> -
+				<span data-editor-type="date" data-editor-name="EndDate" data-editor-options='{"format": "D, M, Y"}'>EndDate</span>
 			</p>
 			<p class="nice-date">{{niceDate}}</p>
 		{{/stringCompare}}

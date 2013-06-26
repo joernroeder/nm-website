@@ -1019,15 +1019,17 @@ var __hasProp = {}.hasOwnProperty,
     JJPopoverEditable.prototype.init = function(element) {
       var _this = this;
 
-      this._options.position = {
-        at: 'right center',
-        my: 'left center',
-        adjust: {
-          x: 10,
-          resize: true,
-          method: 'flip shift'
-        }
-      };
+      if (!this._options.position) {
+        this._options.position = {
+          at: 'right center',
+          my: 'left center',
+          adjust: {
+            x: 10,
+            resize: true,
+            method: 'flip shift'
+          }
+        };
+      }
       JJPopoverEditable.__super__.init.call(this, element);
       element.qtip({
         events: {
@@ -1263,11 +1265,7 @@ var __hasProp = {}.hasOwnProperty,
     DateEditable.prototype.members = function() {
       DateEditable.__super__.members.call(this);
       this.contentTypes = ['date'];
-      this.position = {
-        at: 'top left',
-        my: 'bottom left'
-      };
-      return this.format = 'Y';
+      return this.contentFormattedValue = '';
     };
 
     DateEditable.prototype.init = function(element) {
@@ -1277,23 +1275,37 @@ var __hasProp = {}.hasOwnProperty,
       this.$input = $('<input type="text">');
       $datepicker = $('<div class="datepicker">');
       $content = $('<div>').append(this.$input).append($datepicker);
+      this._options.position = {
+        my: 'top right',
+        at: 'top left',
+        adjust: {
+          x: -5,
+          y: -18,
+          resize: true,
+          method: 'flip shift'
+        }
+      };
       DateEditable.__super__.init.call(this, element);
+      this.contentFormattedValue = this.getPlaceholder();
       this.$input.Zebra_DatePicker({
-        format: 'm Y',
+        format: this.getContentFormat(),
         always_visible: $datepicker,
-        onChange: function(view, elements) {
-          return _this.$input.change();
+        onChange: function() {
+          if (_this.api) {
+            return _this.api.reposition();
+          }
+        },
+        onClear: function() {
+          _this.contentFormattedValue = _this.getPlaceholder();
+          _this.setValue(null);
+          return _this.render();
+        },
+        onSelect: function(format, ymd, date) {
+          _this.contentFormattedValue = format;
+          return _this.setValue(ymd);
         }
       });
-      this.$input.on(this.getNamespacedEventName('change'), function(e) {
-        return _this.updateValue();
-      });
       return this.setPopoverContent($content);
-    };
-
-    DateEditable.prototype.close = function() {
-      this.updateValue();
-      return DateEditable.__super__.close.call(this);
     };
 
     DateEditable.prototype.updateValue = function(silent) {
@@ -1301,22 +1313,22 @@ var __hasProp = {}.hasOwnProperty,
       return this.element.html(this.getValueOrPlaceholder());
     };
 
-    DateEditable.prototype.getValueFromContent = function() {
-      var dates, val;
-
-      val = this.$input.val();
-      if (val) {
-        dates = val.split(' ');
-        return dates[1] + '-' + dates[0] + '-01';
-      } else {
-        return '';
-      }
+    DateEditable.prototype.render = function() {
+      return this.element.html(this.contentFormattedValue);
     };
 
     DateEditable.prototype.setValueToContent = function(val, isPlaceholder) {
       if (!isPlaceholder) {
         return this.input.val(val);
       }
+    };
+
+    DateEditable.prototype.getFormat = function() {
+      return this.getOptions().format || 'Y-m-d';
+    };
+
+    DateEditable.prototype.getContentFormat = function() {
+      return this.getOptions().contentFormat || this.getFormat();
     };
 
     DateEditable.prototype.destroy = function() {
