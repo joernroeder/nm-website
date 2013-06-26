@@ -304,15 +304,20 @@ class JJ_RestfulServer extends RestfulServer {
 		$rawFields = $this->request->getVar('fields');
 		$fields = $rawFields ? explode(',', $rawFields) : '';
 		$context = $this->getContext($obj);
-
-		// check cached $obj
-		// if ($currentCacheKey_json)
 		
-		$md5Obj = md5($obj);
+		// get the IDs to compare to cache key
+		$objIds = array();
+		if ($obj instanceof ArrayList) {
+			foreach ($obj as $o) {
+				$objIds[] = $o->ID;
+			}
+		} else {
+			$objIds[] = $obj->ID;
+		}
 		
 		$currentUserId = (int) Member::currentUserId();
 		//Debug::dump($obj->LastEdited);
-		$cacheKey = $this->convertToChacheKey($aggregate . '_' . $md5Obj . '_' . $id . '_' . $fields . '_' . $context->getContext() . '_' . $responseFormatter->class . '_' . $currentUserId) . '_formatted';
+		$cacheKey = $this->convertToChacheKey($aggregate . '_' . implode('_', $objIds) . '_' . $id . '_' . $fields . '_' . $context->getContext() . '_' . $responseFormatter->class . '_' . $currentUserId) . '_formatted';
 		//Debug::dump($cacheKey);
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
@@ -367,6 +372,7 @@ class JJ_RestfulServer extends RestfulServer {
 		//Debug::dump($aggregate->XML_val('Max', array('LastEdited')));
 
 		$cacheKey =  $this->convertToChacheKey(implode('_', array_merge($ids, $params, array($aggregate))) . '_ObjectQuery');
+
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
 
