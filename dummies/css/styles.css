@@ -2943,10 +2943,16 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 		}
 	}
 }*/
-.editor-sidebar-open .open-split-markdown article section {
+.editor-sidebar-open article,
+.open-split-markdown article {
+  width: 62.5%;
+}
+.editor-sidebar-open article section,
+.open-split-markdown article section {
   width: 100%;
 }
-.editor-sidebar-open .open-split-markdown article aside {
+.editor-sidebar-open article aside,
+.open-split-markdown article aside {
   display: none;
 }
 #recycle-bin {
