@@ -102,7 +102,8 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         layout = app.useLayout('index');
         if (!app.Cache.Featured) {
           app.Cache.Featured = _this.getProjectTypeModels({
-            IsFeatured: true
+            IsFeatured: true,
+            IsPublished: true
           });
         }
         modelsArray = app.Cache.Featured;
@@ -199,7 +200,8 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         }
         if (!app.Cache.WholePortfolio) {
           app.Cache.WholePortfolio = _this.getProjectTypeModels({
-            IsPortfolio: true
+            IsPortfolio: true,
+            IsPublished: true
           });
         }
         modelsArray = app.Cache.WholePortfolio;
@@ -226,7 +228,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         return mainDfd.done(function(model) {
           var detailView, layout, person, template;
 
-          if (!model || (!nameSlug && !model.get('IsPortfolio'))) {
+          if (!model || (!model.get('IsPublished')) || (!nameSlug && !model.get('IsPortfolio'))) {
             return _this.fourOhFour();
           }
           layout = app.useLayout('main', {

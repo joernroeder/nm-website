@@ -118,7 +118,7 @@ define [
 				layout = app.useLayout 'index'
 				# cache the featured projects
 				unless app.Cache.Featured
-					app.Cache.Featured = @.getProjectTypeModels { IsFeatured: true }
+					app.Cache.Featured = @.getProjectTypeModels { IsFeatured: true, IsPublished: true }
 
 				modelsArray = app.Cache.Featured
 				@.showGravityViewForModels modelsArray, 'portfolio', layout
@@ -187,7 +187,7 @@ define [
 				
 				# cache the whole portfolio
 				unless app.Cache.WholePortfolio
-					app.Cache.WholePortfolio = @.getProjectTypeModels { IsPortfolio: true }
+					app.Cache.WholePortfolio = @.getProjectTypeModels { IsPortfolio: true, IsPublished: true }
 
 				modelsArray = app.Cache.WholePortfolio
 				
@@ -210,7 +210,7 @@ define [
 				DataRetrieval.forDetailedObject(classType, uglyHash).done (model) =>
 					mainDfd.resolve model
 				mainDfd.done (model) =>
-					if not model or (not nameSlug and not model.get('IsPortfolio')) then return @.fourOhFour()
+					if not model or (not model.get('IsPublished')) or (not nameSlug and not model.get('IsPortfolio')) then return @.fourOhFour()
 					layout = app.useLayout 'main', {customClass: 'detail'}
 					template = ''
 					if nameSlug

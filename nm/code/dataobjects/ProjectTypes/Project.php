@@ -37,6 +37,7 @@ class Project extends DataObject {
 
 		'IsPortfolio'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt im Portfolio erscheint
 		'IsFeatured'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt auf der Startseite erscheint
+		'IsPublished'		=> 'Boolean',				// Flagge: Zeigt an ob das Projekt veröffentlicht ist
 		'UglyHash'			=> 'Varchar'				// Unique Hash, der auf das Projekt zeigt (für URLs, z.B. /portfolio/123234324)
 	);
 
@@ -123,6 +124,7 @@ class Project extends DataObject {
 			'Code',
 			'IsPortfolio',
 			'IsFeatured',
+			'IsPublished',
 
 			'PreviewImage.Urls',
 			'Images.Urls',
@@ -172,6 +174,7 @@ class Project extends DataObject {
 			'MarkdownedTeaser',
 			'IsFeatured',
 			'IsPortfolio',
+			'IsPublished',
 			'PreviewImage.Urls',
 			'Persons.FirstName',
 			'Persons.Surname',
@@ -185,7 +188,8 @@ class Project extends DataObject {
 			'TeaserText',
 			'Persons',
 			'PreviewImage',
-			'Images'
+			'Images',
+			'IsPublished'
 		)
 	);
 
@@ -205,7 +209,9 @@ class Project extends DataObject {
 	}
 
 	public function canView($member = null) {
-		return true;
+		if ($this->IsPublished) return true;
+
+		return $this->canEdit();
 	}
 
 	public function canViewContext($fields) {

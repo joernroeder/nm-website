@@ -42,7 +42,7 @@ class Lists_Controller extends Controller {
 		if (!$this->currentUser) return json_encode($out);
 		
 		foreach (array('Project', 'Exhibition', 'Excursion', 'Workshop') as $type) {
-			$out[$type] = $this->getObjectsAsList($type, 'Title', '', 'Title');
+			$out[$type] = $this->getObjectsAsList($type, 'Title', 'IsPublished=1', 'Title');
 		}
 
 		$out['Category'] = $this->getObjectsAsList('Category', 'Title', '', 'Title');

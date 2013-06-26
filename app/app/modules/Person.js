@@ -20,22 +20,6 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
           return 'alumni';
         }
         return '';
-      },
-      projectIsVisible: function(project) {
-        var out,
-          _this = this;
-
-        out = true;
-        this.get('Rankings').each(function(ranking) {
-          var className, res;
-
-          className = project.get('ClassName');
-          res = ranking.get(className);
-          if (res && res.id === project.id) {
-            return out = false;
-          }
-        });
-        return out;
       }
     });
     return JJRestApi.extendCollection('Person', {
@@ -62,7 +46,7 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
       }
       for (_k = 0, _len2 = modelArray.length; _k < _len2; _k++) {
         model = modelArray[_k];
-        if (this.model.projectIsVisible(model)) {
+        if (this.model.get('IsPublished')) {
           this.insertView('', new Portfolio.Views.ListItem({
             model: model,
             linkTo: 'about/' + this.model.get('UrlSlug')

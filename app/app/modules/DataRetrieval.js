@@ -143,8 +143,10 @@ define(['app'], function(app) {
 
           data = _.isArray(data) ? data : [data];
           model = data.length === 1 ? app.handleFetchedModel(classType, data[0]) : null;
-          model._isCompletelyFetched = true;
-          model._isFetchedWhenLoggedIn = true;
+          if (model) {
+            model._isCompletelyFetched = true;
+            model._isFetchedWhenLoggedIn = true;
+          }
           return dfd.resolve(model);
         });
       }

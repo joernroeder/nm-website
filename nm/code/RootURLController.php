@@ -86,6 +86,7 @@ class RootURLController extends Controller {
 					// whole portfolio
 					foreach (self::$project_types as $type) {
 						$portfolio = $type::get()->where('IsPortfolio=1');
+
 						$returnVal .= $portfolio->toDataElement('portfolio-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
 					}
 				}
@@ -128,6 +129,7 @@ class RootURLController extends Controller {
 		if ($className) {
 			$detailed = DataObject::get_one($className, "UglyHash='$uglyHash'");
 		}
+
 		return $detailed;
 	}
 

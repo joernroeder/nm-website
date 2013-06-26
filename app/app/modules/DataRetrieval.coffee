@@ -127,13 +127,16 @@ define [
 					options =
 						name: configObj.domName
 						urlSuffix: configObj.urlSuffix(slug)
+
 					JJRestApi.getFromDomOrApi(classType, options).done (data) ->
 						data = if _.isArray(data) then data else [data]
 						model = if data.length is 1 then app.handleFetchedModel(classType, data[0]) else null
-						# set a flag that says the model is completely fetched
-						model._isCompletelyFetched = true
-						# set a flag that says if the model has been fetched while logged in
-						model._isFetchedWhenLoggedIn = true
+						
+						if model
+							# set a flag that says the model is completely fetched
+							model._isCompletelyFetched = true
+							# set a flag that says if the model has been fetched while logged in
+							model._isFetchedWhenLoggedIn = true
 						dfd.resolve model	
 
 				dfd.promise()
