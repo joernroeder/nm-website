@@ -678,7 +678,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
           return this.tagName.toLowerCase() === elementType;
         });
       };
-      JJMarkdownEditor.setAsDraggable(this.$img);
+      JJMarkdownEditor.setAsDraggable(this.$el.find(['[data-md-tag]']));
       app.ProjectEditor.PreviewImageZone.setAsDraggable(this.$img);
       return this.$img.on('mouseover', function() {
         var $siblings;
