@@ -513,9 +513,13 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
     template: 'security/editor-sidebar-gallery',
     isGallery: true,
     $sidebarContent: null,
+    initialize: function() {
+      return Backbone.Events.on('DocImageAdded', this.handleUploadedImageData, this);
+    },
     cleanup: function() {
       this._cleanup();
-      return this.$el.parent().off('dragenter');
+      this.$el.parent().off('dragenter');
+      return Backbone.Events.off('DocImageAdded', this.handleUploadedImageData);
     },
     initImageList: function() {
       /*
@@ -584,10 +588,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
         },
         responseHandler: function(data) {
           app.updateGalleryCache(data);
-          return _.each(data, function(img) {
-            _this.insertGalleryImage(img.FilterID, img);
-            return app.ProjectEditor.model.get('Images').add(img.id);
-          });
+          return _this.handleUploadedImageData(data);
         }
       });
       return this.$el.parent().on('dragenter', function(e) {
@@ -595,6 +596,15 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
           _this.uploadZone.$dropzone.addClass('dragover');
           return $.fireGlobalDragEvent('dragstart', e.target, 'file');
         }
+      });
+    },
+    handleUploadedImageData: function(data) {
+      var _this = this;
+
+      console.log(data);
+      return _.each(data, function(img) {
+        _this.insertGalleryImage(img.FilterID, img);
+        return app.ProjectEditor.model.get('Images').add(img.id);
       });
     },
     render: function(template, context) {

@@ -26,21 +26,22 @@ do ($ = jQuery) ->
 		 * 
 		###
 		defaults :
-			preview 			: '#preview'												# Specifies the preview area: Accepts either CSS-selector or jQuery object
-			parsingDelay	 	: 200														# Interval in which the markdown should be parsed (in ms)
-			dragAndDropAllowed	: true														# Defines whether DragAndDrop is allowed or not
-			hideDropzoneDelay 	: 1000 														# Defines after which time the dropzone within the preview area fades out when the markdown field is left (in ms)
-			errorMsg 			: 'Sorry, but there has been an error.' 					# Default error message
-			contentGetter		: 'val'														# Defines how to retrieve the input area's data. Default is 'val' (thus $input.val())
-			customParsers		: {}														# Defines which custom markdown parsers are active 
-			customParserOptions	: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
-			afterRender			: ->
-				if window.picturefill then window.picturefill()								# Method to call after the markdown rendering has been done
-			onChange			: null														# Function to pass the data to, after the parsing has been done
-			onBlur				: null														# Method to call when the input area loses focus
-			imageUrl			: '/imagery/images/docimage'								# URL to post the images to
-			placeholder			: 'PLACEHOLDER'												# Placeholder text to show in preview area if textarea is empty
-			charlimit			: 0															# Max. length of input
+			preview 					: '#preview'												# Specifies the preview area: Accepts either CSS-selector or jQuery object
+			parsingDelay	 			: 200														# Interval in which the markdown should be parsed (in ms)
+			dragAndDropAllowed			: true														# Defines whether DragAndDrop is allowed or not
+			hideDropzoneDelay 			: 1000 														# Defines after which time the dropzone within the preview area fades out when the markdown field is left (in ms)
+			errorMsg 					: 'Sorry, but there has been an error.' 					# Default error message
+			contentGetter				: 'val'														# Defines how to retrieve the input area's data. Default is 'val' (thus $input.val())
+			customParsers				: {}														# Defines which custom markdown parsers are active 
+			customParserOptions			: {}														# Options to pass to the custom parsers. Format: { ParserName: OptionsObject }
+			afterRender					: null														# Method to call after the markdown rendering has been done
+			onChange					: null														# Function to pass the data to, after the parsing has been done
+			onBlur						: null														# Method to call when the input area loses focus
+			imageUrl					: '/imagery/images/docimage/'								# URL to post the images to
+			placeholder					: 'PLACEHOLDER'												# Placeholder text to show in preview area if textarea is empty
+			charlimit					: 0															# Max. length of input
+			additionalPOSTData			: null														# additional data that will be POSTed when uploading images
+			uploadResponseHandler		: null														# function that is called when an image has been uploaded. gets pased the server's response
 
 
 		constructor : (selector, opts) ->
@@ -306,18 +307,14 @@ do ($ = jQuery) ->
 						dfdParse.resolve()
 					# upload
 					else if e.dataTransfer.files.length
-						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, null, @.options.errorMsg, 'image.*'
+
+						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, @.options.additionalPOSTData, @.options.errorMsg, 'image.*'
 
 						uploadDfd.done (data) =>
 					
 							data = $.parseJSON data
 							
-							# add to our image cache, if existing
-							if imgParser = @.customParsers.SingleImgMarkdownParser
-								imgParser.updateCache data
-
-								# trigger that there's new data which has been uploaded
-								#$.trigger 'newData', { className: imgParser.className, data: data }
+							if @.options.uploadResponseHandler then @.options.uploadResponseHandler data
 
 							rawMd = ''
 							for obj in data

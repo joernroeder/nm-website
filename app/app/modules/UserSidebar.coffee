@@ -463,9 +463,13 @@ define [
 
 			$sidebarContent: null
 
+			initialize: ->
+				Backbone.Events.on 'DocImageAdded', @handleUploadedImageData, @
+
 			cleanup: ->
 				@._cleanup()
 				@.$el.parent().off 'dragenter'
+				Backbone.Events.off 'DocImageAdded', @handleUploadedImageData
 
 			initImageList: ->
 				###
@@ -517,15 +521,20 @@ define [
 						projectClass: app.ProjectEditor.model.get 'ClassName'
 					responseHandler: (data) =>
 						app.updateGalleryCache data
-						_.each data, (img) =>
-							@.insertGalleryImage img.FilterID, img
-							# add to current project's images (idQueue)
-							app.ProjectEditor.model.get('Images').add img.id
+						@handleUploadedImageData data
+						
 
 				@.$el.parent().on 'dragenter', (e) =>
 					if not $('body').hasClass 'drag-inline'
 						@.uploadZone.$dropzone.addClass 'dragover'
 						$.fireGlobalDragEvent 'dragstart', e.target, 'file'
+
+			handleUploadedImageData: (data) ->
+				console.log data
+				_.each data, (img) =>
+					@.insertGalleryImage img.FilterID, img
+					# add to current project's images (idQueue)
+					app.ProjectEditor.model.get('Images').add img.id
 
 
 			render: (template, context = {}) ->

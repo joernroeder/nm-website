@@ -36,16 +36,14 @@
       contentGetter: 'val',
       customParsers: {},
       customParserOptions: {},
-      afterRender: function() {
-        if (window.picturefill) {
-          return window.picturefill();
-        }
-      },
+      afterRender: null,
       onChange: null,
       onBlur: null,
-      imageUrl: '/imagery/images/docimage',
+      imageUrl: '/imagery/images/docimage/',
       placeholder: 'PLACEHOLDER',
-      charlimit: 0
+      charlimit: 0,
+      additionalPOSTData: null,
+      uploadResponseHandler: null
     };
 
     function JJMarkdownEditor(selector, opts) {
@@ -318,13 +316,13 @@
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
           } else if (e.dataTransfer.files.length) {
-            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, null, _this.options.errorMsg, 'image.*');
+            uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.additionalPOSTData, _this.options.errorMsg, 'image.*');
             return uploadDfd.done(function(data) {
-              var imgParser, nl, obj, rawMd, _i, _len;
+              var nl, obj, rawMd, _i, _len;
 
               data = $.parseJSON(data);
-              if (imgParser = _this.customParsers.SingleImgMarkdownParser) {
-                imgParser.updateCache(data);
+              if (_this.options.uploadResponseHandler) {
+                _this.options.uploadResponseHandler(data);
               }
               rawMd = '';
               for (_i = 0, _len = data.length; _i < _len; _i++) {

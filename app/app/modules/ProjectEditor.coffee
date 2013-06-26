@@ -79,10 +79,10 @@ define [
 						@uploadZone.$dropzone.addClass(@FILLED).html "<img src=\"#{ img.Url }\" />"
 
 						# insert into gallery if open and necessary
-						if sideSubview = Auth.Cache.userWidget.subView
-							if sideSubview.isGallery and sideSubview.isOpen
-								if _.indexOf(@model.get('Images').getIDArray(), model.id) < 0
-									sideSubview.insertGalleryImage @getFilterID(), { url: thumbUrl, id: model.id }
+						if _.indexOf(@model.get('Images').getIDArray(), model.id) < 0
+							img = [{ FilterID: @getFilterID, UploadedToClass: 'DocImage', id: model.id, url: thumbUrl }]
+							app.updateGalleryCache img
+							Backbone.Events.trigger 'DocImageAdded', img
 
 						if @model.get('PreviewImage') isnt model
 							@model.set 'PreviewImage', model
@@ -94,8 +94,6 @@ define [
 						
 						setPreviewImage data, $img.attr('src')
 					else
-						app.updateGalleryCache data
-
 						DataRetrieval.forDocImage(data[0].id).done (model) ->
 							setPreviewImage model, data[0].url
 
@@ -142,6 +140,20 @@ define [
 				'DateEditable',
 				'SplitMarkdownEditable'
 			]
+
+			# dynamic options update
+			markdownEditor = @editor.getComponentByName('ProjectMain.Text').markdown
+			_.extend markdownEditor.options,
+				# also POST our current project when uploading an image
+				additionalPOSTData: 
+					projectId: app.ProjectEditor.model.id
+					projectClass: app.ProjectEditor.model.get 'ClassName'
+				uploadResponseHandler: (data) ->
+					app.updateGalleryCache data
+					Backbone.Events.trigger 'DocImageAdded', data
+
+
+
 
 			@editor.on 'editor.open-split-markdown', ->
 				$('#layout').addClass 'open-split-markdown'

@@ -84,19 +84,21 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           var $img, setPreviewImage;
 
           setPreviewImage = function(model, thumbUrl) {
-            var img, sideSubview;
+            var img;
 
             img = model.get('Urls')['_320'];
             _this.uploadZone.$dropzone.addClass(_this.FILLED).html("<img src=\"" + img.Url + "\" />");
-            if (sideSubview = Auth.Cache.userWidget.subView) {
-              if (sideSubview.isGallery && sideSubview.isOpen) {
-                if (_.indexOf(_this.model.get('Images').getIDArray(), model.id) < 0) {
-                  sideSubview.insertGalleryImage(_this.getFilterID(), {
-                    url: thumbUrl,
-                    id: model.id
-                  });
+            if (_.indexOf(_this.model.get('Images').getIDArray(), model.id) < 0) {
+              img = [
+                {
+                  FilterID: _this.getFilterID,
+                  UploadedToClass: 'DocImage',
+                  id: model.id,
+                  url: thumbUrl
                 }
-              }
+              ];
+              app.updateGalleryCache(img);
+              Backbone.Events.trigger('DocImageAdded', img);
             }
             if (_this.model.get('PreviewImage') !== model) {
               _this.model.set('PreviewImage', model);
@@ -108,7 +110,6 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
             $img = $("#editor-sidebar").find("li.DocImage img[data-id=\"" + data.id + "\"]");
             return setPreviewImage(data, $img.attr('src'));
           } else {
-            app.updateGalleryCache(data);
             return DataRetrieval.forDocImage(data[0].id).done(function(model) {
               return setPreviewImage(model, data[0].url);
             });
@@ -160,9 +161,21 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
     tagName: 'article',
     template: 'security/editor-project-main',
     initEditor: function() {
-      var _this = this;
+      var markdownEditor,
+        _this = this;
 
       this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable']);
+      markdownEditor = this.editor.getComponentByName('ProjectMain.Text').markdown;
+      _.extend(markdownEditor.options, {
+        additionalPOSTData: {
+          projectId: app.ProjectEditor.model.id,
+          projectClass: app.ProjectEditor.model.get('ClassName')
+        },
+        uploadResponseHandler: function(data) {
+          app.updateGalleryCache(data);
+          return Backbone.Events.trigger('DocImageAdded', data);
+        }
+      });
       this.editor.on('editor.open-split-markdown', function() {
         return $('#layout').addClass('open-split-markdown');
       });
