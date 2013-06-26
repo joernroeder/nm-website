@@ -136,9 +136,10 @@ define [
 
 		initEditor: ->
 			@editor = new JJEditor @.$el, [
-				'InlineEditable',
-				'DateEditable',
+				'InlineEditable'
+				'DateEditable'
 				'SplitMarkdownEditable'
+				'SelectEditable'
 			]
 
 			# dynamic options update
