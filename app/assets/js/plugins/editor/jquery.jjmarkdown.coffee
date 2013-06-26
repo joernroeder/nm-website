@@ -198,6 +198,7 @@ do ($ = jQuery) ->
 				if @.options.afterRender then @.options.afterRender()
 				data = { raw:raw }
 				if @.customParsers.images then data.images = @.customParsers.images.returnIds()
+				
 				if @.options.onChange then @.options.onChange data
 
 		# this sets up the drag and drop for files
