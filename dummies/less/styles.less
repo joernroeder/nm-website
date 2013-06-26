@@ -856,6 +856,10 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 // ! --- Custom Editables -----------------------
 
+[data-editor-type="markdown-split"][editor-handled-by].active {
+	background: #fff;
+}
+
 .editor-popover {
 
 	&.currentperson-bio {
@@ -867,6 +871,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		height: 100%;
 		max-width: inherit;
 		z-index: 999999999 !important;
+		position: fixed !important;
 		//.transition(~"width .25s ease-in-out");
 
 		textarea {
@@ -1942,7 +1947,16 @@ body.dragover .editor-project-preview {
 		position: relative;
 		.dropzone {
 			.light-dropzone(100%, 200 / @em);
+			//.box-sizing(border-box);
 			position: relative;
+
+			&.dragover {
+				margin-bottom: (@line - 10) / @em;
+				margin-left: 0;
+				border-color: @bgColor;
+				border-left-width: 0;
+				border-right-width: 0;
+			}
 		}
 	}
 }

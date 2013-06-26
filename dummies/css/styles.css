@@ -1611,6 +1611,9 @@ x:-o-prefocus,
   background: rgba(255, 255, 255, 0.2);
   cursor: auto;
 }
+[data-editor-type="markdown-split"][editor-handled-by].active {
+  background: #fff;
+}
 .editor-popover.currentperson-bio {
   border: 1px solid #868686;
   border-left: none;
@@ -1619,6 +1622,7 @@ x:-o-prefocus,
   height: 100%;
   max-width: inherit;
   z-index: 999999999 !important;
+  position: fixed !important;
 }
 .editor-popover.splitmarkdowneditable textarea {
   height: 100%;
@@ -2908,6 +2912,14 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   -o-transition: visibility 0s linear, opacity .15s linear;
   -ms-transition: visibility 0s linear, opacity .15s linear;
   transition: visibility 0s linear, opacity .15s linear;
+}
+.editor-project-main.detail [data-editor-type='markdown'] .dropzone.dragover,
+.editor-project-main.detail [data-editor-type='markdown-split'] .dropzone.dragover {
+  margin-bottom: 0.875em;
+  margin-left: 0;
+  border-color: #e6e6e6;
+  border-left-width: 0;
+  border-right-width: 0;
 }
 .editor-sidebar-open .open-split-markdown article section {
   width: 100%;
