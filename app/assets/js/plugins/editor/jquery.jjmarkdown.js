@@ -287,14 +287,22 @@
       };
       $preview.on('dragleave', _setHideDropzoneTimeout);
       return _bindDropHandler = function() {
+        var $dropzone;
+
         if (_this.currentDrag.dropHandlerBound) {
           return false;
         }
         _this.currentDrag.dropHandlerBound = true;
-        return _this.currentDrag.$dropzone.on('drop', function(e) {
-          var $dropzone, $target, dfdParse, el, hideDropzoneTimeout, md, uploadDfd;
+        $dropzone = _this.currentDrag.$dropzone;
+        $dropzone.on('dragenter', function(e) {
+          return $(this).addClass('dragover');
+        });
+        $dropzone.on('dragleave', function(e) {
+          return $(this).removeClass('dragover');
+        });
+        return $dropzone.on('drop', function(e) {
+          var $target, dfdParse, el, hideDropzoneTimeout, md, uploadDfd;
 
-          $dropzone = _this.currentDrag.$dropzone;
           $target = _this.currentDrag.$target;
           hideDropzoneTimeout = _this.currentDrag.hideDropzoneTimeout;
           if (hideDropzoneTimeout) {

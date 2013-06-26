@@ -274,10 +274,18 @@ do ($ = jQuery) ->
 				if @.currentDrag.dropHandlerBound then return false
 				@.currentDrag.dropHandlerBound = true
 
-				# ! - dropping on our dropzone
-				@.currentDrag.$dropzone.on 'drop', (e) =>
+				$dropzone = @.currentDrag.$dropzone
 
-					$dropzone = @.currentDrag.$dropzone
+				# ! - dragging over our dropzone
+				$dropzone.on 'dragenter', (e) ->
+					$(@).addClass 'dragover'
+
+				$dropzone.on 'dragleave', (e) ->
+					$(@).removeClass 'dragover'
+
+				# ! - dropping on our dropzone
+				$dropzone.on 'drop', (e) =>
+
 					$target = @.currentDrag.$target
 					hideDropzoneTimeout = @.currentDrag.hideDropzoneTimeout
 
