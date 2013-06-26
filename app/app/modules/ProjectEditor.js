@@ -46,6 +46,15 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
       return this.setView('.editor-project-preview', app.ProjectEditor.previewView);
     },
     toggleView: function() {
+      var name, view, _ref;
+
+      _ref = this.views;
+      for (name in _ref) {
+        view = _ref[name];
+        if (view.editor) {
+          view.editor.trigger('editor.closepopovers');
+        }
+      }
       return $('.editor-project-main, .editor-project-preview').toggleClass(this.ACTIVE);
     }
   });

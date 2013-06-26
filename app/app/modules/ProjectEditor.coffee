@@ -42,6 +42,10 @@ define [
 			@setView '.editor-project-preview', app.ProjectEditor.previewView
 
 		toggleView: ->
+			for name, view of @views
+				if view.editor
+					view.editor.trigger 'editor.closepopovers'
+
 			$('.editor-project-main, .editor-project-preview').toggleClass(@ACTIVE)
 
 
