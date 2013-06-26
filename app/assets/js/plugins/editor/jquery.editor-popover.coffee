@@ -799,7 +799,11 @@ do ($ = jQuery) ->
 								@close()
 
 						true
-				
+
+					move: (event, api) =>
+						@onMove event
+
+						true	
 				content: 
 					text: =>
 						@getPopoverContent()
@@ -833,6 +837,9 @@ do ($ = jQuery) ->
 			element.on @getNamespacedEventName('click'), =>
 				@toggle()
 
+			$(window).on @getNamespacedEventName('resize'), =>
+				@updateTooltipDimensions()
+
 			$('body').on @getNamespacedEventName('toggle.editor-sidebar'), (e) =>
 				if e.name is 'opened' or e.name is 'close'
 					@autoReposition()
@@ -853,7 +860,16 @@ do ($ = jQuery) ->
 			
 
 		getPosition: ->
-			return if @_options.position then @_options.position else @position
+			pos = if @_options.position then @_options.position else @position
+
+			pos = $.extend true, pos, 
+				adjust:
+					screen: true
+					resize: true
+				viewport: $(window)
+
+			console.log pos
+			pos
 
 		open: ->
 			@element.addClass 'active'
@@ -896,10 +912,15 @@ do ($ = jQuery) ->
 
 			@repositionOnChangeTimeout = setTimeout =>
 				console.log 'JJPopoverEditable: Popover reposition' if @debug
+				@updateTooltipDimensions()
 				@element.qtip 'reposition'
 			, 100
 
 			true
+
+		onMove: (e) ->
+
+		updateTooltipDimensions: ->
 
 		destroy: ->
 			if @api and @api.tooltip
@@ -908,6 +929,7 @@ do ($ = jQuery) ->
 			@element.off @getNamespacedEventName('click')
 
 			$('body').off @getNamespacedEventName('toggle.editor-sidebar')
+			$(window).on @getNamespacedEventName('resize')
 
 			super()
 
@@ -975,7 +997,6 @@ do ($ = jQuery) ->
 					adjust:
 						x: -5
 						y: -18
-						resize: true # @todo: own resize method
 						method: 'flip shift'
 
 			super element
@@ -1113,6 +1134,43 @@ do ($ = jQuery) ->
 			@contentTypes = ['markdown-split']
 			@previewClass = 'preview split'
 
+		init: (element) ->
+			@_options.position =
+				#at: 'bottom left'
+				#my: 'top left'
+				my: 'top right'
+				at: 'top left'
+	
+				adjust:
+					x: -10
+					y: 0
+					method: 'none' # manual width handling @onMove
+
+			super element
+
+
+		open: ->
+			@trigger 'editor.open-split-markdown'
+			@updateTooltipDimensions()
+			#@editor.scope.addClass 'open-split-markdown'
+			super()
+
+		close: ->
+			@trigger 'editor.close-split-markdown'
+			#@editor.scope.removeClass 'open-split-markdown'
+			super()
+
+		updateTooltipDimensions: (e) ->
+			console.log 'on Move'
+			elPos = @element.offset()
+			
+			@api.tooltip.css
+				'margin-top': -elPos.top
+
+			@api.set('style.height', $(window).height() + top)
+			@api.set('style.width', elPos.left + @getOptions().position.adjust.x)
+
+			true
 
 
 	# ! --- Implementation --------------------------------

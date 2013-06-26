@@ -1048,6 +1048,10 @@ var __hasProp = {}.hasOwnProperty,
               });
             }
             return true;
+          },
+          move: function(event, api) {
+            _this.onMove(event);
+            return true;
           }
         },
         content: {
@@ -1081,6 +1085,9 @@ var __hasProp = {}.hasOwnProperty,
       });
       element.on(this.getNamespacedEventName('click'), function() {
         return _this.toggle();
+      });
+      $(window).on(this.getNamespacedEventName('resize'), function() {
+        return _this.updateTooltipDimensions();
       });
       return $('body').on(this.getNamespacedEventName('toggle.editor-sidebar'), function(e) {
         if (e.name === 'opened' || e.name === 'close') {
@@ -1119,11 +1126,18 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     JJPopoverEditable.prototype.getPosition = function() {
-      if (this._options.position) {
-        return this._options.position;
-      } else {
-        return this.position;
-      }
+      var pos;
+
+      pos = this._options.position ? this._options.position : this.position;
+      pos = $.extend(true, pos, {
+        adjust: {
+          screen: true,
+          resize: true
+        },
+        viewport: $(window)
+      });
+      console.log(pos);
+      return pos;
     };
 
     JJPopoverEditable.prototype.open = function() {
@@ -1191,10 +1205,15 @@ var __hasProp = {}.hasOwnProperty,
         if (_this.debug) {
           console.log('JJPopoverEditable: Popover reposition');
         }
+        _this.updateTooltipDimensions();
         return _this.element.qtip('reposition');
       }, 100);
       return true;
     };
+
+    JJPopoverEditable.prototype.onMove = function(e) {};
+
+    JJPopoverEditable.prototype.updateTooltipDimensions = function() {};
 
     JJPopoverEditable.prototype.destroy = function() {
       if (this.api && this.api.tooltip) {
@@ -1202,6 +1221,7 @@ var __hasProp = {}.hasOwnProperty,
       }
       this.element.off(this.getNamespacedEventName('click'));
       $('body').off(this.getNamespacedEventName('toggle.editor-sidebar'));
+      $(window).on(this.getNamespacedEventName('resize'));
       return JJPopoverEditable.__super__.destroy.call(this);
     };
 
@@ -1284,7 +1304,6 @@ var __hasProp = {}.hasOwnProperty,
         adjust: {
           x: -5,
           y: -18,
-          resize: true,
           method: 'flip shift'
         }
       };
@@ -1452,6 +1471,43 @@ var __hasProp = {}.hasOwnProperty,
       SplitMarkdownEditable.__super__.members.call(this);
       this.contentTypes = ['markdown-split'];
       return this.previewClass = 'preview split';
+    };
+
+    SplitMarkdownEditable.prototype.init = function(element) {
+      this._options.position = {
+        my: 'top right',
+        at: 'top left',
+        adjust: {
+          x: -10,
+          y: 0,
+          method: 'none'
+        }
+      };
+      return SplitMarkdownEditable.__super__.init.call(this, element);
+    };
+
+    SplitMarkdownEditable.prototype.open = function() {
+      this.trigger('editor.open-split-markdown');
+      this.updateTooltipDimensions();
+      return SplitMarkdownEditable.__super__.open.call(this);
+    };
+
+    SplitMarkdownEditable.prototype.close = function() {
+      this.trigger('editor.close-split-markdown');
+      return SplitMarkdownEditable.__super__.close.call(this);
+    };
+
+    SplitMarkdownEditable.prototype.updateTooltipDimensions = function(e) {
+      var elPos;
+
+      console.log('on Move');
+      elPos = this.element.offset();
+      this.api.tooltip.css({
+        'margin-top': -elPos.top
+      });
+      this.api.set('style.height', $(window).height() + top);
+      this.api.set('style.width', elPos.left + this.getOptions().position.adjust.x);
+      return true;
     };
 
     return SplitMarkdownEditable;

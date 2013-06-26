@@ -137,6 +137,11 @@ define [
 				'SplitMarkdownEditable'
 			]
 
+			@editor.on 'editor.open-split-markdown', ->
+				$('#layout').addClass 'open-split-markdown'
+			@editor.on 'editor.close-split-markdown', ->
+				$('#layout').removeClass 'open-split-markdown'
+
 			@editor.on 'stateUpdate', (e) =>
 				console.log e
 

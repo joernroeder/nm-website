@@ -154,6 +154,12 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio'], fu
       var _this = this;
 
       this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable']);
+      this.editor.on('editor.open-split-markdown', function() {
+        return $('#layout').addClass('open-split-markdown');
+      });
+      this.editor.on('editor.close-split-markdown', function() {
+        return $('#layout').removeClass('open-split-markdown');
+      });
       this.editor.on('stateUpdate', function(e) {
         return console.log(e);
       });

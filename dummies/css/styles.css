@@ -1444,11 +1444,11 @@ x:-o-prefocus,
   list-style: none;
 }
 .editor {
-  -webkit-transition: width .35s ease-in-out;
-  -moz-transition: width .35s ease-in-out;
-  -o-transition: width .35s ease-in-out;
-  -ms-transition: width .35s ease-in-out;
-  transition: width .35s ease-in-out;
+  -webkit-transition: width .35s ease-in-out, margin .35s ease-in-out;
+  -moz-transition: width .35s ease-in-out, margin .35s ease-in-out;
+  -o-transition: width .35s ease-in-out, margin .35s ease-in-out;
+  -ms-transition: width .35s ease-in-out, margin .35s ease-in-out;
+  transition: width .35s ease-in-out, margin .35s ease-in-out;
 }
 .editor .badge {
   padding: 0.75em 0.625em;
@@ -1615,6 +1615,14 @@ x:-o-prefocus,
   border: 1px solid #868686;
   border-left: none;
 }
+.editor-popover.splitmarkdowneditable {
+  height: 100%;
+  max-width: inherit;
+  z-index: 999999999 !important;
+}
+.editor-popover.splitmarkdowneditable textarea {
+  height: 100%;
+}
 .editor-popover.dateeditable .qtip-content {
   padding: 0.75em;
 }
@@ -1699,11 +1707,28 @@ x:-o-prefocus,
 }*/
 body.editor-sidebar-open #layout.editor {
   width: 75%;
-  -webkit-transition: width .25s ease-in-out;
-  -moz-transition: width .25s ease-in-out;
-  -o-transition: width .25s ease-in-out;
-  -ms-transition: width .25s ease-in-out;
-  transition: width .25s ease-in-out;
+  -webkit-transition-property: width, margin;
+  -moz-transition-property: width, margin;
+  -o-transition-property: width, margin;
+  -ms-transition-property: width, margin;
+  transition-property: width, margin;
+}
+body.editor-sidebar-open #layout.editor.open-split-markdown {
+  margin-left: 10%;
+  -webkit-transition-property: width;
+  -moz-transition-property: width;
+  -o-transition-property: width;
+  -ms-transition-property: width;
+  transition-property: width;
+}
+.editor.open-split-markdown {
+  margin-left: 20%;
+  width: 75%;
+  -webkit-transition-property: width;
+  -moz-transition-property: width;
+  -o-transition-property: width;
+  -ms-transition-property: width;
+  transition-property: width;
 }
 #editor-sidebar-spinner {
   position: absolute;
@@ -2790,6 +2815,15 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   position: relative;
   min-height: 0;
   height: 100%;
+}
+.editor-project-main.detail article {
+  margin-right: 9%;
+}
+.editor-sidebar-open .open-split-markdown article section {
+  width: 100%;
+}
+.editor-sidebar-open .open-split-markdown article aside {
+  display: none;
 }
 #recycle-bin {
   background: #191919;
