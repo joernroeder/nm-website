@@ -642,7 +642,7 @@ do ($ = jQuery) ->
 
 		getValueOrPlaceholder: ->
 			value = @getValue()
-			console.log 'value or placeholder: ' + value
+			console.log 'value or placeholder: ' + value if @debug
 			return if value then value else @getPlaceholder()
 
 		# --- 
@@ -868,7 +868,6 @@ do ($ = jQuery) ->
 					resize: true
 				viewport: $(window)
 
-			console.log pos
 			pos
 
 		open: ->
@@ -1161,7 +1160,6 @@ do ($ = jQuery) ->
 			super()
 
 		updateTooltipDimensions: (e) ->
-			console.log 'on Move'
 			elPos = @element.offset()
 			
 			@api.tooltip.css

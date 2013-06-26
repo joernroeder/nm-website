@@ -876,7 +876,9 @@ var __hasProp = {}.hasOwnProperty,
       var value;
 
       value = this.getValue();
-      console.log('value or placeholder: ' + value);
+      if (this.debug) {
+        console.log('value or placeholder: ' + value);
+      }
       if (value) {
         return value;
       } else {
@@ -1136,7 +1138,6 @@ var __hasProp = {}.hasOwnProperty,
         },
         viewport: $(window)
       });
-      console.log(pos);
       return pos;
     };
 
@@ -1500,7 +1501,6 @@ var __hasProp = {}.hasOwnProperty,
     SplitMarkdownEditable.prototype.updateTooltipDimensions = function(e) {
       var elPos;
 
-      console.log('on Move');
       elPos = this.element.offset();
       this.api.tooltip.css({
         'margin-top': -elPos.top

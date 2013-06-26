@@ -453,8 +453,6 @@ CHECKS = PROTOTYPE.checks = {
 			this.tooltip.removeClass(p).addClass(v);
 		},
 		'^style.width|height': function(obj, o, v) {
-			console.log(o);
-			console.log(v);
 			this.tooltip.css(o, v);
 		},
 		'^style.widget|content.title': function() {
