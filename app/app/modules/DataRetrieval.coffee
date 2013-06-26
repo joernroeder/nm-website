@@ -188,6 +188,34 @@ define [
 
 				dfd.promise()
 
+			forMultipleDocImages: (ids) ->
+				dfd = new $.Deferred()
+				# Firstly, check which models we already have in store and which we need
+				needed = []
+				doHave = []
+				_.each ids, (id) ->
+					if existModel = app.Collections.DocImage.get(id)
+						doHave.push existModel
+					else
+						needed.push id
+
+				# resolve early, if we don't need to fire a request
+				if not needed.length
+					dfd.resolve doHave
+					return dfd
+
+				# fire an API request with the missing ids
+				url = JJRestApi.setObjectUrl('DocImage') + Backbone.JJRelational.Config.url_id_appendix + needed.join(',')
+
+				if @_docImagesReq and @_docImagesReq.readyState isnt 4 then @_docImagesReq.abort()
+				@_docImagesReq = $.getJSON url, (data) ->
+					if $.isArray(data)
+						doHave = doHave.concat app.handleFetchedModels('DocImage', data)
+					dfd.resolve doHave
+
+				dfd
+
+
 			# abstract function that calls `fetch` on a model and then calls back
 			fetchExistingModelCompletely : (existModel) ->
 				dfd = new $.Deferred()

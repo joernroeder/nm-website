@@ -216,6 +216,37 @@ define(['app'], function(app) {
       }
       return dfd.promise();
     },
+    forMultipleDocImages: function(ids) {
+      var dfd, doHave, needed, url;
+
+      dfd = new $.Deferred();
+      needed = [];
+      doHave = [];
+      _.each(ids, function(id) {
+        var existModel;
+
+        if (existModel = app.Collections.DocImage.get(id)) {
+          return doHave.push(existModel);
+        } else {
+          return needed.push(id);
+        }
+      });
+      if (!needed.length) {
+        dfd.resolve(doHave);
+        return dfd;
+      }
+      url = JJRestApi.setObjectUrl('DocImage') + Backbone.JJRelational.Config.url_id_appendix + needed.join(',');
+      if (this._docImagesReq && this._docImagesReq.readyState !== 4) {
+        this._docImagesReq.abort();
+      }
+      this._docImagesReq = $.getJSON(url, function(data) {
+        if ($.isArray(data)) {
+          doHave = doHave.concat(app.handleFetchedModels('DocImage', data));
+        }
+        return dfd.resolve(doHave);
+      });
+      return dfd;
+    },
     fetchExistingModelCompletely: function(existModel) {
       var dfd;
 
