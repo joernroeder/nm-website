@@ -3,8 +3,10 @@ define [
 		'modules/DataRetrieval'
 		'modules/Auth'
 		'modules/Portfolio'
+		'modules/NMMarkdownParser'
 	],
 (app, DataRetrieval, Auth, Portfolio) ->
+	
 	ProjectEditor = app.module()
 
 	class ProjectEditor.Inst

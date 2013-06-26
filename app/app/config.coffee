@@ -51,3 +51,5 @@ require.config
 		'plugins/backbone.layoutmanager'		: ['backbone']
 		'plugins/backbone.JJRelational'			: ['backbone']
 		'plugins/backbone.JJRestApi'			: ['backbone']
+
+		'modules/NMMarkdownParser'				: ['plugins/editor/jquery.jjmarkdown']

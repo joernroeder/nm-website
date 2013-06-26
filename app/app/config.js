@@ -38,6 +38,7 @@ require.config({
     'plugins/editor/jquery.editor-popover': ['plugins/editor/jquery.jjmarkdown', 'plugins/misc/zebra_datepicker.src'],
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
-    'plugins/backbone.JJRestApi': ['backbone']
+    'plugins/backbone.JJRestApi': ['backbone'],
+    'modules/NMMarkdownParser': ['plugins/editor/jquery.jjmarkdown']
   }
 });
