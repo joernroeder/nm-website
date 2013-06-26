@@ -138,9 +138,10 @@ define [
 
 		initEditor: ->
 			@editor = new JJEditor @.$el, [
-				'InlineEditable',
-				'DateEditable',
+				'InlineEditable'
+				'DateEditable'
 				'SplitMarkdownEditable'
+				'SelectEditable'
 			]
 
 			@editor.on 'editor.open-split-markdown', ->

@@ -53,7 +53,7 @@ do ($ = jQuery) ->
 	$.fn.selectRange = (start, end) ->
 		end = start unless end
 		@each ->
-			if @setSelectionRange
+			if 'selectionStart' in @
 				@focus()
 				@setSelectionRange start, end
 			else if @createTextRange
@@ -636,6 +636,8 @@ do ($ = jQuery) ->
 		isValidValue: (val) ->
 			return if val then true else false
 
+		# ---
+		
 		getPlaceholder: ->
 			placeholder = @element.data @editor.getAttr('placeholder')
 			return if placeholder then placeholder else @getDataName()
@@ -712,6 +714,8 @@ do ($ = jQuery) ->
 		getDataName: ->
 			@_dataName
 
+		# ---
+		
 		getOptions: ->
 			@_options
 
@@ -892,7 +896,7 @@ do ($ = jQuery) ->
 
 		getPopoverContent: ->
 			types = @contentTypes.join ', '
-			return if @_popoverContent then @_popoverContent else "<h1>#{types} Editor</h1>"
+			return if @_popoverContent then @_popoverContent else "<input placeholder='#{types} Editor'>"
 
 		###
 		 # @todo: update current popover content
@@ -1171,6 +1175,98 @@ do ($ = jQuery) ->
 			true
 
 
+	class SelectEditable extends JJPopoverEditable
+
+		members: ->
+			super()
+			@contentTypes = ['select']
+			@contentSeperator = ','
+			@_source = {}
+
+		init: (element) ->
+			@_source = element.data @editor.attr._namespace + 'source' or {}
+
+			super element
+
+			@$set = $ '<div class="selectable-set">'
+
+			for i, source of @getSource()
+				$label = $ '<label class="selectable-item">' + source.title + '<label>'
+				$input = $ '<input type="checkbox" name="' + @getDataName() + '" value="' + source.id + '">'
+
+				$input.prop 'checked', true if -1 isnt @getValueIndex source.id
+				
+				$input.on @getNamespacedEventName('change'), (e) =>
+					value = @getValue()
+					$target = $ e.target
+					id = $target.val()
+					id = parseInt id, 10 unless isNaN id
+					index = @getValueIndex id
+					changed = false
+
+					if $target.is ':checked' 
+						if -1 is index
+							value.push id
+							changed = true
+					else if -1 isnt index
+						value.splice index, 1
+						changed = true
+
+					if changed
+						@setValue value
+						console.log value
+						@render()
+					true
+
+				@$set.append $label.prepend($input)
+			
+			@setPopoverContent @$set
+			true
+
+		onOptionsUpdate: ->
+			@_source = @_options.source if @_options.source
+			@contentSeperator = @_options.contentSeperator if @_options.contentSeperator
+
+		getSeperator: ->
+			@contentSeperator
+
+		getSource: ->
+			@_source
+
+		setSource: (@_source) ->
+
+		getValueIndex: (id) ->
+			$.inArray id, @getValue()
+
+		getValueFromContent: ->
+			titles = @element.text().split @getSeperator()
+			values = []
+			for i, source of @getSource()
+				if -1 isnt $.inArray source.title, titles
+					values.push source.id
+
+			values
+
+		setValueToContent: (val, isPlaceholder) ->
+			titles = []
+			if val
+				for i, source of @getSource()
+					if -1 isnt $.inArray source.id, val
+						titles.push source.title
+
+
+				@element.html titles.join(@getSeperator())
+
+		render: ->
+			value = @getValue()
+			if value and @isValidValue value
+				@setValueToContent value
+			else
+				@element.html @getPlaceholder()
+
+			#return if value then value else @getPlaceholder()
+
+
 	# ! --- Implementation --------------------------------
 
 	# make accessible
@@ -1188,6 +1284,7 @@ do ($ = jQuery) ->
 	window.editorComponents.DateEditable = DateEditable
 	window.editorComponents.MarkdownEditable = MarkdownEditable
 	window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable
+	window.editorComponents.SelectEditable = SelectEditable
 
 	# construction
 	###

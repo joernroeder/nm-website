@@ -162,7 +162,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
     initEditor: function() {
       var _this = this;
 
-      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable']);
+      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable']);
       this.editor.on('editor.open-split-markdown', function() {
         return $('#layout').addClass('open-split-markdown');
       });

@@ -9,7 +9,8 @@
  #  例： $("#notification-list").outerClick(function (event) { ... });
 */
 
-var __hasProp = {}.hasOwnProperty,
+var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+  __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 (function($, elements, OUTER_CLICK) {
@@ -73,7 +74,7 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4;
 
   $.fn.selectRange = function(start, end) {
     if (!end) {
@@ -82,7 +83,7 @@ var __hasProp = {}.hasOwnProperty,
     return this.each(function() {
       var range;
 
-      if (this.setSelectionRange) {
+      if (__indexOf.call(this, 'selectionStart') >= 0) {
         this.focus();
         return this.setSelectionRange(start, end);
       } else if (this.createTextRange) {
@@ -1175,7 +1176,7 @@ var __hasProp = {}.hasOwnProperty,
       if (this._popoverContent) {
         return this._popoverContent;
       } else {
-        return "<h1>" + types + " Editor</h1>";
+        return "<input placeholder='" + types + " Editor'>";
       }
     };
 
@@ -1513,6 +1514,139 @@ var __hasProp = {}.hasOwnProperty,
     return SplitMarkdownEditable;
 
   })(MarkdownEditable);
+  SelectEditable = (function(_super) {
+    __extends(SelectEditable, _super);
+
+    function SelectEditable() {
+      _ref4 = SelectEditable.__super__.constructor.apply(this, arguments);
+      return _ref4;
+    }
+
+    SelectEditable.prototype.members = function() {
+      SelectEditable.__super__.members.call(this);
+      this.contentTypes = ['select'];
+      this.contentSeperator = ',';
+      return this._source = {};
+    };
+
+    SelectEditable.prototype.init = function(element) {
+      var $input, $label, i, source, _ref5,
+        _this = this;
+
+      this._source = element.data(this.editor.attr._namespace + 'source' || {});
+      SelectEditable.__super__.init.call(this, element);
+      this.$set = $('<div class="selectable-set">');
+      _ref5 = this.getSource();
+      for (i in _ref5) {
+        source = _ref5[i];
+        $label = $('<label class="selectable-item">' + source.title + '<label>');
+        $input = $('<input type="checkbox" name="' + this.getDataName() + '" value="' + source.id + '">');
+        if (-1 !== this.getValueIndex(source.id)) {
+          $input.prop('checked', true);
+        }
+        $input.on(this.getNamespacedEventName('change'), function(e) {
+          var $target, changed, id, index, value;
+
+          value = _this.getValue();
+          $target = $(e.target);
+          id = $target.val();
+          if (!isNaN(id)) {
+            id = parseInt(id, 10);
+          }
+          index = _this.getValueIndex(id);
+          changed = false;
+          if ($target.is(':checked')) {
+            if (-1 === index) {
+              value.push(id);
+              changed = true;
+            }
+          } else if (-1 !== index) {
+            value.splice(index, 1);
+            changed = true;
+          }
+          if (changed) {
+            _this.setValue(value);
+            console.log(value);
+            _this.render();
+          }
+          return true;
+        });
+        this.$set.append($label.prepend($input));
+      }
+      this.setPopoverContent(this.$set);
+      return true;
+    };
+
+    SelectEditable.prototype.onOptionsUpdate = function() {
+      if (this._options.source) {
+        this._source = this._options.source;
+      }
+      if (this._options.contentSeperator) {
+        return this.contentSeperator = this._options.contentSeperator;
+      }
+    };
+
+    SelectEditable.prototype.getSeperator = function() {
+      return this.contentSeperator;
+    };
+
+    SelectEditable.prototype.getSource = function() {
+      return this._source;
+    };
+
+    SelectEditable.prototype.setSource = function(_source) {
+      this._source = _source;
+    };
+
+    SelectEditable.prototype.getValueIndex = function(id) {
+      return $.inArray(id, this.getValue());
+    };
+
+    SelectEditable.prototype.getValueFromContent = function() {
+      var i, source, titles, values, _ref5;
+
+      titles = this.element.text().split(this.getSeperator());
+      values = [];
+      _ref5 = this.getSource();
+      for (i in _ref5) {
+        source = _ref5[i];
+        if (-1 !== $.inArray(source.title, titles)) {
+          values.push(source.id);
+        }
+      }
+      return values;
+    };
+
+    SelectEditable.prototype.setValueToContent = function(val, isPlaceholder) {
+      var i, source, titles, _ref5;
+
+      titles = [];
+      if (val) {
+        _ref5 = this.getSource();
+        for (i in _ref5) {
+          source = _ref5[i];
+          if (-1 !== $.inArray(source.id, val)) {
+            titles.push(source.title);
+          }
+        }
+        return this.element.html(titles.join(this.getSeperator()));
+      }
+    };
+
+    SelectEditable.prototype.render = function() {
+      var value;
+
+      value = this.getValue();
+      if (value && this.isValidValue(value)) {
+        return this.setValueToContent(value);
+      } else {
+        return this.element.html(this.getPlaceholder());
+      }
+    };
+
+    return SelectEditable;
+
+  })(JJPopoverEditable);
   window.JJEditor = JJEditor;
   window.editorComponents = {};
   window.editorComponents.JJEditable = JJEditable;
@@ -1520,7 +1654,8 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.InlineEditable = InlineEditable;
   window.editorComponents.DateEditable = DateEditable;
   window.editorComponents.MarkdownEditable = MarkdownEditable;
-  return window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
+  window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
+  return window.editorComponents.SelectEditable = SelectEditable;
   /*
   	# init file transfer
   	jQuery.event.props.push 'dataTransfer'
