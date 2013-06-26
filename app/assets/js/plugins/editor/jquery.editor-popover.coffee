@@ -830,8 +830,8 @@ do ($ = jQuery) ->
 
 			@api = element.qtip 'api'
 
-			@on 'editor.closepopovers', (eventData) =>
-				if eventData.senderId isnt @id
+			@editor.on 'editor.closepopovers', (eventData) =>
+				if not eventData or not eventData.senderId or eventData.senderId isnt @id
 					@close()
 
 			element.on @getNamespacedEventName('click'), =>

@@ -1080,8 +1080,8 @@ var __hasProp = {}.hasOwnProperty,
         }
       });
       this.api = element.qtip('api');
-      this.on('editor.closepopovers', function(eventData) {
-        if (eventData.senderId !== _this.id) {
+      this.editor.on('editor.closepopovers', function(eventData) {
+        if (!eventData || !eventData.senderId || eventData.senderId !== _this.id) {
           return _this.close();
         }
       });
