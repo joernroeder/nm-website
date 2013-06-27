@@ -15,7 +15,7 @@ define [
 			@containerView 	= new ProjectEditor.Views.Container { model: @model }
 			@previewView  	= new ProjectEditor.Views.Preview { model: @model }
 			@mainView 		= new ProjectEditor.Views.Main { model: @model }
-			@modelJSON		= @model.toJSON()
+			@modelJSON		= _.extend @model.toJSON(), CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
 
 			console.log @model.toJSON({isSave: true})
 			# trigger globally that we edit a project now
@@ -141,7 +141,7 @@ define [
 			@initEditor()
 
 		serialize: ->
-			_.extend app.ProjectEditor.modelJSON, CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
+			app.ProjectEditor.modelJSON
 
 
 	ProjectEditor.Views.Main = Backbone.View.extend
