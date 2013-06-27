@@ -17,7 +17,6 @@ define [
 			@mainView 		= new ProjectEditor.Views.Main { model: @model }
 			@modelJSON		= _.extend @model.toJSON(), CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
 
-			console.log @model.toJSON({isSave: true})
 			# trigger globally that we edit a project now
 			Backbone.Events.trigger 'projectEdited', @model
 			@model.on 'saved', @modelHasSaved, @
