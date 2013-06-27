@@ -1263,6 +1263,9 @@ do ($ = jQuery) ->
 			@cleanupValue()
 			@createPopupContent()
 
+		getValue: ->
+			super().slice()
+
 		getValueIndex: (id) ->
 			$.inArray id, @getValue()
 
