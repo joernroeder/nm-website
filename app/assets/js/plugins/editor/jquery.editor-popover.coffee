@@ -103,10 +103,10 @@ do ($ = jQuery) ->
 
 			# global bindings
 			@.on 'change:\\', (e) =>
-				@updateState e.fullName, e.value
+				@updateState e.fullName, e.value, false, e.replace
 
 			@.on 'editor.removeComponent', (fullName) =>
-				@updateState fullName, null
+				@updateState fullName, null, false, true
 
 			# create component instances
 			@updateElements()
@@ -138,13 +138,30 @@ do ($ = jQuery) ->
 
 			if @_events[name] then @_events[name].fire eventData
 
-		updateState: (scope, value, silent) ->
+		updateState: (scope, value, silent, replace) ->
 			console.group 'EDITOR: update state' if @debug
 			console.log 'scope: %s -> %O', scope, value if @debug
 
-			obj = {}
-			obj[scope] = value
-			@_storage = $.extend true, @_storage, extractScope.call(@, obj)
+			replaced = false
+
+			if replace
+				scopeParts = scope.split '.'
+				name = scopeParts.splice(-1)[0]				
+				tmp = @_storage
+
+				for i in scopeParts
+					break if not tmp[i]
+					tmp = tmp[i]
+			
+				if tmp[name]
+					tmp[name] = value
+					replaced = true
+			
+			if not replaced
+				obj = {}
+				obj[scope] = value
+				@_storage = $.extend true, @_storage, extractScope.call(@, obj)
+
 			#@_storage = trimObject.call @, @_storage
 
 			console.log @_storage if @debug
@@ -596,7 +613,7 @@ do ($ = jQuery) ->
 		 # @param [object] value
 		 # @param [boolean] silent
 		###
-		setValue: (value, silent) ->
+		setValue: (value, silent, replace) ->
 			if not silent and @_prevValue is value then return
 			
 			@_prevValue = @_value
@@ -604,15 +621,20 @@ do ($ = jQuery) ->
 
 			#console.log 'set value silent: %s', silent
 			if silent
-				@editor.updateState @getDataFullName(), @_value, silent
+				@editor.updateState @getDataFullName(), @getValue(), silent, replace
 			else
+				prevVal = @getPrevValue()
+				val = @getValue()
+
 				@triggerScopeEvent 'change',
-					value: @_value
-					prevValue: @_prevValue
+					value		: val
+					prevValue	: prevVal
+					replace		: replace
 
 				@triggerDataEvent 'change', 
-					value		: @_value
-					prevValue	: @_prevValue
+					value		: val
+					prevValue	: prevVal
+					replace		: replace
 
 				if typeof value is 'string'
 					@render()
@@ -621,6 +643,9 @@ do ($ = jQuery) ->
 
 		getValue: ->
 			@_value
+
+		getPrevValue: ->
+			@_prevValue
 
 		###
 		 # use this method if you're going bind an element property to the component value.
@@ -1266,6 +1291,9 @@ do ($ = jQuery) ->
 		getValue: ->
 			super().slice()
 
+		getPrevValue: ->
+			super().slice()
+
 		getValueIndex: (id) ->
 			$.inArray id, @getValue()
 
@@ -1294,10 +1322,9 @@ do ($ = jQuery) ->
 
 			@setValue value, silent
 
-		setValue: (value, silent) ->
-			super value, silent
+		setValue: (value, silent, replace = true) ->
+			super value, silent, replace
 			@render()
-
 
 		setValueToContent: (val, isPlaceholder) ->
 			titles = []

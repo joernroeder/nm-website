@@ -137,10 +137,10 @@ var __hasProp = {}.hasOwnProperty,
         console.groupEnd();
       }
       this.on('change:\\', function(e) {
-        return _this.updateState(e.fullName, e.value);
+        return _this.updateState(e.fullName, e.value, false, e.replace);
       });
       this.on('editor.removeComponent', function(fullName) {
-        return _this.updateState(fullName, null);
+        return _this.updateState(fullName, null, false, true);
       });
       this.updateElements();
     }
@@ -185,8 +185,8 @@ var __hasProp = {}.hasOwnProperty,
       }
     };
 
-    JJEditor.prototype.updateState = function(scope, value, silent) {
-      var obj;
+    JJEditor.prototype.updateState = function(scope, value, silent, replace) {
+      var i, name, obj, replaced, scopeParts, tmp, _i, _len;
 
       if (this.debug) {
         console.group('EDITOR: update state');
@@ -194,9 +194,28 @@ var __hasProp = {}.hasOwnProperty,
       if (this.debug) {
         console.log('scope: %s -> %O', scope, value);
       }
-      obj = {};
-      obj[scope] = value;
-      this._storage = $.extend(true, this._storage, extractScope.call(this, obj));
+      replaced = false;
+      if (replace) {
+        scopeParts = scope.split('.');
+        name = scopeParts.splice(-1)[0];
+        tmp = this._storage;
+        for (_i = 0, _len = scopeParts.length; _i < _len; _i++) {
+          i = scopeParts[_i];
+          if (!tmp[i]) {
+            break;
+          }
+          tmp = tmp[i];
+        }
+        if (tmp[name]) {
+          tmp[name] = value;
+          replaced = true;
+        }
+      }
+      if (!replaced) {
+        obj = {};
+        obj[scope] = value;
+        this._storage = $.extend(true, this._storage, extractScope.call(this, obj));
+      }
       if (this.debug) {
         console.log(this._storage);
       }
@@ -810,22 +829,28 @@ var __hasProp = {}.hasOwnProperty,
     */
 
 
-    JJEditable.prototype.setValue = function(value, silent) {
+    JJEditable.prototype.setValue = function(value, silent, replace) {
+      var prevVal, val;
+
       if (!silent && this._prevValue === value) {
         return;
       }
       this._prevValue = this._value;
       this._value = value;
       if (silent) {
-        this.editor.updateState(this.getDataFullName(), this._value, silent);
+        this.editor.updateState(this.getDataFullName(), this.getValue(), silent, replace);
       } else {
+        prevVal = this.getPrevValue();
+        val = this.getValue();
         this.triggerScopeEvent('change', {
-          value: this._value,
-          prevValue: this._prevValue
+          value: val,
+          prevValue: prevVal,
+          replace: replace
         });
         this.triggerDataEvent('change', {
-          value: this._value,
-          prevValue: this._prevValue
+          value: val,
+          prevValue: prevVal,
+          replace: replace
         });
         if (typeof value === 'string') {
           this.render();
@@ -836,6 +861,10 @@ var __hasProp = {}.hasOwnProperty,
 
     JJEditable.prototype.getValue = function() {
       return this._value;
+    };
+
+    JJEditable.prototype.getPrevValue = function() {
+      return this._prevValue;
     };
 
     /*
@@ -1627,6 +1656,10 @@ var __hasProp = {}.hasOwnProperty,
       return SelectEditable.__super__.getValue.call(this).slice();
     };
 
+    SelectEditable.prototype.getPrevValue = function() {
+      return SelectEditable.__super__.getPrevValue.call(this).slice();
+    };
+
     SelectEditable.prototype.getValueIndex = function(id) {
       return $.inArray(id, this.getValue());
     };
@@ -1677,8 +1710,11 @@ var __hasProp = {}.hasOwnProperty,
       return this.setValue(value, silent);
     };
 
-    SelectEditable.prototype.setValue = function(value, silent) {
-      SelectEditable.__super__.setValue.call(this, value, silent);
+    SelectEditable.prototype.setValue = function(value, silent, replace) {
+      if (replace == null) {
+        replace = true;
+      }
+      SelectEditable.__super__.setValue.call(this, value, silent, replace);
       return this.render();
     };
 
