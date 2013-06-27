@@ -1617,10 +1617,14 @@ var __hasProp = {}.hasOwnProperty,
       return this._source;
     };
 
-    SelectEditable.prototype.setSource = function(_source) {
+    SelectEditable.prototype.setSource = function(_source, silent) {
       this._source = _source;
-      this.cleanupValue();
+      this.cleanupValue(silent);
       return this.createPopupContent();
+    };
+
+    SelectEditable.prototype.getValue = function() {
+      return SelectEditable.__super__.getValue.call(this).slice();
     };
 
     SelectEditable.prototype.getValueIndex = function(id) {
@@ -1651,7 +1655,7 @@ var __hasProp = {}.hasOwnProperty,
       return values;
     };
 
-    SelectEditable.prototype.cleanupValue = function() {
+    SelectEditable.prototype.cleanupValue = function(silent) {
       var found, i, id, j, source, val, value, _ref5;
 
       value = this.getValue();
@@ -1670,7 +1674,7 @@ var __hasProp = {}.hasOwnProperty,
           value.splice(i, 1);
         }
       }
-      return this.setValue(value);
+      return this.setValue(value, silent);
     };
 
     SelectEditable.prototype.setValue = function(value, silent) {

@@ -598,7 +598,7 @@ do ($ = jQuery) ->
 		###
 		setValue: (value, silent) ->
 			if not silent and @_prevValue is value then return
-				
+			
 			@_prevValue = @_value
 			@_value = value
 
@@ -1259,8 +1259,8 @@ do ($ = jQuery) ->
 		getSource: ->
 			@_source
 
-		setSource: (@_source) ->
-			@cleanupValue()
+		setSource: (@_source, silent) ->
+			@cleanupValue silent
 			@createPopupContent()
 
 		getValue: ->
@@ -1282,7 +1282,7 @@ do ($ = jQuery) ->
 
 			values
 
-		cleanupValue: ->
+		cleanupValue: (silent) ->
 			value = @getValue()
 			for i, val of value
 				found = false
@@ -1292,7 +1292,7 @@ do ($ = jQuery) ->
 
 				value.splice i, 1 if not found
 
-			@setValue value
+			@setValue value, silent
 
 		setValue: (value, silent) ->
 			super value, silent
