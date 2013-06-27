@@ -35,7 +35,7 @@ class MarkdownEditor_Controller extends Controller {
 			$ids = $this->getIds();
 			
 			foreach ($ids as $shortcode) {
-				$oembed = Oembed::handle_shortcode(array('width' => '200'), $shortcode, null, null);
+				$oembed = Oembed::handle_shortcode(array(), $shortcode, null, null);
 				$out[] = array(
 					'tag'	=> $oembed,
 					'id'	=> $shortcode
