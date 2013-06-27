@@ -2,7 +2,9 @@
 <header data-editor-scope="\ProjectMain">
 	<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
 	<div class="persons">
-		OWNER
+		{{#with CurrentMemberPerson}}
+			{{FirstName}} {{Surname}}
+		{{/with}}
 		<div data-editor-type="select-person" data-editor-name="Person" data-editor-placeholder="Add Collaborators…"></div>
 	</div>
 	

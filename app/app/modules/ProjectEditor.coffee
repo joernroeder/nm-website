@@ -140,7 +140,7 @@ define [
 			@initEditor()
 
 		serialize: ->
-			app.ProjectEditor.modelJSON
+			_.extend app.ProjectEditor.modelJSON, CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
 
 
 	ProjectEditor.Views.Main = Backbone.View.extend
@@ -284,7 +284,7 @@ define [
 				@basicList = res if _.isObject(res)
 				selectSubClasses = ['select-list', 'select-person']
 				selectables = @editor.getComponentsByType 'select'
-				
+
 				for subClass in selectSubClasses
 					selectables = selectables.concat @editor.getComponentsByType subClass
 

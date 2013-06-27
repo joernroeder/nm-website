@@ -172,7 +172,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return this.initEditor();
     },
     serialize: function() {
-      return app.ProjectEditor.modelJSON;
+      return _.extend(app.ProjectEditor.modelJSON, {
+        CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
+      });
     }
   });
   ProjectEditor.Views.Main = Backbone.View.extend({
