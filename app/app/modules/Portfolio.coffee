@@ -101,7 +101,7 @@ define [
 
 			# build list
 			_.each items, (item) ->
-				if item.IsPortfolio
+				if item.IsPortfolio and item.IsPublished
 					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'
 					length++
 			out += '</ul>'
