@@ -347,13 +347,17 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       }
       console.log(sanitize);
       return $.getJSON(app.Config.BasicListUrl).done(function(res) {
-        var selectables;
+        var selectSubClasses, selectables, subClass, _j, _len1;
 
         if (_.isObject(res)) {
           _this.basicList = res;
         }
+        selectSubClasses = ['select-list', 'select-person'];
         selectables = _this.editor.getComponentsByType('select');
-        selectables = selectables.concat(_this.editor.getComponentsByType('select-list'));
+        for (_j = 0, _len1 = selectSubClasses.length; _j < _len1; _j++) {
+          subClass = selectSubClasses[_j];
+          selectables = selectables.concat(_this.editor.getComponentsByType(subClass));
+        }
         if (selectables && _this.basicList) {
           return $.each(selectables, function(i, selectable) {
             var name, source_vals;

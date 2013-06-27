@@ -282,9 +282,12 @@ define [
 			console.log sanitize
 			$.getJSON(app.Config.BasicListUrl).done (res) =>
 				@basicList = res if _.isObject(res)
-
+				selectSubClasses = ['select-list', 'select-person']
 				selectables = @editor.getComponentsByType 'select'
-				selectables = selectables.concat @editor.getComponentsByType 'select-list'
+				
+				for subClass in selectSubClasses
+					selectables = selectables.concat @editor.getComponentsByType subClass
+
 				if selectables and @basicList
 					$.each selectables, (i, selectable) =>
 						name = selectable.getDataName()
