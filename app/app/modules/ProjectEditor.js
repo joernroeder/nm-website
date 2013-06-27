@@ -201,55 +201,92 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         return $('#layout').removeClass('open-split-markdown');
       });
       this.editor.on('stateUpdate', function(e) {
-        var key, text, val, _changed, _ref;
+        return _this.stateUpdate(e);
+      });
+      /*
+      			@editor.on 'stateUpdate', (e) =>
+      				_changed = false
+      				for key, val of e.ProjectMain
+      					if key is 'Text'
+      						text = if val.raw then val.raw else ''
+      
+      						if text isnt @model.get('Text')
+      							_changed = true
+      							@model.set 'Text', text
+      
+      						# check if there are any images which aren't yet added to our project
+      						# ghetto logic, sorry
+      						
+      			
+      
+      				@model.rejectAndSave() if _changed
+      */
 
-        _changed = false;
-        _ref = e.ProjectMain;
-        for (key in _ref) {
-          val = _ref[key];
-          if (key === 'Text') {
-            text = val.raw ? val.raw : '';
-            if (text !== _this.model.get('Text')) {
-              _changed = true;
-              _this.model.set('Text', text);
-            }
-            if (val.images) {
-              _.each(val.images.ids, function(id, i) {
-                var found;
+      return this;
+    },
+    stateUpdate: function(e) {
+      var key, text, val, _changed, _ref,
+        _this = this;
 
-                found = false;
-                _this.model.get('Images').each(function(projImage) {
-                  if (projImage.id === id) {
-                    return found = true;
-                  }
-                });
-                if (!found) {
-                  return DataRetrieval.forDocImage(id).done(function(model) {
-                    var existImg, theImg;
+      console.group('STATE UPDATE');
+      console.log('this: %o', this);
+      console.log('state: ', e.ProjectMain);
+      _changed = false;
+      _ref = e.ProjectMain;
+      for (key in _ref) {
+        val = _ref[key];
+        if (key === 'Text') {
+          text = val.raw ? val.raw : '';
+          if (text !== this.model.get('Text')) {
+            _changed = true;
+            this.model.set('Text', text);
+          }
+          if (val.images) {
+            _.each(val.images.ids, function(id, i) {
+              var found;
 
-                    _this.model.get('Images').add(model);
-                    existImg = app.getFromGalleryCache('DocImage', model.id);
-                    theImg = [
-                      {
-                        FilterID: app.ProjectEditor.getFilterID(),
-                        UploadedToClass: 'DocImage',
-                        id: model.id,
-                        url: existImg.url
-                      }
-                    ];
-                    app.updateGalleryCache(theImg);
-                    return Backbone.Events.trigger('DocImageAdded', theImg);
-                  });
+              found = false;
+              _this.model.get('Images').each(function(projImage) {
+                if (projImage.id === id) {
+                  return found = true;
                 }
               });
-            }
+              if (!found) {
+                return DataRetrieval.forDocImage(id).done(function(model) {
+                  var existImg, theImg;
+
+                  _this.model.get('Images').add(model);
+                  existImg = app.getFromGalleryCache('DocImage', model.id);
+                  theImg = [
+                    {
+                      FilterID: app.ProjectEditor.getFilterID(),
+                      UploadedToClass: 'DocImage',
+                      id: model.id,
+                      url: existImg.url
+                    }
+                  ];
+                  app.updateGalleryCache(theImg);
+                  return Backbone.Events.trigger('DocImageAdded', theImg);
+                });
+              }
+            });
           }
+        } else if (_.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0) {
+          _.each(val, function(id) {
+            var relKey;
+
+            if (!_this.model.hasRelationTo(key, id)) {
+              _changed = true;
+              relKey = key === 'Project' ? 'ChildProjects' : key + 's';
+              return _this.model.get(relKey).add(id);
+            }
+          });
         }
-        if (_changed) {
-          return _this.model.rejectAndSave();
-        }
-      });
-      return this;
+      }
+      console.groupEnd();
+      if (_changed) {
+        return this.model.rejectAndSave();
+      }
     },
     populateSelectEditables: function() {
       var sanitize, type, _fn, _i, _len, _ref,

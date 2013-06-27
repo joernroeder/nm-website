@@ -174,6 +174,10 @@ define [
 				$('#layout').removeClass 'open-split-markdown'
 
 			@editor.on 'stateUpdate', (e) =>
+				@stateUpdate e
+
+			###
+			@editor.on 'stateUpdate', (e) =>
 				_changed = false
 				for key, val of e.ProjectMain
 					if key is 'Text'
@@ -185,26 +189,59 @@ define [
 
 						# check if there are any images which aren't yet added to our project
 						# ghetto logic, sorry
-						if val.images
-							_.each val.images.ids, (id, i) =>
-								found = false
-								@model.get('Images').each (projImage) =>
-									found = true if projImage.id is id
-								
-								if not found
-									DataRetrieval.forDocImage(id).done (model) =>
-										# add it to our model
-										@model.get('Images').add model
-										existImg = app.getFromGalleryCache('DocImage', model.id)
-									
-										theImg = [{ FilterID: app.ProjectEditor.getFilterID(), UploadedToClass: 'DocImage', id: model.id, url: existImg.url }]
-										app.updateGalleryCache theImg
-										Backbone.Events.trigger 'DocImageAdded', theImg
-
+						
+			
 
 				@model.rejectAndSave() if _changed
-
+			###
 			@
+
+		# save stuff
+		stateUpdate: (e) ->
+			console.group 'STATE UPDATE'
+			console.log 'this: %o', @
+			console.log 'state: ', e.ProjectMain
+			_changed = false
+
+			# iterate over our values
+			for key, val of e.ProjectMain
+				# !- Handle exceptions first
+				
+				# 1.) Text
+				if key is 'Text'
+					text = if val.raw then val.raw else ''
+					if text isnt @model.get('Text')
+						_changed = true
+						@model.set 'Text', text
+
+					# check if there are any images which aren't yet added to our project
+					# ghetto logic, sorry
+					if val.images
+						_.each val.images.ids, (id, i) =>
+							found = false
+							@model.get('Images').each (projImage) =>
+								found = true if projImage.id is id
+							
+							if not found
+								DataRetrieval.forDocImage(id).done (model) =>
+									# add it to our model
+									@model.get('Images').add model
+									existImg = app.getFromGalleryCache('DocImage', model.id)
+								
+									theImg = [{ FilterID: app.ProjectEditor.getFilterID(), UploadedToClass: 'DocImage', id: model.id, url: existImg.url }]
+									app.updateGalleryCache theImg
+									Backbone.Events.trigger 'DocImageAdded', theImg
+
+				# 2.) Excursion / Exhibition / Workshop / Project
+				else if _.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0
+					_.each val, (id) =>
+						if not @model.hasRelationTo key, id
+							_changed = true
+							relKey = if key is 'Project' then 'ChildProjects' else key + 's'
+							@model.get(relKey).add id
+
+			console.groupEnd()
+			@model.rejectAndSave() if _changed
 
 		populateSelectEditables: ->
 			sanitize = 

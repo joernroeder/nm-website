@@ -4,8 +4,9 @@ define(['app'], function(app) {
 
   SuperProject = app.module();
   SuperProject.Model = Backbone.JJRelationalModel.extend({
-    doFoo: function() {
-      return console.log('bar');
+    hasRelationTo: function(type, id) {
+      console.log('check if it has relation to: %o, %o', type, id);
+      return console.log(this);
     }
   });
   return SuperProject;

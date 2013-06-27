@@ -6,8 +6,9 @@ define [
 		SuperProject = app.module()
 
 		SuperProject.Model = Backbone.JJRelationalModel.extend
-			doFoo: ->
-				console.log 'bar'
+			hasRelationTo: (type, id) ->
+				console.log 'check if it has relation to: %o, %o', type, id
+				console.log @
 
 
 		SuperProject
