@@ -420,6 +420,13 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       return block.inverse(this);
     }
   });
+  Handlebars.registerHelper('stringDiff', function(what1, what2, block) {
+    if (what1 !== what2) {
+      return block(this);
+    } else {
+      return block.inverse(this);
+    }
+  });
   $(function() {
     jQuery.event.props.push('dataTransfer');
     $(document).on('dragenter dragover dragleave drop', function(e) {

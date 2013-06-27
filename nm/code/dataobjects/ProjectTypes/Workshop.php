@@ -182,7 +182,10 @@ class Workshop extends DataObject {
 			'Persons',
 			'PreviewImage',
 			'Images',
-			'IsPublished'
+			'IsPublished',
+			'Projects',
+			'Exhibitions',
+			'Excursions'
 		)
 	);
 

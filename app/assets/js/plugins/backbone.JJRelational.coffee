@@ -561,7 +561,7 @@ do () ->
 					else if isManyType relation
 						if include.length is 0
 							json[relation.key] = relValue.toJSON {withRelIDs: true}
-						else if include.length is 1
+						else if include.length is 1						
 							json[relation.key] = relValue.getArrayForAttribute include[0]
 						else
 							json[relation.key] = relValue.toJSON {isSave: true, scaffold:include}

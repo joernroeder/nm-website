@@ -4,9 +4,29 @@ define(['app'], function(app) {
 
   SuperProject = app.module();
   SuperProject.Model = Backbone.JJRelationalModel.extend({
-    hasRelationTo: function(type, id) {
-      console.log('check if it has relation to: %o, %o', type, id);
-      return console.log(this);
+    idArrayOfRelationToClass: function(classType) {
+      var idArray;
+
+      idArray = null;
+      if (this.get('ClassName') === 'Project' && type === Project) {
+        idArray = this.get('ChildProjects').getIDArray().concat(this.get('ParentProjects').getIDArray());
+      } else if (this.get('ClassName') === type) {
+        return [];
+      }
+      if (!idArray) {
+        idArray = this.get(classType + 's').getIDArray();
+      }
+      return idArray;
+    },
+    hasRelationTo: function(classType, id) {
+      var idArray;
+
+      idArray = this.idArrayOfRelationToClass(classType);
+      if (_.indexOf(idArray, id) < 0) {
+        return false;
+      } else {
+        return true;
+      }
     }
   });
   return SuperProject;

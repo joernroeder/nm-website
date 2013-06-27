@@ -27,14 +27,20 @@
 	<h1>Projects</h1>
 	<ul data-editor-type="select-list" data-editor-name="Project" data-editor-placeholder="Add…"></ul>
 
-	<h1>Exhibitions</h1>
-	<ul data-editor-type="select-list" data-editor-name="Exhibition" data-editor-placeholder="Add…"></ul>
+	{{#stringDiff "Exhibition" ClassName}}
+		<h1>Exhibitions</h1>
+		<ul data-editor-type="select-list" data-editor-name="Exhibition" data-editor-placeholder="Add…"></ul>
+	{{/stringDiff}}
 
-	<h1>Workshops</h1>
-	<ul data-editor-type="select-list" data-editor-name="Workshop" data-editor-placeholder="Add…"></ul>
+	{{#stringDiff "Workshop" ClassName}}
+		<h1>Workshops</h1>
+		<ul data-editor-type="select-list" data-editor-name="Workshop" data-editor-placeholder="Add…"></ul>
+	{{/stringDiff}}
 
-	<h1>Excursions</h1>
-	<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>
+	{{#stringDiff "Excursion" ClassName}}
+		<h1>Excursions</h1>
+		<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>
+	{{/stringDiff}}
 
 </aside>
 

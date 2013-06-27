@@ -16,6 +16,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         model: this.model
       });
       this.modelJSON = this.model.toJSON();
+      console.log(this.model.toJSON({
+        isSave: true
+      }));
       Backbone.Events.trigger('projectEdited', this.model);
       this.model.on('saved', this.modelHasSaved, this);
     }
@@ -203,29 +206,10 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       this.editor.on('stateUpdate', function(e) {
         return _this.stateUpdate(e);
       });
-      /*
-      			@editor.on 'stateUpdate', (e) =>
-      				_changed = false
-      				for key, val of e.ProjectMain
-      					if key is 'Text'
-      						text = if val.raw then val.raw else ''
-      
-      						if text isnt @model.get('Text')
-      							_changed = true
-      							@model.set 'Text', text
-      
-      						# check if there are any images which aren't yet added to our project
-      						# ghetto logic, sorry
-      						
-      			
-      
-      				@model.rejectAndSave() if _changed
-      */
-
       return this;
     },
     stateUpdate: function(e) {
-      var key, text, val, _changed, _ref,
+      var idArray, key, relColl, relKey, text, val, _changed, _ref,
         _this = this;
 
       console.group('STATE UPDATE');
@@ -272,15 +256,28 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
             });
           }
         } else if (_.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0) {
-          _.each(val, function(id) {
-            var relKey;
+          relKey = key === 'Project' && this.model.get('ClassName') === 'Project' ? 'ChildProjects' : key + 's';
+          if (relColl = this.model.get(relKey)) {
+            _.each(val, function(id) {
+              if (!_this.model.hasRelationTo(key, id)) {
+                _changed = true;
+                return relColl.add(id);
+              }
+            });
+            idArray = this.model.idArrayOfRelationToClass(key);
+            _.each(_.difference(relColl.getIDArray(), val), function(id) {
+              var model;
 
-            if (!_this.model.hasRelationTo(key, id)) {
               _changed = true;
-              relKey = key === 'Project' ? 'ChildProjects' : key + 's';
-              return _this.model.get(relKey).add(id);
-            }
-          });
+              model = relColl.get(id);
+              if (model) {
+                return relColl.remove(model);
+              } else if (key === 'Project') {
+                relColl = _this.model.get('ParentProjects');
+                return relColl.remove(relColl.get(id));
+              }
+            });
+          }
         }
       }
       console.groupEnd();
@@ -313,7 +310,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       _ref = ['Project', 'Excursion', 'Exhibition', 'Workshop'];
       _fn = function(type) {
         return sanitize[type] = function(list) {
-          var coll, possibleType, possibles, source, values, _j, _len1, _ref1;
+          var source, values;
 
           source = [];
           _.each(list, function(obj) {
@@ -321,20 +318,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
               return source.push(obj);
             }
           });
-          possibles = null;
-          if (type === 'Project') {
-            possibles = [];
-            _ref1 = ['Projects', 'ChildProjects', 'ParentProjects'];
-            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-              possibleType = _ref1[_j];
-              if (coll = _this.model.get(possibleType)) {
-                console.log('COLL %o ', coll);
-                possibles = possibles.concat(coll.getIDArray());
-              }
-            }
-          }
-          possibles = possibles ? possibles : _this.model.get(type + 's').getIDArray();
-          values = _this.model.get('ClassName') === type ? _.without(possibles, _this.model.id) : possibles;
+          values = _this.model.idArrayOfRelationToClass(type);
           return {
             source: source,
             values: values
@@ -367,10 +351,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
               if (sanitize[name]) {
                 source_vals = sanitize[name](_this.basicList[name]);
               }
-              console.log(source_vals);
               if (source_vals) {
-                selectable.setSource(source_vals.source);
-                return selectable.setValue(source_vals.values);
+                selectable.setSource(source_vals.source, true);
+                return selectable.setValue(source_vals.values, true);
               }
             }
           });
