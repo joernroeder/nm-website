@@ -423,6 +423,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
               return result = image;
             }
           });
+          console.log(result);
           return [result];
         },
         responseHandler: function(data) {
@@ -433,11 +434,12 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
             app.updateGalleryCache(data);
             _this.insertPersonImage(img);
           }
+          console.log(img);
           if (id = img.id) {
             _this.uploadZone.$dropzone.html('<img src="' + img.url + '">');
             personImg = app.CurrentMemberPerson.get('Image');
             if (id !== personImg && (!personImg || id !== personImg.id)) {
-              return app.CurrentMemberPerson.rejectAndSave('Image', i);
+              return app.CurrentMemberPerson.rejectAndSave('Image', id);
             }
           }
         }

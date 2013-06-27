@@ -379,6 +379,7 @@ define [
 						result = null
 						_.each app.Cache.UserGallery.images.Person, (image) =>
 							if image.id is id then result = image
+						console.log result
 						[result]
 
 					responseHandler: (data) =>
@@ -386,12 +387,13 @@ define [
 						if img.UploadedToClass
 							app.updateGalleryCache data
 							@.insertPersonImage img
+						console.log img
 						if id = img.id
 							@.uploadZone.$dropzone.html '<img src="' + img.url + '">'
 							personImg = app.CurrentMemberPerson.get 'Image'
 							if id isnt personImg and (not personImg or id isnt personImg.id)
 								# new image
-								app.CurrentMemberPerson.rejectAndSave 'Image', i
+								app.CurrentMemberPerson.rejectAndSave 'Image', id
 
 			onContentScroll: ->
 				bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'
