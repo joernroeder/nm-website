@@ -7,14 +7,12 @@ define [
 
 		SuperProject.Model = Backbone.JJRelationalModel.extend
 			idArrayOfRelationToClass: (classType) ->
-				idArray = null
-				
-				if @get('ClassName') is 'Project' and type is Project
-					idArray = @get('ChildProjects').getIDArray().concat @get('ParentProjects').getIDArray()
-				else if @get('ClassName') is type then return []
+				if @get('ClassName') is 'Project' and classType is 'Project'
+					return @get('ChildProjects').getIDArray().concat @get('ParentProjects').getIDArray()
+				else if @get('ClassName') is classType then return []
 
-				idArray = @get(classType + 's').getIDArray() if not idArray
-				idArray
+	
+				return @get(classType + 's').getIDArray()
 
 			hasRelationTo: (classType, id) ->
 				idArray = @idArrayOfRelationToClass classType
