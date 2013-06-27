@@ -886,7 +886,11 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
-	&.selecteditable {
+	&.selecteditable,
+	&.selectlisteditable {
+		.qtip-content {
+			padding: 10 / @em @line / @em;
+		}
 		.selectable-item {
 			display: block;
 			padding: (@line / 4 / @em) 0;

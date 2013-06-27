@@ -1192,16 +1192,17 @@ do ($ = jQuery) ->
 			@_source = {}
 
 		init: (element) ->
-			@_options.position =
-					#at: 'bottom left'
-					#my: 'top left'
-					my: 'top left'
-					at: 'bottom left'
+			if not @_options.position
+				@_options.position =
+						#at: 'bottom left'
+						#my: 'top left'
+						my: 'top left'
+						at: 'bottom left'
 
-					adjust:
-						x: 0
-						y: 0
-						method: 'flip shift'
+						adjust:
+							x: 0
+							y: 0
+							method: 'flip shift'
 
 			@_source = element.data(@editor.attr._namespace + 'source') or {}
 
@@ -1321,7 +1322,6 @@ do ($ = jQuery) ->
 		updateContent: (titles) ->
 			@element.html titles.join(@getSeperator())
 
-
 		render: ->
 			value = @getValue()
 			if value and @isValidValue value
@@ -1331,11 +1331,39 @@ do ($ = jQuery) ->
 
 			#return if value then value else @getPlaceholder()
 	
+
 	class SelectListEditable extends SelectEditable
 
 		members: ->
 			super()
 			@contentTypes = ['select-list']
+
+		init: (element) ->
+			if not @_options.position
+				@_options.position =
+						my: 'top right'
+						at: 'top left'
+
+						adjust:
+							x: -10
+							y: -16
+							method: 'flip shift'
+
+			super element
+
+		updateContent: (titles) ->
+			html = ''
+			for title in titles
+				html += '<li>' + title + '</li>'
+
+			@element.html html
+
+		render: ->
+			value = @getValue()
+			if value and @isValidValue value
+				@setValueToContent value
+			else
+				@element.html '<li>' + @getPlaceholder() + '</li>'
 
 
 	# ! --- Implementation --------------------------------

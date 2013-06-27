@@ -1536,15 +1536,17 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.init = function(element) {
-      this._options.position = {
-        my: 'top left',
-        at: 'bottom left',
-        adjust: {
-          x: 0,
-          y: 0,
-          method: 'flip shift'
-        }
-      };
+      if (!this._options.position) {
+        this._options.position = {
+          my: 'top left',
+          at: 'bottom left',
+          adjust: {
+            x: 0,
+            y: 0,
+            method: 'flip shift'
+          }
+        };
+      }
       this._source = element.data(this.editor.attr._namespace + 'source') || {};
       SelectEditable.__super__.init.call(this, element);
       this.$set = $('<div class="selectable-set">');
@@ -1736,6 +1738,43 @@ var __hasProp = {}.hasOwnProperty,
     SelectListEditable.prototype.members = function() {
       SelectListEditable.__super__.members.call(this);
       return this.contentTypes = ['select-list'];
+    };
+
+    SelectListEditable.prototype.init = function(element) {
+      if (!this._options.position) {
+        this._options.position = {
+          my: 'top right',
+          at: 'top left',
+          adjust: {
+            x: -10,
+            y: -16,
+            method: 'flip shift'
+          }
+        };
+      }
+      return SelectListEditable.__super__.init.call(this, element);
+    };
+
+    SelectListEditable.prototype.updateContent = function(titles) {
+      var html, title, _i, _len;
+
+      html = '';
+      for (_i = 0, _len = titles.length; _i < _len; _i++) {
+        title = titles[_i];
+        html += '<li>' + title + '</li>';
+      }
+      return this.element.html(html);
+    };
+
+    SelectListEditable.prototype.render = function() {
+      var value;
+
+      value = this.getValue();
+      if (value && this.isValidValue(value)) {
+        return this.setValueToContent(value);
+      } else {
+        return this.element.html('<li>' + this.getPlaceholder() + '</li>');
+      }
     };
 
     return SelectListEditable;
