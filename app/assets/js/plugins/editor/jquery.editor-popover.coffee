@@ -1188,7 +1188,7 @@ do ($ = jQuery) ->
 		members: ->
 			super()
 			@contentTypes = ['select']
-			@contentSeperator = ','
+			@contentSeperator = ', '
 			@_source = {}
 
 		init: (element) ->
@@ -1328,6 +1328,17 @@ do ($ = jQuery) ->
 
 			#return if value then value else @getPlaceholder()
 	
+	class SelectPersonEditable extends SelectEditable
+
+		members: ->
+			super()
+			@contentTypes = ['select-person']
+
+		updateContent: (titles) ->
+			prefix = if titles then ' &amp; ' else ''			
+			@element.html prefix + titles.join(@getSeperator())
+
+
 
 	class SelectListEditable extends SelectEditable
 
@@ -1382,6 +1393,7 @@ do ($ = jQuery) ->
 	window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable
 	window.editorComponents.SelectEditable = SelectEditable
 	window.editorComponents.SelectListEditable = SelectListEditable
+	window.editorComponents.SelectPersonEditable = SelectPersonEditable
 
 	# construction
 	###

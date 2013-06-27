@@ -153,6 +153,7 @@ define [
 				'DateEditable'
 				'SplitMarkdownEditable'
 				'SelectEditable'
+				'SelectPersonEditable'
 				'SelectListEditable'
 			]
 

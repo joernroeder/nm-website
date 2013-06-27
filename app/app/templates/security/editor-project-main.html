@@ -1,15 +1,18 @@
 <!-- article -->
 <header data-editor-scope="\ProjectMain">
 	<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
-	<div data-editor-type="select" data-editor-name="Person"></div>
+	<div class="persons">
+		OWNER
+		<div data-editor-type="select-person" data-editor-name="Person" data-editor-placeholder="Add Collaborators…"></div>
+	</div>
 	
-	<p>
+	<!--<p>
 	{{#if IsGroup}}
 		Group project
 	{{else}}
 		{{{nameSummary Persons}}}
 	{{/if}}
-	</p>
+	</p>-->
 	<p>{{niceDate this}}</p>
 	{{#if Websites}}
 		<p>{{{commaSeparatedWebsites Websites}}}</p>

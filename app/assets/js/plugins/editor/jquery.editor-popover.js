@@ -73,7 +73,7 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SelectListEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
 
   $.fn.selectRange = function(start, end) {
     if (!end) {
@@ -1531,7 +1531,7 @@ var __hasProp = {}.hasOwnProperty,
     SelectEditable.prototype.members = function() {
       SelectEditable.__super__.members.call(this);
       this.contentTypes = ['select'];
-      this.contentSeperator = ',';
+      this.contentSeperator = ', ';
       return this._source = {};
     };
 
@@ -1724,12 +1724,35 @@ var __hasProp = {}.hasOwnProperty,
     return SelectEditable;
 
   })(JJPopoverEditable);
+  SelectPersonEditable = (function(_super) {
+    __extends(SelectPersonEditable, _super);
+
+    function SelectPersonEditable() {
+      _ref5 = SelectPersonEditable.__super__.constructor.apply(this, arguments);
+      return _ref5;
+    }
+
+    SelectPersonEditable.prototype.members = function() {
+      SelectPersonEditable.__super__.members.call(this);
+      return this.contentTypes = ['select-person'];
+    };
+
+    SelectPersonEditable.prototype.updateContent = function(titles) {
+      var prefix;
+
+      prefix = titles ? ' &amp; ' : '';
+      return this.element.html(prefix + titles.join(this.getSeperator()));
+    };
+
+    return SelectPersonEditable;
+
+  })(SelectEditable);
   SelectListEditable = (function(_super) {
     __extends(SelectListEditable, _super);
 
     function SelectListEditable() {
-      _ref5 = SelectListEditable.__super__.constructor.apply(this, arguments);
-      return _ref5;
+      _ref6 = SelectListEditable.__super__.constructor.apply(this, arguments);
+      return _ref6;
     }
 
     SelectListEditable.prototype.members = function() {
@@ -1786,7 +1809,8 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.MarkdownEditable = MarkdownEditable;
   window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
   window.editorComponents.SelectEditable = SelectEditable;
-  return window.editorComponents.SelectListEditable = SelectListEditable;
+  window.editorComponents.SelectListEditable = SelectListEditable;
+  return window.editorComponents.SelectPersonEditable = SelectPersonEditable;
   /*
   	# init file transfer
   	jQuery.event.props.push 'dataTransfer'

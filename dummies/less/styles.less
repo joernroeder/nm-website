@@ -887,7 +887,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 
 	&.selecteditable,
-	&.selectlisteditable {
+	&.selectlisteditable,
+	&.selectpersoneditable {
 		color: @editorSidebarColor;
 
 		.qtip-content {
@@ -1960,6 +1961,15 @@ body.dragover .editor-project-preview {
 	article {
 		margin-right: 9%;
 		padding-bottom: 10px;
+
+		.persons {
+			.big-caps;
+			padding-bottom: 1 / @em;
+
+			[data-editor-name] {
+				display: inline-block;
+			}
+		}
 	}
 
 	[data-editor-type='markdown'],
