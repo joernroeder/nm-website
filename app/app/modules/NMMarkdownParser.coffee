@@ -23,7 +23,6 @@ define [
 				# okay, so we have our models now, but we need to check if they may be seen anyway!
 				toShow = []
 				_.each models, (model) =>
-					console.log model
 					if model.isVisibleForMember() then toShow.push(model)
 				
 				# add to our data

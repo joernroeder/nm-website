@@ -129,7 +129,7 @@ define(['app', 'modules/Gravity'], function(app, Gravity) {
     length = 0;
     out = '<ul>';
     _.each(items, function(item) {
-      if (item.IsPortfolio) {
+      if (item.IsPortfolio && item.IsPublished) {
         out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
         return length++;
       }

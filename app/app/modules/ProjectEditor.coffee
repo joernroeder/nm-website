@@ -153,6 +153,7 @@ define [
 				'DateEditable'
 				'SplitMarkdownEditable'
 				'SelectEditable'
+				'SelectListEditable'
 			]
 
 			# dynamic options update
@@ -213,29 +214,45 @@ define [
 					_.each list, (person) =>
 						source.push person if person.ID isnt personId
 					
-					values = _.without @model.get('Person').getIDArray(), personId
+					values = _.without @model.get('Persons').getIDArray(), personId
 					{source: source, values: values}
 
 			for type in ['Project', 'Excursion', 'Exhibition', 'Workshop']
 				do (type) =>
-					sanitize[type] = =>
+					sanitize[type] = (list) =>
 						source = []
 						_.each list, (obj) =>
-							source.push obj if @model.get('ClassName') isnt type and @model.id isnt obj.ID
-						values = _.without @model.get(type + 's').getIDArray(), @model.id
+							source.push(obj) if not (@model.get('ClassName') is type and @model.id is obj.ID)
+						
+						possibles = null
+
+						# exception for project
+						if type is 'Project'
+							possibles = []
+							for possibleType in ['Projects', 'ChildProjects', 'ParentProjects']
+								if coll = @model.get(possibleType)
+									console.log 'COLL %o ', coll
+									possibles = possibles.concat coll.getIDArray()
+						
+						possibles = if possibles then possibles else @model.get(type + 's').getIDArray()
+						
+						values = if @model.get('ClassName') is type then _.without(possibles, @model.id) else possibles
+						
 						{source: source, values: values}
 
 
-
+			console.log sanitize
 			$.getJSON(app.Config.BasicListUrl).done (res) =>
 				@basicList = res if _.isObject(res)
 
 				selectables = @editor.getComponentsByType 'select'
+				selectables = selectables.concat @editor.getComponentsByType 'select-list'
 				if selectables and @basicList
 					$.each selectables, (i, selectable) =>
 						name = selectable.getDataName()
 						if @basicList[name]
 							source_vals = sanitize[name](@basicList[name]) if sanitize[name]
+							console.log source_vals
 							if source_vals
 								selectable.setSource source_vals.source
 								selectable.setValue source_vals.values

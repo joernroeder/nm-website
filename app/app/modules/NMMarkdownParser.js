@@ -36,7 +36,6 @@ define(['app', 'modules/DataRetrieval', 'modules/DocImage'], function(app, DataR
 
         toShow = [];
         _.each(models, function(model) {
-          console.log(model);
           if (model.isVisibleForMember()) {
             return toShow.push(model);
           }
