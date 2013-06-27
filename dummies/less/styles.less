@@ -888,6 +888,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	&.selecteditable,
 	&.selectlisteditable {
+		color: @editorSidebarColor;
+
 		.qtip-content {
 			padding: 10 / @em @line / @em;
 		}
@@ -895,6 +897,12 @@ x:-o-prefocus, .qtip .qtip-tip{
 			display: block;
 			padding: (@line / 4 / @em) 0;
 			cursor: pointer;
+
+			.transition(~"color .15s ease-in-out");
+
+			&:hover {
+				color: #fff;
+			}
 
 			input {
 				margin-right: @line / 4 / @em;

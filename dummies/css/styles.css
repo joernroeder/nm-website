@@ -1633,6 +1633,10 @@ x:-o-prefocus,
   height: 100%;
   color: #cccccc;
 }
+.editor-popover.selecteditable,
+.editor-popover.selectlisteditable {
+  color: #cccccc;
+}
 .editor-popover.selecteditable .qtip-content,
 .editor-popover.selectlisteditable .qtip-content {
   padding: 0.625em 1.5em;
@@ -1642,6 +1646,15 @@ x:-o-prefocus,
   display: block;
   padding: 0.375em 0;
   cursor: pointer;
+  -webkit-transition: color .15s ease-in-out;
+  -moz-transition: color .15s ease-in-out;
+  -o-transition: color .15s ease-in-out;
+  -ms-transition: color .15s ease-in-out;
+  transition: color .15s ease-in-out;
+}
+.editor-popover.selecteditable .selectable-item:hover,
+.editor-popover.selectlisteditable .selectable-item:hover {
+  color: #fff;
 }
 .editor-popover.selecteditable .selectable-item input,
 .editor-popover.selectlisteditable .selectable-item input {
