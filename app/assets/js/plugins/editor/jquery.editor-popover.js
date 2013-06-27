@@ -1592,7 +1592,6 @@ var __hasProp = {}.hasOwnProperty,
           }
           if (changed) {
             _this.setValue(value);
-            console.log(value);
           }
           return true;
         });
@@ -1671,7 +1670,6 @@ var __hasProp = {}.hasOwnProperty,
           value.splice(i, 1);
         }
       }
-      console.log(value);
       return this.setValue(value);
     };
 
@@ -1688,7 +1686,6 @@ var __hasProp = {}.hasOwnProperty,
         _ref5 = this.getSource();
         for (i in _ref5) {
           source = _ref5[i];
-          console.log(source);
           id = source.id || source.ID;
           if (-1 !== $.inArray(id, val)) {
             title = source.title || source.Title;

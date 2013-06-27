@@ -1243,7 +1243,6 @@ do ($ = jQuery) ->
 
 					if changed
 						@setValue value
-						console.log value
 					true
 
 				@$set.append $label.prepend($input)
@@ -1290,7 +1289,6 @@ do ($ = jQuery) ->
 
 				value.splice i, 1 if not found
 
-			console.log value
 			@setValue value
 
 		setValue: (value, silent) ->
@@ -1302,7 +1300,6 @@ do ($ = jQuery) ->
 			titles = []
 			if val
 				for i, source of @getSource()
-					console.log source
 					id = source.id or source.ID
 
 					if -1 isnt $.inArray id, val
