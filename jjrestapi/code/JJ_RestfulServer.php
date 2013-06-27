@@ -885,7 +885,7 @@ class JJ_RestfulServer extends RestfulServer {
 			if ($relObj && $relObj->exists()) {
 				$obj = $this->setRelationFieldByObj($obj, $relObj, $relName, $relType);
 			} else {
-				user_error("DataObject of class '{$relClass}'' with ID {$relId} couldn't be found", E_USER_WARNING);
+				user_error("DataObject of class '{$relClass}' with ID {$relId} couldn't be found", E_USER_WARNING);
 			}
 		}
 
