@@ -1324,6 +1324,12 @@ do ($ = jQuery) ->
 				@element.html @getPlaceholder()
 
 			#return if value then value else @getPlaceholder()
+	
+	class SelectListEditable extends SelectEditable
+
+		members: ->
+			super()
+			@contentTypes = ['select-list']
 
 
 	# ! --- Implementation --------------------------------
@@ -1344,6 +1350,7 @@ do ($ = jQuery) ->
 	window.editorComponents.MarkdownEditable = MarkdownEditable
 	window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable
 	window.editorComponents.SelectEditable = SelectEditable
+	window.editorComponents.SelectListEditable = SelectListEditable
 
 	# construction
 	###
