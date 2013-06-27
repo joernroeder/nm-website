@@ -182,7 +182,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       var markdownEditor,
         _this = this;
 
-      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable']);
+      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable', 'SelectListEditable']);
       markdownEditor = this.editor.getComponentByName('ProjectMain.Text').markdown;
       _.extend(markdownEditor.options, {
         additionalPOSTData: {
@@ -266,7 +266,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
               return source.push(person);
             }
           });
-          values = _.without(_this.model.get('Person').getIDArray(), personId);
+          values = _.without(_this.model.get('Persons').getIDArray(), personId);
           return {
             source: source,
             values: values
@@ -275,16 +275,29 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       };
       _ref = ['Project', 'Excursion', 'Exhibition', 'Workshop'];
       _fn = function(type) {
-        return sanitize[type] = function() {
-          var source, values;
+        return sanitize[type] = function(list) {
+          var coll, possibleType, possibles, source, values, _j, _len1, _ref1;
 
           source = [];
           _.each(list, function(obj) {
-            if (_this.model.get('ClassName') !== type && _this.model.id !== obj.ID) {
+            if (!(_this.model.get('ClassName') === type && _this.model.id === obj.ID)) {
               return source.push(obj);
             }
           });
-          values = _.without(_this.model.get(type + 's').getIDArray(), _this.model.id);
+          possibles = null;
+          if (type === 'Project') {
+            possibles = [];
+            _ref1 = ['Projects', 'ChildProjects', 'ParentProjects'];
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              possibleType = _ref1[_j];
+              if (coll = _this.model.get(possibleType)) {
+                console.log('COLL %o ', coll);
+                possibles = possibles.concat(coll.getIDArray());
+              }
+            }
+          }
+          possibles = possibles ? possibles : _this.model.get(type + 's').getIDArray();
+          values = _this.model.get('ClassName') === type ? _.without(possibles, _this.model.id) : possibles;
           return {
             source: source,
             values: values
@@ -295,6 +308,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         type = _ref[_i];
         _fn(type);
       }
+      console.log(sanitize);
       return $.getJSON(app.Config.BasicListUrl).done(function(res) {
         var selectables;
 
@@ -302,6 +316,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           _this.basicList = res;
         }
         selectables = _this.editor.getComponentsByType('select');
+        selectables = selectables.concat(_this.editor.getComponentsByType('select-list'));
         if (selectables && _this.basicList) {
           return $.each(selectables, function(i, selectable) {
             var name, source_vals;
@@ -311,6 +326,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
               if (sanitize[name]) {
                 source_vals = sanitize[name](_this.basicList[name]);
               }
+              console.log(source_vals);
               if (source_vals) {
                 selectable.setSource(source_vals.source);
                 return selectable.setValue(source_vals.values);
