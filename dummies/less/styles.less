@@ -929,29 +929,28 @@ x:-o-prefocus, .qtip .qtip-tip{
 			}
 
 			.dp_header {
+				width: 100% !important;
 				background: darken(@black, 5%);
 				border-bottom: 1px solid darken(@nmColor, 30%);
 				.big-caps;
 			}
 
-			.dp_previous,
-			.dp_next {
-				color: darken(@editorSidebarColor, 30%);
-			}
-			.dp_caption {
-				color: @editorSidebarColor;
-			}
-			.dp_current {
-				color: #fff;
-			}
-			.dp_selected {
+			.dp_daypicker {
+				th {
+					color: @editorSidebarColor;
+				}
 
-			}
-			.dp_hover {
-				background: transparent;
-				color: #fff;
+				td {
+					&.dp_weekend {
+						color: darken(@editorSidebarColor, 40%);
+					}
+					&.dp_not_in_month {
+						color: darken(@editorSidebarColor, 50%);
+					}
+				}
 			}
 
+			.dp_daypicker,
 			.dp_monthpicker,
 			.dp_yearpicker {
 				width: 100% !important;
@@ -977,6 +976,24 @@ x:-o-prefocus, .qtip .qtip-tip{
 						color: @black;
 					}
 				}
+			}
+
+			.dp_previous,
+			.dp_next {
+				color: darken(@editorSidebarColor, 30%);
+			}
+			.dp_caption {
+				color: @editorSidebarColor;
+			}
+			.dp_current {
+				color: #fff;
+			}
+			.dp_selected {
+
+			}
+			.dp_hover {
+				background: transparent;
+				color: #fff;
 			}
 
 			.dp_footer {
@@ -1961,6 +1978,13 @@ body.dragover .editor-project-preview {
 	article {
 		margin-right: 9%;
 		padding-bottom: 10px;
+
+		header {
+			h1 {
+				display: inline-block;
+				min-width: 10 / @em;
+			}
+		}
 
 		.persons {
 			.big-caps;

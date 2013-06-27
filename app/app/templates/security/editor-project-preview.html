@@ -12,8 +12,8 @@
 			<p><span data-editor-type="date" data-editor-name="Date" data-editor-options='{ "contentFormat": "M Y"}'>{{niceDate this}}</span></p>
 		{{else}}
 			<p>
-				<span data-editor-type="date" data-editor-name="StartDate" data-editor-options='{"format": "D, M, Y"}'>StartDate</span> -
-				<span data-editor-type="date" data-editor-name="EndDate" data-editor-options='{"format": "D, M, Y"}'>EndDate</span>
+				<span data-editor-type="date" data-editor-name="StartDate" data-editor-options='{"format": "d. M Y"}'>{{StartDate}}</span> -
+				<span data-editor-type="date" data-editor-name="EndDate" data-editor-options='{"format": "d. M Y"}'>{{EndDate}}</span>
 			</p>
 			<p class="nice-date">{{niceDate this}}</p>
 		{{/stringCompare}}
