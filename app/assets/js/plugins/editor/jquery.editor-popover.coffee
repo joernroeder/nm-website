@@ -1309,12 +1309,18 @@ do ($ = jQuery) ->
 						titles.push title
 
 						#update tooltip
-						if @$set
-							input = @$set.find('#' + @getDataName().toLowerCase() + '-item-' + id)
-							input.prop 'checked', true
+						@updatePopoverContent title, id
 
+				@updateContent titles
 
-				@element.html titles.join(@getSeperator())
+		updatePopoverContent: (title, id) ->
+			if @$set
+				input = @$set.find('#' + @getDataName().toLowerCase() + '-item-' + id)
+				input.prop 'checked', true
+
+		updateContent: (titles) ->
+			@element.html titles.join(@getSeperator())
+
 
 		render: ->
 			value = @getValue()

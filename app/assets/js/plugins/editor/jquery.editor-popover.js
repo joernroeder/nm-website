@@ -1679,7 +1679,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.setValueToContent = function(val, isPlaceholder) {
-      var i, id, input, source, title, titles, _ref5;
+      var i, id, source, title, titles, _ref5;
 
       titles = [];
       if (val) {
@@ -1691,14 +1691,24 @@ var __hasProp = {}.hasOwnProperty,
           if (-1 !== $.inArray(id, val)) {
             title = source.title || source.Title;
             titles.push(title);
-            if (this.$set) {
-              input = this.$set.find('#' + this.getDataName().toLowerCase() + '-item-' + id);
-              input.prop('checked', true);
-            }
+            this.updatePopoverContent(title, id);
           }
         }
-        return this.element.html(titles.join(this.getSeperator()));
+        return this.updateContent(titles);
       }
+    };
+
+    SelectEditable.prototype.updatePopoverContent = function(title, id) {
+      var input;
+
+      if (this.$set) {
+        input = this.$set.find('#' + this.getDataName().toLowerCase() + '-item-' + id);
+        return input.prop('checked', true);
+      }
+    };
+
+    SelectEditable.prototype.updateContent = function(titles) {
+      return this.element.html(titles.join(this.getSeperator()));
     };
 
     SelectEditable.prototype.render = function() {
