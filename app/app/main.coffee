@@ -329,6 +329,12 @@ require [
 		else
 			return block.inverse @
 
+	Handlebars.registerHelper 'stringDiff', (what1, what2, block) ->
+		if what1 isnt what2
+			return block @
+		else
+			return block.inverse @
+
 
 	# ! KICK OFF
 

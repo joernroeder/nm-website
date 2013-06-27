@@ -191,7 +191,11 @@ class Project extends DataObject {
 			'Persons',
 			'PreviewImage',
 			'Images',
-			'IsPublished'
+			'IsPublished',
+			'ChildProjects',
+			'Excursions',
+			'Exhibitions',
+			'Workshops'
 		)
 	);
 

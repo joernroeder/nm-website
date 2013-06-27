@@ -17,6 +17,7 @@ define [
 			@mainView 		= new ProjectEditor.Views.Main { model: @model }
 			@modelJSON		= @model.toJSON()
 
+			console.log @model.toJSON({isSave: true})
 			# trigger globally that we edit a project now
 			Backbone.Events.trigger 'projectEdited', @model
 			@model.on 'saved', @modelHasSaved, @
@@ -177,24 +178,6 @@ define [
 			@editor.on 'stateUpdate', (e) =>
 				@stateUpdate e
 
-			###
-			@editor.on 'stateUpdate', (e) =>
-				_changed = false
-				for key, val of e.ProjectMain
-					if key is 'Text'
-						text = if val.raw then val.raw else ''
-
-						if text isnt @model.get('Text')
-							_changed = true
-							@model.set 'Text', text
-
-						# check if there are any images which aren't yet added to our project
-						# ghetto logic, sorry
-						
-			
-
-				@model.rejectAndSave() if _changed
-			###
 			@
 
 		# save stuff
@@ -235,11 +218,24 @@ define [
 
 				# 2.) Excursion / Exhibition / Workshop / Project
 				else if _.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0
-					_.each val, (id) =>
-						if not @model.hasRelationTo key, id
+					relKey = if key is 'Project' and @model.get('ClassName') is 'Project' then 'ChildProjects' else key + 's'
+					if relColl = @model.get relKey
+						# add those which aren't there yet
+						_.each val, (id) =>
+							if not @model.hasRelationTo key, id								
+								_changed = true
+								relColl.add id
+						# remove those which are no longer needed
+						idArray = @model.idArrayOfRelationToClass key
+						_.each _.difference(relColl.getIDArray(), val), (id) =>
 							_changed = true
-							relKey = if key is 'Project' then 'ChildProjects' else key + 's'
-							@model.get(relKey).add id
+							model = relColl.get id
+							if model
+								relColl.remove model
+							else if key is 'Project'
+								relColl = @model.get 'ParentProjects'
+								relColl.remove relColl.get(id)		
+
 
 			console.groupEnd()
 			@model.rejectAndSave() if _changed
@@ -262,19 +258,7 @@ define [
 						_.each list, (obj) =>
 							source.push(obj) if not (@model.get('ClassName') is type and @model.id is obj.ID)
 						
-						possibles = null
-
-						# exception for project
-						if type is 'Project'
-							possibles = []
-							for possibleType in ['Projects', 'ChildProjects', 'ParentProjects']
-								if coll = @model.get(possibleType)
-									console.log 'COLL %o ', coll
-									possibles = possibles.concat coll.getIDArray()
-						
-						possibles = if possibles then possibles else @model.get(type + 's').getIDArray()
-						
-						values = if @model.get('ClassName') is type then _.without(possibles, @model.id) else possibles
+						values = @model.idArrayOfRelationToClass type					
 						
 						{source: source, values: values}
 
@@ -293,10 +277,10 @@ define [
 						name = selectable.getDataName()
 						if @basicList[name]
 							source_vals = sanitize[name](@basicList[name]) if sanitize[name]
-							console.log source_vals
+							
 							if source_vals
-								selectable.setSource source_vals.source
-								selectable.setValue source_vals.values
+								selectable.setSource source_vals.source, true
+								selectable.setValue source_vals.values, true
 
 		serialize: ->
 			app.ProjectEditor.modelJSON

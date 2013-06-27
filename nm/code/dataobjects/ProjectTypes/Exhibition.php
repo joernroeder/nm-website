@@ -191,7 +191,10 @@ class Exhibition extends DataObject {
 			'Persons',
 			'PreviewImage',
 			'Images',
-			'IsPublished'
+			'IsPublished',
+			'Projects',
+			'Workshops',
+			'Excursions'
 		)
 	);
 
