@@ -39,7 +39,7 @@ define [
 
 	class OEmbedMarkdownParser extends CustomMarkdownParser
 		rule: /\[embed\s{1,}(.*?)\]/gi
-		url: '/_md_/oembed'
+		url: '/_md_/oembed/'
 
 
 	# make available

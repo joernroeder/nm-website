@@ -304,6 +304,12 @@ require [
 	# extra function to reject any pending save functions on the same model
 	Backbone.__pendingSaveReqs = []
 	Backbone.JJRelationalModel.prototype.rejectAndSave = ->
+		# add callback that triggers 'save'
+		Array.prototype.push.call arguments, null, 
+			success: (model) ->
+				model.trigger 'saved'
+	
+
 		xhr = @.save.apply @, arguments
 
 		found = false

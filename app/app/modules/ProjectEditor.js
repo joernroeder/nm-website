@@ -17,6 +17,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       });
       this.modelJSON = this.model.toJSON();
       Backbone.Events.trigger('projectEdited', this.model);
+      this.model.on('saved', this.modelHasSaved, this);
     }
 
     Inst.prototype.kickOffRender = function() {
@@ -38,6 +39,19 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       if (previewImage && previewImage.id === id) {
         return this.previewView.removePreviewImage();
       }
+    };
+
+    Inst.prototype.modelHasSaved = function() {
+      var selector, title;
+
+      title = this.model.get('Title');
+      selector = '[data-editor-name="Title"]';
+      this.previewView.$el.find(selector).text(title);
+      return this.mainView.$el.find(selector).text(title);
+    };
+
+    Inst.prototype.cleanup = function() {
+      return this.model.off('saved', this.modelHasChanged);
     };
 
     return Inst;
@@ -165,23 +179,10 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
     tagName: 'article',
     template: 'security/editor-project-main',
     initEditor: function() {
-      var markdownEditor, test,
+      var markdownEditor,
         _this = this;
 
       this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable']);
-      test = this.editor.getComponentByName('ProjectMain.Test');
-      test.setSource([
-        {
-          id: 10,
-          title: "hans"
-        }, {
-          id: 1,
-          title: "foo"
-        }, {
-          id: 20,
-          title: "wurst"
-        }
-      ]);
       markdownEditor = this.editor.getComponentByName('ProjectMain.Text').markdown;
       _.extend(markdownEditor.options, {
         additionalPOSTData: {
@@ -250,51 +251,81 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       });
       return this;
     },
-    serialize: function() {
-      return app.ProjectEditor.modelJSON;
-    },
-    afterRender: function() {
-      var _this = this;
+    populateSelectEditables: function() {
+      var sanitize, type, _fn, _i, _len, _ref,
+        _this = this;
 
-      this.initEditor();
+      sanitize = {
+        'Person': function(list) {
+          var personId, source, values;
+
+          source = [];
+          personId = app.CurrentMemberPerson.id;
+          _.each(list, function(person) {
+            if (person.ID !== personId) {
+              return source.push(person);
+            }
+          });
+          values = _.without(_this.model.get('Person').getIDArray(), personId);
+          return {
+            source: source,
+            values: values
+          };
+        }
+      };
+      _ref = ['Project', 'Excursion', 'Exhibition', 'Workshop'];
+      _fn = function(type) {
+        return sanitize[type] = function() {
+          var source, values;
+
+          source = [];
+          _.each(list, function(obj) {
+            if (_this.model.get('ClassName') !== type && _this.model.id !== obj.ID) {
+              return source.push(obj);
+            }
+          });
+          values = _.without(_this.model.get(type + 's').getIDArray(), _this.model.id);
+          return {
+            source: source,
+            values: values
+          };
+        };
+      };
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        type = _ref[_i];
+        _fn(type);
+      }
       return $.getJSON(app.Config.BasicListUrl).done(function(res) {
         var selectables;
 
         if (_.isObject(res)) {
           _this.basicList = res;
         }
-        console.log('populate lists');
-        console.log(_this.basicList);
         selectables = _this.editor.getComponentsByType('select');
-        if (selectables) {
-          $.each(selectables, function(i, selectable) {
-            var att, list, name, personId, values;
+        if (selectables && _this.basicList) {
+          return $.each(selectables, function(i, selectable) {
+            var name, source_vals;
 
             name = selectable.getDataName();
             if (_this.basicList[name]) {
-              list = _this.basicList[name];
-              values = [];
-              att = _this.model.get(name + 's');
-              if (att) {
-                values = _.without(_this.model.get(name + 's').getIDArray());
+              if (sanitize[name]) {
+                source_vals = sanitize[name](_this.basicList[name]);
               }
-              if (name === 'Person') {
-                list = [];
-                personId = app.CurrentMemberPerson.id;
-                _.each(_this.basicList[name], function(person) {
-                  if (person.ID !== personId) {
-                    return list.push(person);
-                  }
-                });
-                values = _.without(_this.model.get(name + 's').getIDArray(), personId);
+              if (source_vals) {
+                selectable.setSource(source_vals.source);
+                return selectable.setValue(source_vals.values);
               }
-              selectable.setSource(list);
-              return selectable.setValue(values);
             }
           });
         }
-        return false;
       });
+    },
+    serialize: function() {
+      return app.ProjectEditor.modelJSON;
+    },
+    afterRender: function() {
+      this.initEditor();
+      return this.populateSelectEditables();
     }
   });
   return ProjectEditor;

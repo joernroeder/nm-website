@@ -19,6 +19,7 @@ define [
 
 			# trigger globally that we edit a project now
 			Backbone.Events.trigger 'projectEdited', @model
+			@model.on 'saved', @modelHasSaved, @
 		
 		kickOffRender: ->
 			# pass container to layout and kick off
@@ -34,6 +35,17 @@ define [
 			previewImage = @model.get('PreviewImage')
 			if previewImage and previewImage.id is id
 				@previewView.removePreviewImage()
+
+		modelHasSaved: ->
+			# synchronize data between the two views without re-rendering the whole thing
+			# syncrhonize title
+			title = @model.get 'Title'
+			selector = '[data-editor-name="Title"]'
+			@previewView.$el.find(selector).text title
+			@mainView.$el.find(selector).text title
+
+		cleanup: ->
+			@model.off 'saved', @modelHasChanged
 
 
 	ProjectEditor.Views.Container = Backbone.View.extend
@@ -143,18 +155,6 @@ define [
 				'SelectEditable'
 			]
 
-			test = @editor.getComponentByName 'ProjectMain.Test'
-			test.setSource [	
-					id: 10
-					title: "hans"
-				,
-					id: 1
-					title: "foo"
-				,
-					id: 20
-					title: "wurst"
-				]
-
 			# dynamic options update
 			markdownEditor = @editor.getComponentByName('ProjectMain.Text').markdown
 			_.extend markdownEditor.options,
@@ -205,41 +205,47 @@ define [
 
 			@
 
+		populateSelectEditables: ->
+			sanitize = 
+				'Person': (list) =>
+					source = []
+					personId = app.CurrentMemberPerson.id
+					_.each list, (person) =>
+						source.push person if person.ID isnt personId
+					
+					values = _.without @model.get('Person').getIDArray(), personId
+					{source: source, values: values}
+
+			for type in ['Project', 'Excursion', 'Exhibition', 'Workshop']
+				do (type) =>
+					sanitize[type] = =>
+						source = []
+						_.each list, (obj) =>
+							source.push obj if @model.get('ClassName') isnt type and @model.id isnt obj.ID
+						values = _.without @model.get(type + 's').getIDArray(), @model.id
+						{source: source, values: values}
+
+
+
+			$.getJSON(app.Config.BasicListUrl).done (res) =>
+				@basicList = res if _.isObject(res)
+
+				selectables = @editor.getComponentsByType 'select'
+				if selectables and @basicList
+					$.each selectables, (i, selectable) =>
+						name = selectable.getDataName()
+						if @basicList[name]
+							source_vals = sanitize[name](@basicList[name]) if sanitize[name]
+							if source_vals
+								selectable.setSource source_vals.source
+								selectable.setValue source_vals.values
+
 		serialize: ->
 			app.ProjectEditor.modelJSON
 
 		afterRender: ->
 			@initEditor()
+			@populateSelectEditables()
 
-			# We need to get the basic lists to populate our select boxes for Persons / Categories / Projects
-			$.getJSON(app.Config.BasicListUrl).done (res) =>
-				if _.isObject(res)
-					@basicList = res
-				console.log 'populate lists'
-				console.log @basicList
-				selectables = @editor.getComponentsByType 'select'
-				if selectables
-					$.each selectables, (i, selectable) =>
-						name = selectable.getDataName()
-						if @basicList[name]
-							list = @basicList[name]
-							values = []
-							att = this.model.get(name + 's')
-							if att
-								values = _.without this.model.get(name + 's').getIDArray()
-
-							if name is 'Person'
-								list = []
-								personId = app.CurrentMemberPerson.id
-								_.each @basicList[name], (person) ->
-									list.push person if person.ID isnt personId
-	
-								values = _.without this.model.get(name + 's').getIDArray(), personId
-
-							selectable.setSource list
-
-							selectable.setValue values
-
-				false
 
 	ProjectEditor

@@ -68,7 +68,7 @@ define(['app', 'modules/DataRetrieval', 'modules/DocImage'], function(app, DataR
 
     OEmbedMarkdownParser.prototype.rule = /\[embed\s{1,}(.*?)\]/gi;
 
-    OEmbedMarkdownParser.prototype.url = '/_md_/oembed';
+    OEmbedMarkdownParser.prototype.url = '/_md_/oembed/';
 
     return OEmbedMarkdownParser;
 

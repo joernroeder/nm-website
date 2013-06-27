@@ -389,6 +389,11 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     var found, xhr,
       _this = this;
 
+    Array.prototype.push.call(arguments, null, {
+      success: function(model) {
+        return model.trigger('saved');
+      }
+    });
     xhr = this.save.apply(this, arguments);
     found = false;
     _.each(Backbone.__pendingSaveReqs, function(req) {

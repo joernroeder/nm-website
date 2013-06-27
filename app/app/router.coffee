@@ -51,6 +51,9 @@ define [
 		###
 		rejectAndHandle: (options) ->
 			app.isEditor = false
+			if app.ProjectEditor
+				app.ProjectEditor.cleanup()
+				app.ProjectEditor = null
 
 			options = options || {}
 			app.handleLinks()

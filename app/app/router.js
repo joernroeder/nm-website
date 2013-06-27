@@ -42,6 +42,10 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         _this = this;
 
       app.isEditor = false;
+      if (app.ProjectEditor) {
+        app.ProjectEditor.cleanup();
+        app.ProjectEditor = null;
+      }
       options = options || {};
       app.handleLinks();
       if (!options.noFadeOut) {
