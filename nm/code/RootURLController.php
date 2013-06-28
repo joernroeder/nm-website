@@ -69,8 +69,10 @@ class RootURLController extends Controller {
 
 		$currentPerson = null;
 		if (isset($userData['PersonID']) && $id = $userData['PersonID']) {
-			$currentPerson = $this->getDataArray('Person', (int) $id)->first();
-			$returnVal .= $currentPerson->toDataElement('current-member-person')->forTemplate();
+			
+			if ($currentPerson = $this->getDataArray('Person', (int) $id)->first()) {
+				$returnVal .= $currentPerson->toDataElement('current-member-person')->forTemplate();
+			}
 		}
 
 		switch ($params['Action']) {
@@ -82,9 +84,9 @@ class RootURLController extends Controller {
 						if ($detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash)) {
 							$returnVal .= $detailed->toDataElement('detailed-' . strtolower($detailed->class) . '-item', null)->forTemplate();
 						}
-					} else {
-						// person page
-						$person = ($currentPerson && $currentPerson->UrlSlug == $urlSlug) ? $currentPerson : $this->getDataArray('Person', null, "UrlSlug='$urlSlug'")->first();
+					} 
+					// person page
+					else if ($person = ($currentPerson && $currentPerson->UrlSlug == $urlSlug) ? $currentPerson : $this->getDataArray('Person', null, "UrlSlug='$urlSlug'")->first()) {
 						$returnVal .= $person->toDataElement('detailed-person-item', null)->forTemplate();
 					}
 				} else {
@@ -125,8 +127,9 @@ class RootURLController extends Controller {
 			case 'calendar':
 				// check if detailed
 				if (isset($params['OtherAction']) && $slug = Convert::raw2sql($params['OtherAction'])) {
-					$detailedCalendarItem = $this->getDataArray('CalendarEntry', null, "UrlHash='$slug'")->first();
-					$returnVal .= $detailedCalendarItem->toDataElement('detailed-calendar-item', null)->forTemplate();
+					if ($detailedCalendarItem = $this->getDataArray('CalendarEntry', null, "UrlHash='$slug'")->first()) {
+						$returnVal .= $detailedCalendarItem->toDataElement('detailed-calendar-item', null)->forTemplate();
+					}
 				} else {
 					// @todo: whole calendar
 				}
