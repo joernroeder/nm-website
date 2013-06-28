@@ -208,7 +208,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return this;
     },
     stateUpdate: function(e) {
-      var idArray, key, relColl, relKey, text, val, _changed, _ref,
+      var key, relKey, text, val, _changed, _ref,
         _this = this;
 
       console.group('STATE UPDATE');
@@ -256,26 +256,12 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           }
         } else if (_.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0) {
           relKey = key === 'Project' && this.model.get('ClassName') === 'Project' ? 'ChildProjects' : key + 's';
-          if (relColl = this.model.get(relKey)) {
-            _.each(val, function(id) {
-              if (!_this.model.hasRelationTo(key, id)) {
-                _changed = true;
-                return relColl.add(id);
-              }
-            });
-            idArray = this.model.idArrayOfRelationToClass(key);
-            _.each(_.difference(relColl.getIDArray(), val), function(id) {
-              var model;
-
-              _changed = true;
-              model = relColl.get(id);
-              if (model) {
-                return relColl.remove(model);
-              } else if (key === 'Project') {
-                relColl = _this.model.get('ParentProjects');
-                return relColl.remove(relColl.get(id));
-              }
-            });
+          if (this.model.setRelCollByIds(relKey, val)) {
+            _changed = true;
+          }
+        } else if (key === 'Person') {
+          if (this.model.setRelCollByIds('Persons', val)) {
+            _changed = true;
           }
         }
       }

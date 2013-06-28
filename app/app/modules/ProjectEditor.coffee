@@ -218,22 +218,11 @@ define [
 				# 2.) Excursion / Exhibition / Workshop / Project
 				else if _.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0
 					relKey = if key is 'Project' and @model.get('ClassName') is 'Project' then 'ChildProjects' else key + 's'
-					if relColl = @model.get relKey
-						# add those which aren't there yet
-						_.each val, (id) =>
-							if not @model.hasRelationTo key, id								
-								_changed = true
-								relColl.add id
-						# remove those which are no longer needed
-						idArray = @model.idArrayOfRelationToClass key
-						_.each _.difference(relColl.getIDArray(), val), (id) =>
-							_changed = true
-							model = relColl.get id
-							if model
-								relColl.remove model
-							else if key is 'Project'
-								relColl = @model.get 'ParentProjects'
-								relColl.remove relColl.get(id)		
+					if @model.setRelCollByIds(relKey, val) then _changed = true
+
+				# 3.) Person
+				else if key is 'Person'
+					if @model.setRelCollByIds('Persons', val) then _changed = true
 
 
 			console.groupEnd()

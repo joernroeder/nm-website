@@ -3,7 +3,7 @@
 		{{#if CurrentImage}}<img src="{{CurrentImage.url}}">{{/if}}
 	</div>
 	<hgroup>
-		{{#if Person}}<h1>{{#with Person}}<a href="#">{{FirstName}} {{Surname}}</a>{{/with}}</h1>{{/if}}
+		{{#if Person}}<h1>{{#with Person}}<a href="/about/{{UrlSlug}}/">{{FirstName}} {{Surname}}</a>{{/with}}</h1>{{/if}}
 
 		{{#if Member}}<p class="email">{{Member.Email}}</p>{{/if}}
 	</hgroup>
@@ -23,6 +23,9 @@
 	<section>
 		<ul class="project-list">
 		</ul>
+		<div>
+			<a class="btn" href="/secured/new/">New Project...</a>
+		</div>
 	</section>
 
 	<header>

@@ -21,6 +21,35 @@ define(['app'], function(app) {
       } else {
         return true;
       }
+    },
+    setRelCollByIds: function(relKey, ids) {
+      var className, idArray, relColl, _changed,
+        _this = this;
+
+      _changed = false;
+      if (relColl = this.get(relKey)) {
+        className = relColl.model.prototype.storeIdentifier;
+        _.each(ids, function(id) {
+          if (!_this.hasRelationTo(className, id)) {
+            _changed = true;
+            return relColl.add(id);
+          }
+        });
+        idArray = this.idArrayOfRelationToClass(className);
+        _.each(_.difference(relColl.getIDArray(), ids), function(id) {
+          var model;
+
+          _changed = true;
+          model = relColl.get(id);
+          if (model) {
+            return relColl.remove(model);
+          } else if (relKey === 'Projects') {
+            relColl = _this.get('ParentProjects');
+            return relColl.remove(relColl.get(id));
+          }
+        });
+      }
+      return _changed;
     }
   });
   return SuperProject;
