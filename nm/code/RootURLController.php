@@ -27,6 +27,33 @@ class RootURLController extends Controller {
 		));
 	}
 
+	public function getDataArray($className, $id = null, $where = null, $sort = null) {
+		// try to get it from chace
+		
+		$aggregate = JJ_RestfulServer::getAggregate($className, ($id ? array($id) : null));
+		$cacheKey = JJ_RestfulServer::convertToCacheKey(($id ? $id . '_' : '') . $aggregate . ($where ? '_' . sha1($where) : '') . ($sort ? '_' . $sort[0] . '_' . $sort[1] : '') . '_InitData');
+
+		$cache = SS_Cache::factory('Root_' . $cacheKey . '_' . $className);
+		$result = $cache->load($cacheKey);
+
+		if ($result) {
+			$result = unserialize($result);
+		}
+		else {
+			if ($id) $where = "\"ID\" = $id";
+
+			$result = DataList::create($className);
+			if ($where) $result = $result->where($where);
+			if ($sort) $result = $result->sort($sort[0], $sort[1]);
+
+			$result = $result->toArray();
+		
+			$cache->save(serialize($result));
+		}
+
+		return new ArrayList($result);
+	}
+
 	public function getInitData($params) {
 
 		
@@ -42,7 +69,7 @@ class RootURLController extends Controller {
 
 		$currentPerson = null;
 		if (isset($userData['PersonID']) && $id = $userData['PersonID']) {
-			$currentPerson = DataObject::get_by_id('Person', (int) $id);
+			$currentPerson = $this->getDataArray('Person', (int) $id)->first();
 			$returnVal .= $currentPerson->toDataElement('current-member-person')->forTemplate();
 		}
 
@@ -57,16 +84,18 @@ class RootURLController extends Controller {
 						}
 					} else {
 						// person page
-						$person = ($currentPerson && $currentPerson->UrlSlug == $urlSlug) ? $currentPerson : DataObject::get_one('Person', "UrlSlug='$urlSlug'");
+						$person = ($currentPerson && $currentPerson->UrlSlug == $urlSlug) ? $currentPerson : $this->getDataArray('Person', null, "UrlSlug='$urlSlug'")->first();
 						$returnVal .= $person->toDataElement('detailed-person-item', null)->forTemplate();
 					}
 				} else {
 					// simple about page with statement, groupimage and people, yo!
 					// group image
-					$returnVal .= GroupImage::get()->toDataElement('groupimage', null)->forTemplate();
+					$dataEl = new JJ_DataElement('groupimage', $this->getDataArray('GroupImage'), null);
+					$returnVal .= $dataEl->forTemplate();
 					// get the persons
-					$persons = Person::get()->where("IsExternal=0")->sort('Surname', 'ASC');
-					$returnVal .= $persons->toDataElement('about-persons', null, 'view.about_init')->forTemplate();
+					$persons = $this->getDataArray('Person', null, "IsExternal=0", array('Surname', 'ASC'));
+					$dataEl = new JJ_DataElement('about-persons', $persons, null, 'view.about_init');
+					$returnVal .= $dataEl->forTemplate();
 				}
 
 
@@ -85,9 +114,9 @@ class RootURLController extends Controller {
 				} else {
 					// whole portfolio
 					foreach (self::$project_types as $type) {
-						$portfolio = $type::get()->where('IsPortfolio=1');
-
-						$returnVal .= $portfolio->toDataElement('portfolio-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
+						$portfolio = $this->getDataArray($type, null, 'IsPortfolio=1');
+						$dataEl = new JJ_DataElement('portfolio-' . strtolower($type), $portfolio, null, 'view.portfolio_init');
+						$returnVal .= $dataEl->forTemplate();
 					}
 				}
 				break;
@@ -96,7 +125,7 @@ class RootURLController extends Controller {
 			case 'calendar':
 				// check if detailed
 				if (isset($params['OtherAction']) && $slug = Convert::raw2sql($params['OtherAction'])) {
-					$detailedCalendarItem = DataObject::get_one('CalendarEntry', "UrlHash='$slug'");
+					$detailedCalendarItem = $this->getDataArray('CalendarEntry', null, "UrlHash='$slug'")->first();
 					$returnVal .= $detailedCalendarItem->toDataElement('detailed-calendar-item', null)->forTemplate();
 				} else {
 					// @todo: whole calendar
@@ -107,8 +136,9 @@ class RootURLController extends Controller {
 			case null:
 				// get featured projects/workshops/exhibtions/excursions
 				foreach (self::$project_types as $type) {
-					$featured = $type::get()->where('IsFeatured=1');
-					$returnVal .= $featured->toDataElement('featured-' . strtolower($type), null, 'view.portfolio_init')->forTemplate();
+					$featured = $this->getDataArray($type, null, 'IsFeatured=1');
+					$dataEl = new JJ_DataElement('featured-' . strtolower($type), $featured, null, 'view.portfolio_init');
+					$returnVal .= $dataEl->forTemplate();
 				}
 
 				// get upcoming calendar data
@@ -127,7 +157,7 @@ class RootURLController extends Controller {
 		$flipped = array_flip(UglyHashExtension::get_class_enc());
 		$className = $flipped[substr($uglyHash, 0, 1)];
 		if ($className) {
-			$detailed = DataObject::get_one($className, "UglyHash='$uglyHash'");
+			$detailed = $this->getDataArray($className, null, "UglyHash='$uglyHash'")->first();
 		}
 
 		return $detailed;
