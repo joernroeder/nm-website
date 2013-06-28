@@ -146,7 +146,8 @@ define [
 						# let's check if the needed data is actually in the DOM? else fetch
 						options.noAjax = true
 						fromDomOrApi().done (model) =>
-							if model
+							# they have to be the same
+							if model and model.cid is existModel.cid
 								dfd.resolve model
 							else
 								@.fetchExistingModelCompletely(existModel).done (existModel) ->

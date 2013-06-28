@@ -160,7 +160,7 @@ define(['app'], function(app) {
         } else {
           options.noAjax = true;
           fromDomOrApi().done(function(model) {
-            if (model) {
+            if (model && model.cid === existModel.cid) {
               return dfd.resolve(model);
             } else {
               return _this.fetchExistingModelCompletely(existModel).done(function(existModel) {
