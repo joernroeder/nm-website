@@ -675,6 +675,20 @@ button.Zebra_DatePicker_Icon {
   position: relative;
   width: 100%;
   min-height: 100%;
+  opacity: 0;
+}
+.packery-wrapper.loaded {
+  opacity: 1;
+}
+.packery-wrapper.loaded .packery-item {
+  -webkit-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  -moz-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  -o-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  -ms-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+}
+.packery-wrapper.loaded.has-gravity .packery-item {
+  margin: 0 !important;
 }
 .packery-test {
   position: relative;
@@ -692,6 +706,16 @@ button.Zebra_DatePicker_Icon {
   content: ' ';
   display: block;
   clear: both;
+}
+.test {
+  display: inline-block;
+  border: 5px solid red;
+}
+.test.elpos {
+  border-color: green;
+}
+.test.center {
+  border-color: yellow;
 }
 .stamp {
   position: absolute;

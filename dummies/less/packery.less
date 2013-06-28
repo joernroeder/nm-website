@@ -2,6 +2,21 @@
 	position: relative;
 	width: 100%;
 	min-height: 100%;
+	opacity: 0;
+
+	//.transition(~"opacity .1s ease-in-out");
+
+	&.loaded {
+		opacity: 1;
+
+	.packery-item {
+		.transition(~"margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005)");
+	}
+
+	&.has-gravity .packery-item {
+			margin: 0 !important;
+		}
+	}
 }
 
 .packery-test {
@@ -18,14 +33,24 @@
 	width: 50%;
 	margin: auto;
 
-	//background: pink;
-	//.border-radius(50%);
-
 	// clearfix
 	&:after {
 		content: ' ';
 		display: block;
 		clear: both;
+	}
+}
+
+.test {
+	display: inline-block;
+	border: 5px solid red;
+
+	&.elpos {
+		border-color: green;
+	}
+
+	&.center {
+		border-color: yellow;
 	}
 }
 
