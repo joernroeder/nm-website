@@ -115,6 +115,7 @@ define [
 
 				fromDomOrApi = () ->
 					seed = new $.Deferred()
+			
 					JJRestApi.getFromDomOrApi(classType, options).done (data) ->
 						if not data then seed.resolve(null)
 

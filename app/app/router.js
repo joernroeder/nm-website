@@ -153,7 +153,8 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
     },
     showPersonPage: function(nameSlug) {
-      var mainDfd;
+      var mainDfd,
+        _this = this;
 
       mainDfd = this.rejectAndHandle();
       DataRetrieval.forDetailedObject('Person', nameSlug).done(function(model) {
@@ -163,7 +164,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         var layout, template, view;
 
         if (!model) {
-          return this.fourOhFour();
+          return _this.fourOhFour();
         }
         layout = app.useLayout('main');
         template = '';

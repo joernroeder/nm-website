@@ -155,7 +155,7 @@ define [
 			DataRetrieval.forDetailedObject('Person', nameSlug).done (model) ->
 				mainDfd.resolve model
 
-			mainDfd.done (model) ->
+			mainDfd.done (model) =>
 				return @.fourOhFour() unless model
 				layout = app.useLayout 'main'
 				template = ''
