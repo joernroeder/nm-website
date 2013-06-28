@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "v1.0.4"
+                "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/v1.0.4",
-                "reference": "v1.0.4",
+                "url": "https://api.github.com/repos/composer/installers/zipball/2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
+                "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
                 "shasum": ""
             },
             "replace": {
@@ -75,7 +75,7 @@
                 "wordpress",
                 "zend"
             ],
-            "time": "2013-06-20 02:36:19"
+            "time": "2013-06-28 03:15:23"
         },
         {
             "name": "silverstripe/framework",
@@ -83,12 +83,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silverstripe/silverstripe-framework.git",
-                "reference": "18299322bc6dc9af017e2c6d3f4272cdacc586fe"
+                "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/18299322bc6dc9af017e2c6d3f4272cdacc586fe",
-                "reference": "18299322bc6dc9af017e2c6d3f4272cdacc586fe",
+                "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/a6c3d1e26939e4e3f57193f86285a0cae2659c75",
+                "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "framework",
                 "silverstripe"
             ],
-            "time": "2013-06-24 16:58:46"
+            "time": "2013-06-28 10:21:00"
         }
     ],
     "packages-dev": [

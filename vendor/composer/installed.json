@@ -36,25 +36,63 @@
         ]
     },
     {
+        "name": "silverstripe/docsviewer",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silverstripe/silverstripe-docsviewer.git",
+            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/cb877536b6cc924bbbe03bc04e336d28e25dfde1",
+            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1",
+            "shasum": ""
+        },
+        "require": {
+            "silverstripe/framework": ">=3.1.x-dev,<4.0"
+        },
+        "time": "2013-06-10 07:55:12",
+        "type": "silverstripe-module",
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Will Rossiter",
+                "email": "will@fullscreen.io",
+                "homepage": "http://wilr.github.com"
+            }
+        ],
+        "description": "Documentation viewer module for SilverStripe",
+        "keywords": [
+            "documentation",
+            "silverstripe"
+        ]
+    },
+    {
         "name": "silverstripe/framework",
         "version": "3.1.x-dev",
         "version_normalized": "3.1.9999999.9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/silverstripe/silverstripe-framework.git",
-            "reference": "18299322bc6dc9af017e2c6d3f4272cdacc586fe"
+            "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/18299322bc6dc9af017e2c6d3f4272cdacc586fe",
-            "reference": "18299322bc6dc9af017e2c6d3f4272cdacc586fe",
+            "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/a6c3d1e26939e4e3f57193f86285a0cae2659c75",
+            "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75",
             "shasum": ""
         },
         "require": {
             "composer/installers": "*",
             "php": ">=5.3.2"
         },
-        "time": "2013-06-24 16:58:46",
+        "time": "2013-06-28 10:21:00",
         "type": "silverstripe-module",
         "installation-source": "source",
         "autoload": {
@@ -90,12 +128,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "v1.0.4"
+            "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/v1.0.4",
-            "reference": "v1.0.4",
+            "url": "https://api.github.com/repos/composer/installers/zipball/2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
+            "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
             "shasum": ""
         },
         "replace": {
@@ -105,7 +143,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2013-06-20 02:36:19",
+        "time": "2013-06-28 03:15:23",
         "type": "composer-installer",
         "extra": {
             "class": "Composer\\Installers\\Installer",
@@ -155,44 +193,6 @@
             "symfony",
             "wordpress",
             "zend"
-        ]
-    },
-    {
-        "name": "silverstripe/docsviewer",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/silverstripe/silverstripe-docsviewer.git",
-            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/cb877536b6cc924bbbe03bc04e336d28e25dfde1",
-            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1",
-            "shasum": ""
-        },
-        "require": {
-            "silverstripe/framework": ">=3.1.x-dev,<4.0"
-        },
-        "time": "2013-06-10 07:55:12",
-        "type": "silverstripe-module",
-        "installation-source": "source",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Will Rossiter",
-                "email": "will@fullscreen.io",
-                "homepage": "http://wilr.github.com"
-            }
-        ],
-        "description": "Documentation viewer module for SilverStripe",
-        "keywords": [
-            "documentation",
-            "silverstripe"
         ]
     }
 ]
