@@ -148,7 +148,7 @@ JJRestApi.getFromDomOrApi = function(name, options) {
   if ($obj.length) {
     data = $.trim($obj.html());
     if ($obj.attr('type') === 'application/json') {
-      data = $.parseJSON(data);
+      data = data ? $.parseJSON(data) : null;
     }
     dfd = new $.Deferred();
     dfd.resolve(data);

@@ -112,7 +112,7 @@ JJRestApi.getFromDomOrApi = (name, options) ->
 
 		# parse json
 		if ($obj.attr('type') == 'application/json')
-			data = $.parseJSON data
+			data = if data then $.parseJSON data else null
 
 		dfd = new $.Deferred()
 		dfd.resolve(data)
