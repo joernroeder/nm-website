@@ -196,9 +196,17 @@ class JJ_DataElement extends ViewableData {
 		$data = $this->data();
 		$context = $this->context();
 		$fields = null;
+		$obj = null;
 
 		if ($data instanceof Object) {
-			$obj = $data instanceof DataList ? singleton($data->dataClass()) : $data;
+			if ($data instanceof SS_List) {
+				if ($first = $data->first()) {
+					$obj = singleton($first->ClassName);	
+				} else return null;
+			}
+			
+			$obj = $obj ? $obj : $data;
+
 			$fields = $obj->getApiContextFields($context);
 		}
 
