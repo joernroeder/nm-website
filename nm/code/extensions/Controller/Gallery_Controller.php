@@ -21,6 +21,11 @@ class Gallery_Controller extends Controller {
 		'$Action/$OtherAction'	=> 'handleAction'
 	);
 
+	private static $allowed_actions = array(
+		'gallery',
+		'images'
+	);
+
 	public function init() {
 		parent::init();
 

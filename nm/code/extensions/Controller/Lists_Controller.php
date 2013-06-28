@@ -8,6 +8,10 @@ class Lists_Controller extends Controller {
 		'$Action/$OtherAction'	=> 'handleAction'
 	);
 
+	private static $allowed_actions = array(
+		'all'
+	);
+
 	public function init() {
 		parent::init();
 

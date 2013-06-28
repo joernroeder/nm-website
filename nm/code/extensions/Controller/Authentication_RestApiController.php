@@ -9,7 +9,8 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 	);
 
 	private static $allowed_actions = array(
-		'handleAction'
+		'login',
+		'logout'
 	);
 
 	public function init() {
