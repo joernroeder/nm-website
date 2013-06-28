@@ -114,9 +114,36 @@ define(['app'], function(app) {
       return dfd.promise();
     },
     forDetailedObject: function(classType, slug, checkForLoggedIn) {
-      var coll, configObj, dfd, existModel, options, resolve, whereStatement;
+      var coll, configObj, dfd, existModel, fromDomOrApi, options, resolve, whereStatement,
+        _this = this;
 
       configObj = app.Config.Detail[classType];
+      options = {
+        name: configObj.domName,
+        urlSuffix: configObj.urlSuffix(slug)
+      };
+      fromDomOrApi = function() {
+        var seed;
+
+        seed = new $.Deferred();
+        JJRestApi.getFromDomOrApi(classType, options).done(function(data) {
+          var model;
+
+          if (!data) {
+            seed.resolve(null);
+          }
+          data = _.isArray(data) ? data : [data];
+          model = data.length === 1 ? app.handleFetchedModel(classType, data[0]) : null;
+          if (model) {
+            model._isCompletelyFetched = true;
+            if (app.CurrentMember) {
+              model._isFetchedWhenLoggedIn = true;
+            }
+          }
+          return seed.resolve(model);
+        });
+        return seed.promise();
+      };
       dfd = new $.Deferred();
       coll = app.Collections[classType];
       whereStatement = configObj.where(slug);
@@ -131,22 +158,19 @@ define(['app'], function(app) {
         if (resolve) {
           dfd.resolve(existModel);
         } else {
-          return this.fetchExistingModelCompletely(existModel);
+          options.noAjax = true;
+          fromDomOrApi().done(function(model) {
+            if (model) {
+              return dfd.resolve(model);
+            } else {
+              return _this.fetchExistingModelCompletely(existModel).done(function(existModel) {
+                return dfd.resolve(existModel);
+              });
+            }
+          });
         }
       } else {
-        options = {
-          name: configObj.domName,
-          urlSuffix: configObj.urlSuffix(slug)
-        };
-        JJRestApi.getFromDomOrApi(classType, options).done(function(data) {
-          var model;
-
-          data = _.isArray(data) ? data : [data];
-          model = data.length === 1 ? app.handleFetchedModel(classType, data[0]) : null;
-          if (model) {
-            model._isCompletelyFetched = true;
-            model._isFetchedWhenLoggedIn = true;
-          }
+        fromDomOrApi().done(function(model) {
           return dfd.resolve(model);
         });
       }
@@ -255,7 +279,9 @@ define(['app'], function(app) {
         success: function(model) {
           dfd.resolve(model);
           model._isCompletelyFetched = true;
-          return model._isFetchedWhenLoggedIn = true;
+          if (app.CurrentMember) {
+            return model._isFetchedWhenLoggedIn = true;
+          }
         }
       });
       return dfd.promise();

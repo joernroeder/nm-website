@@ -108,6 +108,26 @@ define [
 			# abstract function to get the detailed data of a calendar item by its ugly Hash
 			forDetailedObject: (classType, slug, checkForLoggedIn) ->
 				configObj = app.Config.Detail[classType]
+				options =
+					name: configObj.domName
+					urlSuffix: configObj.urlSuffix(slug)
+
+				fromDomOrApi = () ->
+					seed = new $.Deferred()
+					JJRestApi.getFromDomOrApi(classType, options).done (data) ->
+						if not data then seed.resolve(null)
+
+						data = if _.isArray(data) then data else [data]
+						model = if data.length is 1 then app.handleFetchedModel(classType, data[0]) else null
+						
+						if model
+							# set a flag that says the model is completely fetched
+							model._isCompletelyFetched = true
+							# set a flag that says if the model has been fetched while logged in
+							if app.CurrentMember then model._isFetchedWhenLoggedIn = true
+						seed.resolve model
+					seed.promise()
+
 				dfd = new $.Deferred()
 
 				# check if there is already a Calendar Entry with the urlHash
@@ -116,28 +136,26 @@ define [
 
 				existModel = coll.findWhere whereStatement
 				if existModel
+
 					if existModel._isCompletelyFetched then resolve = true
 					if checkForLoggedIn and not existModel._isFetchedWhenLoggedIn then resolve = false
 
 					if resolve
 						dfd.resolve existModel
 					else
-						return @.fetchExistingModelCompletely(existModel)
-				else
-					options =
-						name: configObj.domName
-						urlSuffix: configObj.urlSuffix(slug)
+						# let's check if the needed data is actually in the DOM? else fetch
+						options.noAjax = true
+						fromDomOrApi().done (model) =>
+							if model
+								dfd.resolve model
+							else
+								@.fetchExistingModelCompletely(existModel).done (existModel) ->
+									dfd.resolve existModel
 
-					JJRestApi.getFromDomOrApi(classType, options).done (data) ->
-						data = if _.isArray(data) then data else [data]
-						model = if data.length is 1 then app.handleFetchedModel(classType, data[0]) else null
-						
-						if model
-							# set a flag that says the model is completely fetched
-							model._isCompletelyFetched = true
-							# set a flag that says if the model has been fetched while logged in
-							model._isFetchedWhenLoggedIn = true
-						dfd.resolve model	
+				else
+					fromDomOrApi().done (model) ->
+						dfd.resolve model
+					
 
 				dfd.promise()
 
@@ -218,6 +236,7 @@ define [
 
 			# abstract function that calls `fetch` on a model and then calls back
 			fetchExistingModelCompletely : (existModel) ->
+
 				dfd = new $.Deferred()
 				existModel.fetch
 					success: (model) ->
@@ -225,7 +244,7 @@ define [
 						# set a flag that says the model is completely fetched
 						model._isCompletelyFetched = true
 						# set a flag that says if the model has been fetched while logged in
-						model._isFetchedWhenLoggedIn = true
+						if app.CurrentMember then model._isFetchedWhenLoggedIn = true
 				dfd.promise()
 
 		DataRetrieval
