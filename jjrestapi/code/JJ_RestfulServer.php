@@ -284,7 +284,7 @@ class JJ_RestfulServer extends RestfulServer {
 
 		if ($id) {
 			// Format: /api/v1/<MyClass>/<ID>
-			$aggregate = $this->getAggregate($className, array($id));
+			$aggregate = self::getAggregate($className, array($id));
 
 			$obj = $this->getObjectQuery($className, array($id), $params, $aggregate)->first();
 
@@ -294,7 +294,7 @@ class JJ_RestfulServer extends RestfulServer {
 			
 		} else {
 			// Format: /api/v1/<MyClass>
-			$aggregate = $this->getAggregate($className);
+			$aggregate = self::getAggregate($className);
 
 			$obj = $this->getObjectsQuery($className, $params, $sort, $limit, $aggregate);
 		}
@@ -315,37 +315,22 @@ class JJ_RestfulServer extends RestfulServer {
 			$objIds[] = $obj->ID;
 		}
 		
-		$currentUserId = (int) Member::currentUserId();
-		//Debug::dump($obj->LastEdited);
-		$cacheKey = $this->convertToChacheKey($aggregate . '_' . implode('_', $objIds) . '_' . $id . '_' . $fields . '_' . $context->getContext() . '_' . $responseFormatter->class . '_' . $currentUserId) . '_formatted';
-		//Debug::dump($cacheKey);
-		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
-		$result = $cache->load($cacheKey);
-
-		if ($result) {
-			$result = unserialize($result);
-
+		if ($obj instanceof ArrayList) {
+			$result = $responseFormatter->convertDataList($obj, $fields, $context);
+		}
+		else if (!$obj) {
+			// @todo check setTotalSize
+			$responseFormatter->setTotalSize(0);
+			$result = $responseFormatter->convertDataList(new ArrayList(), $fields);
 		}
 		else {
-			if ($obj instanceof ArrayList) {
-				$result = $responseFormatter->convertDataList($obj, $fields, $context);
-			}
-			else if (!$obj) {
-				// @todo check setTotalSize
-				$responseFormatter->setTotalSize(0);
-				$result = $responseFormatter->convertDataList(new ArrayList(), $fields);
-			}
-			else {
-				$result = $responseFormatter->convertDataObject($obj, $fields, $context);
-			}
-		
-			$cache->save(serialize($result));
+			$result = $responseFormatter->convertDataObject($obj, $fields, $context);
 		}
 
 		return $result;
 	}
 
-	protected function getAggregate($className, $ids = null, $cols = array('LastEdited')) {
+	public static function getAggregate($className, $ids = null, $cols = array('LastEdited')) {
 		$implStatement = '';
 		if ($ids) {
 			$implStatement = 'ID IN (' . implode(',', $ids) . ')';
@@ -371,7 +356,7 @@ class JJ_RestfulServer extends RestfulServer {
 	protected function getObjectQuery($className, $ids, $params, $aggregate = null) {
 		//Debug::dump($aggregate->XML_val('Max', array('LastEdited')));
 
-		$cacheKey =  $this->convertToChacheKey(implode('_', array_merge($ids, $params, array($aggregate))) . '_ObjectQuery');
+		$cacheKey =  self::convertToCacheKey(implode('_', array_merge($ids, $params, array($aggregate))) . '_ObjectQuery');
 
 		$cache = SS_Cache::factory(self::$cache_prefix . $className . '_');
 		$result = $cache->load($cacheKey);
@@ -539,10 +524,10 @@ class JJ_RestfulServer extends RestfulServer {
 			$cacheKey .= '-' . $key .'_' . $value;
 		}
 
-		return $this->convertToChacheKey($cacheKey . '_SearchQuery');
+		return self::convertToCacheKey($cacheKey . '_SearchQuery');
 	}
 
-	protected function convertToChacheKey($string) {
+	public static function convertToCacheKey($string) {
 		return preg_replace('/[^0-9a-zA-Z_]/', '', $string);
 	}
 
