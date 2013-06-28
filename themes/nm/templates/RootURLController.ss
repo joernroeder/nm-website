@@ -10,10 +10,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	
 	<!-- Feel free to split the CSS into separate files, if you like. -->
-	<link rel="stylesheet" href="/dummies/css/styles.css"/> 
+	<link rel="stylesheet" href="/app/assets/css/styles.css"/> 
 	
 	<!-- Here's Golden Gridlet, the grid overlay script. -->
-	<script src="/dummies/js/ggs.js"></script>
+	<!--<script src="/dummies/js/ggs.js"></script>-->
 	
 	<!-- 
 		This script enables structural HTML5 elements in old IE.
