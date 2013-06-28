@@ -13,10 +13,16 @@ include './includes/header.inc.php' ?>
 			<div class="stamp top"></div>
 			<div class="stamp left"></div>
 
+			<!-- top center -->
+			<div class="stamp top center"></div>
+
 			<!-- right top -->
 			<div class="stamp corner right top"></div>
 			<div class="stamp top right"></div>
 			<div class="stamp right"></div>
+
+			<!-- left center -->
+			<div class="stamp left center"></div>
 
 			<!-- left bottom -->
 			<div class="stamp corner left bottom"></div>

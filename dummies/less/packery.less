@@ -44,6 +44,12 @@
 		&.right {
 			right: @cornerWidth;
 		}
+
+		&.center {
+			left: 50%;
+			margin-left: @cornerWidth / -4;
+			height: @cornerWidth / 4;
+		}
 	}
 
 	&.right {
@@ -54,6 +60,12 @@
 	&.left {
 		left: 0;
 		right: auto;
+
+		&.center {
+			top: 50%;
+			margin-top: @cornerWidth / -4;
+			width: @cornerWidth / 4;
+		}
 	}
 
 	&.bottom {
