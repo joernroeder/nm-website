@@ -54,10 +54,10 @@ Structure_RestApiExtension:
     - 'File'
 CSRFProtection_RestApiExtension:
   enabled_for:
-    - 'POST'
-    - 'PUT'
-    - 'DELETE'
-    - 'PATCH'
+    POST: true
+    PUT: true
+    DELETE: true
+    PATCH: true
 
 ---
 Name: StaticUrls
