@@ -81,9 +81,9 @@ class JJ_RestfulServer extends RestfulServer {
 	 */
 	function init() {
 		parent::init();
-		// check Security token
-		if (!CSRFProtection_RestApiExtension::compare_request($this->getRequest())) return $this->httpError(400, "Security token doesn't match.");
-
+		// check Security token	
+		if (!CSRFProtection_RestApiExtension::compare_request($this->getRequest())) $this->httpError(400, "Security token doesn't match.");
+	
 		$url_handlers = $this->stat('url_handlers');
 		krsort($url_handlers);
 
@@ -328,6 +328,18 @@ class JJ_RestfulServer extends RestfulServer {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * This override fixes the Location header
+	 * @param  string 	$className
+	 * @param  int 		$id
+	 * @return formatted DataObject
+	 */
+	protected function putHandler($className, $id) {
+		$response = parent::putHandler($className, $id);
+		$this->getResponse()->removeHeader('Location');
+		return $response;
 	}
 
 	public static function getAggregate($className, $ids = null, $cols = array('LastEdited')) {
@@ -588,6 +600,7 @@ class JJ_RestfulServer extends RestfulServer {
 	 * @return DataObject The passed object
 	 */
 	protected function updateDataObject($obj, $formatter, $data = null, $className = null, $relationName = null) {
+
 		// set the response formatter to $formatter if not yet existent (for further use)
 		// also set base formatter
 		$this->responseFormatter = $this->responseFormatter ? $this->responseFormatter : $formatter;
