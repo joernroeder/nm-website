@@ -13,7 +13,7 @@ class ResponsiveImageFormatter extends MarkdownFormatterExtension {
 	static $regex 		= "^\[img (.*?)\]^";
 	static $img_class 	= 'ResponsiveImage';
 
-	public static function formatMarkdown($mdText) {
+	public static function formatMarkdown($mdText, $callee = null) {
 
 		preg_match_all(self::$regex, $mdText, $res, PREG_PATTERN_ORDER);
 
@@ -30,7 +30,8 @@ class ResponsiveImageFormatter extends MarkdownFormatterExtension {
 				if ($imgID) {
 
 					$img = DataObject::get_by_id(self::$img_class, (int) $imgID);
-					if ($img && $img->exists()) {
+					if ($img && $img->exists() && $callee && $callee->Images()->byID($img->ID)) {
+
 						// 3.) add possible extra classes
 						foreach ($tmpArray as $extraClass) {
 							$img->addExtraClass($extraClass);

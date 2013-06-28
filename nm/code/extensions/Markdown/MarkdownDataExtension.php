@@ -45,7 +45,7 @@ class MarkdownDataExtension extends DataExtension {
 			$mdText = $r::removeMarkdown($mdText);
 		}
 		foreach ($use as $u) {
-			$mdText = $u::formatMarkdown($mdText);
+			$mdText = $u::formatMarkdown($mdText, $this->owner);
 		}
 		
 		return $mdText;

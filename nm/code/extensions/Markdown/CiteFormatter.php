@@ -5,7 +5,7 @@ class CiteFormatter extends MarkdownFormatterExtension {
 	public static $indicator = 'Cite';
 	public static $regex = '/""(.*?)""/';
 
-	public static function formatMarkdown($mdText) {
+	public static function formatMarkdown($mdText, $callee = null) {
 
 		preg_match_all(self::$regex, $mdText, $res, PREG_PATTERN_ORDER);
 

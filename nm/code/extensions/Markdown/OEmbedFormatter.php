@@ -9,7 +9,7 @@ class OEmbedFormatter extends MarkdownFormatterExtension {
 	public static $default_opts = array(
 	);
 
-	public static function formatMarkdown($mdText) {
+	public static function formatMarkdown($mdText, $callee = null) {
 
 		preg_match_all(self::$regex, $mdText, $res, PREG_PATTERN_ORDER);
 		$found = $res[0];

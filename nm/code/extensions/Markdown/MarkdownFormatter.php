@@ -2,7 +2,7 @@
 
 interface MarkdownFormatter {
 
-	public static function formatMarkdown($input);
+	public static function formatMarkdown($input, $callee = null);
 
 	public static function removeMarkdown($input);
 
