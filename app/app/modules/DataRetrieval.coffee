@@ -1,7 +1,8 @@
 define [
-		'app'
+		'app',
+		'modules/ProjectSearch'
 	],
-	(app) ->
+	(app, ProjectSearch) ->
 
 		# ! DATA RETRIEVAL HELPER OBJECT
 	

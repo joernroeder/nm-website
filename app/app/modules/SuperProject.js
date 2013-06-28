@@ -4,39 +4,39 @@ define(['app'], function(app) {
 
   SuperProject = app.module();
   SuperProject.Model = Backbone.JJRelationalModel.extend({
-    idArrayOfRelationToClass: function(classType) {
+    idArrayOfRelationToClass: function(classType, relKey) {
+      if (relKey == null) {
+        relKey = void 0;
+      }
       if (this.get('ClassName') === 'Project' && classType === 'Project') {
         return this.get('ChildProjects').getIDArray().concat(this.get('ParentProjects').getIDArray());
       } else if (this.get('ClassName') === classType) {
         return [];
       }
-      return this.get(classType + 's').getIDArray();
+      relKey = relKey ? relKey : classType + 's';
+      return this.get(relKey).getIDArray();
     },
-    hasRelationTo: function(classType, id) {
-      var idArray;
+    /* @deprecated
+    			hasRelationTo: (classType, id) ->
+    				idArray = @idArrayOfRelationToClass classType
+    				if _.indexOf(idArray, id) < 0 then false else true
+    */
 
-      idArray = this.idArrayOfRelationToClass(classType);
-      if (_.indexOf(idArray, id) < 0) {
-        return false;
-      } else {
-        return true;
-      }
-    },
     setRelCollByIds: function(relKey, ids) {
-      var className, idArray, relColl, _changed,
+      var className, idArrayOfRelationToClass, relColl, _changed,
         _this = this;
 
       _changed = false;
       if (relColl = this.get(relKey)) {
         className = relColl.model.prototype.storeIdentifier;
+        idArrayOfRelationToClass = this.idArrayOfRelationToClass(className, relKey);
         _.each(ids, function(id) {
-          if (!_this.hasRelationTo(className, id)) {
+          if (_.indexOf(idArrayOfRelationToClass, id) < 0) {
             _changed = true;
             return relColl.add(id);
           }
         });
-        idArray = this.idArrayOfRelationToClass(className);
-        _.each(_.difference(relColl.getIDArray(), ids), function(id) {
+        _.each(_.difference(idArrayOfRelationToClass, ids), function(id) {
           var model;
 
           _changed = true;

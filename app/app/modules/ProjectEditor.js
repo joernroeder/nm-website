@@ -263,6 +263,10 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           if (this.model.setRelCollByIds('Persons', val)) {
             _changed = true;
           }
+        } else if (key === 'Category') {
+          if (this.model.setRelCollByIds('Categories', val)) {
+            _changed = true;
+          }
         }
       }
       console.groupEnd();
@@ -289,6 +293,12 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           return {
             source: source,
             values: values
+          };
+        },
+        'Category': function(list) {
+          return {
+            source: list,
+            values: _this.model.get('Categories').getIDArray()
           };
         }
       };

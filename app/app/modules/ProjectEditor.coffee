@@ -224,6 +224,10 @@ define [
 				else if key is 'Person'
 					if @model.setRelCollByIds('Persons', val) then _changed = true
 
+				# 4.) Category
+				else if key is 'Category'
+					if @model.setRelCollByIds('Categories', val) then _changed = true
+
 
 			console.groupEnd()
 			@model.rejectAndSave() if _changed
@@ -238,6 +242,10 @@ define [
 					
 					values = _.without @model.get('Persons').getIDArray(), personId
 					{source: source, values: values}
+
+				'Category': (list) =>
+					{ source: list, values: @model.get('Categories').getIDArray() }
+
 
 			for type in ['Project', 'Excursion', 'Exhibition', 'Workshop']
 				do (type) =>

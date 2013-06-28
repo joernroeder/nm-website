@@ -195,7 +195,8 @@ class Project extends DataObject {
 			'ChildProjects',
 			'Excursions',
 			'Exhibitions',
-			'Workshops'
+			'Workshops',
+			'Categories'
 		)
 	);
 

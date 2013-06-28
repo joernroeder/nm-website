@@ -28,6 +28,11 @@
 
 </section>
 <aside data-editor-scope="\ProjectMain">
+	{{#stringCompare "Project" ClassName}}
+		<h1>Categories</h1>
+		<ul data-editor-type="select-list" data-editor-name="Category" data-editor-placeholder="Add..."></ul>
+	{{/stringCompare}}
+
 	<h1>Projects</h1>
 	<ul data-editor-type="select-list" data-editor-name="Project" data-editor-placeholder="Add…"></ul>
 

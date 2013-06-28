@@ -17,6 +17,15 @@
 	{{{MarkdownedText}}}
 </section>
 <aside>
+	{{#if Categories}}
+		<h4>Categories</h4>
+		<ul>
+		{{#each Categories}}
+			<li><a href="/portfolio/search/Category:{{ID}}/">{{Title}}</a></li>
+		{{/each}}
+		</ul>
+	{{/if}}
+
 	{{#if combinedProjects}}
 		{{{portfoliolist combinedProjects "Project"}}}
 	{{/if}}
