@@ -167,7 +167,7 @@ define [
 				dfd = new $.Deferred()
 				getRandom = ->
 					groupImages = pageInfos.GroupImages
-					if groupImages.length > 0
+					if groupImages and groupImages.length > 0
 						return groupImages[Math.floor(Math.random() * groupImages.length)]
 					null
 				unless pageInfos.GroupImages

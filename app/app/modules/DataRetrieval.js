@@ -187,7 +187,7 @@ define(['app'], function(app) {
         var groupImages;
 
         groupImages = pageInfos.GroupImages;
-        if (groupImages.length > 0) {
+        if (groupImages && groupImages.length > 0) {
           return groupImages[Math.floor(Math.random() * groupImages.length)];
         }
         return null;
