@@ -8,6 +8,10 @@ class Authentication_RestApiController extends JJ_RestfulServer {
 		'$Action/$OtherAction'	=> 'handleAction'
 	);
 
+	private static $allowed_actions = array(
+		'handleAction'
+	);
+
 	public function init() {
 		parent::init();
 		$this->setResponseFormatter('json');
