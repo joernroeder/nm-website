@@ -15,10 +15,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       this.mainView = new ProjectEditor.Views.Main({
         model: this.model
       });
-      this.modelJSON = this.model.toJSON();
-      console.log(this.model.toJSON({
-        isSave: true
-      }));
+      this.modelJSON = _.extend(this.model.toJSON(), {
+        CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
+      });
       Backbone.Events.trigger('projectEdited', this.model);
       this.model.on('saved', this.modelHasSaved, this);
     }
@@ -175,9 +174,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return this.initEditor();
     },
     serialize: function() {
-      return _.extend(app.ProjectEditor.modelJSON, {
-        CurrentMemberPerson: app.CurrentMemberPerson.toJSON()
-      });
+      return app.ProjectEditor.modelJSON;
     }
   });
   ProjectEditor.Views.Main = Backbone.View.extend({
