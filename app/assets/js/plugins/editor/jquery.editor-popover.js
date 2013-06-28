@@ -699,6 +699,9 @@ var __hasProp = {}.hasOwnProperty,
       var val;
 
       this.element = element;
+      if (!element) {
+        return;
+      }
       this.setDataName(element.data(this.editor.getAttr('name')));
       this.updateOptions(element.data(this.editor.getAttr('options')), true);
       element.attr(this.editor.getAttr('handledBy'), this.id);
@@ -1068,6 +1071,9 @@ var __hasProp = {}.hasOwnProperty,
         this._options.repositionOnChange = true;
       }
       JJPopoverEditable.__super__.init.call(this, element);
+      if (!element) {
+        return;
+      }
       element.qtip({
         events: {
           render: function(event, api) {},

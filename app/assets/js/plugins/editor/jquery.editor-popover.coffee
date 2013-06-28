@@ -512,6 +512,8 @@ do ($ = jQuery) ->
 
 		# kick off your stuff from here!
 		init: (@element) ->
+			if not element then return
+
 			@setDataName element.data(@editor.getAttr('name'))
 			@updateOptions element.data(@editor.getAttr('options')), true
 			element.attr @editor.getAttr('handledBy'), @id
@@ -810,6 +812,7 @@ do ($ = jQuery) ->
 
 			super element
 
+			if not element then return
 			element.qtip
 				events:
 					render: (event, api) =>
