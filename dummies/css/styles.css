@@ -671,6 +671,94 @@ button.Zebra_DatePicker_Icon {
   text-align: center;
   padding: 5px 0;
 }
+.packery-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+.packery-test {
+  position: relative;
+}
+.packery {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: relative;
+  width: 50%;
+  margin: auto;
+}
+.packery:after {
+  content: ' ';
+  display: block;
+  clear: both;
+}
+.stamp {
+  position: absolute;
+  width: 7.5%;
+  height: 7.5%;
+  left: 15%;
+  top: 15%;
+  right: 15%;
+}
+.stamp.top {
+  top: 0;
+}
+.stamp.top.right {
+  right: 15%;
+}
+.stamp.right {
+  left: auto;
+  right: 0;
+}
+.stamp.left {
+  left: 0;
+  right: auto;
+}
+.stamp.bottom {
+  bottom: 0;
+  top: auto;
+}
+.stamp.bottom.left {
+  bottom: 15%;
+}
+.stamp.bottom.right {
+  bottom: 15%;
+}
+.stamp.bottom.right-left {
+  left: auto;
+  right: 15%;
+}
+.stamp.corner {
+  width: 15%;
+  height: 15%;
+}
+.stamp.corner.right {
+  right: 0;
+}
+.stamp.corner.bottom {
+  bottom: 0;
+}
+.packery-item {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.packery-item > a {
+  display: block;
+  border: none;
+  background: rgba(255, 0, 0, 0.5);
+}
+.packery-item > a:hover {
+  border: none;
+}
+.packery-item > a img {
+  display: block;
+}
+.packery-item section {
+  display: none;
+}
 body {
   background: #e6e6e6;
   font-family: 'AllerLight', 'Helvetica', sans-serif;

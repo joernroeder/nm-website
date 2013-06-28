@@ -11,21 +11,10 @@
 		<!-- Tooltip -->
 		<script src="/dummies/js/tooltip/jquery.qtip.js"></script>
 
-		<!-- Editor -->
-		<script src="/app/assets/js/plugins/misc/misc.js"></script>
-		<script src="/app/assets/js/plugins/editor/jquery.editor-sidebar.js"></script>
+		<!-- packery tests -->
+		<script src="/dummies/js/packery/packery.pkgd.js"></script>
+		<script src="/dummies/js/packery/packerytest.js"></script>
 
-		<!-- JJMarkdown -->
-		<script src="/responsive-image/thirdparty/picturefill/picturefill.js" type="text/javascript"></script>
-		<script src="/dummies/epiceditor/johnny/thirdparty/jquery.tabby.js" type="text/javascript"></script>
-
-		<script src="/dummies/epiceditor/johnny/base/marked_jjedit.js" type="text/javascript"></script>
-		<script src="/dummies/epiceditor/johnny/base/jquery.jjfileupload.js" type="text/javascript"></script>
-		<script src="/dummies/epiceditor/johnny/base/jquery.jjMarkdown.js" type="text/javascript"></script>
-
-		<!--<script src="/dummies/js/editor/jquery.editor-popover.js"></script>-->
-		<script src="/app/assets/js/plugins/editor/jquery.editor-popover.js"></script>
-		
 	</body>
 	
 </html>
