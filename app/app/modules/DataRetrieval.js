@@ -78,16 +78,18 @@ define(['app'], function(app) {
         JJRestApi.getFromDomOrApi('CalendarEntry', options).done(function(data) {
           var item, _i, _len;
 
-          if (type === 'upcoming') {
-            for (_i = 0, _len = data.length; _i < _len; _i++) {
-              item = data[_i];
-              item.IsUpcoming = true;
+          if (data) {
+            if (type === 'upcoming') {
+              for (_i = 0, _len = data.length; _i < _len; _i++) {
+                item = data[_i];
+                item.IsUpcoming = true;
+              }
             }
-          }
-          app.handleFetchedModels('CalendarEntry', data);
-          config.flag = true;
-          if (type === 'whole') {
-            app.Config.Calendar.upcoming.flag = true;
+            app.handleFetchedModels('CalendarEntry', data);
+            config.flag = true;
+            if (type === 'whole') {
+              app.Config.Calendar.upcoming.flag = true;
+            }
           }
           return dfd.resolve();
         });

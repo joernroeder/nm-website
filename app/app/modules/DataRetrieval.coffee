@@ -76,13 +76,14 @@ define [
 					options.name = type + '-calendar'
 
 					JJRestApi.getFromDomOrApi('CalendarEntry', options).done (data) ->
-						# set an internal "IsUpcoming" flag for faster accessing
-						if type is 'upcoming'
-							for item in data
-								item.IsUpcoming = true
-						app.handleFetchedModels 'CalendarEntry', data
-						config.flag = true
-						if type is 'whole' then app.Config.Calendar.upcoming.flag = true
+						if data
+							# set an internal "IsUpcoming" flag for faster accessing
+							if type is 'upcoming'
+								for item in data
+									item.IsUpcoming = true
+							app.handleFetchedModels 'CalendarEntry', data
+							config.flag = true
+							if type is 'whole' then app.Config.Calendar.upcoming.flag = true
 						dfd.resolve()
 				else
 					dfd.resolve()
