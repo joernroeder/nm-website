@@ -61,25 +61,46 @@ class Lists_Controller extends Controller {
 	 * @todo JJ_Aggregate and Cache
 	 */
 	private function getObjectsAsList($className, $att, $where = '', $sortBy = null, $sortOrder = 'ASC') {
-		$objs = DataList::create($className)->where($where);
-		if ($sortBy) $objs->sort($sortBy, $sortOrder);
+		$aggregate = JJ_RestfulServer::getAggregate($className);
+		$cacheAtts = array(
+			$className,
+			$aggregate,
+			$att,
+			$where,
+			($sortBy ? $sortBy . '_' . $sortOrder : ''),
+			'ObjectList'
+		);
+		$cacheKey = JJ_RestfulServer::convertToCacheKey(implode('_', $cacheAtts));
+		$cache = SS_Cache::factory('Root_ObjectList_' . $className);
+		$result = $cache->load($cacheKey);
 
-		$out = array();
-		
-		foreach ($objs as $obj) {
+		if ($result) {
+			$result = unserialize($result);
+		} else {
+			$objs = DataList::create($className)->where($where);
+			if ($sortBy) $objs->sort($sortBy, $sortOrder);
+	
+			$result = array();
 			
-			$theAtt = $obj->hasMethod($att) ? $obj->$att() : $obj->$att;
-			
-			if ($theAtt) {
-				$out[] = array(
-					'ID'		=> $obj->ID,
-					'Title' 	=> $theAtt
-				);	
+			foreach ($objs as $obj) {
+				
+				$theAtt = $obj->hasMethod($att) ? $obj->$att() : $obj->$att;
+				
+				if ($theAtt) {
+					$result[] = array(
+						'ID'		=> $obj->ID,
+						'Title' 	=> $theAtt
+					);	
+				}
+				
 			}
-			
+
+			$cache->save(serialize($result));
 		}
 
-		return $out;
+		
+
+		return $result;
 	}
 
 }
