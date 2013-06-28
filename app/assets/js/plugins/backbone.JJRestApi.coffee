@@ -124,6 +124,8 @@ JJRestApi.getFromDomOrApi = (name, options) ->
 		dfd = $.getJSON url
 		JJRestApi.Events.trigger 'dfdAjax', dfd
 		return dfd
+	else return $.Deferred().resolve null
+
 
 
 ###*
