@@ -33,7 +33,7 @@ class RootURLController extends Controller {
 		$aggregate = JJ_RestfulServer::getAggregate($className, ($id ? array($id) : null));
 		$cacheKey = JJ_RestfulServer::convertToCacheKey(($id ? $id . '_' : '') . $aggregate . ($where ? '_' . sha1($where) : '') . ($sort ? '_' . $sort[0] . '_' . $sort[1] : '') . '_InitData');
 
-		$cache = SS_Cache::factory('Root_' . $cacheKey . '_' . $className);
+		$cache = SS_Cache::factory('Root_InitData_' . $className);
 		$result = $cache->load($cacheKey);
 
 		if ($result) {

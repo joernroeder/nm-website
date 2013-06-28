@@ -17,7 +17,31 @@ class MarkdownDataExtension extends DataExtension {
 		$mdText = $this->owner->$fieldName;
 		if (!$mdText) return '';
 
-		return $this->MarkdownText($mdText, $extensions);
+		// try to get the markdown from cache
+		$cacheAtts = array(
+			$this->owner->ClassName,
+			$this->owner->ID,
+			$this->owner->LastEdited,
+			$fieldName,
+			strlen($mdText),
+			'Markdown'
+		);
+		if ($extensions) $cacheAtts = array_merge($cacheAtts, $extensions);
+
+		$cacheKey = JJ_RestfulServer::convertToCacheKey(implode('_', $cacheAtts));
+
+		$cache = SS_Cache::factory('Markdown_' . $this->owner->ClassName);
+		$result = $cache->load($cacheKey);
+
+		if ($result) {
+			$result = unserialize($result);
+		} else {
+			$result = $this->MarkdownText($mdText, $extensions);
+
+			$cache->save(serialize($result));
+		}
+
+		return $result;
 	}
 
 	public function MarkdownText($text, $extensions = null) {
