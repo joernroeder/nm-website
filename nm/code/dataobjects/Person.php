@@ -227,6 +227,12 @@ class Person extends DataObject {
 		)
 	);
 
+	private static $api_searchable_fields = array(
+		'view'	=> array(
+			'UrlSlug'	=> 'ExactMatchFilter'
+		)
+	);
+
 
 	public function canView($member = null) {
 		return true;
