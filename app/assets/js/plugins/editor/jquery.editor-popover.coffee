@@ -1224,6 +1224,7 @@ do ($ = jQuery) ->
 		members: ->
 			super()
 			@contentTypes = ['select']
+			@popoverClasses = ['selectable']
 			@contentSeperator = ', '
 			@_source = {}
 
