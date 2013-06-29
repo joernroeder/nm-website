@@ -17,10 +17,11 @@
 class DocImage extends SubdomainResponsiveImage {
 
 	private static $belongs_many_many = array(
-		'Excursions'	=> 'Excursion',		// Exkursionen
-		'Exhibitions'	=> 'Exhibition',	// Ausstellungen
-		'Projects'		=> 'Project',		// Projekte
-		'Workshops'		=> 'Workshop'		// Workshops
+		'Excursions'		=> 'Excursion',		// Exkursionen
+		'Exhibitions'		=> 'Exhibition',	// Ausstellungen
+		'Projects'			=> 'Project',		// Projekte
+		'Workshops'			=> 'Workshop',		// Workshops
+		'CalendarEntries'	=> 'CalendarEntry'
 	);
 
 	private static $singular_name = 'Image';

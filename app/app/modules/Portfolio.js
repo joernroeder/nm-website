@@ -34,6 +34,9 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       var data;
 
       data = this.model ? this.model.toJSON() : {};
+      data.Persons = _.sortBy(json.Persons, function(person) {
+        return person.Surname;
+      });
       data.LinkTo = this.options.linkTo;
       return data;
     }
@@ -62,9 +65,13 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
 
       json = this.model ? this.model.toJSON() : {};
       types = ['Projects', 'ChildProjects', 'ParentProjects'];
-      if (json.Persons.length > Portfolio.Config.person_group_length) {
+      json.Persons = _.sortBy(json.Persons, function(person) {
+        return person.Surname;
+      });
+      if (parseInt(json.Persons.length) > parseInt(Portfolio.Config.person_group_length)) {
         json.IsGroup = true;
       }
+      console.log(json);
       json.combinedProjects = [];
       _.each(types, function(type) {
         if (_.isArray(json[type])) {
@@ -78,13 +85,13 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     var conf, length, out;
 
     conf = Portfolio.Config;
-    if (!(persons.length < conf.person_group_length)) {
+    if (!(persons.length <= conf.person_group_length)) {
       return conf.group_project_title;
     }
     out = '';
     length = persons.length;
     _.each(persons, function(person, i) {
-      out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + person.Surname + '</a>';
+      out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + (person.Surname ? person.Surname : '') + '</a>';
       if (i < (length - 2)) {
         return out += ', ';
       } else if (i < (length - 1)) {
@@ -128,7 +135,7 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     length = 0;
     out = '<ul>';
     _.each(items, function(item) {
-      if (item.IsPortfolio && item.IsPublished) {
+      if (item.IsPublished) {
         out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
         return length++;
       }
@@ -140,6 +147,16 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     } else {
       return '';
     }
+  });
+  Handlebars.registerHelper('personlist', function(persons) {
+    var out;
+
+    out = '<ul>';
+    _.each(persons, function(person) {
+      return out += '<li><a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + (person.Surname ? person.Surname : '') + '</a></li>';
+    });
+    out += '</ul>';
+    return "<h4>Contributors</h4>" + out;
   });
   Handlebars.registerHelper('commaSeparatedWebsites', function(websites) {
     var a;

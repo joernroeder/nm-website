@@ -340,6 +340,10 @@ require [
 		else
 			return block.inverse @
 
+	Handlebars.registerHelper 'console', (what) ->
+		console.log what
+		'logging...'
+
 
 	# ! KICK OFF
 

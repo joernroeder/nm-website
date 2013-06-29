@@ -2,11 +2,7 @@
 <header>
 	<h1>{{Title}}</h1>
 	<p>
-	{{#if IsGroup}}
-		Group project
-	{{else}}
 		{{{nameSummary Persons}}}
-	{{/if}}
 	</p>
 	<p>{{niceDate this}}</p>
 	{{#if Websites}}
@@ -17,6 +13,34 @@
 	{{{MarkdownedText}}}
 </section>
 <aside>
+	
+	{{#stringCompare "Project" ClassName}}
+		{{#if Exhibitions}}{{{portfoliolist Exhibitions "Exhibition"}}}{{/if}}
+		{{#if Workshops}}{{{portfoliolist Workshops "Workshop"}}}{{/if}}
+		{{#if Excursions}}{{{portfoliolist Excursions "Excursion"}}}{{/if}}
+		{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}
+	{{/stringCompare}}
+
+	{{#stringCompare "Exhibition" ClassName}}
+		{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}
+		{{#if Workshops}}{{{portfoliolist Workshops "Workshop"}}}{{/if}}
+		{{#if Excursions}}{{{portfoliolist Excursions "Excursion"}}}{{/if}}
+	{{/stringCompare}}
+
+	{{#stringCompare "Excursion" ClassName}}
+		{{#if Exhibitions}}{{{portfoliolist Exhibitions "Exhibition"}}}{{/if}}
+		{{#if Workshops}}{{{portfoliolist Workshops "Workshop"}}}{{/if}}
+		{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}
+	{{/stringCompare}}
+
+	{{#stringCompare "Workshop" ClassName}}
+		{{#if Exhibitions}}{{{portfoliolist Exhibitions "Exhibition"}}}{{/if}}
+		{{#if Excursions}}{{{portfoliolist Excursions "Excursion"}}}{{/if}}
+		{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}
+	{{/stringCompare}}
+
+	<hr/>
+
 	{{#if Categories}}
 		<h4>Categories</h4>
 		<ul>
@@ -26,24 +50,12 @@
 		</ul>
 	{{/if}}
 
-	{{#if combinedProjects}}
-		{{{portfoliolist combinedProjects "Project"}}}
-	{{/if}}
-
-	{{#if Exhibitions}}
-		{{{portfoliolist Exhibitions "Exhibition"}}}
-	{{/if}}
-	
-	{{#if Workshops}}
-		{{{portfoliolist Workshops "Workshop"}}}
-	{{/if}}
-	
-	{{#if Excursions}}
-		{{{portfoliolist Excursions "Excursion"}}}
+	{{#if IsGroup}}
+		{{{personlist Persons}}}
 	{{/if}}
 </aside>
 
-{{#if Code}}
+<!--{{#if Code}}
 <script type="text/javascript">
 	$(document).one('code:kickoff', function (e) {
 		{{{Code}}}
@@ -51,6 +63,6 @@
 		e.stopImmediatePropagation();
 	});
 </script>
-{{/if}}
+{{/if}}-->
 
 <!-- /article -->

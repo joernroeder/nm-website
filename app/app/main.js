@@ -429,6 +429,10 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       return block.inverse(this);
     }
   });
+  Handlebars.registerHelper('console', function(what) {
+    console.log(what);
+    return 'logging...';
+  });
   $(function() {
     jQuery.event.props.push('dataTransfer');
     $(document).on('dragenter dragover dragleave drop', function(e) {

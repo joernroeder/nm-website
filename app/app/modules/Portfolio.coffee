@@ -26,6 +26,9 @@ define [
 			template: 'packery-list-item'
 			serialize: () ->
 				data = if @.model then @.model.toJSON() else {}
+				data.Persons = _.sortBy json.Persons, (person) ->
+					return person.Surname
+
 				data.LinkTo = @.options.linkTo
 				data
 
@@ -42,13 +45,19 @@ define [
 				$doc.trigger(@._codeEv)
 				$doc.trigger(@._afterRenderEv)
 			serialize: ->
+
 				json = if @.model then @.model.toJSON() else {}
 				types = ['Projects', 'ChildProjects', 'ParentProjects']
 
-				# check for person group length
-				if json.Persons.length > Portfolio.Config.person_group_length
+				# sort persons
+				json.Persons = _.sortBy json.Persons, (person) ->
+					return person.Surname
+
+				if parseInt(json.Persons.length) > parseInt(Portfolio.Config.person_group_length)
+					#json.IsGroupProjectTop = true
 					json.IsGroup = true
 
+				console.log json
 				# set up combined projects
 				json.combinedProjects = []
 				_.each types, (type) =>
@@ -61,16 +70,15 @@ define [
 		
 		Handlebars.registerHelper 'nameSummary', (persons) ->
 			conf = Portfolio.Config
-			return conf.group_project_title unless persons.length < conf.person_group_length
+			return conf.group_project_title unless persons.length <= conf.person_group_length
 			out = ''
 			length = persons.length
 			_.each persons, (person, i) ->
-				out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + person.Surname + '</a>'
+				out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + (if person.Surname then person.Surname else '') + '</a>'
 				if i < (length - 2)
 					out += ', '
 				else if i < (length - 1)
 					out += ' &amp; '
-
 			out
 
 		Handlebars.registerHelper 'niceDate', (model) ->
@@ -100,7 +108,8 @@ define [
 
 			# build list
 			_.each items, (item) ->
-				if item.IsPortfolio and item.IsPublished
+
+				if item.IsPublished
 					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'
 					length++
 			out += '</ul>'
@@ -109,6 +118,15 @@ define [
 			title += if length > 1 then 's' else ''
 
 			return if length then "<h4>#{title}</h4>" + out else ''
+		
+		Handlebars.registerHelper 'personlist', (persons) ->
+			out = '<ul>'
+			
+			_.each persons, (person) ->
+				out += '<li><a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + (if person.Surname then person.Surname else '') + '</a></li>'
+			out += '</ul>'
+			
+			return "<h4>Contributors</h4>" + out
 
 		Handlebars.registerHelper 'commaSeparatedWebsites', (websites) ->
 			a = []

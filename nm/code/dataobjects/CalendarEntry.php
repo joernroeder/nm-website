@@ -41,7 +41,8 @@ class CalendarEntry extends DataObject {
 		'Workshops'		=> 'Workshop',				// Workshops
 		'Excursions'	=> 'Excursion',				// Exkursionen
 		'Projects'		=> 'Project',				// Projekte
-		'Exhibitions'	=> 'Exhibition'				// Ausstellungen
+		'Exhibitions'	=> 'Exhibition',				// Ausstellungen
+		'Images'		=> 'DocImage'
 	);
 
 

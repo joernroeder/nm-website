@@ -30,7 +30,7 @@ class ResponsiveImageFormatter extends MarkdownFormatterExtension {
 				if ($imgID) {
 
 					$img = DataObject::get_by_id(self::$img_class, (int) $imgID);
-					if ($img && $img->exists() && $callee && $callee->Images()->byID($img->ID)) {
+					if ($img && $img->exists() && $callee && $callee->hasMethod('Images') && $callee->Images()->byID($img->ID)) {
 
 						// 3.) add possible extra classes
 						foreach ($tmpArray as $extraClass) {
