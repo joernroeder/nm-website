@@ -18,6 +18,10 @@ define [
 					if @.get 'IsAlumni' then return 'alumni' 
 					return ''
 
+				getFullName: ->
+					if @.get 'FullName' then return @.get 'FullName'
+					return (if @.get('FirstName') then @.get('FirstName') else '') + ' ' + (if @.get('Surname') then @.get('Surname') else '')
+
 			JJRestApi.extendCollection 'Person',
 				foo: 'bar'
 

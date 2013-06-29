@@ -50,6 +50,30 @@ define(['app'], function(app) {
         });
       }
       return _changed;
+    },
+    basicListWithoutCurrentMember: function(relKey) {
+      var out;
+
+      out = [];
+      _.each(this.get(relKey).toJSON(), function(person) {
+        var obj;
+
+        obj = {
+          ID: person.ID,
+          Title: person.FirstName + ' ' + (person.Surname ? person.Surname : '')
+        };
+        if (obj.ID !== app.CurrentMemberPerson.id) {
+          return out.push(obj);
+        }
+      });
+      return out;
+    },
+    getEditorsKey: function() {
+      if (this.get('ClassName') === 'Project') {
+        return 'BlockedEditors';
+      } else {
+        return 'Editors';
+      }
     }
   });
   return SuperProject;

@@ -185,6 +185,7 @@ define [
 			console.log 'this: %o', @
 			console.log 'state: ', e.ProjectMain
 			_changed = false
+			_populateEditors = false
 
 			# iterate over our values
 			for key, val of e.ProjectMain
@@ -224,15 +225,39 @@ define [
 				else if key is 'Person'
 					# always add yourself
 					val.push app.CurrentMemberPerson.id
-					if @model.setRelCollByIds('Persons', val) then _changed = true
+					if @model.setRelCollByIds('Persons', val)
+						_populateEditors = true
+						_changed = true
 
 				# 4.) Category
 				else if key is 'Category'
 					if @model.setRelCollByIds('Categories', val) then _changed = true
 
+				# 5.) BlockedEditors / Editors
+				else if key is 'BlockedEditors' or key is 'Editors'
+					console.log 'Editors: %o', val
+					if _.difference(val, app.ProjectEditor[key]).length > 0 or _.difference(app.ProjectEditor[key], val).length > 0
+						console.log 'something changed'
+						console.log 'post to server %o', val
+						app.ProjectEditor[key] = val
+						toPost =
+							className: @model.get('ClassName')
+							id: @model.id
+							editors : val
+						#$.post({url: app.Config.ChangeEditorsUrl, data: toPost}).done (confirmed) ->
+						#	console.log confirmed
+
+				# normal attribute
+				else if key is 'Title' and @model.get('Title') isnt val
+					@model.set 'Title', val
+					_changed = true
+
 
 			console.groupEnd()
-			@model.rejectAndSave() if _changed
+			
+			if _changed
+				@model.rejectAndSave().done (model) =>
+					@populateEditorsSelectable @model.getEditorsKey(), false
 
 		populateSelectEditables: ->
 			sanitize = 
@@ -261,7 +286,6 @@ define [
 						{source: source, values: values}
 
 
-			console.log sanitize
 			$.getJSON(app.Config.BasicListUrl).done (res) =>
 				@basicList = res if _.isObject(res)
 				selectSubClasses = ['select-list', 'select-person']
@@ -280,12 +304,37 @@ define [
 								selectable.setSource source_vals.source, true
 								selectable.setValue source_vals.values, true
 
+			for type in ['BlockedEditors', 'Editors']
+				do (type) =>
+					if selectable = @editor.getComponentByName 'ProjectMain.' + type
+						# get editors from server without revealing member ids
+						$.getJSON(app.Config.GetEditorsUrl, { className: @model.get('ClassName'), id: @model.id }).done (ids) =>
+							console.log 'editors from server %o', ids
+							if _.isArray(ids)
+								app.ProjectEditor[type] = ids
+								@populateEditorsSelectable type
+						
+
+
 		serialize: ->
 			app.ProjectEditor.modelJSON
 
 		afterRender: ->
 			@initEditor()
 			@populateSelectEditables()
+
+		populateEditorsSelectable: (type, silent = true) ->
+			if selectable = @editor.getComponentByName 'ProjectMain.' + type
+				personsIdList = @model.basicListWithoutCurrentMember('Persons')
+				personsIdArray = _.map personsIdList, (o) ->
+					o.ID
+
+				console.log 'setting source to %o', personsIdList
+				selectable.setSource personsIdList, silent
+				console.log app.ProjectEditor[type]
+				app.ProjectEditor[type] = _.intersection(app.ProjectEditor[type], personsIdArray)
+				console.log 'setting values to %o', app.ProjectEditor[type]
+				selectable.setValue app.ProjectEditor[type], silent
 
 
 	ProjectEditor

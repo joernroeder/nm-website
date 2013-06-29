@@ -57,6 +57,7 @@ do ($ = jQuery) ->
 			@pendingAjax = []
 			@customParsers = {}
 
+			@firstTimeRendered = false
 
 			@.options = $.extend {}, @.defaults, opts
 			@.$input = if selector instanceof jQuery then selector else $(selector)
@@ -199,7 +200,9 @@ do ($ = jQuery) ->
 				data = { raw:raw }
 				if @.customParsers.images then data.images = @.customParsers.images.returnIds()
 				
-				if @.options.onChange then @.options.onChange data
+				if @.options.onChange and @.firstTimeRendered then @.options.onChange data
+
+				@firstTimeRendered = true
 
 		# this sets up the drag and drop for files
 		dragAndDropSetup : ->

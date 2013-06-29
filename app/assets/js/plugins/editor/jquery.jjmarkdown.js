@@ -57,6 +57,7 @@
       this.fileDragPermitted = true;
       this.pendingAjax = [];
       this.customParsers = {};
+      this.firstTimeRendered = false;
       this.options = $.extend({}, this.defaults, opts);
       this.$input = selector instanceof jQuery ? selector : $(selector);
       this.$input._val = this.$input[this.options.contentGetter];
@@ -215,9 +216,10 @@
         if (_this.customParsers.images) {
           data.images = _this.customParsers.images.returnIds();
         }
-        if (_this.options.onChange) {
-          return _this.options.onChange(data);
+        if (_this.options.onChange && _this.firstTimeRendered) {
+          _this.options.onChange(data);
         }
+        return _this.firstTimeRendered = true;
       });
     };
 

@@ -20,3 +20,4 @@ Director:
     '_md_//$Action/$ID/$OtherID': 'MarkdownEditor_Controller'
     'imagery': 'Gallery_Controller'
     'lists': 'Lists_Controller'
+    'api/v2/Editors': 'Editors_RestApiController'

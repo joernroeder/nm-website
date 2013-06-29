@@ -162,9 +162,6 @@ class Project extends DataObject {
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
-
-			// secure
-			'BlockedEditors.FullName'
 		),
 		'view.portfolio_init' => array(
 			'ClassName',
@@ -219,13 +216,6 @@ class Project extends DataObject {
 		if ($this->IsPublished) return true;
 
 		return $this->canEdit();
-	}
-
-	public function canViewContext($fields) {
-		// only editors can see BlockedEditors
-		if (!$this->canEdit()) unset($fields['BlockedEditors']);
-	
-		return $fields;
 	}
 
 	public function canDelete($member = null) {

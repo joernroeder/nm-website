@@ -51,6 +51,16 @@
 		<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>
 	{{/stringDiff}}
 
+	<hr />
+
+	{{#stringCompare "Project" ClassName}}
+		<h1>Blocked editors</h1>
+		<ul data-editor-type="select-list" data-editor-name="BlockedEditors" data-editor-placeholder="Add…"></ul>
+	{{else}}
+		<h1>Additional editors</h1>
+		<ul data-editor-type="select-list" data-editor-name="Editors" data-editor-placeholder="Add…"></ul>
+	{{/stringCompare}}
+
 </aside>
 
 <!-- /article -->

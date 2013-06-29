@@ -20,6 +20,12 @@ define(['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, P
           return 'alumni';
         }
         return '';
+      },
+      getFullName: function() {
+        if (this.get('FullName')) {
+          return this.get('FullName');
+        }
+        return (this.get('FirstName') ? this.get('FirstName') : '') + ' ' + (this.get('Surname') ? this.get('Surname') : '');
       }
     });
     return JJRestApi.extendCollection('Person', {

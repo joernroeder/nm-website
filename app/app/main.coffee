@@ -68,7 +68,12 @@ require [
 		GalleryUrl: 'imagery/gallery/'
 		DocImageUrl: 'imagery/images/docimage/'
 		PersonImageUrl: 'imagery/images/personimage/'
+
 		BasicListUrl: 'lists/all/'
+
+		GetEditorsUrl: 'api/v2/Editors/getEditors'
+		ChangeEditorsUrl: 'api/v2/Editors/changeEditors'
+
 		ChangeCredentialsUrl: 'api/v2/Auth/credentials/'
 		UrlSuffixes:
 			#portfolio: 	'?search=IsPortfolio:1&context=view.portfolio_init'

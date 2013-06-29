@@ -1211,8 +1211,6 @@ var __hasProp = {}.hasOwnProperty,
       var dataName;
 
       dataName = (this.getDataFullName()).toLowerCase().replace('.', '-');
-      console.log(this);
-      console.log(this.name);
       return ['editor-popover'].concat([this.name, dataName], this.popoverClasses).join(' ');
     };
 

@@ -935,8 +935,6 @@ do ($ = jQuery) ->
 
 		getPopOverClasses: ->
 			dataName =  (@getDataFullName()).toLowerCase().replace '.', '-'
-			console.log @
-			console.log @name
 			(['editor-popover']).concat([@name, dataName], @popoverClasses).join ' '
 
 		getPopoverContent: ->

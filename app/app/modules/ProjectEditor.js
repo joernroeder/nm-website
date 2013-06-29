@@ -208,13 +208,14 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return this;
     },
     stateUpdate: function(e) {
-      var key, relKey, text, val, _changed, _ref,
+      var key, relKey, text, toPost, val, _changed, _populateEditors, _ref,
         _this = this;
 
       console.group('STATE UPDATE');
       console.log('this: %o', this);
       console.log('state: ', e.ProjectMain);
       _changed = false;
+      _populateEditors = false;
       _ref = e.ProjectMain;
       for (key in _ref) {
         val = _ref[key];
@@ -262,21 +263,39 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         } else if (key === 'Person') {
           val.push(app.CurrentMemberPerson.id);
           if (this.model.setRelCollByIds('Persons', val)) {
+            _populateEditors = true;
             _changed = true;
           }
         } else if (key === 'Category') {
           if (this.model.setRelCollByIds('Categories', val)) {
             _changed = true;
           }
+        } else if (key === 'BlockedEditors' || key === 'Editors') {
+          console.log('Editors: %o', val);
+          if (_.difference(val, app.ProjectEditor[key]).length > 0 || _.difference(app.ProjectEditor[key], val).length > 0) {
+            console.log('something changed');
+            console.log('post to server %o', val);
+            app.ProjectEditor[key] = val;
+            toPost = {
+              className: this.model.get('ClassName'),
+              id: this.model.id,
+              editors: val
+            };
+          }
+        } else if (key === 'Title' && this.model.get('Title') !== val) {
+          this.model.set('Title', val);
+          _changed = true;
         }
       }
       console.groupEnd();
       if (_changed) {
-        return this.model.rejectAndSave();
+        return this.model.rejectAndSave().done(function(model) {
+          return _this.populateEditorsSelectable(_this.model.getEditorsKey(), false);
+        });
       }
     },
     populateSelectEditables: function() {
-      var sanitize, type, _fn, _i, _len, _ref,
+      var sanitize, type, _fn, _i, _j, _len, _len1, _ref, _ref1, _results,
         _this = this;
 
       sanitize = {
@@ -325,8 +344,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         type = _ref[_i];
         _fn(type);
       }
-      console.log(sanitize);
-      return $.getJSON(app.Config.BasicListUrl).done(function(res) {
+      $.getJSON(app.Config.BasicListUrl).done(function(res) {
         var selectSubClasses, selectables, subClass, _j, _len1;
 
         if (_.isObject(res)) {
@@ -355,6 +373,28 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           });
         }
       });
+      _ref1 = ['BlockedEditors', 'Editors'];
+      _results = [];
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        type = _ref1[_j];
+        _results.push((function(type) {
+          var selectable;
+
+          if (selectable = _this.editor.getComponentByName('ProjectMain.' + type)) {
+            return $.getJSON(app.Config.GetEditorsUrl, {
+              className: _this.model.get('ClassName'),
+              id: _this.model.id
+            }).done(function(ids) {
+              console.log('editors from server %o', ids);
+              if (_.isArray(ids)) {
+                app.ProjectEditor[type] = ids;
+                return _this.populateEditorsSelectable(type);
+              }
+            });
+          }
+        })(type));
+      }
+      return _results;
     },
     serialize: function() {
       return app.ProjectEditor.modelJSON;
@@ -362,6 +402,25 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
     afterRender: function() {
       this.initEditor();
       return this.populateSelectEditables();
+    },
+    populateEditorsSelectable: function(type, silent) {
+      var personsIdArray, personsIdList, selectable;
+
+      if (silent == null) {
+        silent = true;
+      }
+      if (selectable = this.editor.getComponentByName('ProjectMain.' + type)) {
+        personsIdList = this.model.basicListWithoutCurrentMember('Persons');
+        personsIdArray = _.map(personsIdList, function(o) {
+          return o.ID;
+        });
+        console.log('setting source to %o', personsIdList);
+        selectable.setSource(personsIdList, silent);
+        console.log(app.ProjectEditor[type]);
+        app.ProjectEditor[type] = _.intersection(app.ProjectEditor[type], personsIdArray);
+        console.log('setting values to %o', app.ProjectEditor[type]);
+        return selectable.setValue(app.ProjectEditor[type], silent);
+      }
     }
   });
   return ProjectEditor;

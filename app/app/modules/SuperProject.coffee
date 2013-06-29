@@ -42,5 +42,15 @@ define [
 							relColl.remove relColl.get(id)
 				_changed
 
+			basicListWithoutCurrentMember: (relKey) ->
+				out = []
+				_.each @get(relKey).toJSON(), (person) ->
+					obj = { ID: person.ID, Title: person.FirstName + ' ' + (if person.Surname then person.Surname else '') }
+					out.push obj if obj.ID isnt app.CurrentMemberPerson.id
+				out
+
+			getEditorsKey: () ->
+				if @.get('ClassName') is 'Project' then return 'BlockedEditors' else return 'Editors'
+
 
 		SuperProject
