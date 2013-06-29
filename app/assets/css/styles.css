@@ -719,6 +719,7 @@ button.Zebra_DatePicker_Icon {
 }
 .stamp {
   position: absolute;
+  background: rgba(255, 0, 0, 0.2);
   width: 7.5%;
   height: 7.5%;
   left: 15%;
