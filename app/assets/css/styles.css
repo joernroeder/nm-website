@@ -3156,16 +3156,16 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 		}
 	}
 }*/
-.editor-sidebar-open article,
-.open-split-markdown article {
+.editor-sidebar-open .editor-project-main article,
+.open-split-markdown .editor-project-main article {
   width: 62.5%;
 }
-.editor-sidebar-open article section,
-.open-split-markdown article section {
+.editor-sidebar-open .editor-project-main article section,
+.open-split-markdown .editor-project-main article section {
   width: 100%;
 }
-.editor-sidebar-open article aside,
-.open-split-markdown article aside {
+.editor-sidebar-open .editor-project-main article aside,
+.open-split-markdown .editor-project-main article aside {
   display: none;
 }
 #recycle-bin {
