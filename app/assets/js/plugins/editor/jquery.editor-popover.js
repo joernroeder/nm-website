@@ -1059,7 +1059,7 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       if (!element) {
-        console.log('JJPopoverEditabel: no element found.');
+        console.log('JJPopoverEditable: no element found.');
         return;
       }
       if (!this._options.position) {
@@ -1915,9 +1915,137 @@ var __hasProp = {}.hasOwnProperty,
       return this.contentTypes = ['modal'];
     };
 
+    ModalEditable.prototype.init = function(element) {
+      ModalEditable.__super__.init.call(this, element);
+      this._options = {
+        fields: {
+          Foo: {
+            placeholder: 'Bar'
+          }
+        },
+        buttons: {
+          Submit: {
+            type: 'submit'
+          },
+          Cancel: {
+            type: 'cancel'
+          }
+        }
+      };
+      this.setFields(element.data(this.editor.attr._namespace + 'fields'));
+      return this.setButtons(element.data(this.editor.attr._namespace + 'buttons'));
+    };
+
+    ModalEditable.prototype.getFields = function() {
+      var foo;
+
+      foo = this.getOptions().fields;
+      console.log(foo);
+      return foo;
+    };
+
+    ModalEditable.prototype.setFields = function(fields) {
+      var data, html, name;
+
+      if (fields) {
+        this._options.fields = fields;
+      }
+      console.log(fields);
+      html = '';
+      if (fields) {
+        for (name in fields) {
+          data = fields[name];
+          console.log(name);
+          if (!data.type) {
+            data.type = 'text';
+          }
+          if (!data.placeholder) {
+            data.placeholder = name;
+          }
+          html += '<input type="' + data.type + '"name="' + name + '" placeholder="' + data.placeholder + '"/>';
+        }
+      }
+      return this.setPopoverContent(html);
+    };
+
+    ModalEditable.prototype.getButtons = function() {
+      return this.getOptions().buttons;
+    };
+
+    ModalEditable.prototype.setButtons = function(buttons) {
+      if (buttons) {
+        this._options.buttons;
+      }
+      return this.setFields(this.getFields());
+    };
+
+    ModalEditable.prototype._addSubmitEvent = function($btn) {
+      var _this = this;
+
+      return $btn.on('click', function(e) {
+        var $inputs, data;
+
+        e.preventDefault();
+        $inputs = $('input, textarea', _this.api.tooltip);
+        data = {};
+        $inputs.each(function(i, input) {
+          var $input;
+
+          $input = $(input);
+          return data[$input.attr('name')] = $input.val();
+        });
+        _this.setValue(data);
+        _this.close();
+        return false;
+      });
+    };
+
+    ModalEditable.prototype._addCancelEvent = function($btn) {
+      var _this = this;
+
+      return $btn.on('click', function(e) {
+        e.preventDefault();
+        _this.close();
+        return false;
+      });
+    };
+
+    ModalEditable.prototype.hide = function() {
+      ModalEditable.__super__.hide.call(this);
+      return $('input, textarea', this.api.tooltip).val('');
+    };
+
+    ModalEditable.prototype.getPopoverButtons = function() {
+      var $btn, $buttons, buttons, data, name;
+
+      $buttons = $('<div class="buttons">');
+      buttons = this.getButtons();
+      if (buttons) {
+        for (name in buttons) {
+          data = buttons[name];
+          if (data.type === 'submit' || 'cancel') {
+            $btn = $('<button type="' + data.type + '">' + name + '</button>');
+            if (data.type === 'submit') {
+              this._addSubmitEvent($btn);
+            } else if (data.type === 'cancel') {
+              this._addCancelEvent($btn);
+            }
+            console.log($btn);
+            $buttons.append($btn);
+          }
+        }
+      }
+      console.log($buttons);
+      return $buttons;
+    };
+
+    ModalEditable.prototype.setPopoverContent = function(value) {
+      return ModalEditable.__super__.setPopoverContent.call(this, $(value).add(this.getPopoverButtons()));
+    };
+
     return ModalEditable;
 
-  })(JJEditable);
+  })(JJPopoverEditable);
   window.JJEditor = JJEditor;
   window.editorComponents = {};
   window.editorComponents.JJEditable = JJEditable;

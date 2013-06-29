@@ -804,7 +804,7 @@ do ($ = jQuery) ->
 
 		init: (element) ->
 			if not element
-				console.log 'JJPopoverEditabel: no element found.'
+				console.log 'JJPopoverEditable: no element found.'
 				return
 
 			if not @_options.position
@@ -1459,11 +1459,114 @@ do ($ = jQuery) ->
 
 
 
-	class ModalEditable extends JJEditable
+	class ModalEditable extends JJPopoverEditable
 
 		members: ->
 			super()
 			@contentTypes = ['modal']
+
+		init: (element) ->
+			super element
+
+			# defaults
+			@_options = 
+				fields: 
+					Foo:
+						placeholder: 'Bar'
+
+				buttons:
+					Submit: 
+						type: 'submit'
+
+					Cancel:
+						type: 'cancel'
+
+
+
+			@setFields element.data(@editor.attr._namespace + 'fields')
+			@setButtons element.data(@editor.attr._namespace + 'buttons')
+
+		getFields: ->
+			foo = @getOptions().fields
+			console.log foo
+			foo
+
+		setFields: (fields) ->
+			@_options.fields = fields if fields
+
+			console.log fields
+
+			html = ''
+			if fields
+				for name, data of fields
+					console.log name
+					data.type = 'text' unless data.type
+					data.placeholder = name unless data.placeholder
+
+					html += '<input type="' + data.type + '"name="' + name + '" placeholder="'+ data.placeholder + '"/>'
+
+			@setPopoverContent html
+
+		getButtons: ->
+			@getOptions().buttons
+
+		setButtons: (buttons) ->
+			@_options.buttons if buttons
+			# repopulate popover content
+			@setFields @getFields()
+
+		_addSubmitEvent: ($btn) ->
+			$btn.on 'click', (e) =>
+				e.preventDefault()
+				$inputs = $ 'input, textarea', @api.tooltip
+
+				data = {}
+
+				$inputs.each (i, input) =>
+					$input = $ input
+					data[$input.attr('name')] = $input.val()
+
+				@setValue data
+				@close()
+
+				false
+
+		_addCancelEvent: ($btn) ->
+			$btn.on 'click', (e) =>
+				e.preventDefault()
+				@close()
+				false
+
+		hide: ->
+			super()
+			$('input, textarea', @api.tooltip).val('')
+
+
+		getPopoverButtons: ->
+			$buttons = $ '<div class="buttons">'
+			buttons = @getButtons()
+
+
+			if buttons
+				for name, data of buttons
+					if data.type is 'submit' or 'cancel'
+						$btn = $ '<button type="' + data.type + '">' + name + '</button>'
+
+						if data.type is 'submit'
+							@_addSubmitEvent $btn
+
+						else if data.type is 'cancel'
+							@_addCancelEvent $btn
+
+						console.log $btn
+						$buttons.append $btn
+
+			console.log $buttons
+
+			$buttons
+
+		setPopoverContent: (value) ->
+			super $(value).add(@getPopoverButtons())
 
 
 
