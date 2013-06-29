@@ -484,7 +484,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 // ! --- Gravity -------------------------------------------
 
-#gravity-container {
+#packery-container {
 	position: relative;
 	height: 100%;
 }
@@ -496,12 +496,12 @@ x:-o-prefocus, .qtip .qtip-tip{
 	.wrapper;
 
 	&> img,
-	.gravity-item {
-		.gravity-item();
+	.packery-item {
+		.packery-item();
 	}
 }
 
-.gravity-item() {
+.packery-item() {
 	position: relative;
 	display: inline-block;
 	opacity: 0;
@@ -509,7 +509,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	z-index: 14000;
 
 	// on item loaded
-	&[data-gravity-item].loaded {
+	&[data-packery-item].loaded {
 		opacity: 1;
 
 		&> a {
@@ -714,17 +714,25 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 }
 
-.person-info {
-	@fullWidth: 6;
+.packery-item.person-info {
+	@fullWidth: 4;
 	@imageWidth: 1.5;
 
 	// - - - - - - - 
 	
-	.columnsWidth(8, 6);
+	.columnsWidth(8, @fullWidth);
 	.clearfix();
+
+	display: inline-block;
+	background: rgba(255,255,0,.2);
+
+	section {
+		display: inline-block;
+	}
 
 	> section:first-child {
 		float: left;
+		//float: left;
 		.columnsWidth(8, @imageWidth);
 
 		a {
@@ -733,15 +741,16 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 
 		img {
+			display: block;
 			max-width: 100%;
 			height: auto;
 		}
 	}
 
 	> section:last-child {
-		.columnsWidth(8, @fullWidth - @imageWidth);
+		.columnsWidth(8, 8 - @imageWidth);
 		padding: 0 0 (@line / @em) (@line / @em);
-		float: left;
+		.box-sizing(border-box);
 	}
 
 	.websites {
@@ -791,7 +800,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	margin-left: -@width / 2 / 8 * 100%;
 
 	article {
-		.gravity-item();
+		.packery-item();
 		opacity: 1;
 		.clearfix;
 		width: 100%;
