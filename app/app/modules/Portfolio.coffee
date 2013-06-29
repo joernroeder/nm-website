@@ -26,7 +26,7 @@ define [
 			template: 'packery-list-item'
 			serialize: () ->
 				data = if @.model then @.model.toJSON() else {}
-				data.Persons = _.sortBy json.Persons, (person) ->
+				data.Persons = _.sortBy data.Persons, (person) ->
 					return person.Surname
 
 				data.LinkTo = @.options.linkTo
@@ -81,17 +81,20 @@ define [
 					out += ' &amp; '
 			out
 
-		Handlebars.registerHelper 'niceDate', (model) ->
+		Handlebars.registerHelper 'niceDate', (model, forceYear) ->
 			return false unless model.DateRangeNice or model.FrontendDate
 			out = ''
 			if model.DateRangeNice
 				out += model.DateRangeNice
 			else if model.FrontendDate
-				out += model.FrontendDate
+				if not forceYear
+					out += model.FrontendDate
+				else
+					out += model.FrontendDate.split(' ')[1]
 			out
 
 		Handlebars.registerHelper 'teaserMeta', ->
-			niceDate = Handlebars.helpers.niceDate @
+			niceDate = Handlebars.helpers.niceDate @, true
 			if @.ClassName is 'Project'
 				nameSummary = Handlebars.helpers.nameSummary @.Persons
 				return "#{nameSummary} // #{niceDate}" 

@@ -34,7 +34,7 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       var data;
 
       data = this.model ? this.model.toJSON() : {};
-      data.Persons = _.sortBy(json.Persons, function(person) {
+      data.Persons = _.sortBy(data.Persons, function(person) {
         return person.Surname;
       });
       data.LinkTo = this.options.linkTo;
@@ -100,7 +100,7 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     });
     return out;
   });
-  Handlebars.registerHelper('niceDate', function(model) {
+  Handlebars.registerHelper('niceDate', function(model, forceYear) {
     var out;
 
     if (!(model.DateRangeNice || model.FrontendDate)) {
@@ -110,14 +110,18 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     if (model.DateRangeNice) {
       out += model.DateRangeNice;
     } else if (model.FrontendDate) {
-      out += model.FrontendDate;
+      if (!forceYear) {
+        out += model.FrontendDate;
+      } else {
+        out += model.FrontendDate.split(' ')[1];
+      }
     }
     return out;
   });
   Handlebars.registerHelper('teaserMeta', function() {
     var nameSummary, niceDate;
 
-    niceDate = Handlebars.helpers.niceDate(this);
+    niceDate = Handlebars.helpers.niceDate(this, true);
     if (this.ClassName === 'Project') {
       nameSummary = Handlebars.helpers.nameSummary(this.Persons);
       return "" + nameSummary + " // " + niceDate;
