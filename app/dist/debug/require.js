@@ -385,7 +385,7 @@ return __p;
 this["JST"]["app/templates/portfolio-detail.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<!-- article class="portfolio-detail" -->\n<header>\n\t<h1>{{Title}}</h1>\n\t<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>\n\t<p>{{niceDate this}}</p>\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section>\n\t{{{MarkdownedText}}}\n</section>\n<aside>\n\t{{#if combinedProjects}}\n\t\t{{{portfoliolist combinedProjects "Project"}}}\n\t{{/if}}\n\n\t{{#if Exhibitions}}\n\t\t{{{portfoliolist Exhibitions "Exhibition"}}}\n\t{{/if}}\n\t\n\t{{#if Workshops}}\n\t\t{{{portfoliolist Workshops "Workshop"}}}\n\t{{/if}}\n\t\n\t{{#if Excursions}}\n\t\t{{{portfoliolist Excursions "Excursion"}}}\n\t{{/if}}\n</aside>\n\n{{#if Code}}\n<script type="text/javascript">\n\t$(document).one(\'code:kickoff\', function (e) {\n\t\t{{{Code}}}\n\n\t\te.stopImmediatePropagation();\n\t});\n</script>\n{{/if}}\n\n<!-- /article -->';
+__p+='<!-- article class="portfolio-detail" -->\n<header>\n\t<h1>{{Title}}</h1>\n\t<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>\n\t<p>{{niceDate this}}</p>\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section>\n\t{{{MarkdownedText}}}\n</section>\n<aside>\n\t{{#if Categories}}\n\t\t<h4>Categories</h4>\n\t\t<ul>\n\t\t{{#each Categories}}\n\t\t\t<li><a href="/portfolio/search/Category:{{ID}}/">{{Title}}</a></li>\n\t\t{{/each}}\n\t\t</ul>\n\t{{/if}}\n\n\t{{#if combinedProjects}}\n\t\t{{{portfoliolist combinedProjects "Project"}}}\n\t{{/if}}\n\n\t{{#if Exhibitions}}\n\t\t{{{portfoliolist Exhibitions "Exhibition"}}}\n\t{{/if}}\n\t\n\t{{#if Workshops}}\n\t\t{{{portfoliolist Workshops "Workshop"}}}\n\t{{/if}}\n\t\n\t{{#if Excursions}}\n\t\t{{{portfoliolist Excursions "Excursion"}}}\n\t{{/if}}\n</aside>\n\n{{#if Code}}\n<script type="text/javascript">\n\t$(document).one(\'code:kickoff\', function (e) {\n\t\t{{{Code}}}\n\n\t\te.stopImmediatePropagation();\n\t});\n</script>\n{{/if}}\n\n<!-- /article -->';
 }
 return __p;
 };
@@ -409,7 +409,7 @@ return __p;
 this["JST"]["app/templates/security/editor-project-main.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<!-- article -->\n<header data-editor-scope="\\ProjectMain">\n\t<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>\n\t<div class="persons">\n\t\t{{#if CurrentMemberPerson}}\n\t\t\t{{#with CurrentMemberPerson}}\n\t\t\t\t{{FirstName}} {{Surname}}\n\t\t\t{{/with}}\n\t\t{{/if}}\n\t\t<div data-editor-type="select-person" data-editor-name="Person" data-editor-placeholder="Add Collaborators…"></div>\n\t</div>\n\t\n\t<!--<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>-->\n\t<p>{{niceDate this}}</p>\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section data-editor-scope="\\ProjectMain">\n\n\t<div data-editor-type="markdown-split" data-editor-name="Text" data-editor-options=\'{"customParsers": {"images": "ImageMarkdownParser", "embed": "OEmbedMarkdownParser"}}\'>{{Text}}</div>\n\n</section>\n<aside data-editor-scope="\\ProjectMain">\n\t<h1>Projects</h1>\n\t<ul data-editor-type="select-list" data-editor-name="Project" data-editor-placeholder="Add…"></ul>\n\n\t{{#stringDiff "Exhibition" ClassName}}\n\t\t<h1>Exhibitions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Exhibition" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Workshop" ClassName}}\n\t\t<h1>Workshops</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Workshop" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Excursion" ClassName}}\n\t\t<h1>Excursions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n</aside>\n\n<!-- /article -->';
+__p+='<!-- article -->\n<header data-editor-scope="\\ProjectMain">\n\t<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>\n\t<div class="persons">\n\t\t{{#if CurrentMemberPerson}}\n\t\t\t{{#with CurrentMemberPerson}}\n\t\t\t\t{{FirstName}} {{Surname}}\n\t\t\t{{/with}}\n\t\t{{/if}}\n\t\t<div data-editor-type="select-person" data-editor-name="Person" data-editor-placeholder="Add Collaborators…"></div>\n\t</div>\n\t\n\t<!--<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>-->\n\t<p>{{niceDate this}}</p>\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section data-editor-scope="\\ProjectMain">\n\n\t<div data-editor-type="markdown-split" data-editor-name="Text" data-editor-options=\'{"customParsers": {"images": "ImageMarkdownParser", "embed": "OEmbedMarkdownParser"}}\'>{{Text}}</div>\n\n</section>\n<aside data-editor-scope="\\ProjectMain">\n\t{{#stringCompare "Project" ClassName}}\n\t\t<h1>Categories</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Category" data-editor-placeholder="Add..."></ul>\n\t{{/stringCompare}}\n\n\t<h1>Projects</h1>\n\t<ul data-editor-type="select-list" data-editor-name="Project" data-editor-placeholder="Add…"></ul>\n\n\t{{#stringDiff "Exhibition" ClassName}}\n\t\t<h1>Exhibitions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Exhibition" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Workshop" ClassName}}\n\t\t<h1>Workshops</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Workshop" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Excursion" ClassName}}\n\t\t<h1>Excursions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n</aside>\n\n<!-- /article -->';
 }
 return __p;
 };
@@ -457,7 +457,7 @@ return __p;
 this["JST"]["app/templates/security/editor-sidebar-user.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<header class="editor-header hideable">\n\t<div class="img" id="current-person-image">\n\t\t{{#if CurrentImage}}<img src="{{CurrentImage.url}}">{{/if}}\n\t</div>\n\t<hgroup>\n\t\t{{#if Person}}<h1>{{#with Person}}<a href="#">{{FirstName}} {{Surname}}</a>{{/with}}</h1>{{/if}}\n\n\t\t{{#if Member}}<p class="email">{{Member.Email}}</p>{{/if}}\n\t</hgroup>\n</header>\n<section class="editor-sidebar-content scrollbox">\n\t<header>\n\t\t<h2>Person Images</h2>\n\t</header>\n\t<section>\n\t\t<ul class="image-list">\n\t\t</ul>\n\t</section>\n\n\t<header>\n\t\t<h2>Projects</h2>\n\t</header>\n\t<section>\n\t\t<ul class="project-list">\n\t\t</ul>\n\t</section>\n\n\t<header>\n\t\t<h2>Personal Information</h2>\n\t</header>\n\t<section class="meta-info" data-editor-scope="\\CurrentPerson">\n\t\t<div id="bio">\n\t\t\t<h3>Bio</h3>\n\t\t\t<div data-editor-type="markdown" data-editor-name="Bio" data-editor-placeholder="your shitty life!" data-editor-options=\'{"customParsers":{}, "position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -15}}}\'>{{Person.Bio}}</div>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Phone</h3>\n\t\t\t<p data-editor-type="inline" data-editor-placeholder="Phone" data-editor-name="Phone">{{Person.Phone}}</p>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Email</h3>\n\t\t\t<p data-editor-type="inline" data-editor-email="Email" data-editor-name="Email">{{Person.Email}}</p>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Settings</h2>\n\t</header>\n\t<section>\n\t\t<form class="user-settings">\n\t\t\t<input name="email" type="email" placeholder="Email" value="{{Member.Email}}" required>\n\t\t\t<input name="password" type="password" placeholder="Password">\n\t\t\t<input name="passwordconfirmed" type="password" placeholder="Confirm Password">\n\n\t\t\t<button class="btn" type="submit">Update Settings</button>\n\t\t</form>\n\t</section>\n</section>';
+__p+='<header class="editor-header hideable">\n\t<div class="img" id="current-person-image">\n\t\t{{#if CurrentImage}}<img src="{{CurrentImage.url}}">{{/if}}\n\t</div>\n\t<hgroup>\n\t\t{{#if Person}}<h1>{{#with Person}}<a href="/about/{{UrlSlug}}/">{{FirstName}} {{Surname}}</a>{{/with}}</h1>{{/if}}\n\n\t\t{{#if Member}}<p class="email">{{Member.Email}}</p>{{/if}}\n\t</hgroup>\n</header>\n<section class="editor-sidebar-content scrollbox">\n\t<header>\n\t\t<h2>Person Images</h2>\n\t</header>\n\t<section>\n\t\t<ul class="image-list">\n\t\t</ul>\n\t</section>\n\n\t<header>\n\t\t<h2>Projects</h2>\n\t</header>\n\t<section>\n\t\t<ul class="project-list">\n\t\t</ul>\n\t\t<div>\n\t\t\t<a class="btn" href="/secured/new/">New Project...</a>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Personal Information</h2>\n\t</header>\n\t<section class="meta-info" data-editor-scope="\\CurrentPerson">\n\t\t<div id="bio">\n\t\t\t<h3>Bio</h3>\n\t\t\t<div data-editor-type="markdown" data-editor-name="Bio" data-editor-placeholder="your shitty life!" data-editor-options=\'{"customParsers":{}, "position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -15}}}\'>{{Person.Bio}}</div>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Phone</h3>\n\t\t\t<p data-editor-type="inline" data-editor-placeholder="Phone" data-editor-name="Phone">{{Person.Phone}}</p>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Email</h3>\n\t\t\t<p data-editor-type="inline" data-editor-email="Email" data-editor-name="Email">{{Person.Email}}</p>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Settings</h2>\n\t</header>\n\t<section>\n\t\t<form class="user-settings">\n\t\t\t<input name="email" type="email" placeholder="Email" value="{{Member.Email}}" required>\n\t\t\t<input name="password" type="password" placeholder="Password">\n\t\t\t<input name="passwordconfirmed" type="password" placeholder="Confirm Password">\n\n\t\t\t<button class="btn" type="submit">Update Settings</button>\n\t\t</form>\n\t</section>\n</section>';
 }
 return __p;
 };
@@ -7839,7 +7839,93 @@ define('app',['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbon
 });
 
 // Generated by CoffeeScript 1.6.2
-define('modules/DataRetrieval',['app'], function(app) {
+define('modules/ProjectSearch',['app'], function(app) {
+  var ProjectSearch;
+
+  ProjectSearch = {
+    fields: {
+      'Title': 'partial',
+      'Teaser': function(obj, valArray) {
+        return this.partialMatchFilter(obj, 'TeaserText', valArray);
+      },
+      'Name': function(obj, valArray) {
+        return true;
+      }
+    },
+    /**
+    			 * transforms a string into an object with the searchable field as key and the possible OR values as array
+    			 * @param  {String} term
+    			 * @return {Object}
+    */
+
+    transformSearchTerm: function(term) {
+      var els, out, segment, vals, _i, _len, _ref;
+
+      out = {};
+      _ref = term.split(';');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        segment = _ref[_i];
+        els = segment.split(':');
+        vals = null;
+        if (els.length > 1) {
+          vals = els[1].split('|');
+        }
+        out[els[0]] = vals;
+      }
+      return out;
+    },
+    test: function(obj, key, valArray) {
+      var type;
+
+      if (!_.isArray(valArray)) {
+        valArray = [valArray];
+      }
+      if (type = this.fields[key]) {
+        if (_.isFunction(type)) {
+          return type.call(this, obj, valArray);
+        } else {
+          if (type === 'exact') {
+            return this.exactMatchFilter(obj, key, valArray);
+          } else if (type) {
+            return this.partialMatchFilter(obj, key, valArray);
+          }
+        }
+      }
+      return true;
+    },
+    partialMatchFilter: function(obj, key, valArray) {
+      var pattern, query;
+
+      query = valArray.join('|');
+      pattern = new RegExp($.trim(query), 'i');
+      console.log(obj[key]);
+      if (obj.hasOwnProperty(key) && pattern.test(obj[key])) {
+        return true;
+      }
+      return false;
+    },
+    exactMatchFilter: function(obj, key, valArray) {
+      var pattern, query, val, _i, _len;
+
+      if (!obj.hasOwnProperty(key)) {
+        return false;
+      }
+      for (_i = 0, _len = valArray.length; _i < _len; _i++) {
+        val = valArray[_i];
+        query = "^" + val + "$";
+        pattern = new RegExp(query, 'i');
+        if (pattern.test(val)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  };
+  return ProjectSearch;
+});
+
+// Generated by CoffeeScript 1.6.2
+define('modules/DataRetrieval',['app', 'modules/ProjectSearch'], function(app, ProjectSearch) {
   var DataRetrieval;
 
   DataRetrieval = {
@@ -16584,6 +16670,9 @@ var __hasProp = {}.hasOwnProperty,
       var val;
 
       this.element = element;
+      if (!element) {
+        return;
+      }
       this.setDataName(element.data(this.editor.getAttr('name')));
       this.updateOptions(element.data(this.editor.getAttr('options')), true);
       element.attr(this.editor.getAttr('handledBy'), this.id);
@@ -16953,6 +17042,9 @@ var __hasProp = {}.hasOwnProperty,
         this._options.repositionOnChange = true;
       }
       JJPopoverEditable.__super__.init.call(this, element);
+      if (!element) {
+        return;
+      }
       element.qtip({
         events: {
           render: function(event, api) {},
@@ -18733,23 +18825,52 @@ define('modules/SuperProject',['app'], function(app) {
 
   SuperProject = app.module();
   SuperProject.Model = Backbone.JJRelationalModel.extend({
-    idArrayOfRelationToClass: function(classType) {
+    idArrayOfRelationToClass: function(classType, relKey) {
+      if (relKey == null) {
+        relKey = void 0;
+      }
       if (this.get('ClassName') === 'Project' && classType === 'Project') {
         return this.get('ChildProjects').getIDArray().concat(this.get('ParentProjects').getIDArray());
       } else if (this.get('ClassName') === classType) {
         return [];
       }
-      return this.get(classType + 's').getIDArray();
+      relKey = relKey ? relKey : classType + 's';
+      return this.get(relKey).getIDArray();
     },
-    hasRelationTo: function(classType, id) {
-      var idArray;
+    /* @deprecated
+    			hasRelationTo: (classType, id) ->
+    				idArray = @idArrayOfRelationToClass classType
+    				if _.indexOf(idArray, id) < 0 then false else true
+    */
 
-      idArray = this.idArrayOfRelationToClass(classType);
-      if (_.indexOf(idArray, id) < 0) {
-        return false;
-      } else {
-        return true;
+    setRelCollByIds: function(relKey, ids) {
+      var className, idArrayOfRelationToClass, relColl, _changed,
+        _this = this;
+
+      _changed = false;
+      if (relColl = this.get(relKey)) {
+        className = relColl.model.prototype.storeIdentifier;
+        idArrayOfRelationToClass = this.idArrayOfRelationToClass(className, relKey);
+        _.each(ids, function(id) {
+          if (_.indexOf(idArrayOfRelationToClass, id) < 0) {
+            _changed = true;
+            return relColl.add(id);
+          }
+        });
+        _.each(_.difference(idArrayOfRelationToClass, ids), function(id) {
+          var model;
+
+          _changed = true;
+          model = relColl.get(id);
+          if (model) {
+            return relColl.remove(model);
+          } else if (relKey === 'Projects') {
+            relColl = _this.get('ParentProjects');
+            return relColl.remove(relColl.get(id));
+          }
+        });
       }
+      return _changed;
     }
   });
   return SuperProject;
@@ -20081,92 +20202,6 @@ define('modules/About',['app', 'modules/Gravity'], function(app, Gravity) {
 });
 
 // Generated by CoffeeScript 1.6.2
-define('modules/ProjectSearch',['app'], function(app) {
-  var ProjectSearch;
-
-  ProjectSearch = {
-    fields: {
-      'Title': 'partial',
-      'Teaser': function(obj, valArray) {
-        return this.partialMatchFilter(obj, 'TeaserText', valArray);
-      },
-      'Name': function(obj, valArray) {
-        return true;
-      }
-    },
-    /**
-    			 * transforms a string into an object with the searchable field as key and the possible OR values as array
-    			 * @param  {String} term
-    			 * @return {Object}
-    */
-
-    transformSearchTerm: function(term) {
-      var els, out, segment, vals, _i, _len, _ref;
-
-      out = {};
-      _ref = term.split(';');
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        segment = _ref[_i];
-        els = segment.split(':');
-        vals = null;
-        if (els.length > 1) {
-          vals = els[1].split('|');
-        }
-        out[els[0]] = vals;
-      }
-      return out;
-    },
-    test: function(obj, key, valArray) {
-      var type;
-
-      if (!_.isArray(valArray)) {
-        valArray = [valArray];
-      }
-      if (type = this.fields[key]) {
-        if (_.isFunction(type)) {
-          return type.call(this, obj, valArray);
-        } else {
-          if (type === 'exact') {
-            return this.exactMatchFilter(obj, key, valArray);
-          } else if (type) {
-            return this.partialMatchFilter(obj, key, valArray);
-          }
-        }
-      }
-      return true;
-    },
-    partialMatchFilter: function(obj, key, valArray) {
-      var pattern, query;
-
-      query = valArray.join('|');
-      pattern = new RegExp($.trim(query), 'i');
-      console.log(obj[key]);
-      if (obj.hasOwnProperty(key) && pattern.test(obj[key])) {
-        return true;
-      }
-      return false;
-    },
-    exactMatchFilter: function(obj, key, valArray) {
-      var pattern, query, val, _i, _len;
-
-      if (!obj.hasOwnProperty(key)) {
-        return false;
-      }
-      for (_i = 0, _len = valArray.length; _i < _len; _i++) {
-        val = valArray[_i];
-        query = "^" + val + "$";
-        pattern = new RegExp(query, 'i');
-        if (pattern.test(val)) {
-          return true;
-        }
-      }
-      return false;
-    }
-  };
-  return ProjectSearch;
-});
-
-// Generated by CoffeeScript 1.6.2
 define('modules/NewProject',['app'], function(app) {
   var NewProject;
 
@@ -20597,7 +20632,7 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
       return this;
     },
     stateUpdate: function(e) {
-      var idArray, key, relColl, relKey, text, val, _changed, _ref,
+      var key, relKey, text, val, _changed, _ref,
         _this = this;
 
       console.group('STATE UPDATE');
@@ -20645,26 +20680,17 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
           }
         } else if (_.indexOf(['Excursion', 'Exhibition', 'Workshop', 'Project'], key) >= 0) {
           relKey = key === 'Project' && this.model.get('ClassName') === 'Project' ? 'ChildProjects' : key + 's';
-          if (relColl = this.model.get(relKey)) {
-            _.each(val, function(id) {
-              if (!_this.model.hasRelationTo(key, id)) {
-                _changed = true;
-                return relColl.add(id);
-              }
-            });
-            idArray = this.model.idArrayOfRelationToClass(key);
-            _.each(_.difference(relColl.getIDArray(), val), function(id) {
-              var model;
-
-              _changed = true;
-              model = relColl.get(id);
-              if (model) {
-                return relColl.remove(model);
-              } else if (key === 'Project') {
-                relColl = _this.model.get('ParentProjects');
-                return relColl.remove(relColl.get(id));
-              }
-            });
+          if (this.model.setRelCollByIds(relKey, val)) {
+            _changed = true;
+          }
+        } else if (key === 'Person') {
+          val.push(app.CurrentMemberPerson.id);
+          if (this.model.setRelCollByIds('Persons', val)) {
+            _changed = true;
+          }
+        } else if (key === 'Category') {
+          if (this.model.setRelCollByIds('Categories', val)) {
+            _changed = true;
           }
         }
       }
@@ -20692,6 +20718,12 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
           return {
             source: source,
             values: values
+          };
+        },
+        'Category': function(list) {
+          return {
+            source: list,
+            values: _this.model.get('Categories').getIDArray()
           };
         }
       };
