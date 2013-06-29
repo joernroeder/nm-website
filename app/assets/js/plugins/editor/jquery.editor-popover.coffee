@@ -1271,9 +1271,15 @@ do ($ = jQuery) ->
 					id = $target.val()
 					id = parseInt id, 10 unless isNaN id
 					index = @getValueIndex id
+					isChecked = $target.prop 'checked'
 					changed = false
 
 					if false is @onElementChange e, $target, value, id
+						# prevent default
+						e.preventDefault();
+						# reset checked
+						$target.prop 'checked',  not isChecked
+
 						return false
 
 					if $target.is ':checked' 
@@ -1425,6 +1431,34 @@ do ($ = jQuery) ->
 				@element.html '<li>' + @getPlaceholder() + '</li>'
 
 
+
+	class SelectListConfirmEditable extends SelectListEditable
+
+		members: ->
+			super()
+			@contentTypes = ['select-list-confirm']
+			@_options = 
+				confirm: 'Are you sure to do this?'
+
+		init: (element) ->
+			confirmTxt = element.data @editor.attr._namespace + 'confirm'
+
+			if confirmTxt
+				confirmOpts =
+					confirm: confirmTxt
+
+				@updateOptions confirmOpts, true
+
+			super element
+
+		getConfirm: ->
+			@getOptions().confirm
+
+		onElementChange: (e, $el, value, id) ->		
+			confirm @getConfirm()
+
+
+
 	# ! --- Implementation --------------------------------
 
 	# make accessible
@@ -1445,6 +1479,7 @@ do ($ = jQuery) ->
 	window.editorComponents.SelectEditable = SelectEditable
 	window.editorComponents.SelectListEditable = SelectListEditable
 	window.editorComponents.SelectPersonEditable = SelectPersonEditable
+	window.editorComponents.SelectListConfirmEditable = SelectListConfirmEditable
 
 	# construction
 	###

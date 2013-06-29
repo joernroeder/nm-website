@@ -73,7 +73,7 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SelectListConfirmEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
 
   $.fn.selectRange = function(start, end) {
     if (!end) {
@@ -1569,6 +1569,7 @@ var __hasProp = {}.hasOwnProperty,
     SelectEditable.prototype.members = function() {
       SelectEditable.__super__.members.call(this);
       this.contentTypes = ['select'];
+      this.popoverClasses = ['selectable'];
       this.contentSeperator = ', ';
       return this._source = {};
     };
@@ -1613,7 +1614,7 @@ var __hasProp = {}.hasOwnProperty,
           $input.prop('checked', true);
         }
         $input.on(this.getNamespacedEventName('change'), function(e) {
-          var $target, changed, index, value;
+          var $target, changed, index, isChecked, value;
 
           value = _this.getValue();
           $target = $(e.target);
@@ -1622,8 +1623,11 @@ var __hasProp = {}.hasOwnProperty,
             id = parseInt(id, 10);
           }
           index = _this.getValueIndex(id);
+          isChecked = $target.prop('checked');
           changed = false;
           if (false === _this.onElementChange(e, $target, value, id)) {
+            e.preventDefault();
+            $target.prop('checked', !isChecked);
             return false;
           }
           if ($target.is(':checked')) {
@@ -1858,6 +1862,46 @@ var __hasProp = {}.hasOwnProperty,
     return SelectListEditable;
 
   })(SelectEditable);
+  SelectListConfirmEditable = (function(_super) {
+    __extends(SelectListConfirmEditable, _super);
+
+    function SelectListConfirmEditable() {
+      _ref7 = SelectListConfirmEditable.__super__.constructor.apply(this, arguments);
+      return _ref7;
+    }
+
+    SelectListConfirmEditable.prototype.members = function() {
+      SelectListConfirmEditable.__super__.members.call(this);
+      this.contentTypes = ['select-list-confirm'];
+      return this._options = {
+        confirm: 'Are you sure to do this?'
+      };
+    };
+
+    SelectListConfirmEditable.prototype.init = function(element) {
+      var confirmOpts, confirmTxt;
+
+      confirmTxt = element.data(this.editor.attr._namespace + 'confirm');
+      if (confirmTxt) {
+        confirmOpts = {
+          confirm: confirmTxt
+        };
+        this.updateOptions(confirmOpts, true);
+      }
+      return SelectListConfirmEditable.__super__.init.call(this, element);
+    };
+
+    SelectListConfirmEditable.prototype.getConfirm = function() {
+      return this.getOptions().confirm;
+    };
+
+    SelectListConfirmEditable.prototype.onElementChange = function(e, $el, value, id) {
+      return confirm(this.getConfirm());
+    };
+
+    return SelectListConfirmEditable;
+
+  })(SelectListEditable);
   window.JJEditor = JJEditor;
   window.editorComponents = {};
   window.editorComponents.JJEditable = JJEditable;
@@ -1868,7 +1912,8 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
   window.editorComponents.SelectEditable = SelectEditable;
   window.editorComponents.SelectListEditable = SelectListEditable;
-  return window.editorComponents.SelectPersonEditable = SelectPersonEditable;
+  window.editorComponents.SelectPersonEditable = SelectPersonEditable;
+  return window.editorComponents.SelectListConfirmEditable = SelectListConfirmEditable;
   /*
   	# init file transfer
   	jQuery.event.props.push 'dataTransfer'
