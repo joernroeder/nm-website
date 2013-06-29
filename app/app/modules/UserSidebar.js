@@ -452,9 +452,11 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
       return bio.api.reposition();
     },
     initMetaEditor: function() {
+      var _this = this;
+
       this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'ModalEditable']);
       return this.metaEditor.on('stateUpdate', function(e) {
-        var key, val, _changed, _ref;
+        var MType, key, val, website, _changed, _ref;
 
         _changed = false;
         _ref = e.CurrentPerson;
@@ -466,7 +468,18 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
           if (val === null) {
             val = "";
           }
-          if (app.CurrentMemberPerson.get(key) !== val) {
+          if (key === 'Website') {
+            if (val.Title && val.Link) {
+              _changed = true;
+              MType = JJRestApi.Model('Website');
+              website = new MType({
+                Title: val.Title,
+                Link: val.Link
+              });
+              app.CurrentMemberPerson.get('Websites').add(website);
+              _this.addWebsiteView(website, true);
+            }
+          } else if (app.CurrentMemberPerson.get(key) !== val) {
             _changed = true;
             app.CurrentMemberPerson.set(key, val);
           }
@@ -476,13 +489,23 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
         }
       });
     },
+    addWebsiteView: function(model, render) {
+      var view;
+
+      view = new Website.Views.ListView({
+        model: model
+      });
+      this.insertView('.websites', view);
+      if (render) {
+        view.render();
+      }
+      return true;
+    },
     beforeRender: function() {
       var _this = this;
 
       return app.CurrentMemberPerson.get('Websites').each(function(website) {
-        return _this.insertView('.websites', new Website.Views.ListView({
-          model: website
-        }));
+        return _this.addWebsiteView(website);
       });
     },
     afterRender: function() {

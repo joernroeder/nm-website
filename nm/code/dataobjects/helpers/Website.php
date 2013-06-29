@@ -46,6 +46,10 @@ class Website extends DataObject {
 		'view' => array(
 			'Title',
 			'Link'
+		),
+		'edit' => array(
+			'Title',
+			'Link'
 		)
 	);
 

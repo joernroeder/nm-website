@@ -418,19 +418,34 @@ define [
 				#		'adjust.resize': true
 				#		'adjust.method': 'flip shift'
 				
-				@metaEditor.on 'stateUpdate', (e) ->
+				@metaEditor.on 'stateUpdate', (e) =>
 					_changed = false
 					for key, val of e.CurrentPerson
 						if key is 'Bio' and val then val = val.raw
 						val = "" if val is null
-						if app.CurrentMemberPerson.get(key) isnt val
+
+						if key is 'Website'
+							if val.Title and val.Link
+								_changed = true
+								MType = JJRestApi.Model 'Website'
+								website = new MType({ Title: val.Title, Link: val.Link })
+								app.CurrentMemberPerson.get('Websites').add website
+								@addWebsiteView website, true
+							
+						else if app.CurrentMemberPerson.get(key) isnt val
 							_changed = true
 							app.CurrentMemberPerson.set key, val
 					app.CurrentMemberPerson.rejectAndSave() if _changed
 
+			addWebsiteView: (model, render) ->
+				view = new Website.Views.ListView({ model: model })
+				@insertView '.websites', view
+				view.render() if render
+				true
+
 			beforeRender: ->
 				app.CurrentMemberPerson.get('Websites').each (website) =>
-					@.insertView '.websites', new Website.Views.ListView({ model: website })
+					@addWebsiteView website
 					
 
 
