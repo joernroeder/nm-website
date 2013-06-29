@@ -1996,6 +1996,22 @@ body.dragover .editor-project-preview {
 		}
 	}
 
+	aside {
+		hr {
+			margin: (@line * 2 / @em) 0 (@line * 1.5 / @em);
+			height: @line / 4 / @em;
+			border: none;
+
+			@stripeColor: mix(@errorColor, @bgColor);
+
+			background-image: linear-gradient(-45deg,
+				transparent 25%, @stripeColor 25%, @stripeColor 50%,
+				transparent 50%, transparent 75%, @stripeColor 75%, @stripeColor);
+
+			background-size: @line / @em @line / @em;
+		}
+	}
+
 	[data-editor-type='markdown'],
 	[data-editor-type='markdown-split'] {
 		position: relative;

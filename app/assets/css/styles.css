@@ -3006,6 +3006,13 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 .editor-project-main.detail article .persons [data-editor-name] {
   display: inline-block;
 }
+.editor-project-main.detail aside hr {
+  margin: 3em 0 2.25em;
+  height: 0.375em;
+  border: none;
+  background-image: linear-gradient(-45deg, transparent 25%, #e09083 25%, #e09083 50%, transparent 50%, transparent 75%, #e09083 75%, #e09083);
+  background-size: 1.5em 1.5em;
+}
 .editor-project-main.detail [data-editor-type='markdown'],
 .editor-project-main.detail [data-editor-type='markdown-split'] {
   position: relative;
