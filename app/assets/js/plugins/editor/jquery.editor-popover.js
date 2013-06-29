@@ -464,6 +464,7 @@ var __hasProp = {}.hasOwnProperty,
 
       if (window.editorComponents[name]) {
         component = new window.editorComponents[name](this);
+        component.name = name.toLowerCase();
         this._components[component.id] = component;
         return component;
       } else {
@@ -523,7 +524,7 @@ var __hasProp = {}.hasOwnProperty,
       results = [];
       for (id in components) {
         component = components[id];
-        if (component.constructor.name === className) {
+        if (component.name === className) {
           results.push(component);
         }
       }
@@ -676,13 +677,13 @@ var __hasProp = {}.hasOwnProperty,
       this._options = {};
       this._dataName = '';
       this._dataFullName = '';
-      return this.contentTypes = [];
+      this.contentTypes = [];
+      return this.name = '';
     };
 
     function JJEditable(editor) {
       this.editor = editor;
       this.members();
-      this.name = this.constructor.name.toLowerCase();
       this.id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r, v;
 
@@ -1210,6 +1211,8 @@ var __hasProp = {}.hasOwnProperty,
       var dataName;
 
       dataName = (this.getDataFullName()).toLowerCase().replace('.', '-');
+      console.log(this);
+      console.log(this.name);
       return ['editor-popover'].concat([this.name, dataName], this.popoverClasses).join(' ');
     };
 

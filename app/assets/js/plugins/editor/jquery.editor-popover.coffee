@@ -312,9 +312,10 @@ do ($ = jQuery) ->
 				throw new ReferenceError "The Component '#{name}' doesn't exists. Maybe you forgot to add it to the global 'window.editorComponents' namespace?"
 
 			component = new window.editorComponents[name](@)
+			
 			$.map component.contentTypes, (type) =>
 				addContentType.call @, type, name
-
+			
 		###
 		 # @private
 		###
@@ -330,6 +331,7 @@ do ($ = jQuery) ->
 		createComponent = (name) ->
 			if window.editorComponents[name]
 				component = new window.editorComponents[name](@)
+				component.name = name.toLowerCase()
 				@_components[component.id] = component
 				return component
 
@@ -370,7 +372,7 @@ do ($ = jQuery) ->
 			results = []
 
 			for id, component of components
-				if component.constructor.name is className
+				if component.name is className
 					results.push component
 
 			results
@@ -493,12 +495,13 @@ do ($ = jQuery) ->
 			@_dataFullName = ''
 
 			@contentTypes = []
+			@name = ''
 
 
 		constructor: (@editor) ->
 			@members()
 
-			@name = @.constructor.name.toLowerCase()
+
 			#@setValue @name
 
 			# generate a unique id @link http://stackoverflow.com/a/2117523/520544
@@ -932,6 +935,8 @@ do ($ = jQuery) ->
 
 		getPopOverClasses: ->
 			dataName =  (@getDataFullName()).toLowerCase().replace '.', '-'
+			console.log @
+			console.log @name
 			(['editor-popover']).concat([@name, dataName], @popoverClasses).join ' '
 
 		getPopoverContent: ->
