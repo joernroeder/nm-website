@@ -1,9 +1,9 @@
 define [
 		'app',
-		'modules/Gravity'
+		'modules/JJPackery'
 		'modules/Portfolio'
 	],
-	(app, Gravity, Portfolio) ->
+	(app, JJPackery, Portfolio) ->
 
 		Person = app.module()
 
@@ -27,8 +27,7 @@ define [
 
 			#Person.Views.Test = Backbone.View.extend({})
 		
-		Person.Views.GravityContainer = Gravity.Views.Container.extend
-			tagName: 'section'
+		Person.Views.PackeryContainer = JJPackery.Views.Container.extend
 			beforeRender: ->
 				console.log 'render person page with normal view'
 				modelArray = []
@@ -38,17 +37,18 @@ define [
 						if rel.collectionType is projectType
 							modelArray = modelArray.concat @.model.get(rel.key).models
 
+				# insert the person item
+				@.insertView '.packery', new Person.Views.InfoItem({ model: @.model })
+
 				# insert the list items
 				for model in modelArray
 					if model.get('IsPublished')
-						@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: 'about/' + @.model.get('UrlSlug') })
-				# insert the person item
-				@.insertView '', new Person.Views.InfoItem({ model: @.model })
+						@.insertView '.packery', new Portfolio.Views.ListItem({ model: model, linkTo: 'about/' + @.model.get('UrlSlug') })
 
-		# this view displays basic pieces of information (bio, pic etc.) within the gravity view
+		# this view displays basic pieces of information (bio, pic etc.) within the packery view
 		Person.Views.InfoItem = Backbone.View.extend
 			tagName: 'article'
-			className: 'gravity-item person-info'
+			className: 'packery-item person-info'
 			template: 'person-info-item'
 			serialize: ->
 				if @.model then @.model.toJSON()

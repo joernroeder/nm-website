@@ -124,7 +124,7 @@ define [
 					app.Cache.Featured = @.getProjectTypeModels { IsFeatured: true, IsPublished: true }
 
 				modelsArray = app.Cache.Featured
-				@.showGravityViewForModels modelsArray, 'portfolio', layout
+				@.showPackeryViewForModels modelsArray, 'portfolio', layout
 				calendarContainer = new Calendar.Views.Container({ collection: app.Collections.CalendarEntry })
 				layout.setViewAndRenderMaybe '#calendar', calendarContainer
 
@@ -144,7 +144,7 @@ define [
 					students : coll.where { IsStudent: true }
 					alumnis : coll.where { IsAlumni: true }
 					employees : coll.where { IsEmployee: true }
-				view = new About.Views.GravityContainer { groupImage: image, persons: persons }
+				view = new About.Views.PackeryContainer { groupImage: image, persons: persons }
 				layout.setViewAndRenderMaybe '', view
 
 
@@ -162,7 +162,7 @@ define [
 				model.get('Templates').each (templ) ->
 					if not templ.get('IsDetail') then template = templ.get('Url')
 				
-				view = if not template then new Person.Views.GravityContainer({ model: model }) else new Person.Views.Custom({ model: model, template: template })
+				view = if not template then new Person.Views.PackeryContainer({ model: model }) else new Person.Views.Custom({ model: model, template: template })
 
 				layout.setViewAndRenderMaybe '', view
 
@@ -197,7 +197,7 @@ define [
 				if searchTerm then modelsArray = DataRetrieval.filterProjectTypesBySearchTerm searchTerm
 				
 				unless justUpdate
-					@.showGravityViewForModels modelsArray, 'portfolio', layout
+					@.showPackeryViewForModels modelsArray, 'portfolio', layout
 				else
 					console.log 'add or remove models'
 				
@@ -319,10 +319,10 @@ define [
 
 		# !- Repeating helper abstraction
 		
-		showGravityViewForModels: (modelsArray, linkTo, layout) ->
+		showPackeryViewForModels: (modelsArray, linkTo, layout) ->
 			# this isn't really a collection, but we assign it to it anyway ;)
-			gravityContainer = new Portfolio.Views.GravityContainer({ collection: modelsArray, linkTo: linkTo })
-			layout.setViewAndRenderMaybe '#gravity-container', gravityContainer
+			packeryContainer = new Portfolio.Views.PackeryContainer({ collection: modelsArray, linkTo: linkTo })
+			layout.setViewAndRenderMaybe '#packery-container', packeryContainer
 
 		getProjectTypeModels: (where) ->
 			returnArray = []

@@ -1,8 +1,8 @@
 define [
 		'app'
-		'modules/Gravity'
+		'modules/JJPackery'
 	],
-	(app, Gravity) ->
+	(app, JJPackery) ->
 
 		Portfolio = app.module()
 
@@ -10,21 +10,20 @@ define [
 			person_group_length : 4
 			group_project_title : 'Group project'
 
-		# this is the main gravity container which has a list with all project overview items in it
-		Portfolio.Views.GravityContainer = Gravity.Views.Container.extend
-			tagName: 'section'
+		# this is the main packery container which has a list with all project overview items in it
+		Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend
 			beforeRender: ->
 				console.log 'portfolio before render'
 				modelArray = @.collection
 				if modelArray
 					for model in modelArray
-						@.insertView '', new Portfolio.Views.ListItem({ model: model, linkTo: @.options.linkTo })
+						@.insertView '.packery', new Portfolio.Views.ListItem({ model: model, linkTo: @.options.linkTo })
 				
 
 		Portfolio.Views.ListItem = Backbone.View.extend
 			tagName: 'article'
-			className: 'gravity-item resizable'
-			template: 'gravity-list-item'
+			className: 'packery-item resizable'
+			template: 'packery-list-item'
 			serialize: () ->
 				data = if @.model then @.model.toJSON() else {}
 				data.LinkTo = @.options.linkTo

@@ -34,7 +34,10 @@ require.config
 			exports: 'Handlebars'
 
 		'plugins/tooltip/jquery.qtip'			: ['jquery']
-		'plugins/gravity/jquery.gravity'		: ['plugins/tooltip/jquery.qtip']
+		#'plugins/gravity/jquery.gravity'		: ['plugins/tooltip/jquery.qtip']
+		'plugins/packery/packery.pkgd'			: ['jquery']
+		'plugins/packery/packerytest'			: ['plugins/packery/packery.pkgd', 'plugins/tooltip/jquery.qtip']
+		'modules/JJPackery'						: ['plugins/packery/packerytest']
 		'responsiveimage/picturefill'			: ['responsiveimage/external/matchmedia']
 
 		'plugins/misc/spin.min'					: ['jquery']

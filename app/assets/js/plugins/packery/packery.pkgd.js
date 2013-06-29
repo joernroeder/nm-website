@@ -82,7 +82,7 @@ var classie = {
 };
 
 // transport
-if ( typeof define === 'function' && define.amd ) {
+if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( classie );
 } else {
@@ -157,7 +157,7 @@ var eventie = {
 };
 
 // transport
-if ( typeof define === 'function' && define.amd ) {
+if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( eventie );
 } else {
@@ -225,7 +225,7 @@ function defineDocReady( eventie ) {
 }
 
 // transport
-if ( typeof define === 'function' && define.amd ) {
+if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( [ 'eventie' ], defineDocReady );
 } else {
@@ -607,7 +607,7 @@ if ( typeof define === 'function' && define.amd ) {
 	};
 
 	// Expose the class either via AMD or the global object
-	if (typeof define === 'function' && define.amd) {
+	if (typeof _define === 'function' && define.amd) {
 		define(function () {
 			return EventEmitter;
 		});
@@ -655,7 +655,7 @@ function getStyleProperty( propName ) {
 }
 
 // transport
-if ( typeof define === 'function' && define.amd ) {
+if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( function() {
     return getStyleProperty;
@@ -835,7 +835,7 @@ return getSize;
 }
 
 // transport
-if ( typeof define === 'function' && define.amd ) {
+if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( [ 'get-style-property' ], defineGetSize );
 } else {
@@ -971,7 +971,7 @@ $.bridget = function( namespace, PluginClass ) {
 }
 
 // transport
-if ( typeof define === 'function' && define.amd ) {
+if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( [ 'jquery' ], defineBridget );
 } else {
@@ -1072,7 +1072,7 @@ if ( typeof define === 'function' && define.amd ) {
   }
 
   // transport
-  if ( typeof define === 'function' && define.amd ) {
+  if ( typeof _define === 'function' && define.amd ) {
     // AMD
     define( function() {
       return matchesSelector;

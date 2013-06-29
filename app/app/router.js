@@ -111,7 +111,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           });
         }
         modelsArray = app.Cache.Featured;
-        _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
+        _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
         calendarContainer = new Calendar.Views.Container({
           collection: app.Collections.CalendarEntry
         });
@@ -145,7 +145,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             IsEmployee: true
           })
         };
-        view = new About.Views.GravityContainer({
+        view = new About.Views.PackeryContainer({
           groupImage: image,
           persons: persons
         });
@@ -173,7 +173,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             return template = templ.get('Url');
           }
         });
-        view = !template ? new Person.Views.GravityContainer({
+        view = !template ? new Person.Views.PackeryContainer({
           model: model
         }) : new Person.Views.Custom({
           model: model,
@@ -214,7 +214,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           modelsArray = DataRetrieval.filterProjectTypesBySearchTerm(searchTerm);
         }
         if (!justUpdate) {
-          return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
+          return _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
         } else {
           return console.log('add or remove models');
         }
@@ -384,14 +384,14 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         return layout.setViewAndRenderMaybe('', errorView);
       });
     },
-    showGravityViewForModels: function(modelsArray, linkTo, layout) {
-      var gravityContainer;
+    showPackeryViewForModels: function(modelsArray, linkTo, layout) {
+      var packeryContainer;
 
-      gravityContainer = new Portfolio.Views.GravityContainer({
+      packeryContainer = new Portfolio.Views.PackeryContainer({
         collection: modelsArray,
         linkTo: linkTo
       });
-      return layout.setViewAndRenderMaybe('#gravity-container', gravityContainer);
+      return layout.setViewAndRenderMaybe('#packery-container', packeryContainer);
     },
     getProjectTypeModels: function(where) {
       var projectType, returnArray, _i, _len, _ref;
