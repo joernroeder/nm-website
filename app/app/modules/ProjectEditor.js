@@ -208,7 +208,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       return this;
     },
     stateUpdate: function(e) {
-      var key, relKey, text, toPost, val, _changed, _populateEditors, _ref,
+      var existPost, key, newPost, relKey, text, toPost, val, _changed, _populateEditors, _ref,
         _this = this;
 
       console.group('STATE UPDATE');
@@ -271,16 +271,25 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
             _changed = true;
           }
         } else if (key === 'BlockedEditors' || key === 'Editors') {
-          console.log('Editors: %o', val);
           if (_.difference(val, app.ProjectEditor[key]).length > 0 || _.difference(app.ProjectEditor[key], val).length > 0) {
-            console.log('something changed');
-            console.log('post to server %o', val);
             app.ProjectEditor[key] = val;
             toPost = {
               className: this.model.get('ClassName'),
               id: this.model.id,
               editors: val
             };
+            existPost = app.ProjectEditor.ChangeEditorsPost;
+            if (existPost && existPost.readyState !== 4) {
+              existPost.abort();
+            }
+            newPost = app.ProjectEditor.ChangeEditorsPost = $.post(app.Config.ChangeEditorsUrl, toPost);
+            newPost.done(function(confirmed) {
+              if (_.difference(confirmed, app.ProjectEditor[key]).length > 0 || _.difference(app.ProjectEditor[key], confirmed).length > 0) {
+                console.log('change to confirmed');
+                app.ProjectEditor[key] = confirmed;
+                return _populateEditors = true;
+              }
+            });
           }
         } else if (key === 'Title' && this.model.get('Title') !== val) {
           this.model.set('Title', val);
@@ -290,7 +299,9 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       console.groupEnd();
       if (_changed) {
         return this.model.rejectAndSave().done(function(model) {
-          return _this.populateEditorsSelectable(_this.model.getEditorsKey(), false);
+          if (_populateEditors) {
+            return _this.populateEditorsSelectable(_this.model.getEditorsKey(), false);
+          }
         });
       }
     },
@@ -385,7 +396,6 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
               className: _this.model.get('ClassName'),
               id: _this.model.id
             }).done(function(ids) {
-              console.log('editors from server %o', ids);
               if (_.isArray(ids)) {
                 app.ProjectEditor[type] = ids;
                 return _this.populateEditorsSelectable(type);
@@ -414,11 +424,8 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
         personsIdArray = _.map(personsIdList, function(o) {
           return o.ID;
         });
-        console.log('setting source to %o', personsIdList);
         selectable.setSource(personsIdList, silent);
-        console.log(app.ProjectEditor[type]);
         app.ProjectEditor[type] = _.intersection(app.ProjectEditor[type], personsIdArray);
-        console.log('setting values to %o', app.ProjectEditor[type]);
         return selectable.setValue(app.ProjectEditor[type], silent);
       }
     }

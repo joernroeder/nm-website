@@ -235,17 +235,22 @@ define [
 
 				# 5.) BlockedEditors / Editors
 				else if key is 'BlockedEditors' or key is 'Editors'
-					console.log 'Editors: %o', val
 					if _.difference(val, app.ProjectEditor[key]).length > 0 or _.difference(app.ProjectEditor[key], val).length > 0
-						console.log 'something changed'
-						console.log 'post to server %o', val
 						app.ProjectEditor[key] = val
 						toPost =
 							className: @model.get('ClassName')
 							id: @model.id
 							editors : val
-						#$.post({url: app.Config.ChangeEditorsUrl, data: toPost}).done (confirmed) ->
-						#	console.log confirmed
+
+						existPost = app.ProjectEditor.ChangeEditorsPost
+						if existPost and existPost.readyState isnt 4 then existPost.abort()
+						newPost = app.ProjectEditor.ChangeEditorsPost = $.post(app.Config.ChangeEditorsUrl,toPost)
+
+						newPost.done (confirmed) =>
+							if _.difference(confirmed, app.ProjectEditor[key]).length > 0 or _.difference(app.ProjectEditor[key], confirmed).length > 0
+								console.log 'change to confirmed'
+								app.ProjectEditor[key] = confirmed
+								_populateEditors = true
 
 				# normal attribute
 				else if key is 'Title' and @model.get('Title') isnt val
@@ -257,7 +262,7 @@ define [
 			
 			if _changed
 				@model.rejectAndSave().done (model) =>
-					@populateEditorsSelectable @model.getEditorsKey(), false
+					@populateEditorsSelectable(@model.getEditorsKey(), false) if _populateEditors
 
 		populateSelectEditables: ->
 			sanitize = 
@@ -309,7 +314,6 @@ define [
 					if selectable = @editor.getComponentByName 'ProjectMain.' + type
 						# get editors from server without revealing member ids
 						$.getJSON(app.Config.GetEditorsUrl, { className: @model.get('ClassName'), id: @model.id }).done (ids) =>
-							console.log 'editors from server %o', ids
 							if _.isArray(ids)
 								app.ProjectEditor[type] = ids
 								@populateEditorsSelectable type
@@ -329,11 +333,8 @@ define [
 				personsIdArray = _.map personsIdList, (o) ->
 					o.ID
 
-				console.log 'setting source to %o', personsIdList
 				selectable.setSource personsIdList, silent
-				console.log app.ProjectEditor[type]
 				app.ProjectEditor[type] = _.intersection(app.ProjectEditor[type], personsIdArray)
-				console.log 'setting values to %o', app.ProjectEditor[type]
 				selectable.setValue app.ProjectEditor[type], silent
 
 
