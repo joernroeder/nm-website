@@ -184,7 +184,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
       var markdownEditor,
         _this = this;
 
-      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable', 'SelectPersonEditable', 'SelectListEditable']);
+      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable', 'SelectPersonEditable', 'SelectListEditable', 'SelectListConfirmEditable']);
       markdownEditor = this.editor.getComponentByName('ProjectMain.Text').markdown;
       _.extend(markdownEditor.options, {
         additionalPOSTData: {

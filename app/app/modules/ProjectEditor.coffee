@@ -155,6 +155,7 @@ define [
 				'SelectEditable'
 				'SelectPersonEditable'
 				'SelectListEditable'
+				'SelectListConfirmEditable'
 			]
 
 			# dynamic options update

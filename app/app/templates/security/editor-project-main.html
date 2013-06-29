@@ -55,10 +55,10 @@
 
 	{{#stringCompare "Project" ClassName}}
 		<h1>Blocked editors</h1>
-		<ul data-editor-type="select-list" data-editor-name="BlockedEditors" data-editor-placeholder="Add…"></ul>
+		<ul data-editor-type="select-list-confirm" data-editor-name="BlockedEditors" data-editor-placeholder="Add…" data-editor-confirm="Blocked Editors confirm text"></ul>
 	{{else}}
 		<h1>Additional editors</h1>
-		<ul data-editor-type="select-list" data-editor-name="Editors" data-editor-placeholder="Add…"></ul>
+		<ul data-editor-type="select-list" data-editor-name="Editors" data-editor-placeholder="Add…" data-editor-confirm="Editors confirm text"></ul>
 	{{/stringCompare}}
 
 </aside>
