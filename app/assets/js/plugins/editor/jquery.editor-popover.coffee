@@ -1249,6 +1249,9 @@ do ($ = jQuery) ->
 
 			@setSource @_source
 
+		onElementChange: (e, $el, value, id) ->
+			true
+
 		createPopupContent: ->
 			@$set.empty()
 
@@ -1268,6 +1271,9 @@ do ($ = jQuery) ->
 					id = parseInt id, 10 unless isNaN id
 					index = @getValueIndex id
 					changed = false
+
+					if false is @onElementChange e, $target, value, id
+						return false
 
 					if $target.is ':checked' 
 						if -1 is index
@@ -1342,20 +1348,23 @@ do ($ = jQuery) ->
 			if val
 				for i, source of @getSource()
 					id = source.id or source.ID
+					checked = false
 
 					if -1 isnt $.inArray id, val
 						title = source.title or source.Title
 						titles.push title
+						checked = true
 
-						#update tooltip
-						@updatePopoverContent title, id
+					#update tooltip
+					@updatePopoverContent title, id, checked
+
 
 				@updateContent titles
 
-		updatePopoverContent: (title, id) ->
+		updatePopoverContent: (title, id, checked) ->
 			if @$set
 				input = @$set.find('#' + @getDataName().toLowerCase() + '-item-' + id)
-				input.prop 'checked', true
+				input.prop 'checked', checked
 
 		updateContent: (titles) ->
 			@element.html titles.join(@getSeperator())

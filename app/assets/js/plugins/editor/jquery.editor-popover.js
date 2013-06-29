@@ -1592,6 +1592,10 @@ var __hasProp = {}.hasOwnProperty,
       return this.setSource(this._source);
     };
 
+    SelectEditable.prototype.onElementChange = function(e, $el, value, id) {
+      return true;
+    };
+
     SelectEditable.prototype.createPopupContent = function() {
       var $input, $label, i, id, idAttr, source, title, _ref5,
         _this = this;
@@ -1619,6 +1623,9 @@ var __hasProp = {}.hasOwnProperty,
           }
           index = _this.getValueIndex(id);
           changed = false;
+          if (false === _this.onElementChange(e, $target, value, id)) {
+            return false;
+          }
           if ($target.is(':checked')) {
             if (-1 === index) {
               value.push(id);
@@ -1728,7 +1735,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.setValueToContent = function(val, isPlaceholder) {
-      var i, id, source, title, titles, _ref5;
+      var checked, i, id, source, title, titles, _ref5;
 
       titles = [];
       if (val) {
@@ -1736,22 +1743,24 @@ var __hasProp = {}.hasOwnProperty,
         for (i in _ref5) {
           source = _ref5[i];
           id = source.id || source.ID;
+          checked = false;
           if (-1 !== $.inArray(id, val)) {
             title = source.title || source.Title;
             titles.push(title);
-            this.updatePopoverContent(title, id);
+            checked = true;
           }
+          this.updatePopoverContent(title, id, checked);
         }
         return this.updateContent(titles);
       }
     };
 
-    SelectEditable.prototype.updatePopoverContent = function(title, id) {
+    SelectEditable.prototype.updatePopoverContent = function(title, id, checked) {
       var input;
 
       if (this.$set) {
         input = this.$set.find('#' + this.getDataName().toLowerCase() + '-item-' + id);
-        return input.prop('checked', true);
+        return input.prop('checked', checked);
       }
     };
 
