@@ -208,15 +208,15 @@ button.btn {
  *
  * {@see http://weedygarden.net/demos/css3-column-lists/}
  *
- * @param int @cols   Spaltenanzahl
- * @param int @width  Breite innerhalb der sich die Spalten teilen können
+ * @param int @cols 	Spaltenanzahl
+ * @param int @width 	Breite innerhalb der sich die Spalten teilen können
  */
 /*
 *
-*  Golden Grid System (1.01)  <http://goldengridsystem.com/>
-*  by Joni Korpi        <http://jonikorpi.com/>
-*  licensed under MIT     <http://opensource.org/licenses/mit-license.php>
-* 
+*  Golden Grid System (1.01)	<http://goldengridsystem.com/>
+*  by Joni Korpi 				<http://jonikorpi.com/>
+*  licensed under MIT			<http://opensource.org/licenses/mit-license.php>
+*	
 */
 /*
 *
@@ -368,8 +368,8 @@ img {
 }
 /*
 *
-* Zoomable baseline grid
-* type size presets
+*	Zoomable baseline grid
+*	type size presets
 *
 */
 body {
@@ -387,13 +387,13 @@ body {
 *
 */
 /*h1, h2 {
-  margin: (24/26*1em) 0 (36/26*1em);
+	margin: (24/26*1em) 0 (36/26*1em);
 }*/
 h2 {
   font-weight: normal;
 }
 /*h3 {
-  margin: (24/@em) 0 (24/@em);
+	margin: (24/@em) 0 (24/@em);
 }*/
 /*
 *  Simple elastic gutters
@@ -418,8 +418,8 @@ h2 {
 }
 /*
 .ie h1 {
-  .huge();
-  margin: (48/42*1em) 0 (24/42*1em);
+	.huge();
+	margin: (48/42*1em) 0 (24/42*1em);
 }*/
 /* @media screen and (min-width: 640px) */
 @media screen and (min-width: 40em) {
@@ -428,10 +428,10 @@ h2 {
   
   }
   /*
-    h1 {
-      .huge();
-      margin: (48/42*1em) 0 (24/42*1em);
-    }*/
+  	h1 {
+  		.huge();
+  		margin: (48/42*1em) 0 (24/42*1em);
+  	}*/
 }
 /*
 *
@@ -439,7 +439,7 @@ h2 {
 *  ----------------------------------------------------------------------
 *  Margin   | #  1     2     3     4     5     6     7     8   |   Margin
 *  5.55555% | %  12.5  25.0  37.5  50.0  62.5  75.0  87.5  100 | 5.55555%
-* 
+*	
 *
 */
 /* @media screen and (min-width: 720px) */
@@ -449,10 +449,10 @@ h2 {
   
   }
   /*
-    #twoway .wrapper {
-      float: left;
-      width: 50%;
-    }*/
+  	#twoway .wrapper {
+  		float: left;
+  		width: 50%;
+  	}*/
 }
 /* @media screen and (min-width: 888px) */
 @media screen and (min-width: 55.5em) {
@@ -495,7 +495,7 @@ h2 {
 *  ----------------------------------------------------------------------------------------------------------------------
 *  Margin   | #  1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16  |   Margin
 *  5.55555% | %  6.25  12.5  18.75 25.0  31.25 37.5  43.75 50.0  56.25 62.5  68.75 75.0  81.25 87.5  93.75 100 | 5.55555%
-* 
+*	
 *
 */
 /* @media screen and (min-width: 1872px) */
@@ -675,6 +675,20 @@ button.Zebra_DatePicker_Icon {
   position: relative;
   width: 100%;
   min-height: 100%;
+  opacity: 0;
+}
+.packery-wrapper.loaded {
+  opacity: 1;
+}
+.packery-wrapper.loaded .packery-item {
+  -webkit-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  -moz-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  -o-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  -ms-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+  transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
+}
+.packery-wrapper.loaded.has-gravity .packery-item {
+  margin: 0 !important;
 }
 .packery-test {
   position: relative;
@@ -693,6 +707,16 @@ button.Zebra_DatePicker_Icon {
   display: block;
   clear: both;
 }
+.test {
+  display: inline-block;
+  border: 5px solid red;
+}
+.test.elpos {
+  border-color: green;
+}
+.test.center {
+  border-color: yellow;
+}
 .stamp {
   position: absolute;
   width: 7.5%;
@@ -707,6 +731,11 @@ button.Zebra_DatePicker_Icon {
 .stamp.top.right {
   right: 15%;
 }
+.stamp.top.center {
+  left: 50%;
+  margin-left: -3.75%;
+  height: 3.75%;
+}
 .stamp.right {
   left: auto;
   right: 0;
@@ -714,6 +743,11 @@ button.Zebra_DatePicker_Icon {
 .stamp.left {
   left: 0;
   right: auto;
+}
+.stamp.left.center {
+  top: 50%;
+  margin-top: -3.75%;
+  width: 3.75%;
 }
 .stamp.bottom {
   bottom: 0;
@@ -1063,19 +1097,19 @@ aside a {
   min-height: 100%;
   position: relative;
   /**
-   * For modern browsers
-   * 1. The space content is one way to avoid an Opera bug when the
-   *    contenteditable attribute is included anywhere else in the document.
-   *    Otherwise it causes space to appear at the top and bottom of elements
-   *    that are clearfixed.
-   * 2. The use of `table` rather than `block` is only necessary if using
-   *    `:before` to contain the top-margins of child elements.
-   */
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
 
   /**
-   * For IE 6/7 only
-   * Include this rule to trigger hasLayout and contain floats.
-   */
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
 
   *zoom: 1;
 }
@@ -1225,22 +1259,22 @@ x:-o-prefocus,
 /*
 .qtip[aria-hidden="true"] {
 
-  &.qtip-pos-lb {
-    margin-left: -@qtipAniOffset / @em;
-  }
-  &.qtip-pos-rb {
-    margin-left: @qtipAniOffset / @em;
-  }
+	&.qtip-pos-lb {
+		margin-left: -@qtipAniOffset / @em;
+	}
+	&.qtip-pos-rb {
+		margin-left: @qtipAniOffset / @em;
+	}
 }
 
 .qtip[aria-hidden="false"] {
 
-  &.qtip-pos-lb {
-    margin-left: 0;
-  }
-  &.qtip-pos-rb {
-    margin-left: 0;
-  }
+	&.qtip-pos-lb {
+		margin-left: 0;
+	}
+	&.qtip-pos-rb {
+		margin-left: 0;
+	}
 }
 */
 #gravity-container {
@@ -1302,8 +1336,8 @@ x:-o-prefocus,
 .gravity .gravity-item.has-tooltip {
   z-index: 16000;
   /*img {
-      opacity: 1;
-    }*/
+			opacity: 1;
+		}*/
 
 }
 .gravity > img.has-tooltip > a,
@@ -1482,19 +1516,19 @@ x:-o-prefocus,
 .person-info {
   width: 75%;
   /**
-   * For modern browsers
-   * 1. The space content is one way to avoid an Opera bug when the
-   *    contenteditable attribute is included anywhere else in the document.
-   *    Otherwise it causes space to appear at the top and bottom of elements
-   *    that are clearfixed.
-   * 2. The use of `table` rather than `block` is only necessary if using
-   *    `:before` to contain the top-margins of child elements.
-   */
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
 
   /**
-   * For IE 6/7 only
-   * Include this rule to trigger hasLayout and contain floats.
-   */
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
 
   *zoom: 1;
 }
@@ -1551,10 +1585,10 @@ x:-o-prefocus,
 }
 /*input[type="search"] {
 
-  &::-webkit-search-cancel-button {
-    background-color: red;
-    color: red;
-  }
+	&::-webkit-search-cancel-button {
+		background-color: red;
+		color: red;
+	}
 }*/
 .editor .overview {
   position: absolute;
@@ -1575,19 +1609,19 @@ x:-o-prefocus,
   z-index: 14000;
   opacity: 1;
   /**
-   * For modern browsers
-   * 1. The space content is one way to avoid an Opera bug when the
-   *    contenteditable attribute is included anywhere else in the document.
-   *    Otherwise it causes space to appear at the top and bottom of elements
-   *    that are clearfixed.
-   * 2. The use of `table` rather than `block` is only necessary if using
-   *    `:before` to contain the top-margins of child elements.
-   */
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
 
   /**
-   * For IE 6/7 only
-   * Include this rule to trigger hasLayout and contain floats.
-   */
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
 
   *zoom: 1;
   width: 100%;
@@ -1621,8 +1655,8 @@ x:-o-prefocus,
 .editor .overview article.has-tooltip {
   z-index: 16000;
   /*img {
-      opacity: 1;
-    }*/
+			opacity: 1;
+		}*/
 
 }
 .editor .overview article.has-tooltip > a {
@@ -1721,19 +1755,13 @@ x:-o-prefocus,
   height: 100%;
   color: #cccccc;
 }
-.editor-popover.selecteditable,
-.editor-popover.selectlisteditable,
-.editor-popover.selectpersoneditable {
+.editor-popover.selectable {
   color: #cccccc;
 }
-.editor-popover.selecteditable .qtip-content,
-.editor-popover.selectlisteditable .qtip-content,
-.editor-popover.selectpersoneditable .qtip-content {
+.editor-popover.selectable .qtip-content {
   padding: 0.625em 1.5em;
 }
-.editor-popover.selecteditable .selectable-item,
-.editor-popover.selectlisteditable .selectable-item,
-.editor-popover.selectpersoneditable .selectable-item {
+.editor-popover.selectable .selectable-item {
   display: block;
   padding: 0.375em 0;
   cursor: pointer;
@@ -1743,14 +1771,10 @@ x:-o-prefocus,
   -ms-transition: color .15s ease-in-out;
   transition: color .15s ease-in-out;
 }
-.editor-popover.selecteditable .selectable-item:hover,
-.editor-popover.selectlisteditable .selectable-item:hover,
-.editor-popover.selectpersoneditable .selectable-item:hover {
+.editor-popover.selectable .selectable-item:hover {
   color: #fff;
 }
-.editor-popover.selecteditable .selectable-item input,
-.editor-popover.selectlisteditable .selectable-item input,
-.editor-popover.selectpersoneditable .selectable-item input {
+.editor-popover.selectable .selectable-item input {
   margin-right: 0.375em;
 }
 .editor-popover.dateeditable .qtip-content {
@@ -1848,7 +1872,7 @@ x:-o-prefocus,
   color: #fff;
 }
 /*#qtip-0.markdowneditable {
-  left: 10px !important;
+	left: 10px !important;
 }*/
 body.editor-sidebar-open #layout.editor {
   width: 75%;
@@ -1971,29 +1995,29 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   /*
-    background:
-      // Shadow covers
-      linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
-      linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
-    
-      // Shadows
-      radial-gradient(50% 0, farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)),
-      radial-gradient(50% 100%,farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
+		background:
+			// Shadow covers
+			linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
+			linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
+		
+			// Shadows
+			radial-gradient(50% 0, farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)),
+			radial-gradient(50% 100%,farthest-side, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
 
-    background:
-      // Shadow covers
-      linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
-      linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
-    
-      // Shadows
-      radial-gradient(farthest-side at 50% 0, rgba(0,0,0,1), rgba(0,0,0,0)),
-      radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
+		background:
+			// Shadow covers
+			linear-gradient(@editorSidebarBg 30%, rgba(255,255,255,0)),
+			linear-gradient(rgba(255,255,255,0), @editorSidebarBg 70%) 0 100%,
+		
+			// Shadows
+			radial-gradient(farthest-side at 50% 0, rgba(0,0,0,1), rgba(0,0,0,0)),
+			radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,1), rgba(0,0,0,0)) 0 100%;
 
-    background-repeat: no-repeat;
-    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
-  
-    // Opera doesn't support this in the shorthand
-    background-attachment: local, local, scroll, scroll;*/
+		background-repeat: no-repeat;
+		background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+	
+		// Opera doesn't support this in the shorthand
+		background-attachment: local, local, scroll, scroll;*/
 
 }
 .editor-sidebar header {
@@ -2006,19 +2030,19 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
 }
 .editor-sidebar header.editor-header {
   /**
-   * For modern browsers
-   * 1. The space content is one way to avoid an Opera bug when the
-   *    contenteditable attribute is included anywhere else in the document.
-   *    Otherwise it causes space to appear at the top and bottom of elements
-   *    that are clearfixed.
-   * 2. The use of `table` rather than `block` is only necessary if using
-   *    `:before` to contain the top-margins of child elements.
-   */
+	 * For modern browsers
+	 * 1. The space content is one way to avoid an Opera bug when the
+	 *    contenteditable attribute is included anywhere else in the document.
+	 *    Otherwise it causes space to appear at the top and bottom of elements
+	 *    that are clearfixed.
+	 * 2. The use of `table` rather than `block` is only necessary if using
+	 *    `:before` to contain the top-margins of child elements.
+	 */
 
   /**
-   * For IE 6/7 only
-   * Include this rule to trigger hasLayout and contain floats.
-   */
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
 
   *zoom: 1;
 }
@@ -3074,18 +3098,18 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   border-right-width: 0;
 }
 /*body.dragover .editor-project-main.detail {
-  [data-editor-type='markdown-split'] {
-    p:not(.dropzone) {
-      border-bottom: 1px dashed transparent;
-    }
+	[data-editor-type='markdown-split'] {
+		p:not(.dropzone) {
+			border-bottom: 1px dashed transparent;
+		}
 
-    &:hover,
-    &.hover {
-      p:not(.dropzone) {
-        border-color: @bgColor;
-      }
-    }
-  }
+		&:hover,
+		&.hover {
+			p:not(.dropzone) {
+				border-color: @bgColor;
+			}
+		}
+	}
 }*/
 .editor-sidebar-open article,
 .open-split-markdown article {

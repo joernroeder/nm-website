@@ -1755,19 +1755,13 @@ x:-o-prefocus,
   height: 100%;
   color: #cccccc;
 }
-.editor-popover.selecteditable,
-.editor-popover.selectlisteditable,
-.editor-popover.selectpersoneditable {
+.editor-popover.selectable {
   color: #cccccc;
 }
-.editor-popover.selecteditable .qtip-content,
-.editor-popover.selectlisteditable .qtip-content,
-.editor-popover.selectpersoneditable .qtip-content {
+.editor-popover.selectable .qtip-content {
   padding: 0.625em 1.5em;
 }
-.editor-popover.selecteditable .selectable-item,
-.editor-popover.selectlisteditable .selectable-item,
-.editor-popover.selectpersoneditable .selectable-item {
+.editor-popover.selectable .selectable-item {
   display: block;
   padding: 0.375em 0;
   cursor: pointer;
@@ -1777,14 +1771,10 @@ x:-o-prefocus,
   -ms-transition: color .15s ease-in-out;
   transition: color .15s ease-in-out;
 }
-.editor-popover.selecteditable .selectable-item:hover,
-.editor-popover.selectlisteditable .selectable-item:hover,
-.editor-popover.selectpersoneditable .selectable-item:hover {
+.editor-popover.selectable .selectable-item:hover {
   color: #fff;
 }
-.editor-popover.selecteditable .selectable-item input,
-.editor-popover.selectlisteditable .selectable-item input,
-.editor-popover.selectpersoneditable .selectable-item input {
+.editor-popover.selectable .selectable-item input {
   margin-right: 0.375em;
 }
 .editor-popover.dateeditable .qtip-content {
