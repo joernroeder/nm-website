@@ -222,6 +222,8 @@ define [
 
 				# 3.) Person
 				else if key is 'Person'
+					# always add yourself
+					val.push app.CurrentMemberPerson.id
 					if @model.setRelCollByIds('Persons', val) then _changed = true
 
 				# 4.) Category

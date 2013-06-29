@@ -260,6 +260,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
             _changed = true;
           }
         } else if (key === 'Person') {
+          val.push(app.CurrentMemberPerson.id);
           if (this.model.setRelCollByIds('Persons', val)) {
             _changed = true;
           }
