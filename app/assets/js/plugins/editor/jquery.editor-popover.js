@@ -699,7 +699,8 @@ var __hasProp = {}.hasOwnProperty,
       var val;
 
       this.element = element;
-      if (!element) {
+      if (!this.element) {
+        console.log('JJEditabel: no element found.');
         return;
       }
       this.setDataName(element.data(this.editor.getAttr('name')));
@@ -1056,6 +1057,10 @@ var __hasProp = {}.hasOwnProperty,
     JJPopoverEditable.prototype.init = function(element) {
       var _this = this;
 
+      if (!element) {
+        console.log('JJPopoverEditabel: no element found.');
+        return;
+      }
       if (!this._options.position) {
         this._options.position = {
           at: 'right center',
@@ -1071,9 +1076,6 @@ var __hasProp = {}.hasOwnProperty,
         this._options.repositionOnChange = true;
       }
       JJPopoverEditable.__super__.init.call(this, element);
-      if (!element) {
-        return;
-      }
       element.qtip({
         events: {
           render: function(event, api) {},

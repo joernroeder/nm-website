@@ -512,7 +512,9 @@ do ($ = jQuery) ->
 
 		# kick off your stuff from here!
 		init: (@element) ->
-			if not element then return
+			if not @element 
+				console.log 'JJEditabel: no element found.'
+				return
 
 			@setDataName element.data(@editor.getAttr('name'))
 			@updateOptions element.data(@editor.getAttr('options')), true
@@ -798,6 +800,10 @@ do ($ = jQuery) ->
 			super editor
 
 		init: (element) ->
+			if not element
+				console.log 'JJPopoverEditabel: no element found.'
+				return
+
 			if not @_options.position
 				@_options.position =
 					at: 'right center'
@@ -812,7 +818,6 @@ do ($ = jQuery) ->
 
 			super element
 
-			if not element then return
 			element.qtip
 				events:
 					render: (event, api) =>
