@@ -46,7 +46,8 @@ class Project extends DataObject {
 	);
 
 	private static $has_many = array(
-		'Rankings' 		=> 'Ranking'				// Sortierungssystem {@see Ranking}
+		'Rankings' 		=> 'Ranking',				// Sortierungssystem {@see Ranking}
+		'Websites'		=> 'Website'
 	);
 
 	private static $many_many = array(
@@ -132,6 +133,9 @@ class Project extends DataObject {
 			'Images.Title',
 			'Images.Caption',
 
+			'Websites.Title',
+			'Websites.Link',
+
 			'Persons.FirstName',
 			'Persons.Surname',
 			'Persons.UrlSlug',
@@ -193,7 +197,9 @@ class Project extends DataObject {
 			'Excursions',
 			'Exhibitions',
 			'Workshops',
-			'Categories'
+			'Categories',
+			'Websites.Title',
+			'Websites.Link'
 		)
 	);
 

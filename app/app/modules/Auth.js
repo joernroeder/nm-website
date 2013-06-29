@@ -48,7 +48,7 @@ define(['app', 'modules/UserSidebar'], function(app, UserSidebar) {
           return Auth.updateUserWidget();
         });
       } else if (data.Email !== app.CurrentMember.Email) {
-        return Auth.redirectTo('secured/dashboard');
+        return Auth.redirectTo('login');
       }
     } else {
       return app.CurrentMember = {};

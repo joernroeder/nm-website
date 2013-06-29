@@ -44,6 +44,7 @@ class Workshop extends DataObject {
 
 	private static $has_many = array(
 		'Rankings'			=> 'Ranking',					// Sortierungssystem eigener Arbeiten
+		'Websites'			=> 'Website'
 	);
 		
 	private static $many_many = array(
@@ -130,6 +131,9 @@ class Workshop extends DataObject {
 			'Images.Title',
 			'Images.Caption',
 
+			'Websites.Title',
+			'Websites.Link',
+
 			'Persons.FirstName',
 			'Persons.Surname',
 			'Persons.UrlSlug',
@@ -182,7 +186,9 @@ class Workshop extends DataObject {
 			'IsPublished',
 			'Projects',
 			'Exhibitions',
-			'Excursions'
+			'Excursions',
+			'Websites.Title',
+			'Websites.Link'
 		)
 	);
 

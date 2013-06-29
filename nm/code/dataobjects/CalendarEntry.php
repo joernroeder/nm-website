@@ -37,12 +37,15 @@ class CalendarEntry extends DataObject {
 	);
 
 	private static $many_many = array(
-		'Websites'		=> 'Website',				// Webseiten
 		'Workshops'		=> 'Workshop',				// Workshops
 		'Excursions'	=> 'Excursion',				// Exkursionen
 		'Projects'		=> 'Project',				// Projekte
 		'Exhibitions'	=> 'Exhibition',				// Ausstellungen
 		'Images'		=> 'DocImage'
+	);
+
+	private static $has_many = array(
+		'Websites'		=> 'Website'
 	);
 
 
@@ -88,7 +91,8 @@ class CalendarEntry extends DataObject {
 			'Title',
 			'MarkdownedText',
 			'UrlHash',
-			'Websites',
+			'Websites.Title',
+			'Websites.Link',
 			'Exhibitions',
 			'Workshops',
 			'Projects',

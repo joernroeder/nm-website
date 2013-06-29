@@ -52,7 +52,7 @@ define [
 						Auth.updateUserWidget()
 				# if there's a different user, HTTP redirect
 				else if data.Email isnt app.CurrentMember.Email
-					Auth.redirectTo 'secured/dashboard'
+					Auth.redirectTo 'login'
 			else
 				app.CurrentMember = {}
 

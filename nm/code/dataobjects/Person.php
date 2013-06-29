@@ -49,12 +49,12 @@ class Person extends DataObject {
 
 	private static $has_many = array(
 		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
-		'Templates'			=> 'TemplateFile'		// Eigenes Template
+		'Templates'			=> 'TemplateFile',		// Eigenes Template
+		'Websites'			=> 'Website'
 	);
 
 	private static $many_many = array(
 		'Projects'			=> 'Project',			// Projekte
-		'Websites'			=> 'Website',			// Webseiten
 		'Exhibitions'		=> 'Exhibition',		// Ausstellungen
 		'Excursions'		=> 'Excursion',			// Exkursionen
 		'Workshops'			=> 'Workshop',			// Workshops
@@ -223,7 +223,9 @@ class Person extends DataObject {
 			'Image',
 			'Bio',
 			'Phone',
-			'Email'
+			'Email',
+			'Websites.Title',
+			'Websites.Link'
 		)
 	);
 
