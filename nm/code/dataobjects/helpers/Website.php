@@ -30,10 +30,13 @@ class Website extends DataObject {
 		'Link'			=> 'Varchar(255)'		// zu verlinkende URL
 	);
 
-	private static $belongs_many_many = array(
-		'CalendarEntries'	=> 'CalendarEntry',			// Kalendereinträge
-		'Persons'			=> 'Person',				// Personen
-		'Exhibitions'		=> 'Exhibition'				// Ausstellungen
+	private static $has_one = array(
+		'CalendarEntry'		=> 'CalendarEntry',	
+		'Person'			=> 'Person',	
+		'Project'			=> 'Project',
+		'Exhibition'		=> 'Exhibition',
+		'Excursion'			=> 'Excursion',
+		'Workshop'			=> 'Workshop'
 	);
 
 
@@ -45,6 +48,41 @@ class Website extends DataObject {
 			'Link'
 		)
 	);
+
+	public function canCreate($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+
+		return true;		
+	}
+
+	public function canView($member = null) {
+		return true;
+	}
+
+	public function canDelete($member = null) {
+		return $this->canEdit($member);
+	}
+
+	public function canEdit($member = null) {
+		if(!$member || !(is_a($member, 'Member'))) $member = Member::currentUser();
+
+		// No member found
+		if(!($member && $member->exists())) return false;
+		
+		// admin can always edit
+		if (Permission::check('ADMIN', 'any', $member)) return true;
+
+		$canEdit = false;
+
+		foreach (array('Person', 'Project', 'Exhibition', 'Excursion', 'Workshop') as $type) {
+			if ($object = $this->$type() && $object->canEdit($member)) $canEdit = true;
+		}
+
+		return $canEdit;
+	}
 
 	function Link() {
 		return strpos($this->Link, 'http://') === false ? 'http://' . $this->Link : $this->Link;

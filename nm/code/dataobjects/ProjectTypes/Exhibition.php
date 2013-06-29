@@ -49,10 +49,10 @@ class Exhibition extends DataObject {
 
 	private static $has_many = array(
 		'Rankings'			=> 'Ranking',			// Sortierungssystem eigener Arbeiten
+		'Websites'			=> 'Website'
 	);
 
 	private static $many_many = array(
-		'Websites'		=> 'Website',					// Webseite
 		'Projects'		=> 'Project',					// Projekte
 		'Images'		=> 'DocImage'					// Bilder
 	);
@@ -191,7 +191,9 @@ class Exhibition extends DataObject {
 			'IsPublished',
 			'Projects',
 			'Workshops',
-			'Excursions'
+			'Excursions',
+			'Websites.Title',
+			'Websites.Link'
 		)
 	);
 
