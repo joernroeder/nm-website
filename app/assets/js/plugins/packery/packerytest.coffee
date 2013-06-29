@@ -5,10 +5,10 @@ do ($ = jQuery) ->
 	class JJPackery
 
 		members: ->
-			@$window = $ window
-			@$container = $ '.packery-wrapper'
-			@$sizing = $ '.packery-test', @$container
-			@$packeryEl = $ '.packery', @$container
+			@$window = $()
+			@$container = $()
+			@$sizing = $()
+			@$packeryEl = $()
 	
 			@packery = null
 			@resizeTimeout = null
@@ -18,11 +18,20 @@ do ($ = jQuery) ->
 	
 			@factor = .3
 
+			@api = {}
+
 
 		constructor: ->
 			@members()
 
+			@init()
 			@start()
+
+		init: ->
+			@$window = $ window
+			@$container = $ '.packery-wrapper'
+			@$sizing = $ '.packery-test', @$container
+			@$packeryEl = $ '.packery', @$container
 
 		onResize: =>
 			newHeight = @$window.height()
@@ -93,6 +102,90 @@ do ($ = jQuery) ->
 			$el.css margins
 			true
 
+		initTooltips: ->
+			$.each @packery.getItemElements(), (i, el) =>
+				@_initTooltip el
+
+		getApi: ->
+			@api or {}
+
+		_initTooltip: (el) ->
+			console.log 'init tooltip %O', el
+			$el = $ el
+			$metaSection = $ 'section[role=tooltip-content]', $el
+
+			marginOffset = -20
+
+			getMargin = (api) ->
+				margin = marginOffset
+				$tooltip = $ api.tooltip
+
+				if $tooltip.hasClass('qtip-pos-rb')
+					console.log 'inverse margin'
+					margin *= -1
+
+				margin
+
+
+			if $metaSection.length
+				$el
+				.qtip
+					content:
+						text: $metaSection.html()
+					show:
+						event: 'mouseenter'
+						
+						effect: (api) ->										
+							$el.addClass 'has-tooltip'
+							$(@)
+								.stop(true, true)
+								.css
+									'margin-left': getMargin api
+								.show()
+								.animate
+									'margin-left': 0
+									'opacity': 1
+								, 200
+						
+						#effect: false
+						#ready: true
+
+					hide: 
+						event: 'mouseleave'
+						effect: (api) ->
+							$(@)
+								.stop(true, true)
+								.animate
+									'margin-left': getMargin api
+									'opacity': 0
+								, 200, () ->
+									$el.removeClass 'has-tooltip'
+									$(@).hide()
+
+					###
+					events:
+						show: (e, api) ->
+							window.currentTooltip = 
+								tip			: @
+								target		: api.target
+								targetId	: $(api.target).attr 'data-gravity-item'
+								api			: api
+
+						hide: (e, api) ->
+							window.currentTooltip = {}
+					###
+
+					position:
+						at: "right bottom"
+						my: "left bottom"
+						viewport: @$container
+						adjust:
+							method: 'flip shift'
+							x: 0
+							y: 10
+
+				@api = $el.qtip 'api'
+
 		# ! --- implementation ----------------------
 		start: ->
 			@$container.imagesLoaded =>
@@ -117,6 +210,7 @@ do ($ = jQuery) ->
 						# @todo vielleicht hängt das mit dem nachladen der bilder zusammen...
 						@$window.trigger 'resize'
 					else if @rendered is 3
+						@initTooltips()
 						@applyRadialGravityEffect()
 	
 						@$container.addClass('loaded').addClass 'has-gravity'

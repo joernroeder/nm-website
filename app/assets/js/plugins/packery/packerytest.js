@@ -7,21 +7,30 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
   JJPackery = (function() {
     JJPackery.prototype.members = function() {
-      this.$window = $(window);
-      this.$container = $('.packery-wrapper');
-      this.$sizing = $('.packery-test', this.$container);
-      this.$packeryEl = $('.packery', this.$container);
+      this.$window = $();
+      this.$container = $();
+      this.$sizing = $();
+      this.$packeryEl = $();
       this.packery = null;
       this.resizeTimeout = null;
       this.updateLayout = true;
       this.rendered = 0;
-      return this.factor = .3;
+      this.factor = .3;
+      return this.api = {};
     };
 
     function JJPackery() {
       this.onResize = __bind(this.onResize, this);      this.members();
+      this.init();
       this.start();
     }
+
+    JJPackery.prototype.init = function() {
+      this.$window = $(window);
+      this.$container = $('.packery-wrapper');
+      this.$sizing = $('.packery-test', this.$container);
+      return this.$packeryEl = $('.packery', this.$container);
+    };
 
     JJPackery.prototype.onResize = function() {
       var elHeight, newHeight;
@@ -105,6 +114,93 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       return true;
     };
 
+    JJPackery.prototype.initTooltips = function() {
+      var _this = this;
+
+      return $.each(this.packery.getItemElements(), function(i, el) {
+        return _this._initTooltip(el);
+      });
+    };
+
+    JJPackery.prototype.getApi = function() {
+      return this.api || {};
+    };
+
+    JJPackery.prototype._initTooltip = function(el) {
+      var $el, $metaSection, getMargin, marginOffset;
+
+      console.log('init tooltip %O', el);
+      $el = $(el);
+      $metaSection = $('section[role=tooltip-content]', $el);
+      marginOffset = -20;
+      getMargin = function(api) {
+        var $tooltip, margin;
+
+        margin = marginOffset;
+        $tooltip = $(api.tooltip);
+        if ($tooltip.hasClass('qtip-pos-rb')) {
+          console.log('inverse margin');
+          margin *= -1;
+        }
+        return margin;
+      };
+      if ($metaSection.length) {
+        $el.qtip({
+          content: {
+            text: $metaSection.html()
+          },
+          show: {
+            event: 'mouseenter',
+            effect: function(api) {
+              $el.addClass('has-tooltip');
+              return $(this).stop(true, true).css({
+                'margin-left': getMargin(api)
+              }).show().animate({
+                'margin-left': 0,
+                'opacity': 1
+              }, 200);
+            }
+          },
+          hide: {
+            event: 'mouseleave',
+            effect: function(api) {
+              return $(this).stop(true, true).animate({
+                'margin-left': getMargin(api),
+                'opacity': 0
+              }, 200, function() {
+                $el.removeClass('has-tooltip');
+                return $(this).hide();
+              });
+            }
+          },
+          /*
+          					events:
+          						show: (e, api) ->
+          							window.currentTooltip = 
+          								tip			: @
+          								target		: api.target
+          								targetId	: $(api.target).attr 'data-gravity-item'
+          								api			: api
+          
+          						hide: (e, api) ->
+          							window.currentTooltip = {}
+          */
+
+          position: {
+            at: "right bottom",
+            my: "left bottom",
+            viewport: this.$container,
+            adjust: {
+              method: 'flip shift',
+              x: 0,
+              y: 10
+            }
+          }
+        });
+        return this.api = $el.qtip('api');
+      }
+    };
+
     JJPackery.prototype.start = function() {
       var _this = this;
 
@@ -125,6 +221,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
             console.log('renderd 2 -> not .loaded');
             _this.$window.trigger('resize');
           } else if (_this.rendered === 3) {
+            _this.initTooltips();
             _this.applyRadialGravityEffect();
             _this.$container.addClass('loaded').addClass('has-gravity');
             console.log('loaded');

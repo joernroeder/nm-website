@@ -489,7 +489,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	height: 100%;
 }
 
-.gravity {
+.packery-wrapper {
 	position: absolute;
 	min-height: 100%;
 	//background: darken(@bgColor, 5%);
@@ -504,13 +504,13 @@ x:-o-prefocus, .qtip .qtip-tip{
 .packery-item() {
 	position: relative;
 	display: inline-block;
-	opacity: 0;
+	//opacity: 0;
 	.transition(~"opacity .2s ease-in-out");
 	z-index: 14000;
 
 	// on item loaded
 	&[data-packery-item].loaded {
-		opacity: 1;
+		//opacity: 1;
 
 		&> a {
 			background: @bgColor;
