@@ -23,8 +23,7 @@ define [
 				$bin.addClass 'processing'
 
 				id = if toRecycle.model.ID then toRecycle.model.ID else toRecycle.model.id
-				# @todo: remove views appropriately
-				# @todo: remove images from gallery!
+				
 				# try to get it from Backbone.JJStore and use Backbone's native `destroy` method
 				@.removeViewAndData toRecycle
 			
@@ -63,7 +62,7 @@ define [
 			view: view
 			model: view.model
 
-		data.className = if view.className then view.className else view.model.ClassName
+		data.className = if view.className then view.className else view.model.className
 
 		view.$el.on 'dragstart dragend', (e) =>
 			$.fireGlobalDragEvent e.type, e.target

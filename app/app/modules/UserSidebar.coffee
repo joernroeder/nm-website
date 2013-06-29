@@ -2,13 +2,14 @@ define [
 		'app'
 		'modules/DataRetrieval'
 		'modules/RecycleBin'
+		'modules/Website'
 		'plugins/misc/spin.min'
 		'plugins/misc/jquery.list'
 		'plugins/editor/jquery.jjdropzone'
 		'plugins/editor/jquery.jjmarkdown'
 		'plugins/editor/jquery.editor-popover'
 	],
-	(app, DataRetrieval, RecycleBin, Spinner) ->
+	(app, DataRetrieval, RecycleBin, Website, Spinner) ->
 
 		"use strict"
 
@@ -426,6 +427,12 @@ define [
 							_changed = true
 							app.CurrentMemberPerson.set key, val
 					app.CurrentMemberPerson.rejectAndSave() if _changed
+
+			beforeRender: ->
+				app.CurrentMemberPerson.get('Websites').each (website) =>
+					@.insertView '.websites', new Website.Views.ListView({ model: website })
+					
+
 
 			afterRender: ->
 				@._afterRender()

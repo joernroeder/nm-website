@@ -78,7 +78,8 @@ class Website extends DataObject {
 		$canEdit = false;
 
 		foreach (array('Person', 'Project', 'Exhibition', 'Excursion', 'Workshop') as $type) {
-			if ($object = $this->$type() && $object->canEdit($member)) $canEdit = true;
+			$object = $this->$type();
+			if ($object && $object->canEdit($member)) $canEdit = true;
 		}
 
 		return $canEdit;
