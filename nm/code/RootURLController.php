@@ -120,6 +120,10 @@ class RootURLController extends Controller {
 						$dataEl = new JJ_DataElement('portfolio-' . strtolower($type), $portfolio, null, 'view.portfolio_init');
 						$returnVal .= $dataEl->forTemplate();
 					}
+					// categories
+					$categories = $this->getDataArray('Category');
+					$dataEl = new JJ_DataElement('category', $categories);
+					$returnVal .= $dataEl->forTemplate();
 				}
 				break;
 

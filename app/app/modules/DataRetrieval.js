@@ -98,6 +98,23 @@ define(['app', 'modules/ProjectSearch'], function(app, ProjectSearch) {
       }
       return dfd.promise();
     },
+    forCategories: function() {
+      var dfd;
+
+      dfd = new $.Deferred();
+      if (app.CategoriesFetched) {
+        dfd.resolve();
+      } else {
+        JJRestApi.getFromDomOrApi('Category').done(function(data) {
+          if (data && _.isArray(data)) {
+            app.handleFetchedModels('Category', data);
+            app.CategoriesFetched = true;
+          }
+          return dfd.resolve();
+        });
+      }
+      return dfd.promise();
+    },
     forPersonsOverview: function() {
       var config, dfd, options;
 

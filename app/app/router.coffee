@@ -174,8 +174,14 @@ define [
 
 			mainDfd = @.rejectAndHandle()
 
+			# get all categories (we need that for searching)
+			seed1 = DataRetrieval.forCategories()
+
+
 			# get portfolio projects
-			DataRetrieval.forProjectsOverview(app.Config.Portfolio).done =>
+			seed2 = DataRetrieval.forProjectsOverview(app.Config.Portfolio)
+
+			$.when(seed1, seed2).done ->
 				mainDfd.resolve()
 
 			# @todo: filter/search bar

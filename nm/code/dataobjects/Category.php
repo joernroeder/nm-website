@@ -55,9 +55,12 @@ class Category extends DataObject {
 
 	private static $api_access = array(
 		'view' => array(
-			'Title',
-			'Projects'
+			'Title'
 		)
 	);
+
+	public function canView($member = null) {
+		return true;
+	}
 
 }

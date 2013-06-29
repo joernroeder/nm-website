@@ -186,11 +186,13 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       return this.showPortfolioDetailed(uglyHash, nameSlug);
     },
     showPortfolio: function(searchTerm) {
-      var justUpdate, mainDfd,
+      var justUpdate, mainDfd, seed1, seed2,
         _this = this;
 
       mainDfd = this.rejectAndHandle();
-      DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
+      seed1 = DataRetrieval.forCategories();
+      seed2 = DataRetrieval.forProjectsOverview(app.Config.Portfolio);
+      $.when(seed1, seed2).done(function() {
         return mainDfd.resolve();
       });
       if (searchTerm) {

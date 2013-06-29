@@ -4,6 +4,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   app.Router = new Router();
   app.Layout;
   app.PageInfos = {};
+  app.CategoriesFetched;
   app.Collections = {};
   app.Cache = {};
   app.Cache.UserGallery = {
@@ -23,7 +24,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   console.log(app);
   app.Config = {
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
-    StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage'],
+    StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage', 'Category'],
     ClassEnc: {
       '0': 'Project',
       '1': 'Excursion',

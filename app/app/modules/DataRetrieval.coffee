@@ -91,6 +91,20 @@ define [
 
 				dfd.promise()
 
+			# retrieves all categories; needed for searching
+			forCategories: ->
+				dfd = new $.Deferred()
+				if app.CategoriesFetched
+					dfd.resolve()
+				else
+					JJRestApi.getFromDomOrApi('Category').done (data) ->
+						if data and _.isArray(data)
+							app.handleFetchedModels 'Category', data
+							app.CategoriesFetched = true
+						dfd.resolve()
+
+				dfd.promise()
+
 			# function to get persons' data for the "About"-page
 			# namely all persons except externals
 			forPersonsOverview: ->

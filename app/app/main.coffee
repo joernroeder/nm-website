@@ -28,6 +28,9 @@ require [
 	# for caching page infos
 	app.PageInfos = {}
 
+	# flag to check if we have already fetched all categories
+	app.CategoriesFetched
+
 	# our objects which get populated over time
 	app.Collections = {}
 
@@ -59,7 +62,7 @@ require [
 	# this will get updated over time to avoid unnecessary requests etc.
 	app.Config =
 		ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition']
-		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage']
+		StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage', 'Category']
 		ClassEnc:
 			'0': 'Project',
 			'1': 'Excursion'

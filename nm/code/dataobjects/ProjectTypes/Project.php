@@ -182,7 +182,8 @@ class Project extends DataObject {
 			'Persons.Surname',
 			'Persons.UrlSlug',
 			'Persons.Templates.Url',
-			'Persons.Templates.IsDetail'
+			'Persons.Templates.IsDetail',
+			'Categories'
 		),
 		'edit'	=> array(
 			'Title',
