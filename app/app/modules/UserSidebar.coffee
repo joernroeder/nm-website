@@ -403,7 +403,7 @@ define [
 				@.metaEditor = new JJEditor $('.meta-info'), [
 					'InlineEditable'
 					'MarkdownEditable'
-					'SplitMarkdownEditable'
+					'ModalEditable'
 				]
 				
 				#bio = @.metaEditor.getComponentByName 'CurrentPerson.Bio'

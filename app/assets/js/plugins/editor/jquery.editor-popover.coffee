@@ -1459,6 +1459,15 @@ do ($ = jQuery) ->
 
 
 
+	class ModalEditable extends JJEditable
+
+		members: ->
+			super()
+			@contentTypes = ['modal']
+
+
+
+
 	# ! --- Implementation --------------------------------
 
 	# make accessible
@@ -1480,6 +1489,7 @@ do ($ = jQuery) ->
 	window.editorComponents.SelectListEditable = SelectListEditable
 	window.editorComponents.SelectPersonEditable = SelectPersonEditable
 	window.editorComponents.SelectListConfirmEditable = SelectListConfirmEditable
+	window.editorComponents.ModalEditable = ModalEditable
 
 	# construction
 	###

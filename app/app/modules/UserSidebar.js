@@ -452,7 +452,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin
       return bio.api.reposition();
     },
     initMetaEditor: function() {
-      this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
+      this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'ModalEditable']);
       return this.metaEditor.on('stateUpdate', function(e) {
         var key, val, _changed, _ref;
 

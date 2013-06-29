@@ -73,7 +73,7 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SelectListConfirmEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, ModalEditable, SelectEditable, SelectListConfirmEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
 
   $.fn.selectRange = function(start, end) {
     if (!end) {
@@ -1902,6 +1902,22 @@ var __hasProp = {}.hasOwnProperty,
     return SelectListConfirmEditable;
 
   })(SelectListEditable);
+  ModalEditable = (function(_super) {
+    __extends(ModalEditable, _super);
+
+    function ModalEditable() {
+      _ref8 = ModalEditable.__super__.constructor.apply(this, arguments);
+      return _ref8;
+    }
+
+    ModalEditable.prototype.members = function() {
+      ModalEditable.__super__.members.call(this);
+      return this.contentTypes = ['modal'];
+    };
+
+    return ModalEditable;
+
+  })(JJEditable);
   window.JJEditor = JJEditor;
   window.editorComponents = {};
   window.editorComponents.JJEditable = JJEditable;
@@ -1913,7 +1929,8 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.SelectEditable = SelectEditable;
   window.editorComponents.SelectListEditable = SelectListEditable;
   window.editorComponents.SelectPersonEditable = SelectPersonEditable;
-  return window.editorComponents.SelectListConfirmEditable = SelectListConfirmEditable;
+  window.editorComponents.SelectListConfirmEditable = SelectListConfirmEditable;
+  return window.editorComponents.ModalEditable = ModalEditable;
   /*
   	# init file transfer
   	jQuery.event.props.push 'dataTransfer'
