@@ -70,7 +70,7 @@ define(['app'], function(app) {
       view: view,
       model: view.model
     };
-    data.className = view.className ? view.className : view.model.className;
+    data.className = view.className ? view.className : view.model.ClassName;
     return view.$el.on('dragstart dragend', function(e) {
       var method;
 

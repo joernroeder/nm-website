@@ -784,6 +784,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
       return Backbone.Events.on('projectEdited', this.handleActive, this);
     },
     afterRender: function() {
+      this._afterRender();
       if (app.isEditor) {
         return this.handleActive(app.ProjectEditor.model);
       }

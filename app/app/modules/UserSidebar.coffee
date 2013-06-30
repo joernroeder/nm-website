@@ -684,6 +684,7 @@ define [
 				Backbone.Events.on 'projectEdited', @handleActive, @
 
 			afterRender: ->
+				@_afterRender()
 				if app.isEditor then @handleActive(app.ProjectEditor.model)
 
 			handleActive: (model) ->

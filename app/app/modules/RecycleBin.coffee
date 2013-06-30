@@ -19,6 +19,7 @@ define [
 		$bin.on 'drop', (e) =>
 			toRecycle = @.activeRecycleDrag
 			@.activeRecycleDrag = null
+			
 			if toRecycle and toRecycle.className
 				$bin.addClass 'processing'
 
@@ -62,7 +63,7 @@ define [
 			view: view
 			model: view.model
 
-		data.className = if view.className then view.className else view.model.className
+		data.className = if view.className then view.className else view.model.ClassName
 
 		view.$el.on 'dragstart dragend', (e) =>
 			$.fireGlobalDragEvent e.type, e.target
