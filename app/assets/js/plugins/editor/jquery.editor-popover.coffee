@@ -50,7 +50,7 @@ do ($ = jQuery) ->
 	 # @param int start
 	 # @param int end
 	###
-	$.fn.selectRange = (start, end) ->
+	$.fn._selectRange = (start, end) ->
 		end = start unless end
 		@each ->
 			if @['setSelectionRange']
@@ -836,7 +836,7 @@ do ($ = jQuery) ->
 						$input = $('input, textarea', @api.tooltip).eq 0
 						# set cursor to the end of the first input or textarea element
 						try 
-							$input.selectRange $input.val().length
+							$input._selectRange $input.val().length
 						catch e
 							false
 

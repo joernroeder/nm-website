@@ -17,6 +17,10 @@
 			</p>
 			<p class="nice-date">{{niceDate this}}</p>
 		{{/stringCompare}}
+		{{#stringDiff "Project" ClassName}}
+			<p><span data-editor-type="inline" data-editor-name="Space" data-editor-placeholder="Space">{{Space}}</span></p>
+			<p><span data-editor-type="inline" data-editor-name="Location" data-editor-placeholder="Location">{{Location}}</span></p>
+		{{/stringDiff}}
 	</header>
 	<p data-editor-type="markdown" data-editor-name="TeaserText" data-editor-placeholder="Teaser" data-editor-options='{"customParsers": {}, "position": {"my": "right top", "at": "right bottom", "adjust": {"x": 0, "y": 10}}, "repositionOnChange": true, "charlimit": 156}'>{{TeaserText}}</p>
 </div>

@@ -200,7 +200,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       }
       justUpdate = app.currentLayoutName === 'portfolio' ? true : false;
       return mainDfd.done(function() {
-        var layout, modelsArray, searchedForArray;
+        var layout, modelsArray, searchedFor;
 
         if (!justUpdate) {
           layout = app.useLayout('portfolio');
@@ -214,11 +214,14 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         modelsArray = app.Cache.WholePortfolio;
         if (!justUpdate) {
           _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
+          layout.insertViewAndRenderMaybe('', new ProjectSearch.View({
+            searchTerm: searchTerm
+          }));
         }
-        if (searchTerm) {
-          searchedForArray = DataRetrieval.filterProjectTypesBySearchTerm(searchTerm);
-          return Backbone.Events.trigger('search', searchedForArray);
-        }
+        searchedFor = searchTerm ? DataRetrieval.filterProjectTypesBySearchTerm(searchTerm) : null;
+        console.log('foobar');
+        console.log(searchedFor);
+        return Backbone.Events.trigger('search', searchedFor);
       });
     },
     showPortfolioDetailed: function(uglyHash, nameSlug) {
@@ -262,7 +265,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           return layout.setViewAndRenderMaybe('', detailView);
         });
       } else {
-        mainDfd.done(this.fourOhFour);
+        mainDfd.done(function() {
+          return _this.fourOhFour();
+        });
         return mainDfd.resolve();
       }
     },

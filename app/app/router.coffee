@@ -202,10 +202,13 @@ define [
 				
 				unless justUpdate
 					@.showPackeryViewForModels modelsArray, 'portfolio', layout
+					layout.insertViewAndRenderMaybe '', new ProjectSearch.View({searchTerm: searchTerm})
 
-				if searchTerm
-					searchedForArray = DataRetrieval.filterProjectTypesBySearchTerm searchTerm
-					Backbone.Events.trigger 'search', searchedForArray
+				# handle search
+				searchedFor = if searchTerm then DataRetrieval.filterProjectTypesBySearchTerm(searchTerm) else null
+				console.log 'foobar'
+				console.log searchedFor
+				Backbone.Events.trigger 'search', searchedFor
 				
 
 				
@@ -233,7 +236,8 @@ define [
 					detailView = if not template then new Portfolio.Views.Detail({ model: model }) else new Person.Views.Custom({ model: model, template: template })
 					layout.setViewAndRenderMaybe '', detailView
 			else
-				mainDfd.done @.fourOhFour
+				mainDfd.done =>
+					@.fourOhFour()
 				mainDfd.resolve()
 
 		showCalendar: () ->

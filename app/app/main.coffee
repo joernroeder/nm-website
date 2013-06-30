@@ -301,6 +301,15 @@ require [
 	app.resolveClassTypeByHash = (uglyHash) ->
 		@.Config.ClassEnc[uglyHash.substr(0,1)]
 
+	app.wholePortfolioJSON = ->
+		wholePortfolio = @Cache.WholePortfolio
+		unless @Cache.WholePortfolioJSON
+			tmp = []
+			for model in wholePortfolio
+				tmp.push model.toJSON()
+			@Cache.WholePortfolioJSON = tmp
+		@Cache.WholePortfolioJSON
+
 	app.bindListeners()
 
 

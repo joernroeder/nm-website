@@ -13,12 +13,10 @@ define [
 
 	($, _, Backbone, Handlebars) ->	
 
-
-
 		app =
 			root: '/'
 			pendingTemplateReqs: {}
-		JST = window.JST = window.JST || {}
+		JST = app.JST = app.JST || {}
 
 		Backbone.NMLayout = Backbone.Layout.extend
 			# this function checks if the layout has initially been rendered. This is useful for setting views in a layout later,
@@ -26,6 +24,10 @@ define [
 			# or not
 			setViewAndRenderMaybe: (selector, view) ->
 				@.setView selector, view
+				if @.__manager__.hasRendered then view.render()
+
+			insertViewAndRenderMaybe: (selector, view) ->
+				@insertView selector, view
 				if @.__manager__.hasRendered then view.render()
 
 		Backbone.Layout.configure

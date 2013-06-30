@@ -378,6 +378,20 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   app.resolveClassTypeByHash = function(uglyHash) {
     return this.Config.ClassEnc[uglyHash.substr(0, 1)];
   };
+  app.wholePortfolioJSON = function() {
+    var model, tmp, wholePortfolio, _i, _len;
+
+    wholePortfolio = this.Cache.WholePortfolio;
+    if (!this.Cache.WholePortfolioJSON) {
+      tmp = [];
+      for (_i = 0, _len = wholePortfolio.length; _i < _len; _i++) {
+        model = wholePortfolio[_i];
+        tmp.push(model.toJSON());
+      }
+      this.Cache.WholePortfolioJSON = tmp;
+    }
+    return this.Cache.WholePortfolioJSON;
+  };
   app.bindListeners();
   Backbone.View.prototype.showMessageAt = function(msg, $appendTo, className) {
     var $el;

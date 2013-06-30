@@ -15,8 +15,29 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       return Backbone.Events.on('search', this.handleSearch, this);
     },
     handleSearch: function(searchResults) {
-      console.log('searched for: %o', searchResults);
-      return console.log(this);
+      if (this.__manager__.hasRendered) {
+        return this.triggerSearchOnChildren(searchResults);
+      } else {
+        this.searchResults = searchResults;
+        return this.doSearchAfterRender = true;
+      }
+    },
+    triggerSearchOnChildren: function(searchResults) {
+      console.log(searchResults);
+      return _.each(this.views['.packery'], function(childView) {
+        var found, method, model;
+
+        model = childView.model;
+        if (!searchResults) {
+          return childView.doShow();
+        } else {
+          found = _.find(searchResults, function(result) {
+            return result === childView.model;
+          });
+          method = found ? 'doShow' : 'doHide';
+          return childView[method]();
+        }
+      });
     },
     beforeRender: function() {
       var model, modelArray, _i, _len, _results;
@@ -36,13 +57,25 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       }
     },
     _afterRender: function() {
-      return console.log(this);
+      if (this.doSearchAfterRender) {
+        this.triggerSearchOnChildren(this.searchResults);
+        this.doSearchAfterRender = false;
+        return this.searchResults = null;
+      }
     }
   });
   Portfolio.Views.ListItem = Backbone.View.extend({
     tagName: 'article',
     className: 'packery-item resizable',
     template: 'packery-list-item',
+    doShow: function() {
+      console.log('showing %o', this.model);
+      return this.$el.removeClass('hidden');
+    },
+    doHide: function() {
+      console.log('hiding %o', this.model);
+      return this.$el.addClass('hidden');
+    },
     serialize: function() {
       var data;
 
@@ -140,6 +173,21 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       return "" + nameSummary + " // " + niceDate;
     } else {
       return niceDate;
+    }
+  });
+  Handlebars.registerHelper('SpaceAndLocation', function() {
+    var out;
+
+    out = [];
+    if (this.Space) {
+      out.push(this.Space);
+    }
+    if (this.Location) {
+      out.push(this.Location);
+    }
+    out.join(', ');
+    if (out) {
+      return "<p>" + out + "</p>";
     }
   });
   Handlebars.registerHelper('portfoliolist', function(items, title, options) {

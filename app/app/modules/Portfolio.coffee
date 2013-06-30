@@ -20,8 +20,25 @@ define [
 				Backbone.Events.on 'search', @handleSearch, @
 
 			handleSearch: (searchResults) ->
-				console.log 'searched for: %o', searchResults
-				console.log @
+				if @__manager__.hasRendered
+					@triggerSearchOnChildren searchResults
+				else
+					@searchResults = searchResults
+					@doSearchAfterRender = true
+
+			triggerSearchOnChildren: (searchResults) ->
+				console.log searchResults
+				# iterate over child views and check if their model is present in the search results
+				_.each @views['.packery'], (childView) ->
+					model = childView.model
+					# always show when there is no search
+					unless searchResults
+						childView.doShow()
+					else
+						found = _.find searchResults, (result) ->
+							return result is childView.model
+						method = if found then 'doShow' else 'doHide'
+						childView[method]()
 
 
 			beforeRender: ->
@@ -32,7 +49,10 @@ define [
 						@.insertView '.packery', new Portfolio.Views.ListItem({ model: model, linkTo: @.options.linkTo })
 
 			_afterRender: ->
-				console.log @
+				if @doSearchAfterRender
+					@triggerSearchOnChildren @searchResults
+					@doSearchAfterRender = false
+					@searchResults = null
 				# debugger
 				
 
@@ -40,7 +60,16 @@ define [
 			tagName: 'article'
 			className: 'packery-item resizable'
 			template: 'packery-list-item'
-			serialize: () ->
+
+			doShow: ->
+				console.log 'showing %o', @model
+				@.$el.removeClass 'hidden'
+
+			doHide: ->
+				console.log 'hiding %o', @model
+				@.$el.addClass 'hidden'
+
+			serialize: ->
 				data = if @.model then @.model.toJSON() else {}
 				data.Persons = _.sortBy data.Persons, (person) ->
 					return person.Surname
@@ -116,6 +145,14 @@ define [
 				return "#{nameSummary} // #{niceDate}" 
 			else 
 				return niceDate
+
+		Handlebars.registerHelper 'SpaceAndLocation', ->
+			out = []
+			if @Space then out.push @Space
+			if @Location then out.push @Location
+			out.join ', '
+			if out
+				"<p>#{out}</p>"
 
 		Handlebars.registerHelper 'portfoliolist', (items, title, options) ->
 			if not options

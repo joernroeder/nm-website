@@ -34,6 +34,14 @@ class StartEndDateExtension extends Extension {
 		return $this->getFormattedDate('Start');
 	}
 
+	public function getYearSearch() {
+		$date = $this->owner->dbObject('Date');
+		$start = $this->owner->dbObject('StartDate');
+
+		if ($date) return $date->format('Y');
+		if ($start) return $start->format('Y');
+	}
+
 	/**
 	 * Gibt das formatiert
 	 *

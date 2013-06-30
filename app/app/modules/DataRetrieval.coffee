@@ -37,22 +37,17 @@ define [
 					returnDfd.resolve()
 				returnDfd.promise()
 
+
 			# function that takes a search term used to filter the whole portfolio
 			filterProjectTypesBySearchTerm: (searchTerm) ->
 				wholePortfolio = app.Cache.WholePortfolio
 
-				# because of simplicity reasons we iterate over an array of json objects. let's cache the whole json portfolio
-				unless app.Cache.WholePortfolioJSON
-					tmp = []
-					for model in wholePortfolio
-						tmp.push model.toJSON()
-					app.Cache.WholePortfolioJSON = tmp
-
 				# transform the searchTerm
 				searchObj = ProjectSearch.transformSearchTerm searchTerm
-				console.log searchObj
+				console.log 'Search obj found by data retrieval: %o', searchObj
 
-				result = _.filter app.Cache.WholePortfolioJSON, (model) ->
+				# because of simplicity reasons we iterate over an array of json objects.
+				result = _.filter app.wholePortfolioJSON(), (model) ->
 					result = true
 					_.each searchObj, (vals, key) ->
 						if not ProjectSearch.test(model, key, vals) then result = false

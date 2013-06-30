@@ -57,3 +57,8 @@ require.config
 		'plugins/backbone.JJRestApi'			: ['backbone']
 
 		'modules/NMMarkdownParser'				: ['plugins/editor/jquery.jjmarkdown']
+
+		'plugins/visualsearch/jquery.ui.autocomplete' : ['plugins/visualsearch/jquery.ui.widget']
+		'plugins/visualsearch/jquery.ui.menu'	: ['plugins/visualsearch/jquery.ui.widget']
+		'plugins/visualsearch/visualsearch'		: ['plugins/backbone.layoutmanager', 'plugins/visualsearch/jquery.ui.core', 'plugins/visualsearch/jquery.ui.autocomplete', 'plugins/visualsearch/jquery.ui.menu']
+

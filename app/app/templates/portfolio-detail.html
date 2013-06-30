@@ -5,6 +5,9 @@
 		{{{nameSummary Persons}}}
 	</p>
 	<p>{{niceDate this true}}</p>
+	{{#stringDiff "Project" ClassName}}
+		{{{SpaceAndLocation}}}
+	{{/stringDiff}}
 	{{#if Websites}}
 		<p>{{{commaSeparatedWebsites Websites}}}</p>
 	{{/if}}

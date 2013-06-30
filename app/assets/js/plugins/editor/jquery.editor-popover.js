@@ -75,7 +75,7 @@ var __hasProp = {}.hasOwnProperty,
 
   var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, ModalEditable, SelectEditable, SelectListConfirmEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
 
-  $.fn.selectRange = function(start, end) {
+  $.fn._selectRange = function(start, end) {
     if (!end) {
       end = start;
     }
@@ -1085,7 +1085,7 @@ var __hasProp = {}.hasOwnProperty,
 
             $input = $('input, textarea', _this.api.tooltip).eq(0);
             try {
-              $input.selectRange($input.val().length);
+              $input._selectRange($input.val().length);
             } catch (_error) {
               e = _error;
               false;

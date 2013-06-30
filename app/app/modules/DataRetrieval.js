@@ -36,20 +36,12 @@ define(['app', 'modules/ProjectSearch'], function(app, ProjectSearch) {
       return returnDfd.promise();
     },
     filterProjectTypesBySearchTerm: function(searchTerm) {
-      var model, out, result, searchObj, tmp, wholePortfolio, _i, _len;
+      var out, result, searchObj, wholePortfolio;
 
       wholePortfolio = app.Cache.WholePortfolio;
-      if (!app.Cache.WholePortfolioJSON) {
-        tmp = [];
-        for (_i = 0, _len = wholePortfolio.length; _i < _len; _i++) {
-          model = wholePortfolio[_i];
-          tmp.push(model.toJSON());
-        }
-        app.Cache.WholePortfolioJSON = tmp;
-      }
       searchObj = ProjectSearch.transformSearchTerm(searchTerm);
-      console.log(searchObj);
-      result = _.filter(app.Cache.WholePortfolioJSON, function(model) {
+      console.log('Search obj found by data retrieval: %o', searchObj);
+      result = _.filter(app.wholePortfolioJSON(), function(model) {
         result = true;
         _.each(searchObj, function(vals, key) {
           if (!ProjectSearch.test(model, key, vals)) {
