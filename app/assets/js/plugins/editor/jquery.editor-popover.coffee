@@ -881,8 +881,10 @@ do ($ = jQuery) ->
 				if not eventData or not eventData.senderId or eventData.senderId isnt @id
 					@close()
 
-			element.on @getNamespacedEventName('click'), =>
+			element.on @getNamespacedEventName('click'), (e) =>
+				e.preventDefault()
 				@toggle()
+				false
 
 			$(window).on @getNamespacedEventName('resize'), =>
 				@updateTooltipDimensions()

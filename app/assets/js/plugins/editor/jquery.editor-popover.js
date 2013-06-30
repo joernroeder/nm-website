@@ -1131,8 +1131,10 @@ var __hasProp = {}.hasOwnProperty,
           return _this.close();
         }
       });
-      element.on(this.getNamespacedEventName('click'), function() {
-        return _this.toggle();
+      element.on(this.getNamespacedEventName('click'), function(e) {
+        e.preventDefault();
+        _this.toggle();
+        return false;
       });
       $(window).on(this.getNamespacedEventName('resize'), function() {
         return _this.updateTooltipDimensions();
