@@ -2427,6 +2427,12 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   color: #d9df20;
   background: #1e1e1e;
 }
+.editor-sidebar .btn[data-editor-type][editor-handled-by][data-editor-name="Website"] {
+  background: transparent;
+  font-size: 1em;
+  display: inline-block;
+  width: auto;
+}
 .editor-sidebar .image-list {
   list-style: none;
   clear: both;
@@ -2780,6 +2786,18 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
 .editor-sidebar input[type="password"].active:-moz-placeholder,
 .editor-sidebar *[data-editor-type][editor-handled-by].active:-moz-placeholder {
   color: #262626;
+}
+.editor-sidebar input[type="text"].active:before,
+.editor-sidebar input[type="email"].active:before,
+.editor-sidebar input[type="tel"].active:before,
+.editor-sidebar input[type="password"].active:before,
+.editor-sidebar *[data-editor-type][editor-handled-by].active:before,
+.editor-sidebar input[type="text"].active:after,
+.editor-sidebar input[type="email"].active:after,
+.editor-sidebar input[type="tel"].active:after,
+.editor-sidebar input[type="password"].active:after,
+.editor-sidebar *[data-editor-type][editor-handled-by].active:after {
+  color: #fff !important;
 }
 .editor-sidebar input[type="password"] {
   margin-top: 0.75em;

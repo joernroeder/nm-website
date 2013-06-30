@@ -24,7 +24,7 @@
 		<ul class="project-list">
 		</ul>
 		<div>
-			<a class="btn" href="/secured/new/">New Project...</a>
+			<a class="btn" href="/secured/new/">Create Project</a>
 		</div>
 	</section>
 
@@ -44,13 +44,16 @@
 			<h3>Email</h3>
 			<p data-editor-type="inline" data-editor-name="Email">{{Person.Email}}</p>
 		</div>
+	</section>
+
+	<header>
+		<h2>Websites</h2>
+	</header>
+	<section class="meta-info" data-editor-scope="\CurrentPerson">
 		<div>
-			<h3 class="">Websites</h3>
 			<ul class="websites website-list">
 			</ul>
-			<a data-editor-type="modal" data-editor-name="Website" data-editor-fields='{"Title": {"type": "text"}, "Link": {"type": "text"}}' data-editor-options='{"position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -15}}}' class="btn" href="#" data-bypass>
-				Add Website
-			</a>
+			<a data-editor-type="modal" data-editor-name="Website" data-editor-fields='{"Title": {"type": "text"}, "Link": {"type": "text", "placeholder": "http://"}}' data-editor-options='{"position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -20}}}' class="btn" href="#" data-bypass data-editor-placeholder="Add Website"></a>
 		</div>
 	</section>
 

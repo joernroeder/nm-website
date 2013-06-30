@@ -1320,6 +1320,13 @@ body.editor-sidebar-open {
 		}
 	}
 
+	.btn[data-editor-type][editor-handled-by][data-editor-name="Website"] {
+		background: transparent;
+		font-size: @font-size / @em;
+		display: inline-block;
+		width: auto;
+	}
+
 	.image-list {
 		@gap: 10px;
 
@@ -1550,6 +1557,13 @@ body.editor-sidebar-open {
 	input[type="password"],
 	*[data-editor-type][editor-handled-by] {
 		.editable-dark-styles;
+
+		&.active {
+			&:before,
+			&:after {
+				color: #fff !important;
+			}
+		}
 	}
 
 	input[type="password"] {
