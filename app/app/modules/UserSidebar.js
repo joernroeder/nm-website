@@ -70,14 +70,18 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
       return false;
     },
     clickPublish: function(e) {
-      var method, toSet;
+      var $target, method, toSet;
 
       e.preventDefault();
+      $target = $(e.target);
       if (app.isEditor) {
         toSet = app.ProjectEditor.model.get('IsPublished') ? false : true;
         method = toSet ? 'add' : 'remove';
-        app.ProjectEditor.model.save('IsPublished', toSet);
-        $(e.target)[method + 'Class']('published');
+        $target.addClass('publishing');
+        app.ProjectEditor.model.rejectAndSave('IsPublished', toSet).always(function() {
+          return $target.removeClass('publishing');
+        });
+        $target[method + 'Class']('published');
       }
       return false;
     },

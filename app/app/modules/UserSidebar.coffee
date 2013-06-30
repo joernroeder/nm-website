@@ -83,11 +83,15 @@ define [
 
 			clickPublish: (e) ->
 				e.preventDefault()
+				$target = $(e.target)
 				if app.isEditor
 					toSet = if app.ProjectEditor.model.get('IsPublished') then false else true
 					method = if toSet then 'add' else 'remove'
-					app.ProjectEditor.model.save 'IsPublished', toSet
-					$(e.target)[method + 'Class']('published')
+
+					$target.addClass 'publishing'
+					app.ProjectEditor.model.rejectAndSave('IsPublished', toSet).always ->
+						$target.removeClass 'publishing'
+					$target[method + 'Class']('published')
 				false
 
 			handlePublishActive: (model) ->
