@@ -324,7 +324,7 @@ require [
 		_.each Backbone.__pendingSaveReqs, (req) =>
 			if req.cid is @.cid
 				found = true
-				if req.xhr.readyState isnt 4 then req.xhr.abort()
+				if req.xhr and req.xhr.readyState isnt 4 then req.xhr.abort()
 				req.xhr = xhr
 		
 		Backbone.__pendingSaveReqs.push({ cid: @.cid, xhr: xhr }) unless found

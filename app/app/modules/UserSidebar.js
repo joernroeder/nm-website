@@ -455,8 +455,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
       var _this = this;
 
       this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'ModalEditable']);
-      return this.metaEditor.on('stateUpdate', function(e) {
-        var MType, key, val, website, _changed, _ref;
+      this.metaEditor.on('stateUpdate', function(e) {
+        var key, val, _changed, _ref;
 
         _changed = false;
         _ref = e.CurrentPerson;
@@ -468,24 +468,27 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
           if (val === null) {
             val = "";
           }
-          if (key === 'Website') {
-            if (val.Title && val.Link) {
-              _changed = true;
-              MType = JJRestApi.Model('Website');
-              website = new MType({
-                Title: val.Title,
-                Link: val.Link
-              });
-              app.CurrentMemberPerson.get('Websites').add(website);
-              _this.addWebsiteView(website, true);
-            }
-          } else if (app.CurrentMemberPerson.get(key) !== val) {
+          if (app.CurrentMemberPerson.get(key) !== val) {
             _changed = true;
             app.CurrentMemberPerson.set(key, val);
           }
         }
         if (_changed) {
           return app.CurrentMemberPerson.rejectAndSave();
+        }
+      });
+      return this.metaEditor.on('submit:CurrentPerson.Website', function(val) {
+        var MType, website;
+
+        if (val.Title && val.Link) {
+          MType = JJRestApi.Model('Website');
+          website = new MType({
+            Title: val.Title,
+            Link: val.Link
+          });
+          app.CurrentMemberPerson.get('Websites').add(website);
+          _this.addWebsiteView(website, true);
+          return app.CurrentMemberPerson.save();
         }
       });
     },

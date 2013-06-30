@@ -14,7 +14,6 @@ define [
 		className: 'Website'
 
 		serialize: ->
-			console.log @model
 			{
 				ID: @model.id
 				Title: @model.get('Title')

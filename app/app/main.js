@@ -402,7 +402,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     _.each(Backbone.__pendingSaveReqs, function(req) {
       if (req.cid === _this.cid) {
         found = true;
-        if (req.xhr.readyState !== 4) {
+        if (req.xhr && req.xhr.readyState !== 4) {
           req.xhr.abort();
         }
         return req.xhr = xhr;

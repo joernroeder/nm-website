@@ -424,18 +424,19 @@ define [
 						if key is 'Bio' and val then val = val.raw
 						val = "" if val is null
 
-						if key is 'Website'
-							if val.Title and val.Link
-								_changed = true
-								MType = JJRestApi.Model 'Website'
-								website = new MType({ Title: val.Title, Link: val.Link })
-								app.CurrentMemberPerson.get('Websites').add website
-								@addWebsiteView website, true
-							
-						else if app.CurrentMemberPerson.get(key) isnt val
+						if app.CurrentMemberPerson.get(key) isnt val
 							_changed = true
 							app.CurrentMemberPerson.set key, val
 					app.CurrentMemberPerson.rejectAndSave() if _changed
+
+				@metaEditor.on 'submit:CurrentPerson.Website', (val) =>
+					if val.Title and val.Link
+						MType = JJRestApi.Model 'Website'
+						website = new MType({ Title: val.Title, Link: val.Link })
+						app.CurrentMemberPerson.get('Websites').add website
+						@addWebsiteView website, true
+						app.CurrentMemberPerson.save()
+
 
 			addWebsiteView: (model, render) ->
 				view = new Website.Views.ListView({ model: model })

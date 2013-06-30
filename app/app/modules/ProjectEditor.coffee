@@ -3,9 +3,10 @@ define [
 		'modules/DataRetrieval'
 		'modules/Auth'
 		'modules/Portfolio'
+		'modules/Website'
 		'modules/NMMarkdownParser'
 	],
-(app, DataRetrieval, Auth, Portfolio) ->
+(app, DataRetrieval, Auth, Portfolio, Website) ->
 	
 	ProjectEditor = app.module()
 
@@ -156,6 +157,7 @@ define [
 				'SelectPersonEditable'
 				'SelectListEditable'
 				'SelectListConfirmEditable'
+				'ModalEditable'
 			]
 
 			# dynamic options update
@@ -177,6 +179,14 @@ define [
 
 			@editor.on 'stateUpdate', (e) =>
 				@stateUpdate e
+
+			@editor.on 'submit:ProjectMain.Website', (val) =>
+				if val.Title and val.Link
+					MType = JJRestApi.Model 'Website'
+					website = new MType({ Title: val.Title, Link: val.Link })
+					@model.get('Websites').add website
+					@addWebsiteView website, true
+					@model.save()
 
 			@
 
@@ -262,7 +272,8 @@ define [
 			console.groupEnd()
 			
 			if _changed
-				@model.rejectAndSave().done (model) =>
+				xhr = @model.rejectAndSave()
+				if xhr then xhr.done (model) =>
 					@populateEditorsSelectable(@model.getEditorsKey(), false) if _populateEditors
 
 		populateSelectEditables: ->
@@ -318,15 +329,6 @@ define [
 							if _.isArray(ids)
 								app.ProjectEditor[type] = ids
 								@populateEditorsSelectable type
-						
-
-
-		serialize: ->
-			app.ProjectEditor.modelJSON
-
-		afterRender: ->
-			@initEditor()
-			@populateSelectEditables()
 
 		populateEditorsSelectable: (type, silent = true) ->
 			if selectable = @editor.getComponentByName 'ProjectMain.' + type
@@ -336,7 +338,26 @@ define [
 
 				selectable.setSource personsIdList, silent
 				app.ProjectEditor[type] = _.intersection(app.ProjectEditor[type], personsIdArray)
-				selectable.setValue app.ProjectEditor[type], silent
+				selectable.setValue app.ProjectEditor[type], silent	
+
+		addWebsiteView: (model, render) ->
+			view = new Website.Views.ListView({ model: model })
+			@insertView '.websites', view
+			view.render() if render
+			true
+
+		serialize: ->
+			app.ProjectEditor.modelJSON
+
+		beforeRender: ->
+			@model.get('Websites').each (website) =>
+				@addWebsiteView website
+
+		afterRender: ->
+			@initEditor()
+			@populateSelectEditables()
+
+		
 
 
 	ProjectEditor

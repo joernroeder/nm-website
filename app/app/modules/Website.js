@@ -9,7 +9,6 @@ define(['app', 'modules/RecycleBin'], function(app, RecycleBin) {
     template: 'website-list-item',
     className: 'Website',
     serialize: function() {
-      console.log(this.model);
       return {
         ID: this.model.id,
         Title: this.model.get('Title'),

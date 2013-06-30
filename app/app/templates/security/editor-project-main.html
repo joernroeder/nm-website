@@ -17,10 +17,6 @@
 		{{{nameSummary Persons}}}
 	{{/if}}
 	</p>-->
-	<p>{{niceDate this}}</p>
-	{{#if Websites}}
-		<p>{{{commaSeparatedWebsites Websites}}}</p>
-	{{/if}}
 </header>
 <section data-editor-scope="\ProjectMain">
 
@@ -28,6 +24,15 @@
 
 </section>
 <aside data-editor-scope="\ProjectMain">
+	<div>
+		<h3>Websites</h3>
+			<ul class="websites">
+			</ul>
+			<button data-editor-type="modal" data-editor-name="Website" data-editor-fields='{"Title": {"type": "text"}, "Link": {"type": "text"}}'>
+				Add Website
+			</button>
+	</div>
+
 	{{#stringCompare "Project" ClassName}}
 		<h1>Categories</h1>
 		<ul data-editor-type="select-list" data-editor-name="Category" data-editor-placeholder="Add..."></ul>
