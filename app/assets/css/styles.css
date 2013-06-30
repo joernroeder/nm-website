@@ -211,6 +211,9 @@ button.btn {
  * @param int @cols 	Spaltenanzahl
  * @param int @width 	Breite innerhalb der sich die Spalten teilen können
  */
+/**
+ * Shortcut für die Felder des Editors
+ */
 /*
 *
 *  Golden Grid System (1.01)	<http://goldengridsystem.com/>
@@ -1779,6 +1782,7 @@ x:-o-prefocus,
   border: 0.625em solid #ffffff;
   margin: -0.625em;
 }
+.editor-popover.currentperson-website,
 .editor-popover.currentperson-bio {
   border: 1px solid #868686;
   border-left: none;
@@ -1908,6 +1912,186 @@ x:-o-prefocus,
 }
 .editor-popover.dateeditable .Zebra_DatePicker .dp_footer td.dp_hover {
   color: #fff;
+}
+.editor-popover.modaleditable input,
+.editor-popover.modaleditable textarea {
+  font-size: 0.875em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #1e1e1e;
+  padding: 0.375em;
+  border: none;
+  color: #cccccc;
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+  -webkit-transition: color .2s ease-in-out, background .2s ease-in-out;
+  -moz-transition: color .2s ease-in-out, background .2s ease-in-out;
+  -o-transition: color .2s ease-in-out, background .2s ease-in-out;
+  -ms-transition: color .2s ease-in-out, background .2s ease-in-out;
+  transition: color .2s ease-in-out, background .2s ease-in-out;
+  width: 100%;
+  margin-bottom: 0.75em;
+}
+.editor-popover.modaleditable input::-webkit-input-placeholder,
+.editor-popover.modaleditable textarea::-webkit-input-placeholder {
+  color: #5e5e5e;
+}
+.editor-popover.modaleditable input::-moz-placeholder,
+.editor-popover.modaleditable textarea::-moz-placeholder {
+  color: #5e5e5e;
+}
+.editor-popover.modaleditable input:-ms-input-placeholder,
+.editor-popover.modaleditable textarea:-ms-input-placeholder {
+  color: #5e5e5e;
+}
+.editor-popover.modaleditable input:-moz-placeholder,
+.editor-popover.modaleditable textarea:-moz-placeholder {
+  color: #5e5e5e;
+}
+.editor-popover.modaleditable input:hover,
+.editor-popover.modaleditable textarea:hover {
+  background: #3c3c29;
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+}
+.editor-popover.modaleditable input:hover::-webkit-input-placeholder,
+.editor-popover.modaleditable textarea:hover::-webkit-input-placeholder {
+  color: #919191;
+}
+.editor-popover.modaleditable input:hover::-moz-placeholder,
+.editor-popover.modaleditable textarea:hover::-moz-placeholder {
+  color: #919191;
+}
+.editor-popover.modaleditable input:hover:-ms-input-placeholder,
+.editor-popover.modaleditable textarea:hover:-ms-input-placeholder {
+  color: #919191;
+}
+.editor-popover.modaleditable input:hover:-moz-placeholder,
+.editor-popover.modaleditable textarea:hover:-moz-placeholder {
+  color: #919191;
+}
+.editor-popover.modaleditable input:focus,
+.editor-popover.modaleditable textarea:focus,
+.editor-popover.modaleditable input.active,
+.editor-popover.modaleditable textarea.active {
+  color: #fff;
+  outline: none;
+  background: #57590d;
+  /* firefox 19+ */
+
+  /* ie */
+
+  -webkit-transition: color .3s ease-in-out;
+  -moz-transition: color .3s ease-in-out;
+  -o-transition: color .3s ease-in-out;
+  -ms-transition: color .3s ease-in-out;
+  transition: color .3s ease-in-out;
+}
+.editor-popover.modaleditable input:focus::-webkit-input-placeholder,
+.editor-popover.modaleditable textarea:focus::-webkit-input-placeholder,
+.editor-popover.modaleditable input.active::-webkit-input-placeholder,
+.editor-popover.modaleditable textarea.active::-webkit-input-placeholder {
+  color: #262626;
+}
+.editor-popover.modaleditable input:focus::-moz-placeholder,
+.editor-popover.modaleditable textarea:focus::-moz-placeholder,
+.editor-popover.modaleditable input.active::-moz-placeholder,
+.editor-popover.modaleditable textarea.active::-moz-placeholder {
+  color: #262626;
+}
+.editor-popover.modaleditable input:focus:-ms-input-placeholder,
+.editor-popover.modaleditable textarea:focus:-ms-input-placeholder,
+.editor-popover.modaleditable input.active:-ms-input-placeholder,
+.editor-popover.modaleditable textarea.active:-ms-input-placeholder {
+  color: #262626;
+}
+.editor-popover.modaleditable input:focus:-moz-placeholder,
+.editor-popover.modaleditable textarea:focus:-moz-placeholder,
+.editor-popover.modaleditable input.active:-moz-placeholder,
+.editor-popover.modaleditable textarea.active:-moz-placeholder {
+  color: #262626;
+}
+.editor-popover.modaleditable .buttons {
+  text-align: right;
+}
+.editor-popover.modaleditable .buttons button {
+  border: none;
+  background: none;
+  font-family: 'Aller', 'Helvetica', sans-serif;
+  font-weight: normal;
+  font-variant: small-caps;
+  color: #525252;
+  display: inline-block;
+  -webkit-transition: color .2s ease-out;
+  -moz-transition: color .2s ease-out;
+  -o-transition: color .2s ease-out;
+  -ms-transition: color .2s ease-out;
+  transition: color .2s ease-out;
+  margin-top: 0.375em;
+  color: #fff;
+}
+.editor-popover.modaleditable .buttons button[type="submit"] {
+  float: right;
+}
+.editor-popover.modaleditable .buttons button[type="cancel"] {
+  color: #cccccc;
+}
+.editor-popover.modaleditable .buttons button[type="cancel"]:after {
+  display: none;
+}
+.editor-popover.modaleditable .buttons button:after {
+  display: inline-block;
+  position: relative;
+  font-family: 'Lucida Grande';
+  content: "→";
+  color: #747474;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  bottom: -0.09375em;
+  padding-left: 0.1875em;
+  -webkit-transition: color .2s ease-out;
+  -moz-transition: color .2s ease-out;
+  -o-transition: color .2s ease-out;
+  -ms-transition: color .2s ease-out;
+  transition: color .2s ease-out;
+}
+.editor-popover.modaleditable .buttons button:hover,
+.editor-popover.modaleditable .buttons button:focus,
+.editor-popover.modaleditable .buttons button:active {
+  color: #262626;
+}
+.editor-popover.modaleditable .buttons button:hover:after,
+.editor-popover.modaleditable .buttons button:focus:after,
+.editor-popover.modaleditable .buttons button:active:after {
+  color: #525252;
+}
+.editor-popover.modaleditable .buttons button:after {
+  color: #e6e6e6;
+}
+.editor-popover.modaleditable .buttons button:hover,
+.editor-popover.modaleditable .buttons button:focus,
+.editor-popover.modaleditable .buttons button:active {
+  color: #d9df20;
+}
+.editor-popover.modaleditable .buttons button:hover:after,
+.editor-popover.modaleditable .buttons button:focus:after,
+.editor-popover.modaleditable .buttons button:active:after {
+  color: #d9df20;
 }
 /*#qtip-0.markdowneditable {
 	left: 10px !important;
@@ -2213,15 +2397,18 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
 .editor-sidebar input[type="search"]:focus:-moz-placeholder {
   color: #787878;
 }
-.editor-sidebar .project-list {
+.editor-sidebar .project-list,
+.editor-sidebar .website-list {
   list-style: none;
   margin: 0;
   font-size: 0.875em;
 }
-.editor-sidebar .project-list li:last-child a {
+.editor-sidebar .project-list li:last-child a,
+.editor-sidebar .website-list li:last-child a {
   border-bottom: none;
 }
-.editor-sidebar .project-list li a {
+.editor-sidebar .project-list li a,
+.editor-sidebar .website-list li a {
   color: #cccccc;
   display: block;
   padding: 0.375em 0.75em;
@@ -2234,7 +2421,9 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   transition: color .2s ease-in-out, background-color .2s ease-in-out;
 }
 .editor-sidebar .project-list li a:hover,
-.editor-sidebar .project-list li a.active {
+.editor-sidebar .website-list li a:hover,
+.editor-sidebar .project-list li a.active,
+.editor-sidebar .website-list li a.active {
   color: #d9df20;
   background: #1e1e1e;
 }

@@ -307,4 +307,55 @@ button.btn {
 
 
 
+/**
+ * Shortcut für die Felder des Editors
+ */
+.editable-dark-styles() {
+	font-size: 14 / @em;
+	width: 100%;
+	.box-sizing(border-box);
+	background-color: darken(@black, 3%);
+	padding: @line / 4 / @em;
+	border: none;
+	margin-bottom: @line / 2 / @em;
+	color: @editorSidebarColor;
+
+	.placeholder(darken(@gray, 20%));
+	.transition(~"color .2s ease-in-out, background .2s ease-in-out");
+
+	&:hover {
+		background: mix(lighten(@black, 5%), darken(@nmColor, 30%), 75%);
+		.placeholder(@gray);
+	}
+
+	&:focus,
+	&.active {
+		color: #fff;
+		outline: none;
+		background: darken(@nmColor, 30%);
+		.placeholder(@black);
+	}
+}
+
+.button-dark-styles() {
+	margin-top: @line / 4 / @em;
+	color: #fff;
+
+	&:after {
+		color: darken(#fff, 10%);
+	}
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: @nmColor;
+		//border-bottom: 1px solid @btnColor;
+
+		&:after {
+			color: @nmColor;
+		}
+	}
+}
+
+
 

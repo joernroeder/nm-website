@@ -878,6 +878,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 .editor-popover {
 
+	&.currentperson-website,
 	&.currentperson-bio {
 		border: 1px solid mix(@bgColor, @editorSidebarBg);
 		border-left: none;
@@ -1018,6 +1019,40 @@ x:-o-prefocus, .qtip .qtip-tip{
 						color: #fff;
 					}
 				}
+			}
+		}
+	}
+
+	&.modaleditable {
+		input,
+		textarea {
+			.editable-dark-styles;
+
+			width: 100%;
+			margin-bottom: @line / 2 / @em;
+		}
+
+		.buttons {
+			text-align: right;
+
+			button {
+				border: none;
+				background: none;
+				
+				&[type="submit"] {
+					float: right;
+				}
+
+				&[type="cancel"] {
+					color: @editorSidebarColor;
+
+					&:after {
+						display: none;
+					}
+				}
+
+				.btn;
+				.button-dark-styles;
 			}
 		}
 	}
@@ -1256,7 +1291,8 @@ body.editor-sidebar-open {
 		}
 	}
 
-	.project-list {
+	.project-list,
+	.website-list {
 		list-style: none;
 		margin: 0;
 		font-size: 14 / @em;
@@ -1513,30 +1549,7 @@ body.editor-sidebar-open {
 	input[type="tel"],
 	input[type="password"],
 	*[data-editor-type][editor-handled-by] {
-		font-size: 14 / @em;
-		width: 100%;
-		.box-sizing(border-box);
-		background-color: darken(@black, 3%);
-		padding: @line / 4 / @em;
-		border: none;
-		margin-bottom: @line / 2 / @em;
-		color: @editorSidebarColor;
-
-		.placeholder(darken(@gray, 20%));
-		.transition(~"color .2s ease-in-out, background .2s ease-in-out");
-
-		&:hover {
-			background: mix(lighten(@black, 5%), darken(@nmColor, 30%), 75%);
-			.placeholder(@gray);
-		}
-
-		&:focus,
-		&.active {
-			color: #fff;
-			outline: none;
-			background: darken(@nmColor, 30%);
-			.placeholder(@black);
-		}
+		.editable-dark-styles;
 	}
 
 	input[type="password"] {
@@ -1565,23 +1578,7 @@ body.editor-sidebar-open {
 	}
 
 	.btn {
-		margin-top: @line / 4 / @em;
-		color: #fff;
-
-		&:after {
-			color: darken(#fff, 10%);
-		}
-
-		&:hover,
-		&:focus,
-		&:active {
-			color: @nmColor;
-			//border-bottom: 1px solid @btnColor;
-
-			&:after {
-				color: @nmColor;
-			}
-		}
+		.button-dark-styles;
 	}
 
 	#uploadzone {
