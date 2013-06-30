@@ -3,8 +3,19 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 (function($) {
-  var JJPackery, JJPackeryMan;
+  /*
+  	layout a collection of item elements
+  	@param {Array} items - array of Packery.Items
+  	@param {Boolean} isInstant - disable transitions for setting item position
+  */
 
+  var JJPackery, JJPackeryMan, packery_layoutItems;
+
+  packery_layoutItems = Packery.prototype.layoutItems;
+  Packery.prototype.layoutItems = function(items, isInstant) {
+    this.maxY = 0;
+    return packery_layoutItems.call(this, items, isInstant);
+  };
   JJPackery = (function() {
     /*
     		 # construct variables
@@ -17,13 +28,20 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.packery = null;
       this.resizeTimeout = null;
       this.updateLayout = true;
+      this.fitInWindow = true;
       this.rendered = 0;
+      this.onResizeLayout = false;
+      this.layoutIsComplete = false;
+      this.started = false;
+      this.itemDimensions = [];
+      this.transitionDuration = '.4s';
       this.factor = .3;
       return this.api = {};
     };
 
     function JJPackery() {
-      this.onResize = __bind(this.onResize, this);      this.members();
+      this.onResize = __bind(this.onResize, this);      console.log('JJPackery');
+      this.members();
       this.init();
       this.start();
     }
@@ -37,7 +55,38 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.$window = $(window);
       this.$container = $('.packery-wrapper');
       this.$sizing = $('.packery-test', this.$container);
-      return this.$packeryEl = $('.packery', this.$container);
+      this.$packeryEl = $('.packery', this.$container);
+      if (this.fitInWindow) {
+        return this.$packeryEl.addClass('fit-in-window').css('max-height', this.$window.height());
+      }
+    };
+
+    JJPackery.prototype.calcAndLayout = function() {
+      if (this.packery && this.updateLayout) {
+        console.log('calc and relayout');
+        if (this.fitInWindow) {
+          this.calc();
+        }
+        return this.packery.layout();
+      }
+    };
+
+    JJPackery.prototype.setToCenter = function() {
+      var elHeight, winHeight;
+
+      winHeight = this.$window.height();
+      elHeight = this.$packeryEl.height();
+      if (elHeight <= winHeight) {
+        return this.$packeryEl.css('top', Math.floor((winHeight - elHeight) / 2));
+      } else {
+        return this.$packeryEl.css('top', 0);
+      }
+    };
+
+    JJPackery.prototype.hiddenLayout = function(duration) {
+      this.onResizeLayout = true;
+      this.packery.layout();
+      return this.onResizeLayout = false;
     };
 
     /*
@@ -47,20 +96,21 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
 
     JJPackery.prototype.onResize = function() {
-      var elHeight, newHeight;
-
-      newHeight = this.$window.height();
-      this.$container.height(newHeight);
-      this.$packeryEl.width(Math.floor(this.$container.width() / 3) * 2);
-      this.calc();
-      if (this.packery && this.updateLayout) {
+      if (this.fitInWindow) {
+        this.calc();
+        this.$packeryEl.css('max-height', this.$window.height());
+      }
+      if (!this.layoutIsComplete) {
+        console.log('not layoutIsComplete');
+        this.layoutIsComplete = true;
         this.packery.layout();
       }
-      elHeight = this.$packeryEl.height();
-      if (elHeight <= newHeight) {
-        return this.$packeryEl.css('top', Math.floor((newHeight - elHeight) / 2));
-      } else {
-        return this.$packeryEl.css('top', 0);
+      this.packery.layout();
+      this.setToCenter();
+      if (this.layoutIsComplete && !this.started) {
+        console.log('started');
+        this.started = true;
+        return this.show();
       }
     };
 
@@ -157,9 +207,11 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     JJPackery.prototype.initTooltips = function() {
       var _this = this;
 
-      return $.each(this.packery.getItemElements(), function(i, el) {
+      console.log('init tooltips');
+      $.each(this.packery.getItemElements(), function(i, el) {
         return _this._initTooltip(el);
       });
+      return false;
     };
 
     JJPackery.prototype.getApi = function() {
@@ -169,7 +221,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     JJPackery.prototype._initTooltip = function(el) {
       var $el, $metaSection, getMargin, marginOffset;
 
-      console.log('init tooltip %O', el);
       $el = $(el);
       $metaSection = $('section[role=tooltip-content]', $el);
       marginOffset = -20;
@@ -253,39 +304,87 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       }
     };
 
-    JJPackery.prototype.calc = function() {
-      var $item, $stamps, i, item, itemSquare, limit, square, _ref, _ref1;
+    JJPackery.prototype.calc = function(rewind) {
+      var $item, $stamps, buffer, dims, factor, i, imageSquare, item, itemSquare, items, limit, newWidth, square, stampSquare, width, _ref, _ref1, _results, _results1;
 
-      limit = .9;
+      limit = .7;
+      buffer = .05;
       square = this.$window.height() * this.$window.width();
       itemSquare = 0;
+      imageSquare = 0;
+      stampSquare = 0;
       $stamps = this.$packeryEl.find('.stamp');
       $stamps.each(function(i, el) {
         var $item;
 
         $item = $(el);
-        return itemSquare += $item.width() * $item.height();
+        return stampSquare += $item.width() * $item.height();
       });
       _ref = this.packery.getItemElements();
       for (i in _ref) {
         item = _ref[i];
         $item = $(item);
-        itemSquare += $item.width() * $item.height();
+        imageSquare += $item.width() * $item.height();
       }
-      if (itemSquare / square > limit) {
-        _ref1 = this.packery.getItemElements();
-        for (i in _ref1) {
-          item = _ref1[i];
+      itemSquare = imageSquare + stampSquare;
+      console.log(square);
+      console.log(itemSquare);
+      console.log(itemSquare / square);
+      if (imageSquare / square > limit + buffer) {
+        console.log('more than ' + limit + '%');
+        items = this.packery.getItemElements();
+        console.log(items.length);
+        _results = [];
+        for (i in items) {
+          item = items[i];
           $item = $(item);
           $item.width($item.width() * limit);
-          $item.height($item.height * limit);
+          _results.push($item.height($item.height * limit));
         }
-        return $stamps.each(function(i, el) {
-          $item = $(el);
-          $item.width($item.width() * limit);
-          return $item.height($item.height * limit);
-        });
+        return _results;
+      } else if (imageSquare / square < limit - buffer) {
+        factor = square / imageSquare - buffer;
+        console.log(factor);
+        _ref1 = this.packery.items;
+        _results1 = [];
+        for (i in _ref1) {
+          item = _ref1[i];
+          dims = item.initialDimensions;
+          if (!dims) {
+            continue;
+          }
+          $item = $(item.element);
+          width = $item.width();
+          console.log(width * factor);
+          newWidth = Math.min(dims.width, width * factor);
+          _results1.push($item.width(newWidth));
+        }
+        return _results1;
       }
+    };
+
+    JJPackery.prototype.saveItemDimensions = function() {
+      var i, item, _ref;
+
+      _ref = this.packery.items;
+      for (i in _ref) {
+        item = _ref[i];
+        item.initialDimensions = {
+          width: item.rect.width,
+          height: item.rect.height
+        };
+      }
+      return false;
+    };
+
+    JJPackery.prototype.show = function() {
+      console.log('show');
+      this.packery.options.transitionDuration = this.transitionDuration;
+      this.saveItemDimensions();
+      this.setToCenter();
+      this.initTooltips();
+      this.applyRadialGravityEffect();
+      return this.$container.addClass('loaded').addClass('has-gravity');
     };
 
     JJPackery.prototype.start = function() {
@@ -297,35 +396,28 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           itemSelector: '.packery-item',
           gutter: 0,
           stamped: '.stamp',
+          transitionDuration: 0,
           isResizeBound: false,
           isInitLayout: false
         });
+        _this.packery.maxY = _this.$window.height();
         _this.packery.on('layoutComplete', function() {
           _this.rendered++;
           if (_this.rendered === 1) {
             console.log('hidden trigger');
-          } else if (!_this.$container.hasClass('loaded') && _this.rendered === 2) {
-            console.log('renderd 2 -> not .loaded');
-            _this.$window.trigger('resize');
-          } else if (_this.rendered === 3) {
-            _this.initTooltips();
-            _this.applyRadialGravityEffect();
-            _this.$container.addClass('loaded').addClass('has-gravity');
-            console.log('loaded');
+          } else {
+            _this.layoutIsComplete = true;
           }
           console.log('layout is complete');
           return false;
         });
-        _this.onResize();
-        _this.packery.layout();
-        return _this.$window.on('resize', function() {
-          var resizeTimeout;
-
-          if (resizeTimeout) {
-            clearTimeout(resizeTimeout);
+        _this.$window.on('resize', function() {
+          if (_this.resizeTimeout) {
+            clearTimeout(_this.resizeTimeout);
           }
-          return resizeTimeout = setTimeout(_this.onResize, 100);
+          return _this.resizeTimeout = setTimeout(_this.onResize, 200);
         });
+        return _this.onResize();
       });
     };
 
