@@ -451,6 +451,10 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       var _this = this;
 
       return this.$container.imagesLoaded(function() {
+        console.log(_this.$packeryEl[0]);
+        if (!_this.$packeryEl.length) {
+          return;
+        }
         _this.packery = new Packery(_this.$packeryEl[0], {
           containerStyle: null,
           itemSelector: '.packery-item',

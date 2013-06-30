@@ -436,6 +436,9 @@ do ($ = jQuery) ->
 		# ! --- implementation ----------------------
 		start: ->
 			@$container.imagesLoaded =>
+				console.log @$packeryEl[0]
+				if not @$packeryEl.length then return
+				
 				@packery = new Packery @$packeryEl[0],
 					containerStyle: null
 					itemSelector: '.packery-item'
