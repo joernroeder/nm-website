@@ -2721,6 +2721,22 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   -ms-transition: rotate .5s ease-in-out;
   transition: rotate .5s ease-in-out;
 }
+.editor-sidebar > nav a.icon-publish:not(.published) {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.editor-sidebar > nav a.icon-publish:not(.published):hover,
+.editor-sidebar > nav a.icon-publish:not(.published):focus,
+.editor-sidebar > nav a.icon-publish:not(.published).active {
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -o-transform: rotate(0);
+  -ms-transform: rotate(0);
+  transform: rotate(0);
+}
 .editor-sidebar > nav a.icon-publish.publishing {
   position: relative;
   -webkit-transition: top .25s ease-in-out;
@@ -2728,18 +2744,11 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   -o-transition: top .25s ease-in-out;
   -ms-transition: top .25s ease-in-out;
   transition: top .25s ease-in-out;
-  -webkit-animation: jumprotate 1s infinite alternate both;
-  -moz-animation: jumprotate 1s infinite alternate both;
-  -o-animation: jumprotate 1s infinite alternate both;
-  -ms-animation: jumprotate 1s infinite alternate both;
-  animation: jumprotate 1s infinite alternate both;
-}
-.editor-sidebar > nav a.icon-publish.publishing:not(.published) {
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  transform: rotate(180deg);
+  -webkit-animation: jump 1s infinite alternate both;
+  -moz-animation: jump 1s infinite alternate both;
+  -o-animation: jump 1s infinite alternate both;
+  -ms-animation: jump 1s infinite alternate both;
+  animation: jump 1s infinite alternate both;
 }
 .editor-sidebar > nav a span {
   display: none;

@@ -1546,14 +1546,20 @@ body.editor-sidebar-open {
 			&.icon-publish {
 				.transition(~"rotate .5s ease-in-out");
 
+				&:not(.published) {
+					.rotate(180deg);
+
+					&:hover,
+					&:focus,
+					&.active {
+						.rotate(0);
+					}
+				}
+
 				&.publishing {
 					position: relative;
 					.transition(~"top .25s ease-in-out");
-					.animation(~"jumprotate 1s infinite alternate both");
-
-					&:not(.published) {
-						.rotate(180deg);
-					}
+					.animation(~"jump 1s infinite alternate both");
 				}
 			}
 
