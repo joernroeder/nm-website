@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
     root: '/',
     pendingTemplateReqs: {}
   };
-  JST = app.JST = app.JST || {};
+  JST = window.JST = window.JST || {};
   Backbone.NMLayout = Backbone.Layout.extend({
     setViewAndRenderMaybe: function(selector, view) {
       this.setView(selector, view);

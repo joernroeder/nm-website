@@ -34,7 +34,6 @@ require.config
 			exports: 'Handlebars'
 
 		'plugins/tooltip/jquery.qtip'			: ['jquery']
-		#'plugins/gravity/jquery.gravity'		: ['plugins/tooltip/jquery.qtip']
 		'plugins/packery/packery.pkgd'			: ['jquery']
 		'plugins/packery/packerytest'			: ['plugins/packery/packery.pkgd', 'plugins/tooltip/jquery.qtip']
 		'modules/JJPackery'						: ['plugins/packery/packerytest']
@@ -58,7 +57,7 @@ require.config
 
 		'modules/NMMarkdownParser'				: ['plugins/editor/jquery.jjmarkdown']
 
+		
 		'plugins/visualsearch/jquery.ui.autocomplete' : ['plugins/visualsearch/jquery.ui.widget']
 		'plugins/visualsearch/jquery.ui.menu'	: ['plugins/visualsearch/jquery.ui.widget']
 		'plugins/visualsearch/visualsearch'		: ['plugins/backbone.layoutmanager', 'plugins/visualsearch/jquery.ui.core', 'plugins/visualsearch/jquery.ui.autocomplete', 'plugins/visualsearch/jquery.ui.menu']
-

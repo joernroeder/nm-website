@@ -16,7 +16,7 @@ define [
 		app =
 			root: '/'
 			pendingTemplateReqs: {}
-		JST = app.JST = app.JST || {}
+		JST = window.JST = window.JST || {}
 
 		Backbone.NMLayout = Backbone.Layout.extend
 			# this function checks if the layout has initially been rendered. This is useful for setting views in a layout later,
