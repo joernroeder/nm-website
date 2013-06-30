@@ -1087,6 +1087,11 @@ aside a {
   color: #d9df20;
 }
 body.requesting .badge {
+  -webkit-transition: -webkit-border-bottom .25s ease-in-out;
+  -moz-transition: -moz-border-bottom .25s ease-in-out;
+  -o-transition: border-bottom .25s ease-in-out;
+  -ms-transition: border-bottom .25s ease-in-out;
+  transition: border-bottom .25s ease-in-out;
   -webkit-animation: jumpborder 1s infinite;
   -moz-animation: jumpborder 1s infinite;
   -o-animation: jumpborder 1s infinite;
@@ -1097,6 +1102,11 @@ body.requesting .badge {
 }
 body.requesting .badge > a {
   position: relative;
+  -webkit-transition: top .25s ease-in-out;
+  -moz-transition: top .25s ease-in-out;
+  -o-transition: top .25s ease-in-out;
+  -ms-transition: top .25s ease-in-out;
+  transition: top .25s ease-in-out;
   -webkit-animation: jump 1s infinite;
   -moz-animation: jump 1s infinite;
   -o-animation: jump 1s infinite;

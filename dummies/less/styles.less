@@ -246,12 +246,14 @@ aside {
 }
 
 body.requesting .badge {
+	.transition(~"border-bottom .25s ease-in-out");
 	.animation(~"jumpborder 1s infinite");
 	border-color: @nmColor;
 	border-style: solid;
 
 	> a {
 		position: relative;
+		.transition(~"top .25s ease-in-out");
 		.animation(~"jump 1s infinite");
 		//background-color: red;
 	}
