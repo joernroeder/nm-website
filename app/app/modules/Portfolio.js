@@ -8,6 +8,16 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     group_project_title: 'Group project'
   };
   Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend({
+    cleanup: function() {
+      return Backbone.Events.off('search', this.handleSearch);
+    },
+    initialize: function() {
+      return Backbone.Events.on('search', this.handleSearch, this);
+    },
+    handleSearch: function(searchResults) {
+      console.log('searched for: %o', searchResults);
+      return console.log(this);
+    },
     beforeRender: function() {
       var model, modelArray, _i, _len, _results;
 
@@ -24,6 +34,9 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
         }
         return _results;
       }
+    },
+    afterRender: function() {
+      return console.log(this);
     }
   });
   Portfolio.Views.ListItem = Backbone.View.extend({

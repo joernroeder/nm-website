@@ -50,10 +50,10 @@ define(['app', 'modules/ProjectSearch'], function(app, ProjectSearch) {
       searchObj = ProjectSearch.transformSearchTerm(searchTerm);
       console.log(searchObj);
       result = _.filter(app.Cache.WholePortfolioJSON, function(model) {
-        result = true;
+        result = false;
         _.each(searchObj, function(vals, key) {
-          if (!ProjectSearch.test(model, key, vals)) {
-            return result = false;
+          if (ProjectSearch.test(model, key, vals)) {
+            return result = true;
           }
         });
         return result;

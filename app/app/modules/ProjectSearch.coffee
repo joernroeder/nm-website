@@ -10,6 +10,11 @@ define [
 					return @.partialMatchFilter obj, 'TeaserText', valArray
 				'Name'	: (obj, valArray) ->
 					return true
+				'Category': (obj, valArray) =>
+					out = false
+					_.each obj.Categories, (cat) =>
+						out = ProjectSearch.exactMatchFilter cat, 'Title', valArray
+					out
 
 			###*
 			 * transforms a string into an object with the searchable field as key and the possible OR values as array
@@ -43,7 +48,7 @@ define [
 
 
 				# no method/filter specified for `key`, defaults to true
-				true
+				false
 				
 			partialMatchFilter: (obj, key, valArray) ->
 				query = valArray.join '|'

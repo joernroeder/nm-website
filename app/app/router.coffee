@@ -200,12 +200,14 @@ define [
 
 				modelsArray = app.Cache.WholePortfolio
 				
-				if searchTerm then modelsArray = DataRetrieval.filterProjectTypesBySearchTerm searchTerm
-				
 				unless justUpdate
 					@.showPackeryViewForModels modelsArray, 'portfolio', layout
-				else
-					console.log 'add or remove models'
+
+				if searchTerm
+					searchedForArray = DataRetrieval.filterProjectTypesBySearchTerm searchTerm
+					Backbone.Events.trigger 'search', searchedForArray
+				
+
 				
 				
 

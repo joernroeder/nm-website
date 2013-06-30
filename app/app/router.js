@@ -200,7 +200,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       }
       justUpdate = app.currentLayoutName === 'portfolio' ? true : false;
       return mainDfd.done(function() {
-        var layout, modelsArray;
+        var layout, modelsArray, searchedForArray;
 
         if (!justUpdate) {
           layout = app.useLayout('portfolio');
@@ -212,13 +212,12 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
           });
         }
         modelsArray = app.Cache.WholePortfolio;
-        if (searchTerm) {
-          modelsArray = DataRetrieval.filterProjectTypesBySearchTerm(searchTerm);
-        }
         if (!justUpdate) {
-          return _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
-        } else {
-          return console.log('add or remove models');
+          _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
+        }
+        if (searchTerm) {
+          searchedForArray = DataRetrieval.filterProjectTypesBySearchTerm(searchTerm);
+          return Backbone.Events.trigger('search', searchedForArray);
         }
       });
     },

@@ -12,12 +12,28 @@ define [
 
 		# this is the main packery container which has a list with all project overview items in it
 		Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend
+
+			cleanup: ->
+				Backbone.Events.off 'search', @handleSearch
+
+			initialize: ->
+				Backbone.Events.on 'search', @handleSearch, @
+
+			handleSearch: (searchResults) ->
+				console.log 'searched for: %o', searchResults
+				console.log @
+
+
 			beforeRender: ->
 				console.log 'portfolio before render'
 				modelArray = @.collection
 				if modelArray
 					for model in modelArray
 						@.insertView '.packery', new Portfolio.Views.ListItem({ model: model, linkTo: @.options.linkTo })
+
+			afterRender: ->
+				console.log @
+				# debugger
 				
 
 		Portfolio.Views.ListItem = Backbone.View.extend
