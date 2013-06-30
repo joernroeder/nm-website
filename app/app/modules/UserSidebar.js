@@ -52,6 +52,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
     },
     subView: null,
     events: {
+      'click nav a': 'blurAfterClick',
       'click [data-editor-sidebar-content]': 'toggleSidebarCheck',
       'click .icon-switch': 'switchEditorView',
       'click .icon-publish': 'clickPublish'
@@ -61,6 +62,11 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
     },
     cleanup: function() {
       return Backbone.Events.off('projectEdited', this.handlePublishActive);
+    },
+    blurAfterClick: function(e) {
+      e.preventDefault();
+      $(e.target).blur();
+      return false;
     },
     switchEditorView: function(e) {
       e.preventDefault();

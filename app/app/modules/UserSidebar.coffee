@@ -64,6 +64,7 @@ define [
 			subView: null
 
 			events:
+				'click nav a': 'blurAfterClick'
 				'click [data-editor-sidebar-content]': 'toggleSidebarCheck'
 				'click .icon-switch': 'switchEditorView'
 				'click .icon-publish': 'clickPublish'
@@ -75,6 +76,11 @@ define [
 				Backbone.Events.off 'projectEdited', @handlePublishActive
 			
 			# !- Custom
+			
+			blurAfterClick: (e) ->
+				e.preventDefault()
+				$(e.target).blur()
+				false
 			
 			switchEditorView: (e) ->
 				e.preventDefault()
