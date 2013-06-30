@@ -513,6 +513,63 @@ h2 {
     max-width: 160em;
   }
 }
+@-webkit-keyframes jump {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: -10px;
+  }
+  100% {
+    top: 0;
+  }
+}
+@-webkit-keyframes jumpborder {
+  0% {
+    border-bottom-width: 10px;
+  }
+  50% {
+    border-bottom-width: 0;
+  }
+  100% {
+    border-bottom-width: 10px;
+  }
+}
+@-webkit-keyframes rainbow {
+  0% {
+    color: #FF0000;
+  }
+  10% {
+    color: #FF8000;
+  }
+  20% {
+    color: #FFFF00;
+  }
+  30% {
+    color: #80FF00;
+  }
+  40% {
+    color: #00FF00;
+  }
+  50% {
+    color: #00FF80;
+  }
+  60% {
+    color: #00FFFF;
+  }
+  70% {
+    color: #0080FF;
+  }
+  80% {
+    color: #0000FF;
+  }
+  90% {
+    color: #8000FF;
+  }
+  100% {
+    color: #FF0080;
+  }
+}
 .tooltip {
   background: #111;
   color: #fff;
@@ -1028,6 +1085,33 @@ aside a {
 .badge ul a:active,
 .badge ul a.active {
   color: #d9df20;
+}
+body.requesting .badge {
+  -webkit-transition: -webkit-border-bottom .25s ease-in-out;
+  -moz-transition: -moz-border-bottom .25s ease-in-out;
+  -o-transition: border-bottom .25s ease-in-out;
+  -ms-transition: border-bottom .25s ease-in-out;
+  transition: border-bottom .25s ease-in-out;
+  -webkit-animation: jumpborder 1s infinite;
+  -moz-animation: jumpborder 1s infinite;
+  -o-animation: jumpborder 1s infinite;
+  -ms-animation: jumpborder 1s infinite;
+  animation: jumpborder 1s infinite;
+  border-color: #d9df20;
+  border-style: solid;
+}
+body.requesting .badge > a {
+  position: relative;
+  -webkit-transition: top .25s ease-in-out;
+  -moz-transition: top .25s ease-in-out;
+  -o-transition: top .25s ease-in-out;
+  -ms-transition: top .25s ease-in-out;
+  transition: top .25s ease-in-out;
+  -webkit-animation: jump 1s infinite;
+  -moz-animation: jump 1s infinite;
+  -o-animation: jump 1s infinite;
+  -ms-animation: jump 1s infinite;
+  animation: jump 1s infinite;
 }
 .calendar {
   width: 12.5em;
