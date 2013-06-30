@@ -53,9 +53,9 @@ define [
 				console.log searchObj
 
 				result = _.filter app.Cache.WholePortfolioJSON, (model) ->
-					result = false
+					result = true
 					_.each searchObj, (vals, key) ->
-						if ProjectSearch.test(model, key, vals) then result = true
+						if not ProjectSearch.test(model, key, vals) then result = false
 
 					# if the filter returns true
 					return result

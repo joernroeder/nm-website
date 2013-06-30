@@ -35,7 +35,7 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
         return _results;
       }
     },
-    afterRender: function() {
+    _afterRender: function() {
       return console.log(this);
     }
   });

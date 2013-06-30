@@ -31,7 +31,7 @@ define [
 					for model in modelArray
 						@.insertView '.packery', new Portfolio.Views.ListItem({ model: model, linkTo: @.options.linkTo })
 
-			afterRender: ->
+			_afterRender: ->
 				console.log @
 				# debugger
 				

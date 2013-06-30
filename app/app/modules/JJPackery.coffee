@@ -15,6 +15,7 @@ define [
 
 			afterRender: ->
 				JJPackeryMan()
+				if @_afterRender then @_afterRender()
 
 		
 
