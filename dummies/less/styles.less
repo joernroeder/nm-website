@@ -18,6 +18,7 @@
 @import 'definitions';		// Vorbebaute Definitionen
 @import 'lesshat';			// LESSHat 					http://lesshat.com
 @import 'ggs';				// golden grid system		http://goldengridsystem.com
+@import 'animations';
 @import 'tooltip';
 @import 'datepicker';
 @import 'packery';
@@ -241,6 +242,18 @@ aside {
 			color: @badgeLinkColor;
 			display: block;
 		}
+	}
+}
+
+body.requesting .badge {
+	.animation(~"jumpborder 1s infinite");
+	border-color: @nmColor;
+	border-style: solid;
+
+	> a {
+		position: relative;
+		.animation(~"jump 1s infinite");
+		//background-color: red;
 	}
 }
 
