@@ -873,22 +873,25 @@ button.Zebra_DatePicker_Icon {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -moz-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -o-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -ms-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -webkit-transition-property: -webkit-transition-property, margin !important;
-  -moz-transition-property: -webkit-transition-property, margin !important;
-  -o-transition-property: -webkit-transition-property, margin !important;
-  -ms-transition-property: -webkit-transition-property, margin !important;
-  transition-property: -webkit-transition-property, margin !important;
+  /*
+	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
+	-o-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-ms-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	
+	-webkit-transition-property: -webkit-transition-property, margin !important;
+	-moz-transition-property: -webkit-transition-property, margin !important;
+	-o-transition-property: -webkit-transition-property, margin !important;
+	-ms-transition-property: -webkit-transition-property, margin !important;
+	transition-property: -webkit-transition-property, margin !important;
+	*/
+
 }
 .packery-item > a {
-  background: red;
+  background: #e6e6e6;
   display: block;
   border: none;
-  background: rgba(255, 0, 0, 0.5);
 }
 .packery-item > a:hover {
   border: none;
@@ -1429,16 +1432,20 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -moz-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -o-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -ms-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -webkit-transition-property: -webkit-transition-property, margin !important;
-  -moz-transition-property: -webkit-transition-property, margin !important;
-  -o-transition-property: -webkit-transition-property, margin !important;
-  -ms-transition-property: -webkit-transition-property, margin !important;
-  transition-property: -webkit-transition-property, margin !important;
+  /*
+	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
+	-o-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-ms-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	
+	-webkit-transition-property: -webkit-transition-property, margin !important;
+	-moz-transition-property: -webkit-transition-property, margin !important;
+	-o-transition-property: -webkit-transition-property, margin !important;
+	-ms-transition-property: -webkit-transition-property, margin !important;
+	transition-property: -webkit-transition-property, margin !important;
+	*/
+
   position: relative;
   display: inline-block;
   -webkit-transition: opacity .2s ease-in-out;
@@ -1450,10 +1457,9 @@ x:-o-prefocus,
 }
 .packery-wrapper > img > a,
 .packery-wrapper .packery-item > a {
-  background: red;
+  background: #e6e6e6;
   display: block;
   border: none;
-  background: rgba(255, 0, 0, 0.5);
 }
 .packery-wrapper > img > a:hover,
 .packery-wrapper .packery-item > a:hover {
@@ -1790,16 +1796,20 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -moz-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -o-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -ms-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
-  -webkit-transition-property: -webkit-transition-property, margin !important;
-  -moz-transition-property: -webkit-transition-property, margin !important;
-  -o-transition-property: -webkit-transition-property, margin !important;
-  -ms-transition-property: -webkit-transition-property, margin !important;
-  transition-property: -webkit-transition-property, margin !important;
+  /*
+	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
+	-o-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-ms-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	
+	-webkit-transition-property: -webkit-transition-property, margin !important;
+	-moz-transition-property: -webkit-transition-property, margin !important;
+	-o-transition-property: -webkit-transition-property, margin !important;
+	-ms-transition-property: -webkit-transition-property, margin !important;
+	transition-property: -webkit-transition-property, margin !important;
+	*/
+
   position: relative;
   display: inline-block;
   -webkit-transition: opacity .2s ease-in-out;
@@ -1828,10 +1838,9 @@ x:-o-prefocus,
   width: 100%;
 }
 .editor .overview article > a {
-  background: red;
+  background: #e6e6e6;
   display: block;
   border: none;
-  background: rgba(255, 0, 0, 0.5);
 }
 .editor .overview article > a:hover {
   border: none;

@@ -44,7 +44,7 @@ do ($ = jQuery) ->
 			@factor = .3
 
 			# tooltip api
-			@api = {}
+			#@api = {}
 
 
 		constructor: ->
@@ -196,10 +196,41 @@ do ($ = jQuery) ->
 
 			false
 
-		getApi: ->
-			@api or {}
+		#getApi: ->
+		#	@api or {}
 
 		_initTooltip: (el) ->
+			mouseOutEl = true
+			mouseOutTip = true
+
+			api = {}
+
+			showTimeout = null
+			hideTimeout = null
+
+			hideTip = =>
+				if hideTimeout
+					clearTimeout hideTimeout
+
+				hideTimeout = setTimeout =>
+					console.log mouseOutEl
+					console.log mouseOutTip
+					if mouseOutEl and mouseOutTip
+						$el.add(api.tooltip).off 'mouseleave.tooltip'
+						api.hide()
+				, 200
+
+			###
+			showTip = =>
+				if showTimeout
+					clearTimeout showTimeout
+				
+				showTimeout = setTimeout =>
+					console.log 'show tip'
+					api.show()
+				, 500
+			###
+
 			$el = $ el
 			$metaSection = $ 'section[role=tooltip-content]', $el
 
@@ -217,14 +248,16 @@ do ($ = jQuery) ->
 
 
 			if $metaSection.length
+				foo = @
 				$el
 				.qtip
+					#prerender: true
 					content:
 						text: $metaSection.html()
 					show:
+						delay: 500
 						event: 'mouseenter'
-						
-						effect: (api) ->										
+						effect: (api) ->
 							$el.addClass 'has-tooltip'
 							$(@)
 								.stop(true, true)
@@ -235,12 +268,28 @@ do ($ = jQuery) ->
 									'margin-left': 0
 									'opacity': 1
 								, 200
+
+							console.log api.tooltip
+							if api.tooltip
+								$(api.tooltip).one 'mouseenter.tooltip', =>
+									mouseOutTip = false
+
+							$el.add(api.tooltip).one 'mouseleave.tooltip', (e) =>
+								if $(e.target).closest('.qtip').length
+									mouseOutTip = true
+								else 
+									mouseOutEl = true
+
+								hideTip()
+								console.log 'close tooltip'
+
+
 						
-						#effect: false
+						#event: false
 						#ready: true
 
 					hide: 
-						event: 'mouseleave'
+						event: false
 						effect: (api) ->
 							$(@)
 								.stop(true, true)
@@ -250,7 +299,6 @@ do ($ = jQuery) ->
 								, 200, () ->
 									$el.removeClass 'has-tooltip'
 									$(@).hide()
-
 					###
 					events:
 						show: (e, api) ->
@@ -273,7 +321,24 @@ do ($ = jQuery) ->
 							x: 0
 							y: 10
 
-				@api = $el.qtip 'api'
+				api = $el.qtip 'api'
+
+				console.log api
+				###
+				@api.tooltip.on('mouseenter', =>
+					mouseOutTip = false
+				)
+				.on('mouseleave', =>
+					mouseOutTip = true
+					hideTip()
+				)
+				###
+
+				$('> a', $el).on('mouseleave', =>
+					console.log 'leave'
+					mouseOutEl = true
+					hideTip()
+				)
 
 
 		# ---------------

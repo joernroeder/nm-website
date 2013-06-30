@@ -138,6 +138,7 @@
 	//.transition-property(-webkit-transition-property, margin) !important;
 	@time: 0.15s;
 	@delay: 1s;
+	/*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
 	-o-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
@@ -149,12 +150,13 @@
 	-o-transition-property: -webkit-transition-property, margin !important;
 	-ms-transition-property: -webkit-transition-property, margin !important;
 	transition-property: -webkit-transition-property, margin !important;
+	*/
 
 	&> a {
-		background: red;
+		background: @bgColor;
 		display: block;
 		border: none;
-		background: rgba(255,0,0,.5);
+		//background: rgba(255,0,0,.5);
 
 		&:hover {
 			border: none;

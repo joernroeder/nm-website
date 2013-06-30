@@ -35,8 +35,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.started = false;
       this.itemDimensions = [];
       this.transitionDuration = '.4s';
-      this.factor = .3;
-      return this.api = {};
+      return this.factor = .3;
     };
 
     function JJPackery() {
@@ -214,12 +213,38 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       return false;
     };
 
-    JJPackery.prototype.getApi = function() {
-      return this.api || {};
-    };
-
     JJPackery.prototype._initTooltip = function(el) {
-      var $el, $metaSection, getMargin, marginOffset;
+      var $el, $metaSection, api, foo, getMargin, hideTimeout, hideTip, marginOffset, mouseOutEl, mouseOutTip, showTimeout,
+        _this = this;
+
+      mouseOutEl = true;
+      mouseOutTip = true;
+      api = {};
+      showTimeout = null;
+      hideTimeout = null;
+      hideTip = function() {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+        }
+        return hideTimeout = setTimeout(function() {
+          console.log(mouseOutEl);
+          console.log(mouseOutTip);
+          if (mouseOutEl && mouseOutTip) {
+            $el.add(api.tooltip).off('mouseleave.tooltip');
+            return api.hide();
+          }
+        }, 200);
+      };
+      /*
+      			showTip = =>
+      				if showTimeout
+      					clearTimeout showTimeout
+      				
+      				showTimeout = setTimeout =>
+      					console.log 'show tip'
+      					api.show()
+      				, 500
+      */
 
       $el = $(el);
       $metaSection = $('section[role=tooltip-content]', $el);
@@ -236,24 +261,43 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         return margin;
       };
       if ($metaSection.length) {
+        foo = this;
         $el.qtip({
           content: {
             text: $metaSection.html()
           },
           show: {
+            delay: 500,
             event: 'mouseenter',
             effect: function(api) {
+              var _this = this;
+
               $el.addClass('has-tooltip');
-              return $(this).stop(true, true).css({
+              $(this).stop(true, true).css({
                 'margin-left': getMargin(api)
               }).show().animate({
                 'margin-left': 0,
                 'opacity': 1
               }, 200);
+              console.log(api.tooltip);
+              if (api.tooltip) {
+                $(api.tooltip).one('mouseenter.tooltip', function() {
+                  return mouseOutTip = false;
+                });
+              }
+              return $el.add(api.tooltip).one('mouseleave.tooltip', function(e) {
+                if ($(e.target).closest('.qtip').length) {
+                  mouseOutTip = true;
+                } else {
+                  mouseOutEl = true;
+                }
+                hideTip();
+                return console.log('close tooltip');
+              });
             }
           },
           hide: {
-            event: 'mouseleave',
+            event: false,
             effect: function(api) {
               return $(this).stop(true, true).animate({
                 'margin-left': getMargin(api),
@@ -288,7 +332,23 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
             }
           }
         });
-        return this.api = $el.qtip('api');
+        api = $el.qtip('api');
+        console.log(api);
+        /*
+        				@api.tooltip.on('mouseenter', =>
+        					mouseOutTip = false
+        				)
+        				.on('mouseleave', =>
+        					mouseOutTip = true
+        					hideTip()
+        				)
+        */
+
+        return $('> a', $el).on('mouseleave', function() {
+          console.log('leave');
+          mouseOutEl = true;
+          return hideTip();
+        });
       }
     };
 
