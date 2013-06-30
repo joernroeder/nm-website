@@ -4,6 +4,9 @@ do ($ = jQuery) ->
 
 	class JJPackery
 
+		###
+		 # construct variables
+		###
 		members: ->
 			@$window = $()
 			@$container = $()
@@ -27,16 +30,25 @@ do ($ = jQuery) ->
 			@init()
 			@start()
 
+		###
+		 # fill variables
+		###
 		init: ->
 			@$window = $ window
 			@$container = $ '.packery-wrapper'
 			@$sizing = $ '.packery-test', @$container
 			@$packeryEl = $ '.packery', @$container
 
+		###
+		 # on resize handler
+		 #
+		###
 		onResize: =>
 			newHeight = @$window.height()
 			@$container.height newHeight
 			@$packeryEl.width Math.floor(@$container.width() / 3) * 2
+
+			@calc()
 
 			@packery.layout() if @packery and @updateLayout # @todo: remove @updateLayout
 
@@ -59,7 +71,12 @@ do ($ = jQuery) ->
 				left: elPos.left + $el.width() / 2
 
 		###
+		 # returns the distance between two points
 		 #
+		 # @param p1 
+		 # @param p2
+		 #
+		 # @return Number
 		###
 		getLineDistance: (p1, p2) ->
 			xs = ys = 0
@@ -71,14 +88,22 @@ do ($ = jQuery) ->
 
 			Math.sqrt xs + ys
 
-
+		###
+		 # applies the radial effect to all ItemElements
+		 #
+		###
 		applyRadialGravityEffect: ->
 			packeryCenter = @getCenterPos @$packeryEl
 
 			$.each @packery.getItemElements(), (i, el) =>
 				@_applyRadialGravityEffectToElement el, packeryCenter
 
-
+		###
+		 # applies the radial effect to the given element
+		 #
+		 # @param HTMLElement el
+		 # @param point gravity center
+		###
 		_applyRadialGravityEffectToElement: (el, center) ->
 			$el = $ el
 			elPos = @getCenterPos $el
@@ -102,6 +127,10 @@ do ($ = jQuery) ->
 			$el.css margins
 			true
 
+		###
+		 # init tooltip to all ItemElements
+		 #
+		###
 		initTooltips: ->
 			$.each @packery.getItemElements(), (i, el) =>
 				@_initTooltip el
@@ -186,6 +215,46 @@ do ($ = jQuery) ->
 
 				@api = $el.qtip 'api'
 
+
+		# ---------------
+
+		update: ->
+			@packery.layout() if @packery
+
+		destroy: ->
+			@packery.destroy() if @packery
+
+		calc: ->
+			limit = .9
+
+			square = @$window.height() * @$window.width()
+
+			itemSquare = 0
+
+			$stamps = @$packeryEl.find '.stamp'
+			$stamps.each (i, el) ->
+				$item = $ el
+
+				itemSquare += $item.width() * $item.height()
+
+			for i, item of @packery.getItemElements()
+				$item = $ item
+
+				itemSquare += $item.width() * $item.height()
+
+			if itemSquare / square > limit
+				for i, item of @packery.getItemElements()
+					$item = $ item
+
+					$item.width $item.width() * limit
+					$item.height $item.height * limit
+
+				$stamps.each (i, el) ->
+					$item = $ el
+					$item.width $item.width() * limit
+					$item.height $item.height * limit
+				
+
 		# ! --- implementation ----------------------
 		start: ->
 			@$container.imagesLoaded =>
@@ -222,6 +291,7 @@ do ($ = jQuery) ->
 				# initial trigger
 				@onResize()
 	
+				#@packery.layoutItems [], true
 				@packery.layout()
 	
 				@$window.on 'resize', =>

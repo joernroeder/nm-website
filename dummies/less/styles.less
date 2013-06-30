@@ -577,12 +577,12 @@ x:-o-prefocus, .qtip .qtip-tip{
 // ! --- Home ----------------------------------------------
 
 // fallback
-.main .gravity {
+.main .packery-wrapper {
 	.columnsWidth(8, 8);
 }
 
 .index {
-	.gravity {
+	.packery-wrapper {
 		.columnsWidth(8, 6);
 	}
 
@@ -600,13 +600,30 @@ x:-o-prefocus, .qtip .qtip-tip{
 }
 
 .portfolio {
-	.gravity {
+	#wrapper {
+		margin: 0;
+	}
+	.badge {
+		margin-left: @column;
+	}	
+	.packery-wrapper {
 		.columnsWidth(8, 8);
+	}
+
+	.packery {
+		width: 100% !important;
 	}
 }
 
 .about {
-	.gravity {
+	// @todo responsive fix
+	/*&:not(.main) {
+		.packery {
+			width: 100% !important;
+		}
+	}*/
+
+	.packery-wrapper {
 		.columnsWidth(8, 8);
 	}
 
@@ -631,9 +648,9 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.wrapper;
 		width: 100% / 8 * 3;
 
-		&.loaded img {
+		img {
 			max-width: 100%;
-			height: auto;
+			height: auto !important;
 			display: block;
 		}
 	}

@@ -6,6 +6,9 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   var JJPackery, JJPackeryMan;
 
   JJPackery = (function() {
+    /*
+    		 # construct variables
+    */
     JJPackery.prototype.members = function() {
       this.$window = $();
       this.$container = $();
@@ -25,6 +28,11 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.start();
     }
 
+    /*
+    		 # fill variables
+    */
+
+
     JJPackery.prototype.init = function() {
       this.$window = $(window);
       this.$container = $('.packery-wrapper');
@@ -32,12 +40,19 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       return this.$packeryEl = $('.packery', this.$container);
     };
 
+    /*
+    		 # on resize handler
+    		 #
+    */
+
+
     JJPackery.prototype.onResize = function() {
       var elHeight, newHeight;
 
       newHeight = this.$window.height();
       this.$container.height(newHeight);
       this.$packeryEl.width(Math.floor(this.$container.width() / 3) * 2);
+      this.calc();
       if (this.packery && this.updateLayout) {
         this.packery.layout();
       }
@@ -67,7 +82,12 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     };
 
     /*
+    		 # returns the distance between two points
     		 #
+    		 # @param p1 
+    		 # @param p2
+    		 #
+    		 # @return Number
     */
 
 
@@ -82,6 +102,12 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       return Math.sqrt(xs + ys);
     };
 
+    /*
+    		 # applies the radial effect to all ItemElements
+    		 #
+    */
+
+
     JJPackery.prototype.applyRadialGravityEffect = function() {
       var packeryCenter,
         _this = this;
@@ -91,6 +117,14 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         return _this._applyRadialGravityEffectToElement(el, packeryCenter);
       });
     };
+
+    /*
+    		 # applies the radial effect to the given element
+    		 #
+    		 # @param HTMLElement el
+    		 # @param point gravity center
+    */
+
 
     JJPackery.prototype._applyRadialGravityEffectToElement = function(el, center) {
       var $el, ba, bc, elPos, expFactor, margins, third, xFactor, yFactor;
@@ -113,6 +147,12 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       $el.css(margins);
       return true;
     };
+
+    /*
+    		 # init tooltip to all ItemElements
+    		 #
+    */
+
 
     JJPackery.prototype.initTooltips = function() {
       var _this = this;
@@ -198,6 +238,53 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           }
         });
         return this.api = $el.qtip('api');
+      }
+    };
+
+    JJPackery.prototype.update = function() {
+      if (this.packery) {
+        return this.packery.layout();
+      }
+    };
+
+    JJPackery.prototype.destroy = function() {
+      if (this.packery) {
+        return this.packery.destroy();
+      }
+    };
+
+    JJPackery.prototype.calc = function() {
+      var $item, $stamps, i, item, itemSquare, limit, square, _ref, _ref1;
+
+      limit = .9;
+      square = this.$window.height() * this.$window.width();
+      itemSquare = 0;
+      $stamps = this.$packeryEl.find('.stamp');
+      $stamps.each(function(i, el) {
+        var $item;
+
+        $item = $(el);
+        return itemSquare += $item.width() * $item.height();
+      });
+      _ref = this.packery.getItemElements();
+      for (i in _ref) {
+        item = _ref[i];
+        $item = $(item);
+        itemSquare += $item.width() * $item.height();
+      }
+      if (itemSquare / square > limit) {
+        _ref1 = this.packery.getItemElements();
+        for (i in _ref1) {
+          item = _ref1[i];
+          $item = $(item);
+          $item.width($item.width() * limit);
+          $item.height($item.height * limit);
+        }
+        return $stamps.each(function(i, el) {
+          $item = $(el);
+          $item.width($item.width() * limit);
+          return $item.height($item.height * limit);
+        });
       }
     };
 

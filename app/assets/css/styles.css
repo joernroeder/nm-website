@@ -767,6 +767,7 @@ button.Zebra_DatePicker_Icon {
   width: 100%;
   min-height: 100%;
   opacity: 0;
+  padding: 0;
 }
 .packery-wrapper.loaded {
   opacity: 1;
@@ -881,6 +882,8 @@ button.Zebra_DatePicker_Icon {
 }
 .packery-item > a img {
   display: block;
+  max-width: 100%;
+  height: auto;
 }
 .packery-item section {
   display: none;
@@ -1435,6 +1438,8 @@ x:-o-prefocus,
 .packery-wrapper > img > a img,
 .packery-wrapper .packery-item > a img {
   display: block;
+  max-width: 100%;
+  height: auto;
 }
 .packery-wrapper > img section,
 .packery-wrapper .packery-item section {
@@ -1484,10 +1489,10 @@ x:-o-prefocus,
 .packery-wrapper .packery-item > section[role="tooltip-content"] {
   display: none;
 }
-.main .gravity {
+.main .packery-wrapper {
   width: 100%;
 }
-.index .gravity {
+.index .packery-wrapper {
   width: 75%;
 }
 .index .calendar {
@@ -1501,10 +1506,27 @@ x:-o-prefocus,
   box-sizing: border-box;
   width: 25%;
 }
-.portfolio .gravity {
+.portfolio #wrapper {
+  margin: 0;
+}
+.portfolio .badge {
+  margin-left: 5.555555555555555%;
+}
+.portfolio .packery-wrapper {
   width: 100%;
 }
-.about .gravity {
+.portfolio .packery {
+  width: 100% !important;
+}
+.about {
+  /*&:not(.main) {
+		.packery {
+			width: 100% !important;
+		}
+	}*/
+
+}
+.about .packery-wrapper {
   width: 100%;
 }
 .about article {
@@ -1531,9 +1553,9 @@ x:-o-prefocus,
   box-sizing: border-box;
   width: 37.5%;
 }
-.about .group-image.loaded img {
+.about .group-image img {
   max-width: 100%;
-  height: auto;
+  height: auto !important;
   display: block;
 }
 .about .person {
@@ -1781,6 +1803,8 @@ x:-o-prefocus,
 }
 .editor .overview article > a img {
   display: block;
+  max-width: 100%;
+  height: auto;
 }
 .editor .overview article section {
   display: none;
