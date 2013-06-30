@@ -2066,6 +2066,12 @@ var __hasProp = {}.hasOwnProperty,
       return ModalEditable.__super__.setPopoverContent.call(this, value);
     };
 
+    ModalEditable.prototype.setValue = function(value, silent) {
+      if (!silent) {
+        return this.triggerDataEvent('submit', value);
+      }
+    };
+
     return ModalEditable;
 
   })(JJPopoverEditable);

@@ -1579,6 +1579,9 @@ do ($ = jQuery) ->
 			value = @getForm() unless value
 			super value
 			#super $(value).add(@getPopoverButtons())
+		
+		setValue: (value, silent) ->
+			@triggerDataEvent 'submit', value unless silent
 
 
 
