@@ -435,7 +435,14 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     return 'logging...';
   });
   $(function() {
+    app.$body = $('body');
     jQuery.event.props.push('dataTransfer');
+    $(document).bind('ajaxStart', function(event, xhr, settings) {
+      return app.$body.addClass('requesting');
+    });
+    $(document).bind('ajaxStop', function(event, xhr, settings) {
+      return app.$body.removeClass('requesting');
+    });
     $(document).on('dragenter dragover dragleave drop', function(e) {
       if (e.type === 'dragenter' || e.type === 'dragover') {
         $.fireGlobalDragEvent('dragstart', e.target, 'file');

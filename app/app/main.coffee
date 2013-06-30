@@ -354,9 +354,17 @@ require [
 	# Inside this function, kick-off all initialization, everything up to this
 	# point should be definitions.
 	$ ->
+		app.$body = $('body')
+
 		# init file transfer
 		jQuery.event.props.push 'dataTransfer'
 		
+		$(document).bind 'ajaxStart', (event, xhr, settings) ->
+				app.$body.addClass 'requesting'
+
+		$(document).bind 'ajaxStop', (event, xhr, settings) ->
+			app.$body.removeClass 'requesting'
+
 		# disable drag'n'drop for whole document
 		$(document).on 'dragenter dragover dragleave drop', (e) ->
 			if e.type is 'dragenter' or e.type is 'dragover'
