@@ -247,14 +247,14 @@ aside {
 
 body.requesting .badge {
 	.transition(~"border-bottom .25s ease-in-out");
-	.animation(~"jumpborder 1s infinite");
+	.animation(~"jumpborder 1s infinite alternate both");
 	border-color: @nmColor;
 	border-style: solid;
 
 	> a {
 		position: relative;
 		.transition(~"top .25s ease-in-out");
-		.animation(~"jump 1s infinite");
+		.animation(~"jump 1s infinite alternate both");
 		//background-color: red;
 	}
 }
@@ -1543,10 +1543,18 @@ body.editor-sidebar-open {
 			background-position: 0 50%;
 			background-size: 100%;
 
-			&.icon-publish.publishing {
-				position: relative;
-				.transition(~"top .25s ease-in-out");
-				.animation(~"jump 1s infinite");
+			&.icon-publish {
+				.transition(~"rotate .5s ease-in-out");
+
+				&.publishing {
+					position: relative;
+					.transition(~"top .25s ease-in-out");
+					.animation(~"jumprotate 1s infinite alternate both");
+
+					&:not(.published) {
+						.rotate(180deg);
+					}
+				}
 			}
 
 			span {

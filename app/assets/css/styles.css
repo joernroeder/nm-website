@@ -524,6 +524,39 @@ h2 {
     top: 0;
   }
 }
+@-moz-keyframes jump {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: -10px;
+  }
+  100% {
+    top: 0;
+  }
+}
+@-o-keyframes jump {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: -10px;
+  }
+  100% {
+    top: 0;
+  }
+}
+@keyframes jump {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: -10px;
+  }
+  100% {
+    top: 0;
+  }
+}
 @-webkit-keyframes jumpborder {
   0% {
     border-bottom-width: 10px;
@@ -535,39 +568,37 @@ h2 {
     border-bottom-width: 10px;
   }
 }
-@-webkit-keyframes rainbow {
+@-moz-keyframes jumpborder {
   0% {
-    color: #FF0000;
-  }
-  10% {
-    color: #FF8000;
-  }
-  20% {
-    color: #FFFF00;
-  }
-  30% {
-    color: #80FF00;
-  }
-  40% {
-    color: #00FF00;
+    border-bottom-width: 10px;
   }
   50% {
-    color: #00FF80;
-  }
-  60% {
-    color: #00FFFF;
-  }
-  70% {
-    color: #0080FF;
-  }
-  80% {
-    color: #0000FF;
-  }
-  90% {
-    color: #8000FF;
+    border-bottom-width: 0;
   }
   100% {
-    color: #FF0080;
+    border-bottom-width: 10px;
+  }
+}
+@-o-keyframes jumpborder {
+  0% {
+    border-bottom-width: 10px;
+  }
+  50% {
+    border-bottom-width: 0;
+  }
+  100% {
+    border-bottom-width: 10px;
+  }
+}
+@keyframes jumpborder {
+  0% {
+    border-bottom-width: 10px;
+  }
+  50% {
+    border-bottom-width: 0;
+  }
+  100% {
+    border-bottom-width: 10px;
   }
 }
 .tooltip {
@@ -1092,11 +1123,11 @@ body.requesting .badge {
   -o-transition: border-bottom .25s ease-in-out;
   -ms-transition: border-bottom .25s ease-in-out;
   transition: border-bottom .25s ease-in-out;
-  -webkit-animation: jumpborder 1s infinite;
-  -moz-animation: jumpborder 1s infinite;
-  -o-animation: jumpborder 1s infinite;
-  -ms-animation: jumpborder 1s infinite;
-  animation: jumpborder 1s infinite;
+  -webkit-animation: jumpborder 1s infinite alternate both;
+  -moz-animation: jumpborder 1s infinite alternate both;
+  -o-animation: jumpborder 1s infinite alternate both;
+  -ms-animation: jumpborder 1s infinite alternate both;
+  animation: jumpborder 1s infinite alternate both;
   border-color: #d9df20;
   border-style: solid;
 }
@@ -1107,11 +1138,11 @@ body.requesting .badge > a {
   -o-transition: top .25s ease-in-out;
   -ms-transition: top .25s ease-in-out;
   transition: top .25s ease-in-out;
-  -webkit-animation: jump 1s infinite;
-  -moz-animation: jump 1s infinite;
-  -o-animation: jump 1s infinite;
-  -ms-animation: jump 1s infinite;
-  animation: jump 1s infinite;
+  -webkit-animation: jump 1s infinite alternate both;
+  -moz-animation: jump 1s infinite alternate both;
+  -o-animation: jump 1s infinite alternate both;
+  -ms-animation: jump 1s infinite alternate both;
+  animation: jump 1s infinite alternate both;
 }
 .calendar {
   width: 12.5em;
@@ -2683,6 +2714,13 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   background-position: 0 50%;
   background-size: 100%;
 }
+.editor-sidebar > nav a.icon-publish {
+  -webkit-transition: rotate .5s ease-in-out;
+  -moz-transition: rotate .5s ease-in-out;
+  -o-transition: rotate .5s ease-in-out;
+  -ms-transition: rotate .5s ease-in-out;
+  transition: rotate .5s ease-in-out;
+}
 .editor-sidebar > nav a.icon-publish.publishing {
   position: relative;
   -webkit-transition: top .25s ease-in-out;
@@ -2690,11 +2728,18 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   -o-transition: top .25s ease-in-out;
   -ms-transition: top .25s ease-in-out;
   transition: top .25s ease-in-out;
-  -webkit-animation: jump 1s infinite;
-  -moz-animation: jump 1s infinite;
-  -o-animation: jump 1s infinite;
-  -ms-animation: jump 1s infinite;
-  animation: jump 1s infinite;
+  -webkit-animation: jumprotate 1s infinite alternate both;
+  -moz-animation: jumprotate 1s infinite alternate both;
+  -o-animation: jumprotate 1s infinite alternate both;
+  -ms-animation: jumprotate 1s infinite alternate both;
+  animation: jumprotate 1s infinite alternate both;
+}
+.editor-sidebar > nav a.icon-publish.publishing:not(.published) {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .editor-sidebar > nav a span {
   display: none;
