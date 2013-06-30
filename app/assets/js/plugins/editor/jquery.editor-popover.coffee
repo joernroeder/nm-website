@@ -1465,6 +1465,9 @@ do ($ = jQuery) ->
 			super()
 			@contentTypes = ['modal']
 
+			@inputs = []
+			@buttons = []
+
 		init: (element) ->
 			super element
 
@@ -1486,69 +1489,44 @@ do ($ = jQuery) ->
 			@setFields element.data(@editor.attr._namespace + 'fields')
 			@setButtons element.data(@editor.attr._namespace + 'buttons')
 
+		getForm: ->
+			$form = $('<form>').submit (e) =>
+				e.preventDefault()
+				@submit()
+
+			$.each @inputs, (i, $input) ->
+				$form.append $input
+
+			$buttons = $ '<div class="buttons">'
+			$.each @buttons, (i, $button) ->
+				$buttons.append $button
+
+			$form.append $buttons
+
 		getFields: ->
-			foo = @getOptions().fields
-			console.log foo
-			foo
+			@getOptions().fields
 
 		setFields: (fields) ->
 			@_options.fields = fields if fields
 
-			console.log fields
-
-			html = ''
-			if fields
-				for name, data of fields
-					console.log name
+			if @_options.fields
+				for name, data of @_options.fields
 					data.type = 'text' unless data.type
 					data.placeholder = name unless data.placeholder
 
-					html += '<input type="' + data.type + '"name="' + name + '" placeholder="'+ data.placeholder + '"/>'
+					$input = $ '<input type="' + data.type + '"name="' + name + '" placeholder="'+ data.placeholder + '"/>'
+					@inputs.push $input
 
-			@setPopoverContent html
+			@setPopoverContent()
 
 		getButtons: ->
 			@getOptions().buttons
 
 		setButtons: (buttons) ->
-			@_options.buttons if buttons
-			# repopulate popover content
-			@setFields @getFields()
+			@_options.buttons = buttons if buttons
 
-		_addSubmitEvent: ($btn) ->
-			$btn.on 'click', (e) =>
-				e.preventDefault()
-				$inputs = $ 'input, textarea', @api.tooltip
-
-				data = {}
-
-				$inputs.each (i, input) =>
-					$input = $ input
-					data[$input.attr('name')] = $input.val()
-
-				@setValue data
-				@close()
-
-				false
-
-		_addCancelEvent: ($btn) ->
-			$btn.on 'click', (e) =>
-				e.preventDefault()
-				@close()
-				false
-
-		hide: ->
-			super()
-			$('input, textarea', @api.tooltip).val('')
-
-
-		getPopoverButtons: ->
-			$buttons = $ '<div class="buttons">'
-			buttons = @getButtons()
-
-
-			if buttons
-				for name, data of buttons
+			if @_options.buttons
+				for name, data of @_options.buttons
 					if data.type is 'submit' or 'cancel'
 						$btn = $ '<button type="' + data.type + '">' + name + '</button>'
 
@@ -1558,15 +1536,49 @@ do ($ = jQuery) ->
 						else if data.type is 'cancel'
 							@_addCancelEvent $btn
 
-						console.log $btn
-						$buttons.append $btn
+						@buttons.push $btn
+
+			@setPopoverContent()
+
+		_addSubmitEvent: ($btn, type = 'click') ->
+			$btn.on type, (e) =>
+				e.preventDefault()
+				@submit()
+
+				false
+
+		submit: ->
+			data = {}
+
+			$.each @inputs, (i, input) =>
+				$input = $ input
+				data[$input.attr('name')] = $input.val()
+			
+			@setValue data
+			@close()
+
+		_addCancelEvent: ($btn) ->
+			$btn.on 'click', (e) =>
+				e.preventDefault()
+				@close()
+				false
+
+		close: ->
+			super()
+			$('input, textarea', @api.tooltip).val('')
+
+
+		getPopoverButtons: ->
+			
 
 			console.log $buttons
 
 			$buttons
 
 		setPopoverContent: (value) ->
-			super $(value).add(@getPopoverButtons())
+			value = @getForm() unless value
+			super value
+			#super $(value).add(@getPopoverButtons())
 
 
 

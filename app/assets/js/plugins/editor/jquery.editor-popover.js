@@ -1912,7 +1912,9 @@ var __hasProp = {}.hasOwnProperty,
 
     ModalEditable.prototype.members = function() {
       ModalEditable.__super__.members.call(this);
-      return this.contentTypes = ['modal'];
+      this.contentTypes = ['modal'];
+      this.inputs = [];
+      return this.buttons = [];
     };
 
     ModalEditable.prototype.init = function(element) {
@@ -1936,36 +1938,49 @@ var __hasProp = {}.hasOwnProperty,
       return this.setButtons(element.data(this.editor.attr._namespace + 'buttons'));
     };
 
-    ModalEditable.prototype.getFields = function() {
-      var foo;
+    ModalEditable.prototype.getForm = function() {
+      var $buttons, $form,
+        _this = this;
 
-      foo = this.getOptions().fields;
-      console.log(foo);
-      return foo;
+      $form = $('<form>').submit(function(e) {
+        e.preventDefault();
+        return _this.submit();
+      });
+      $.each(this.inputs, function(i, $input) {
+        return $form.append($input);
+      });
+      $buttons = $('<div class="buttons">');
+      $.each(this.buttons, function(i, $button) {
+        return $buttons.append($button);
+      });
+      return $form.append($buttons);
+    };
+
+    ModalEditable.prototype.getFields = function() {
+      return this.getOptions().fields;
     };
 
     ModalEditable.prototype.setFields = function(fields) {
-      var data, html, name;
+      var $input, data, name, _ref9;
 
       if (fields) {
         this._options.fields = fields;
       }
-      console.log(fields);
-      html = '';
-      if (fields) {
-        for (name in fields) {
-          data = fields[name];
-          console.log(name);
+      if (this._options.fields) {
+        _ref9 = this._options.fields;
+        for (name in _ref9) {
+          data = _ref9[name];
           if (!data.type) {
             data.type = 'text';
           }
           if (!data.placeholder) {
             data.placeholder = name;
           }
-          html += '<input type="' + data.type + '"name="' + name + '" placeholder="' + data.placeholder + '"/>';
+          $input = $('<input type="' + data.type + '"name="' + name + '" placeholder="' + data.placeholder + '"/>');
+          this.inputs.push($input);
         }
       }
-      return this.setPopoverContent(html);
+      return this.setPopoverContent();
     };
 
     ModalEditable.prototype.getButtons = function() {
@@ -1973,31 +1988,55 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     ModalEditable.prototype.setButtons = function(buttons) {
+      var $btn, data, name, _ref9;
+
       if (buttons) {
-        this._options.buttons;
+        this._options.buttons = buttons;
       }
-      return this.setFields(this.getFields());
+      if (this._options.buttons) {
+        _ref9 = this._options.buttons;
+        for (name in _ref9) {
+          data = _ref9[name];
+          if (data.type === 'submit' || 'cancel') {
+            $btn = $('<button type="' + data.type + '">' + name + '</button>');
+            if (data.type === 'submit') {
+              this._addSubmitEvent($btn);
+            } else if (data.type === 'cancel') {
+              this._addCancelEvent($btn);
+            }
+            this.buttons.push($btn);
+          }
+        }
+      }
+      return this.setPopoverContent();
     };
 
-    ModalEditable.prototype._addSubmitEvent = function($btn) {
+    ModalEditable.prototype._addSubmitEvent = function($btn, type) {
       var _this = this;
 
-      return $btn.on('click', function(e) {
-        var $inputs, data;
-
+      if (type == null) {
+        type = 'click';
+      }
+      return $btn.on(type, function(e) {
         e.preventDefault();
-        $inputs = $('input, textarea', _this.api.tooltip);
-        data = {};
-        $inputs.each(function(i, input) {
-          var $input;
-
-          $input = $(input);
-          return data[$input.attr('name')] = $input.val();
-        });
-        _this.setValue(data);
-        _this.close();
+        _this.submit();
         return false;
       });
+    };
+
+    ModalEditable.prototype.submit = function() {
+      var data,
+        _this = this;
+
+      data = {};
+      $.each(this.inputs, function(i, input) {
+        var $input;
+
+        $input = $(input);
+        return data[$input.attr('name')] = $input.val();
+      });
+      this.setValue(data);
+      return this.close();
     };
 
     ModalEditable.prototype._addCancelEvent = function($btn) {
@@ -2010,37 +2049,21 @@ var __hasProp = {}.hasOwnProperty,
       });
     };
 
-    ModalEditable.prototype.hide = function() {
-      ModalEditable.__super__.hide.call(this);
+    ModalEditable.prototype.close = function() {
+      ModalEditable.__super__.close.call(this);
       return $('input, textarea', this.api.tooltip).val('');
     };
 
     ModalEditable.prototype.getPopoverButtons = function() {
-      var $btn, $buttons, buttons, data, name;
-
-      $buttons = $('<div class="buttons">');
-      buttons = this.getButtons();
-      if (buttons) {
-        for (name in buttons) {
-          data = buttons[name];
-          if (data.type === 'submit' || 'cancel') {
-            $btn = $('<button type="' + data.type + '">' + name + '</button>');
-            if (data.type === 'submit') {
-              this._addSubmitEvent($btn);
-            } else if (data.type === 'cancel') {
-              this._addCancelEvent($btn);
-            }
-            console.log($btn);
-            $buttons.append($btn);
-          }
-        }
-      }
       console.log($buttons);
       return $buttons;
     };
 
     ModalEditable.prototype.setPopoverContent = function(value) {
-      return ModalEditable.__super__.setPopoverContent.call(this, $(value).add(this.getPopoverButtons()));
+      if (!value) {
+        value = this.getForm();
+      }
+      return ModalEditable.__super__.setPopoverContent.call(this, value);
     };
 
     return ModalEditable;
