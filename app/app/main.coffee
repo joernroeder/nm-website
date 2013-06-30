@@ -20,6 +20,9 @@ require [
 	Backbone.JJRelational.Config.work_with_store = true
 
 	# ! APP SETUP / BASIC FUNCTIONS
+	
+	# this is used to check how many ajax POST/PUT/DELETE/PATCH are active 
+	app.ajaxCount = 0
 
 	# Backbone specific
 	app.Router = new Router()
@@ -359,11 +362,15 @@ require [
 		# init file transfer
 		jQuery.event.props.push 'dataTransfer'
 		
-		$(document).bind 'ajaxStart', (event, xhr, settings) ->
+		$(document).bind 'ajaxSend', (event, xhr, settings) ->
+			if settings.type isnt 'GET'
+				app.ajaxCount++
 				app.$body.addClass 'requesting'
 
-		$(document).bind 'ajaxStop', (event, xhr, settings) ->
-			app.$body.removeClass 'requesting'
+		$(document).bind 'ajaxComplete', (event, xhr, settings) ->
+			if settings.type isnt 'GET'
+				app.ajaxCount--
+				app.$body.removeClass('requesting') if app.ajaxCount is 0
 
 		# disable drag'n'drop for whole document
 		$(document).on 'dragenter dragover dragleave drop', (e) ->
