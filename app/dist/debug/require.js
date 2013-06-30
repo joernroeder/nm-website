@@ -285,10 +285,10 @@ __p+='<div style="margin-top:300px">\n\t<h2>Your lucky numbers for today: 4, 0, 
 return __p;
 };
 
-this["JST"]["app/templates/about-gravity.html"] = function(obj){
+this["JST"]["app/templates/about-packery.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<!-- section class="gravity" -->\n{{#if GroupImage}}\n<section class="gravity-item group-image">\n\t{{#with GroupImage.Urls._768}}\n\t\t<img src="{{Url}}" width="{{Width}}" height="{{Height}}" />\n\t{{/with}}\n</section>\n{{/if}}\n\n<section class="students gravity-item">\n\t<h1>Students</h1>\n\t<ul id="student-list"></ul>\n</section>\n<section class="alumni gravity-item">\n\t<h1>Alumni</h1>\n\t<ul id="alumni-list"></ul>\n</section>\n<section class="statement gravity-item">\n\t<p>The class <cite>New Media</cite> within the course <cite>Visual Communication</cite> at the <cite>School of Art and Design Kassel</cite> walks a fine line between art, design, provocation and study. The main focus lies on the media consumption of society and its perpetual obsession with technological progress, change and transformation; established processes and methods are permanently questioned and modified.</p>\n\t<p>The students in the class <cite>New Media</cite> see themselves as researchers, artists, designers and developers at the same time.</p>\n\t<p>Realising and publicly defending a deeply personal idea means also being able to realise the ideas of others. An outstanding developer of own concepts and ideas will have the ability to implement external ideas and concepts as well.</p>\n\t<p>There is no need to train service providers for an existing industry, but personalities who by discourse acquired skills which are constantly expanded and established – for oneself and others.</p>\n\t<p>By use of the Internet and support of the group these skills are exchanged, discussed and broadened self-educatedly. This provides a topicality and relevance which eludes institutions.</p>\n\t<p>To study “New Media” is to be an author. To learn from oneself, to learn seeing, speaking and thinking. To develop a culture of debate. To work on projects together. To mix media and ideas, to fail and learn from it. The aim is to shape a personal position and methodology.</p>\n</section>\n<!-- /section -->';
+__p+='<!-- section class="packery-wrapper" -->\n<div class="packery-test">\n\t<div class="packery">\n\n\t\t<!-- left top -->\n\t\t<div class="stamp corner left top"></div>\n\t\t<div class="stamp top"></div>\n\t\t<div class="stamp left"></div>\n\n\t\t<!-- top center -->\n\t\t<div class="stamp top center"></div>\n\n\t\t<!-- right top -->\n\t\t<div class="stamp corner right top"></div>\n\t\t<div class="stamp top right"></div>\n\t\t<div class="stamp right"></div>\n\n\t\t<!-- left center -->\n\t\t<div class="stamp left center"></div>\n\n\t\t<!-- left bottom -->\n\t\t<div class="stamp corner left bottom"></div>\n\t\t<div class="stamp bottom"></div>\n\t\t<div class="stamp left bottom"></div>\n\n\t\t<div class="stamp corner right bottom"></div>\n\t\t<div class="stamp bottom right-left"></div>\n\t\t<div class="stamp right bottom"></div>\t\t\t\n\n\t\t{{#if GroupImage}}\n\t\t<section class="packery-item group-image">\n\t\t\t{{#with GroupImage.Urls._768}}\n\t\t\t\t<img src="{{Url}}" width="{{Width}}" height="{{Height}}" />\n\t\t\t{{/with}}\n\t\t</section>\n\t\t{{/if}}\n\n\t\t<section class="students packery-item">\n\t\t\t<h1>Students</h1>\n\t\t\t<ul id="student-list"></ul>\n\t\t</section>\n\t\t<section class="alumni packery-item">\n\t\t\t<h1>Alumni</h1>\n\t\t\t<ul id="alumni-list"></ul>\n\t\t</section>\n\t\t<section class="statement packery-item">\n\t\t\t<p>The class <cite>New Media</cite> within the course <cite>Visual Communication</cite> at the <cite>School of Art and Design Kassel</cite> walks a fine line between art, design, provocation and study. The main focus lies on the media consumption of society and its perpetual obsession with technological progress, change and transformation; established processes and methods are permanently questioned and modified.</p>\n\t\t\t<p>The students in the class <cite>New Media</cite> see themselves as researchers, artists, designers and developers at the same time.</p>\n\t\t\t<p>Realising and publicly defending a deeply personal idea means also being able to realise the ideas of others. An outstanding developer of own concepts and ideas will have the ability to implement external ideas and concepts as well.</p>\n\t\t\t<p>There is no need to train service providers for an existing industry, but personalities who by discourse acquired skills which are constantly expanded and established – for oneself and others.</p>\n\t\t\t<p>By use of the Internet and support of the group these skills are exchanged, discussed and broadened self-educatedly. This provides a topicality and relevance which eludes institutions.</p>\n\t\t\t<p>To study “New Media” is to be an author. To learn from oneself, to learn seeing, speaking and thinking. To develop a culture of debate. To work on projects together. To mix media and ideas, to fail and learn from it. The aim is to shape a personal position and methodology.</p>\n\t\t</section>\n\t</div>\n</div>\n\n<!-- /section -->';
 }
 return __p;
 };
@@ -325,14 +325,6 @@ __p+='<!-- section class="person gravity-item" -->\n\t<div class="img">\n\t\t{{#
 return __p;
 };
 
-this["JST"]["app/templates/gravity-list-item.html"] = function(obj){
-var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
-with(obj||{}){
-__p+='<!-- article class="gravity-item" -->\n<!--<a href="/{{LinkTo}}/{{UglyHash}}/">\n\t<div>\n\t\t<p>{{ Title }}</p>\n\t\t{{#if PreviewImage}}\n\t\t\t{{#with PreviewImage.Urls._320}}\n\t\t\t\t<div><img src="{{Url}}" width="{{Width}}" height="{{Height}}"/></div>\n\t\t\t{{/with}}\n\t\t{{/if}}\n\t</div>\n</a>-->\n\t{{#if PreviewImage}}\n\t\t<a href="/{{LinkTo}}/{{UglyHash}}/">\n\t\t\t{{#with PreviewImage.Urls._320}}\n\t\t\t\t<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>\n\t\t\t{{/with}}\n\t\t</a>\n\t{{/if}}\n\t<section role="tooltip-content">\n\t\t<header>\n\t\t\t<h1>\n\t\t\t\t<a href="/{{LinkTo}}/{{UglyHash}}/">{{Title}}</a>\n\t\t\t</h1>\n\t\t\t<p>{{{teaserMeta}}}</p>\n\t\t</header>\n\t\t<p>\n\t\t\t{{{MarkdownedTeaser}}}\n\t\t</p>\n\t\t<a href="/{{LinkTo}}/{{UglyHash}}/" class="btn">Read More</a>\n\t</section>\n<!-- /article -->';
-}
-return __p;
-};
-
 this["JST"]["app/templates/layouts/editor.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
@@ -344,7 +336,7 @@ return __p;
 this["JST"]["app/templates/layouts/index.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<div id="gravity-container"></div>\n<section id="calendar" class="calendar"></section>';
+__p+='<div id="packery-container"></div>\n<section id="calendar" class="calendar"></section>';
 }
 return __p;
 };
@@ -360,7 +352,23 @@ return __p;
 this["JST"]["app/templates/layouts/portfolio.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<div id="gravity-container"></div>';
+__p+='<div id="packery-container"></div>';
+}
+return __p;
+};
+
+this["JST"]["app/templates/packery-container.html"] = function(obj){
+var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
+with(obj||{}){
+__p+='<!-- section class="packery-wrapper" -->\n<div class="packery-test">\n\t<div class="packery">\n\n\t\t<!-- left top -->\n\t\t<div class="stamp corner left top"></div>\n\t\t<div class="stamp top"></div>\n\t\t<div class="stamp left"></div>\n\n\t\t<!-- top center -->\n\t\t<div class="stamp top center"></div>\n\n\t\t<!-- right top -->\n\t\t<div class="stamp corner right top"></div>\n\t\t<div class="stamp top right"></div>\n\t\t<div class="stamp right"></div>\n\n\t\t<!-- left center -->\n\t\t<div class="stamp left center"></div>\n\n\t\t<!-- left bottom -->\n\t\t<div class="stamp corner left bottom"></div>\n\t\t<div class="stamp bottom"></div>\n\t\t<div class="stamp left bottom"></div>\n\n\t\t<div class="stamp corner right bottom"></div>\n\t\t<div class="stamp bottom right-left"></div>\n\t\t<div class="stamp right bottom"></div>\n\t\t\n\t</div>\n</div>\n<!-- /section -->';
+}
+return __p;
+};
+
+this["JST"]["app/templates/packery-list-item.html"] = function(obj){
+var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
+with(obj||{}){
+__p+='<!-- article class="gravity-item" -->\n<!--<a href="/{{LinkTo}}/{{UglyHash}}/">\n\t<div>\n\t\t<p>{{ Title }}</p>\n\t\t{{#if PreviewImage}}\n\t\t\t{{#with PreviewImage.Urls._320}}\n\t\t\t\t<div><img src="{{Url}}" width="{{Width}}" height="{{Height}}"/></div>\n\t\t\t{{/with}}\n\t\t{{/if}}\n\t</div>\n</a>-->\n\t{{#if PreviewImage}}\n\t\t<a href="/{{LinkTo}}/{{UglyHash}}/">\n\t\t\t{{#with PreviewImage.Urls._320}}\n\t\t\t\t<img src="{{Url}}" width="{{Width}}" height="{{Height}}"/>\n\t\t\t{{/with}}\n\t\t</a>\n\t{{/if}}\n\t<section role="tooltip-content">\n\t\t<header>\n\t\t\t<h1>\n\t\t\t\t<a href="/{{LinkTo}}/{{UglyHash}}/">{{Title}}</a>\n\t\t\t</h1>\n\t\t\t<p>{{{teaserMeta}}}</p>\n\t\t</header>\n\t\t<p>\n\t\t\t{{{MarkdownedTeaser}}}\n\t\t</p>\n\t\t<a href="/{{LinkTo}}/{{UglyHash}}/" class="btn">Read More</a>\n\t</section>\n<!-- /article -->';
 }
 return __p;
 };
@@ -384,7 +392,15 @@ return __p;
 this["JST"]["app/templates/portfolio-detail.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<!-- article class="portfolio-detail" -->\n<header>\n\t<h1>{{Title}}</h1>\n\t<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>\n\t<p>{{niceDate this}}</p>\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section>\n\t{{{MarkdownedText}}}\n</section>\n<aside>\n\t{{#if Categories}}\n\t\t<h4>Categories</h4>\n\t\t<ul>\n\t\t{{#each Categories}}\n\t\t\t<li><a href="/portfolio/search/Category:{{ID}}/">{{Title}}</a></li>\n\t\t{{/each}}\n\t\t</ul>\n\t{{/if}}\n\n\t{{#if combinedProjects}}\n\t\t{{{portfoliolist combinedProjects "Project"}}}\n\t{{/if}}\n\n\t{{#if Exhibitions}}\n\t\t{{{portfoliolist Exhibitions "Exhibition"}}}\n\t{{/if}}\n\t\n\t{{#if Workshops}}\n\t\t{{{portfoliolist Workshops "Workshop"}}}\n\t{{/if}}\n\t\n\t{{#if Excursions}}\n\t\t{{{portfoliolist Excursions "Excursion"}}}\n\t{{/if}}\n</aside>\n\n{{#if Code}}\n<script type="text/javascript">\n\t$(document).one(\'code:kickoff\', function (e) {\n\t\t{{{Code}}}\n\n\t\te.stopImmediatePropagation();\n\t});\n</script>\n{{/if}}\n\n<!-- /article -->';
+__p+='<!-- article class="portfolio-detail" -->\n<header>\n\t<h1>{{Title}}</h1>\n\t<p>\n\t\t{{{nameSummary Persons}}}\n\t</p>\n\t<p>{{niceDate this true}}</p>\n\t{{#stringDiff "Project" ClassName}}\n\t\t{{{SpaceAndLocation}}}\n\t{{/stringDiff}}\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section>\n\t{{{MarkdownedText}}}\n</section>\n<aside>\n\t\n\t{{#stringCompare "Project" ClassName}}\n\t\t{{#if Exhibitions}}{{{portfoliolist Exhibitions "Exhibition"}}}{{/if}}\n\t\t{{#if Workshops}}{{{portfoliolist Workshops "Workshop"}}}{{/if}}\n\t\t{{#if Excursions}}{{{portfoliolist Excursions "Excursion"}}}{{/if}}\n\t\t{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}\n\t{{/stringCompare}}\n\n\t{{#stringCompare "Exhibition" ClassName}}\n\t\t{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}\n\t\t{{#if Workshops}}{{{portfoliolist Workshops "Workshop"}}}{{/if}}\n\t\t{{#if Excursions}}{{{portfoliolist Excursions "Excursion"}}}{{/if}}\n\t{{/stringCompare}}\n\n\t{{#stringCompare "Excursion" ClassName}}\n\t\t{{#if Exhibitions}}{{{portfoliolist Exhibitions "Exhibition"}}}{{/if}}\n\t\t{{#if Workshops}}{{{portfoliolist Workshops "Workshop"}}}{{/if}}\n\t\t{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}\n\t{{/stringCompare}}\n\n\t{{#stringCompare "Workshop" ClassName}}\n\t\t{{#if Exhibitions}}{{{portfoliolist Exhibitions "Exhibition"}}}{{/if}}\n\t\t{{#if Excursions}}{{{portfoliolist Excursions "Excursion"}}}{{/if}}\n\t\t{{#if combinedProjects}}{{{portfoliolist combinedProjects "Project"}}}{{/if}}\n\t{{/stringCompare}}\n\n\t<hr/>\n\n\t{{#if Categories}}\n\t\t<h4>Categories</h4>\n\t\t<ul>\n\t\t{{#each Categories}}\n\t\t\t<li><a href="/portfolio/search/Category:{{ID}}/">{{Title}}</a></li>\n\t\t{{/each}}\n\t\t</ul>\n\t{{/if}}\n\n\t{{#if IsGroup}}\n\t\t{{{personlist Persons}}}\n\t{{/if}}\n</aside>\n\n<!--{{#if Code}}\n<script type="text/javascript">\n\t$(document).one(\'code:kickoff\', function (e) {\n\t\t{{{Code}}}\n\n\t\te.stopImmediatePropagation();\n\t});\n</script>\n{{/if}}-->\n\n<!-- /article -->';
+}
+return __p;
+};
+
+this["JST"]["app/templates/searchbar.html"] = function(obj){
+var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
+with(obj||{}){
+__p+='<style>\n\t#searchbar {\n\t\tbackground: #000;\n\t\tcolor: #fff;\n\t\tposition:absolute;\n\t\ttop: 80%;\n\t\tleft: 45%;\n\t\twidth: 600px;\n\t}\n\n</style>\n\n<!-- div id="projectsearch" -->\n<div class="category-filter">\n\t{{#if Categories}}\n\t\t<ul>\n\t\t\t{{#each Categories}}\n\t\t\t\t<li><a href="#" data-title="{{Title}}" data-id="{{ID}}">{{Title}}</a></li>\n\t\t\t{{/each}}\n\t\t</ul>\n\t{{/if}}\n\t<div class="visualsearch"></div>\n</div>\n<!-- /div -->\n\n\n\n\n\n\n<style>\n\n.VS-search .VS-icon {\n  background-repeat: no-repeat;\n  background-position: center center;\n  vertical-align: middle;\n  width: 16px; height: 16px;\n}\n  .VS-search .VS-icon-cancel {\n    width: 11px; height: 11px;\n    background-position: center 0;\n    background-image: url(../images/embed/icons/cancel_search.png?1311104738);\n    cursor: pointer;\n  }\n    .VS-search .VS-icon-cancel:hover {\n      background-position: center -11px;\n    }\n  .VS-search .VS-icon-search {\n    width: 12px; height: 12px;\n    background-image: url(../images/embed/icons/search_glyph.png?1311104738);\n  }\n\n/*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/\n\n/* \nEric Meyer\'s final reset.css\nSource: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/ \n*/\n.VS-search div, .VS-search span, .VS-search a, .VS-search img, \n.VS-search ul, .VS-search li, .VS-search form, .VS-search label,\n.VS-interface ul, .VS-interface li, .VS-interface {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  font-weight: inherit;\n  font-style: inherit;\n  font-size: 100%;\n  font-family: inherit;\n  vertical-align: baseline;\n}\n\n.VS-search :focus {\n  outline: 0;\n}\n.VS-search {\n  line-height: 1;\n  color: black;\n}\n.VS-search ol, .VS-search ul {\n  list-style: none;\n}\n\n/* ===================== */\n/* = General and Reset = */\n/* ===================== */\n\n.VS-search {\n  font-family: Arial, sans-serif;\n  color: #373737;\n  font-size: 12px;\n}\n.VS-search input {\n  display: block;\n  border: none;\n  -moz-box-shadow: none;\n  -webkit-box-shadow: none;\n  box-shadow: none;\n  outline: none;\n  margin: 0; padding: 4px;\n  background: transparent;\n  font-size: 16px;\n  line-height: 20px;\n  width: 100%;\n}\n.VS-interface, .VS-search .dialog, .VS-search input {\n  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;\n  line-height: 1.1em;\n}\n\n/* ========== */\n/* = Layout = */\n/* ========== */\n\n.VS-search .VS-search-box {\n  cursor: text;\n  position: relative;\n  background: transparent;\n  border: 2px solid #ccc;\n  border-radius: 16px; -webkit-border-radius: 16px; -moz-border-radius: 16px;\n  background-color: #fafafa;\n  -webkit-box-shadow: inset 0px 0px 3px #ccc;\n  -moz-box-shadow: inset 0px 0px 3px #ccc;\n  box-shadow: inset 0px 0px 3px #ccc;\n  min-height: 28px;\n  height: auto;\n}\n  .VS-search .VS-search-box.VS-focus {\n    border-color: #acf;\n    -webkit-box-shadow: inset 0px 0px 3px #acf;\n    -moz-box-shadow: inset 0px 0px 3px #acf;\n    box-shadow: inset 0px 0px 3px #acf;\n  }\n  .VS-search .VS-placeholder {\n      position: absolute;\n      top: 7px;\n      left: 4px;\n      margin: 0 20px 0 22px;\n      color: #808080;\n      font-size: 14px;\n  }\n  .VS-search .VS-search-box.VS-focus .VS-placeholder,\n  .VS-search .VS-search-box .VS-placeholder.VS-hidden {\n      display: none;\n  }\n  .VS-search .VS-search-inner {\n    position: relative;\n    margin: 0 20px 0 22px;\n    overflow: hidden;\n  }\n  .VS-search input {\n    width: 100px;\n  }\n  .VS-search input,\n  .VS-search .VS-input-width-tester {\n    padding: 6px 0;\n    float: left;\n    color: #808080;\n    font: 13px/17px Helvetica, Arial;\n  }\n  .VS-search.VS-focus input {\n    color: #606060;\n  }\n  .VS-search .VS-icon-search {\n    position: absolute;\n    left: 9px; top: 8px;\n  }\n  .VS-search .VS-icon-cancel {\n    position: absolute;\n    right: 9px; top: 8px;\n  }\n\n/* ================ */\n/* = Search Facet = */\n/* ================ */\n\n.VS-search .search_facet {\n  float: left;\n  margin: 0;\n  padding: 0 0 0 14px;\n  position: relative;\n  border: 1px solid transparent;\n  height: 20px;\n  margin: 3px -3px 3px 0;\n}\n  .VS-search .search_facet.is_selected {\n    margin-left: -3px;\n    -webkit-border-radius: 16px;\n    -moz-border-radius: 16px;\n    border-radius: 16px;\n    background-color: #d2e6fd;\n    background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9); /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9)); /* Saf4+, Chrome */\n    background-image: linear-gradient(top, #d2e6fd, #b0d1f9);\n    border: 1px solid #6eadf5;\n  }\n  .VS-search .search_facet .category {\n    float: left;\n    text-transform: uppercase;\n    font-weight: bold;\n    font-size: 10px;\n    color: #808080;\n    padding: 8px 0 5px;\n    line-height: 13px;\n    cursor: pointer;\n    padding: 4px 0 0;\n  }\n  .VS-search .search_facet.is_selected .category {\n    margin-left: 3px;\n  }\n  .VS-search .search_facet .search_facet_input_container {\n    float: left;\n  }\n  .VS-search .search_facet input {\n    margin: 0;\n    padding: 0;\n    color: #000;\n    font-size: 13px;\n    line-height: 16px;\n    padding: 5px 0 5px 4px;\n    height: 16px;\n    width: auto;\n    z-index: 100;\n    position: relative;\n    padding-top: 1px;\n    padding-bottom: 2px;\n    padding-right: 3px;\n\n  }\n  .VS-search .search_facet.is_editing input,\n  .VS-search .search_facet.is_selected input {\n    color: #000;\n  }\n  .VS-search .search_facet .search_facet_remove {\n    position: absolute;\n    left: 0;\n    top: 4px;\n  }\n    .VS-search .search_facet.is_selected .search_facet_remove {\n      opacity: 0.4;\n      left: 3px;\n      filter: alpha(opacity=40);\n      background-position: center -11px;\n    }\n    .VS-search .search_facet .search_facet_remove:hover {\n      opacity: 1;\n    }\n  .VS-search .search_facet.is_editing .category,\n  .VS-search .search_facet.is_selected .category {\n    color: #000;\n  }\n  .VS-search .search_facet.search_facet_maybe_delete .category,\n  .VS-search .search_facet.search_facet_maybe_delete input {\n    color: darkred;\n  }\n\n/* ================ */\n/* = Search Input = */\n/* ================ */\n\n.VS-search .search_input {\n  height: 28px;\n  float: left;\n  margin-left: -1px;\n}\n  .VS-search .search_input input {\n    padding: 6px 3px 6px 2px;\n    line-height: 10px;\n    height: 22px;\n    margin-top: -4px;\n    width: 10px;\n    z-index: 100;\n    min-width: 4px;\n    position: relative;\n  }\n  .VS-search .search_input.is_editing input {\n    color: #202020;\n  }\n\n/* ================ */\n/* = Autocomplete = */\n/* ================ */\n\n.ui-helper-hidden-accessible {\n    display: none;\n}\n\n.VS-interface.ui-autocomplete {\n  position: absolute;\n  border: 1px solid #C0C0C0;\n  border-top: 1px solid #D9D9D9;\n  background-color: #F6F6F6;\n  cursor: pointer;\n  z-index: 10000;\n  padding: 0;\n  margin: 0;\n  width: auto;\n  min-width: 80px;\n  max-width: 220px;\n  max-height: 240px;\n  overflow-y: auto;\n  overflow-x: hidden;\n  font-size: 13px;\n  top: 5px;\n  opacity: 0.97;\n  box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -moz-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5);\n}\n  .VS-interface.ui-autocomplete .ui-autocomplete-category {\n    text-transform: capitalize;\n    font-size: 11px;\n    padding: 4px 4px 4px;\n    border-top: 1px solid #A2A2A2;\n    border-bottom: 1px solid #A2A2A2;\n    background-color: #B7B7B7;\n    text-shadow: 0 -1px 0 #999;\n    font-weight: bold;\n    color: white;\n    cursor: default;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item {\n      float: none;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item a {\n    color: #000;\n    outline: none;\n    display: block;\n    padding: 3px 4px 5px;\n    border-radius: none;\n    line-height: 1;\n    background-color: #F8F8F8;\n    background-image: -moz-linear-gradient(top, #F8F8F8, #F3F3F3); /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#F3F3F3)); /* Saf4+, Chrome */\n    background-image: linear-gradient(top, #F8F8F8, #F3F3F3);\n    border-top: 1px solid #FAFAFA;\n    border-bottom: 1px solid #f0f0f0;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item a:active {\n    outline: none;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item .ui-state-hover, .VS-interface.ui-autocomplete .ui-menu-item .ui-state-focus {\n    background-color: #6483F7;\n    background-image: -moz-linear-gradient(top, #648bF5, #2465f3); /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#648bF5), to(#2465f3)); /* Saf4+, Chrome */\n    background-image: linear-gradient(top, #648bF5, #2465f3);\n    border-top: 1px solid #5b83ec;\n    border-bottom: 1px solid #1459e9;\n    border-left: none;\n    border-right: none;\n    color: white;\n    margin: 0;\n  }\n  .VS-interface.ui-autocomplete .ui-corner-all {\n    border-radius: 0;\n  }\n  .VS-interface.ui-autocomplete li {\n    list-style: none;\n    width: auto;\n  }\n</style>';
 }
 return __p;
 };
@@ -408,7 +424,7 @@ return __p;
 this["JST"]["app/templates/security/editor-project-main.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<!-- article -->\n<header data-editor-scope="\\ProjectMain">\n\t<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>\n\t<div class="persons">\n\t\t{{#if CurrentMemberPerson}}\n\t\t\t{{#with CurrentMemberPerson}}\n\t\t\t\t{{FirstName}} {{Surname}}\n\t\t\t{{/with}}\n\t\t{{/if}}\n\t\t<div data-editor-type="select-person" data-editor-name="Person" data-editor-placeholder="Add Collaborators…"></div>\n\t</div>\n\t\n\t<!--<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>-->\n\t<p>{{niceDate this}}</p>\n\t{{#if Websites}}\n\t\t<p>{{{commaSeparatedWebsites Websites}}}</p>\n\t{{/if}}\n</header>\n<section data-editor-scope="\\ProjectMain">\n\n\t<div data-editor-type="markdown-split" data-editor-name="Text" data-editor-options=\'{"customParsers": {"images": "ImageMarkdownParser", "embed": "OEmbedMarkdownParser"}}\'>{{Text}}</div>\n\n</section>\n<aside data-editor-scope="\\ProjectMain">\n\t{{#stringCompare "Project" ClassName}}\n\t\t<h1>Categories</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Category" data-editor-placeholder="Add..."></ul>\n\t{{/stringCompare}}\n\n\t<h1>Projects</h1>\n\t<ul data-editor-type="select-list" data-editor-name="Project" data-editor-placeholder="Add…"></ul>\n\n\t{{#stringDiff "Exhibition" ClassName}}\n\t\t<h1>Exhibitions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Exhibition" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Workshop" ClassName}}\n\t\t<h1>Workshops</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Workshop" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Excursion" ClassName}}\n\t\t<h1>Excursions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n</aside>\n\n<!-- /article -->';
+__p+='<!-- article -->\n<header data-editor-scope="\\ProjectMain">\n\t<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>\n\t<div class="persons">\n\t\t{{#if CurrentMemberPerson}}\n\t\t\t{{#with CurrentMemberPerson}}\n\t\t\t\t{{FirstName}} {{Surname}}\n\t\t\t{{/with}}\n\t\t{{/if}}\n\t\t<div data-editor-type="select-person" data-editor-name="Person" data-editor-placeholder="Add Collaborators…"></div>\n\t</div>\n\t\n\t<!--<p>\n\t{{#if IsGroup}}\n\t\tGroup project\n\t{{else}}\n\t\t{{{nameSummary Persons}}}\n\t{{/if}}\n\t</p>-->\n</header>\n<section data-editor-scope="\\ProjectMain">\n\n\t<div data-editor-type="markdown-split" data-editor-name="Text" data-editor-options=\'{"customParsers": {"images": "ImageMarkdownParser", "embed": "OEmbedMarkdownParser"}}\'>{{Text}}</div>\n\n</section>\n<aside data-editor-scope="\\ProjectMain">\n\t<div>\n\t\t<h3>Websites</h3>\n\t\t\t<ul class="websites">\n\t\t\t</ul>\n\t\t\t<button data-editor-type="modal" data-editor-name="Website" data-editor-fields=\'{"Title": {"type": "text"}, "Link": {"type": "text"}}\'>\n\t\t\t\tAdd Website\n\t\t\t</button>\n\t</div>\n\n\t{{#stringCompare "Project" ClassName}}\n\t\t<h1>Categories</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Category" data-editor-placeholder="Add..."></ul>\n\t{{/stringCompare}}\n\n\t<h1>Projects</h1>\n\t<ul data-editor-type="select-list" data-editor-name="Project" data-editor-placeholder="Add…"></ul>\n\n\t{{#stringDiff "Exhibition" ClassName}}\n\t\t<h1>Exhibitions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Exhibition" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Workshop" ClassName}}\n\t\t<h1>Workshops</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Workshop" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t{{#stringDiff "Excursion" ClassName}}\n\t\t<h1>Excursions</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Excursion" data-editor-placeholder="Add…"></ul>\n\t{{/stringDiff}}\n\n\t<hr />\n\n\t{{#stringCompare "Project" ClassName}}\n\t\t<h1>Blocked editors</h1>\n\t\t<ul data-editor-type="select-list-confirm" data-editor-name="BlockedEditors" data-editor-placeholder="Add…" data-editor-confirm="Blocked Editors confirm text"></ul>\n\t{{else}}\n\t\t<h1>Additional editors</h1>\n\t\t<ul data-editor-type="select-list" data-editor-name="Editors" data-editor-placeholder="Add…" data-editor-confirm="Editors confirm text"></ul>\n\t{{/stringCompare}}\n\n</aside>\n\n<!-- /article -->';
 }
 return __p;
 };
@@ -416,7 +432,7 @@ return __p;
 this["JST"]["app/templates/security/editor-project-preview.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<div class="preview-image {{#if PreviewImage}}filled{{/if}}">\n\t{{#if PreviewImage}}\n\t\t{{#with PreviewImage.Urls._320}}\n\t\t\t<img src="{{Url}}" />\n\t\t{{/with}}\n\t{{/if}}\n</div>\n<div class="meta" data-editor-scope="\\ProjectPreview">\n\t<header>\n\t\t<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>\n\t\t{{#stringCompare "Project" ClassName}}\n\t\t\t<p><span data-editor-type="date" data-editor-name="Date" data-editor-options=\'{ "contentFormat": "M Y"}\'>{{niceDate this}}</span></p>\n\t\t{{else}}\n\t\t\t<p>\n\t\t\t\t<span data-editor-type="date" data-editor-name="StartDate" data-editor-options=\'{"format": "d. M Y"}\'>{{StartDate}}</span> -\n\t\t\t\t<span data-editor-type="date" data-editor-name="EndDate" data-editor-options=\'{"format": "d. M Y"}\'>{{EndDate}}</span>\n\t\t\t</p>\n\t\t\t<p class="nice-date">{{niceDate this}}</p>\n\t\t{{/stringCompare}}\n\t</header>\n\t<p data-editor-type="markdown" data-editor-name="TeaserText" data-editor-placeholder="Teaser" data-editor-options=\'{"customParsers": {}, "position": {"my": "right top", "at": "right bottom", "adjust": {"x": 0, "y": 10}}, "repositionOnChange": true, "charlimit": 156}\'>{{TeaserText}}</p>\n</div>';
+__p+='<div class="preview-image {{#if PreviewImage}}filled{{/if}}">\n\t{{#if PreviewImage}}\n\t\t{{#with PreviewImage.Urls._320}}\n\t\t\t<img src="{{Url}}" />\n\t\t{{/with}}\n\t{{/if}}\n</div>\n<div class="meta" data-editor-scope="\\ProjectPreview">\n\t<header>\n\t\t<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>\n\t\t{{#stringCompare "Project" ClassName}}\n\t\t\t<p><span data-editor-type="date" data-editor-name="Date" data-editor-options=\'{ "contentFormat": "M Y"}\'>{{niceDate this}}</span></p>\n\t\t{{else}}\n\t\t\t<p>\n\t\t\t\t<span data-editor-type="date" data-editor-name="StartDate" data-editor-options=\'{"format": "d. M Y"}\'>{{StartDate}}</span> -\n\t\t\t\t<span data-editor-type="date" data-editor-name="EndDate" data-editor-options=\'{"format": "d. M Y"}\'>{{EndDate}}</span>\n\t\t\t</p>\n\t\t\t<p class="nice-date">{{niceDate this}}</p>\n\t\t{{/stringCompare}}\n\t\t{{#stringDiff "Project" ClassName}}\n\t\t\t<p><span data-editor-type="inline" data-editor-name="Space" data-editor-placeholder="Space">{{Space}}</span></p>\n\t\t\t<p><span data-editor-type="inline" data-editor-name="Location" data-editor-placeholder="Location">{{Location}}</span></p>\n\t\t{{/stringDiff}}\n\t</header>\n\t<p data-editor-type="markdown" data-editor-name="TeaserText" data-editor-placeholder="Teaser" data-editor-options=\'{"customParsers": {}, "position": {"my": "right top", "at": "right bottom", "adjust": {"x": 0, "y": 10}}, "repositionOnChange": true, "charlimit": 156}\'>{{TeaserText}}</p>\n</div>';
 }
 return __p;
 };
@@ -456,7 +472,7 @@ return __p;
 this["JST"]["app/templates/security/editor-sidebar-user.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
-__p+='<header class="editor-header hideable">\n\t<div class="img" id="current-person-image">\n\t\t{{#if CurrentImage}}<img src="{{CurrentImage.url}}">{{/if}}\n\t</div>\n\t<hgroup>\n\t\t{{#if Person}}<h1>{{#with Person}}<a href="/about/{{UrlSlug}}/">{{FirstName}} {{Surname}}</a>{{/with}}</h1>{{/if}}\n\n\t\t{{#if Member}}<p class="email">{{Member.Email}}</p>{{/if}}\n\t</hgroup>\n</header>\n<section class="editor-sidebar-content scrollbox">\n\t<header>\n\t\t<h2>Person Images</h2>\n\t</header>\n\t<section>\n\t\t<ul class="image-list">\n\t\t</ul>\n\t</section>\n\n\t<header>\n\t\t<h2>Projects</h2>\n\t</header>\n\t<section>\n\t\t<ul class="project-list">\n\t\t</ul>\n\t\t<div>\n\t\t\t<a class="btn" href="/secured/new/">New Project...</a>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Personal Information</h2>\n\t</header>\n\t<section class="meta-info" data-editor-scope="\\CurrentPerson">\n\t\t<div id="bio">\n\t\t\t<h3>Bio</h3>\n\t\t\t<div data-editor-type="markdown" data-editor-name="Bio" data-editor-placeholder="your shitty life!" data-editor-options=\'{"customParsers":{}, "position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -15}}}\'>{{Person.Bio}}</div>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Phone</h3>\n\t\t\t<p data-editor-type="inline" data-editor-placeholder="Phone" data-editor-name="Phone">{{Person.Phone}}</p>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Email</h3>\n\t\t\t<p data-editor-type="inline" data-editor-email="Email" data-editor-name="Email">{{Person.Email}}</p>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Settings</h2>\n\t</header>\n\t<section>\n\t\t<form class="user-settings">\n\t\t\t<input name="email" type="email" placeholder="Email" value="{{Member.Email}}" required>\n\t\t\t<input name="password" type="password" placeholder="Password">\n\t\t\t<input name="passwordconfirmed" type="password" placeholder="Confirm Password">\n\n\t\t\t<button class="btn" type="submit">Update Settings</button>\n\t\t</form>\n\t</section>\n</section>';
+__p+='<header class="editor-header hideable">\n\t<div class="img" id="current-person-image">\n\t\t{{#if CurrentImage}}<img src="{{CurrentImage.url}}">{{/if}}\n\t</div>\n\t<hgroup>\n\t\t{{#if Person}}<h1>{{#with Person}}<a href="/about/{{UrlSlug}}/">{{FirstName}} {{Surname}}</a>{{/with}}</h1>{{/if}}\n\n\t\t{{#if Member}}<p class="email">{{Member.Email}}</p>{{/if}}\n\t</hgroup>\n</header>\n<section class="editor-sidebar-content scrollbox">\n\t<header>\n\t\t<h2>Person Images</h2>\n\t</header>\n\t<section>\n\t\t<ul class="image-list">\n\t\t</ul>\n\t</section>\n\n\t<header>\n\t\t<h2>Projects</h2>\n\t</header>\n\t<section>\n\t\t<ul class="project-list">\n\t\t</ul>\n\t\t<div>\n\t\t\t<a class="btn" href="/secured/new/">Create Project</a>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Personal Information</h2>\n\t</header>\n\t<section class="meta-info" data-editor-scope="\\CurrentPerson">\n\t\t<div id="bio">\n\t\t\t<h3>Bio</h3>\n\t\t\t<div data-editor-type="markdown" data-editor-name="Bio" data-editor-placeholder="your shitty life!" data-editor-options=\'{"customParsers":{}, "position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -15}}}\'>{{Person.Bio}}</div>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Phone</h3>\n\t\t\t<p data-editor-type="inline" data-editor-name="Phone">{{Person.Phone}}</p>\n\t\t</div>\n\t\t<div>\n\t\t\t<h3>Email</h3>\n\t\t\t<p data-editor-type="inline" data-editor-name="Email">{{Person.Email}}</p>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Websites</h2>\n\t</header>\n\t<section class="meta-info" data-editor-scope="\\CurrentPerson">\n\t\t<div>\n\t\t\t<ul class="websites website-list">\n\t\t\t</ul>\n\t\t\t<a data-editor-type="modal" data-editor-name="Website" data-editor-fields=\'{"Title": {"type": "text"}, "Link": {"type": "text", "placeholder": "http://"}}\' data-editor-options=\'{"position":{"my": "right top", "at": "left top", "adjust": {"x": -24, "y": -20}}}\' class="btn" href="#" data-bypass data-editor-placeholder="Add Website"></a>\n\t\t</div>\n\t</section>\n\n\t<header>\n\t\t<h2>Settings</h2>\n\t</header>\n\t<section>\n\t\t<form class="user-settings">\n\t\t\t<input name="email" type="email" placeholder="Email" value="{{Member.Email}}" required>\n\t\t\t<input name="password" type="password" placeholder="Password">\n\t\t\t<input name="passwordconfirmed" type="password" placeholder="Confirm Password">\n\n\t\t\t<button class="btn" type="submit">Update Settings</button>\n\t\t</form>\n\t</section>\n</section>';
 }
 return __p;
 };
@@ -481,6 +497,14 @@ this["JST"]["app/templates/security/login-form.html"] = function(obj){
 var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
 with(obj||{}){
 __p+='<form style="margin-top:400px;">\n\t<div><input type="text" name="email" placeholder="Email" /></div>\n\t<div><input type="password" name="password" placeholder="Password" /></div>\n\t<div><input type="checkbox" name="remember" /> Remember me next time</div>\n\t<button class="doLogin" type="submit">Log in</button>\n\t{{#if Email}}\n\t\t<p>You are logged in as <strong>{{Email}}</strong>. <a href="/logout/">Logout?</a></p>\n\t{{else}}\n\t\t<p>You are not logged in.</p>\n\t{{/if}}\n</form>';
+}
+return __p;
+};
+
+this["JST"]["app/templates/website-list-item.html"] = function(obj){
+var __p='';var print=function(){__p+=Array.prototype.join.call(arguments, '')};
+with(obj||{}){
+__p+='<!-- li class="website-item" -->\n<a href="{{Link}}">{{Title}}</a>\n<!-- /li -->';
 }
 return __p;
 };;
@@ -7740,10 +7764,16 @@ define('app',['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbon
     root: '/',
     pendingTemplateReqs: {}
   };
-  JST = window.JST = window.JST || {};
+  JST = app.JST = app.JST || {};
   Backbone.NMLayout = Backbone.Layout.extend({
     setViewAndRenderMaybe: function(selector, view) {
       this.setView(selector, view);
+      if (this.__manager__.hasRendered) {
+        return view.render();
+      }
+    },
+    insertViewAndRenderMaybe: function(selector, view) {
+      this.insertView(selector, view);
       if (this.__manager__.hasRendered) {
         return view.render();
       }
@@ -7836,18 +7866,4095 @@ define('app',['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbon
   }, Backbone.Events);
 });
 
+/*!
+ * jQuery UI Core 1.10.0
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/category/ui-core/
+ */
+(function( $, undefined ) {
+
+var uuid = 0,
+	runiqueId = /^ui-id-\d+$/;
+
+// prevent duplicate loading
+// this is only a problem because we proxy existing functions
+// and we don't want to double proxy them
+$.ui = $.ui || {};
+if ( $.ui.version ) {
+	return;
+}
+
+$.extend( $.ui, {
+	version: "1.10.0",
+
+	keyCode: {
+		BACKSPACE: 8,
+		COMMA: 188,
+		DELETE: 46,
+		DOWN: 40,
+		END: 35,
+		ENTER: 13,
+		ESCAPE: 27,
+		HOME: 36,
+		LEFT: 37,
+		NUMPAD_ADD: 107,
+		NUMPAD_DECIMAL: 110,
+		NUMPAD_DIVIDE: 111,
+		NUMPAD_ENTER: 108,
+		NUMPAD_MULTIPLY: 106,
+		NUMPAD_SUBTRACT: 109,
+		PAGE_DOWN: 34,
+		PAGE_UP: 33,
+		PERIOD: 190,
+		RIGHT: 39,
+		SPACE: 32,
+		TAB: 9,
+		UP: 38
+	}
+});
+
+// plugins
+$.fn.extend({
+	_focus: $.fn.focus,
+	focus: function( delay, fn ) {
+		return typeof delay === "number" ?
+			this.each(function() {
+				var elem = this;
+				setTimeout(function() {
+					$( elem ).focus();
+					if ( fn ) {
+						fn.call( elem );
+					}
+				}, delay );
+			}) :
+			this._focus.apply( this, arguments );
+	},
+
+	scrollParent: function() {
+		var scrollParent;
+		if (($.ui.ie && (/(static|relative)/).test(this.css("position"))) || (/absolute/).test(this.css("position"))) {
+			scrollParent = this.parents().filter(function() {
+				return (/(relative|absolute|fixed)/).test($.css(this,"position")) && (/(auto|scroll)/).test($.css(this,"overflow")+$.css(this,"overflow-y")+$.css(this,"overflow-x"));
+			}).eq(0);
+		} else {
+			scrollParent = this.parents().filter(function() {
+				return (/(auto|scroll)/).test($.css(this,"overflow")+$.css(this,"overflow-y")+$.css(this,"overflow-x"));
+			}).eq(0);
+		}
+
+		return (/fixed/).test(this.css("position")) || !scrollParent.length ? $(document) : scrollParent;
+	},
+
+	zIndex: function( zIndex ) {
+		if ( zIndex !== undefined ) {
+			return this.css( "zIndex", zIndex );
+		}
+
+		if ( this.length ) {
+			var elem = $( this[ 0 ] ), position, value;
+			while ( elem.length && elem[ 0 ] !== document ) {
+				// Ignore z-index if position is set to a value where z-index is ignored by the browser
+				// This makes behavior of this function consistent across browsers
+				// WebKit always returns auto if the element is positioned
+				position = elem.css( "position" );
+				if ( position === "absolute" || position === "relative" || position === "fixed" ) {
+					// IE returns 0 when zIndex is not specified
+					// other browsers return a string
+					// we ignore the case of nested elements with an explicit value of 0
+					// <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
+					value = parseInt( elem.css( "zIndex" ), 10 );
+					if ( !isNaN( value ) && value !== 0 ) {
+						return value;
+					}
+				}
+				elem = elem.parent();
+			}
+		}
+
+		return 0;
+	},
+
+	uniqueId: function() {
+		return this.each(function() {
+			if ( !this.id ) {
+				this.id = "ui-id-" + (++uuid);
+			}
+		});
+	},
+
+	removeUniqueId: function() {
+		return this.each(function() {
+			if ( runiqueId.test( this.id ) ) {
+				$( this ).removeAttr( "id" );
+			}
+		});
+	}
+});
+
+// selectors
+function focusable( element, isTabIndexNotNaN ) {
+	var map, mapName, img,
+		nodeName = element.nodeName.toLowerCase();
+	if ( "area" === nodeName ) {
+		map = element.parentNode;
+		mapName = map.name;
+		if ( !element.href || !mapName || map.nodeName.toLowerCase() !== "map" ) {
+			return false;
+		}
+		img = $( "img[usemap=#" + mapName + "]" )[0];
+		return !!img && visible( img );
+	}
+	return ( /input|select|textarea|button|object/.test( nodeName ) ?
+		!element.disabled :
+		"a" === nodeName ?
+			element.href || isTabIndexNotNaN :
+			isTabIndexNotNaN) &&
+		// the element and all of its ancestors must be visible
+		visible( element );
+}
+
+function visible( element ) {
+	return $.expr.filters.visible( element ) &&
+		!$( element ).parents().addBack().filter(function() {
+			return $.css( this, "visibility" ) === "hidden";
+		}).length;
+}
+
+$.extend( $.expr[ ":" ], {
+	data: $.expr.createPseudo ?
+		$.expr.createPseudo(function( dataName ) {
+			return function( elem ) {
+				return !!$.data( elem, dataName );
+			};
+		}) :
+		// support: jQuery <1.8
+		function( elem, i, match ) {
+			return !!$.data( elem, match[ 3 ] );
+		},
+
+	focusable: function( element ) {
+		return focusable( element, !isNaN( $.attr( element, "tabindex" ) ) );
+	},
+
+	tabbable: function( element ) {
+		var tabIndex = $.attr( element, "tabindex" ),
+			isTabIndexNaN = isNaN( tabIndex );
+		return ( isTabIndexNaN || tabIndex >= 0 ) && focusable( element, !isTabIndexNaN );
+	}
+});
+
+// support: jQuery <1.8
+if ( !$( "<a>" ).outerWidth( 1 ).jquery ) {
+	$.each( [ "Width", "Height" ], function( i, name ) {
+		var side = name === "Width" ? [ "Left", "Right" ] : [ "Top", "Bottom" ],
+			type = name.toLowerCase(),
+			orig = {
+				innerWidth: $.fn.innerWidth,
+				innerHeight: $.fn.innerHeight,
+				outerWidth: $.fn.outerWidth,
+				outerHeight: $.fn.outerHeight
+			};
+
+		function reduce( elem, size, border, margin ) {
+			$.each( side, function() {
+				size -= parseFloat( $.css( elem, "padding" + this ) ) || 0;
+				if ( border ) {
+					size -= parseFloat( $.css( elem, "border" + this + "Width" ) ) || 0;
+				}
+				if ( margin ) {
+					size -= parseFloat( $.css( elem, "margin" + this ) ) || 0;
+				}
+			});
+			return size;
+		}
+
+		$.fn[ "inner" + name ] = function( size ) {
+			if ( size === undefined ) {
+				return orig[ "inner" + name ].call( this );
+			}
+
+			return this.each(function() {
+				$( this ).css( type, reduce( this, size ) + "px" );
+			});
+		};
+
+		$.fn[ "outer" + name] = function( size, margin ) {
+			if ( typeof size !== "number" ) {
+				return orig[ "outer" + name ].call( this, size );
+			}
+
+			return this.each(function() {
+				$( this).css( type, reduce( this, size, true, margin ) + "px" );
+			});
+		};
+	});
+}
+
+// support: jQuery <1.8
+if ( !$.fn.addBack ) {
+	$.fn.addBack = function( selector ) {
+		return this.add( selector == null ?
+			this.prevObject : this.prevObject.filter( selector )
+		);
+	};
+}
+
+// support: jQuery 1.6.1, 1.6.2 (http://bugs.jquery.com/ticket/9413)
+if ( $( "<a>" ).data( "a-b", "a" ).removeData( "a-b" ).data( "a-b" ) ) {
+	$.fn.removeData = (function( removeData ) {
+		return function( key ) {
+			if ( arguments.length ) {
+				return removeData.call( this, $.camelCase( key ) );
+			} else {
+				return removeData.call( this );
+			}
+		};
+	})( $.fn.removeData );
+}
+
+
+
+
+
+// deprecated
+$.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
+
+$.support.selectstart = "onselectstart" in document.createElement( "div" );
+$.fn.extend({
+	disableSelection: function() {
+		return this.bind( ( $.support.selectstart ? "selectstart" : "mousedown" ) +
+			".ui-disableSelection", function( event ) {
+				event.preventDefault();
+			});
+	},
+
+	enableSelection: function() {
+		return this.unbind( ".ui-disableSelection" );
+	}
+});
+
+$.extend( $.ui, {
+	// $.ui.plugin is deprecated.  Use the proxy pattern instead.
+	plugin: {
+		add: function( module, option, set ) {
+			var i,
+				proto = $.ui[ module ].prototype;
+			for ( i in set ) {
+				proto.plugins[ i ] = proto.plugins[ i ] || [];
+				proto.plugins[ i ].push( [ option, set[ i ] ] );
+			}
+		},
+		call: function( instance, name, args ) {
+			var i,
+				set = instance.plugins[ name ];
+			if ( !set || !instance.element[ 0 ].parentNode || instance.element[ 0 ].parentNode.nodeType === 11 ) {
+				return;
+			}
+
+			for ( i = 0; i < set.length; i++ ) {
+				if ( instance.options[ set[ i ][ 0 ] ] ) {
+					set[ i ][ 1 ].apply( instance.element, args );
+				}
+			}
+		}
+	},
+
+	// only used by resizable
+	hasScroll: function( el, a ) {
+
+		//If overflow is hidden, the element might have extra content, but the user wants to hide it
+		if ( $( el ).css( "overflow" ) === "hidden") {
+			return false;
+		}
+
+		var scroll = ( a && a === "left" ) ? "scrollLeft" : "scrollTop",
+			has = false;
+
+		if ( el[ scroll ] > 0 ) {
+			return true;
+		}
+
+		// TODO: determine which cases actually cause this to happen
+		// if the element doesn't have the scroll set, see if it's possible to
+		// set the scroll
+		el[ scroll ] = 1;
+		has = ( el[ scroll ] > 0 );
+		el[ scroll ] = 0;
+		return has;
+	}
+});
+
+})( jQuery );
+
+define("plugins/visualsearch/jquery.ui.core", function(){});
+
+/*!
+ * jQuery UI Widget 1.10.0
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/jQuery.widget/
+ */
+(function( $, undefined ) {
+
+var uuid = 0,
+	slice = Array.prototype.slice,
+	_cleanData = $.cleanData;
+$.cleanData = function( elems ) {
+	for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
+		try {
+			$( elem ).triggerHandler( "remove" );
+		// http://bugs.jquery.com/ticket/8235
+		} catch( e ) {}
+	}
+	_cleanData( elems );
+};
+
+$.widget = function( name, base, prototype ) {
+	var fullName, existingConstructor, constructor, basePrototype,
+		// proxiedPrototype allows the provided prototype to remain unmodified
+		// so that it can be used as a mixin for multiple widgets (#8876)
+		proxiedPrototype = {},
+		namespace = name.split( "." )[ 0 ];
+
+	name = name.split( "." )[ 1 ];
+	fullName = namespace + "-" + name;
+
+	if ( !prototype ) {
+		prototype = base;
+		base = $.Widget;
+	}
+
+	// create selector for plugin
+	$.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
+		return !!$.data( elem, fullName );
+	};
+
+	$[ namespace ] = $[ namespace ] || {};
+	existingConstructor = $[ namespace ][ name ];
+	constructor = $[ namespace ][ name ] = function( options, element ) {
+		// allow instantiation without "new" keyword
+		if ( !this._createWidget ) {
+			return new constructor( options, element );
+		}
+
+		// allow instantiation without initializing for simple inheritance
+		// must use "new" keyword (the code above always passes args)
+		if ( arguments.length ) {
+			this._createWidget( options, element );
+		}
+	};
+	// extend with the existing constructor to carry over any static properties
+	$.extend( constructor, existingConstructor, {
+		version: prototype.version,
+		// copy the object used to create the prototype in case we need to
+		// redefine the widget later
+		_proto: $.extend( {}, prototype ),
+		// track widgets that inherit from this widget in case this widget is
+		// redefined after a widget inherits from it
+		_childConstructors: []
+	});
+
+	basePrototype = new base();
+	// we need to make the options hash a property directly on the new instance
+	// otherwise we'll modify the options hash on the prototype that we're
+	// inheriting from
+	basePrototype.options = $.widget.extend( {}, basePrototype.options );
+	$.each( prototype, function( prop, value ) {
+		if ( !$.isFunction( value ) ) {
+			proxiedPrototype[ prop ] = value;
+			return;
+		}
+		proxiedPrototype[ prop ] = (function() {
+			var _super = function() {
+					return base.prototype[ prop ].apply( this, arguments );
+				},
+				_superApply = function( args ) {
+					return base.prototype[ prop ].apply( this, args );
+				};
+			return function() {
+				var __super = this._super,
+					__superApply = this._superApply,
+					returnValue;
+
+				this._super = _super;
+				this._superApply = _superApply;
+
+				returnValue = value.apply( this, arguments );
+
+				this._super = __super;
+				this._superApply = __superApply;
+
+				return returnValue;
+			};
+		})();
+	});
+	constructor.prototype = $.widget.extend( basePrototype, {
+		// TODO: remove support for widgetEventPrefix
+		// always use the name + a colon as the prefix, e.g., draggable:start
+		// don't prefix for widgets that aren't DOM-based
+		widgetEventPrefix: existingConstructor ? basePrototype.widgetEventPrefix : name
+	}, proxiedPrototype, {
+		constructor: constructor,
+		namespace: namespace,
+		widgetName: name,
+		widgetFullName: fullName
+	});
+
+	// If this widget is being redefined then we need to find all widgets that
+	// are inheriting from it and redefine all of them so that they inherit from
+	// the new version of this widget. We're essentially trying to replace one
+	// level in the prototype chain.
+	if ( existingConstructor ) {
+		$.each( existingConstructor._childConstructors, function( i, child ) {
+			var childPrototype = child.prototype;
+
+			// redefine the child widget using the same prototype that was
+			// originally used, but inherit from the new version of the base
+			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor, child._proto );
+		});
+		// remove the list of existing child constructors from the old constructor
+		// so the old child constructors can be garbage collected
+		delete existingConstructor._childConstructors;
+	} else {
+		base._childConstructors.push( constructor );
+	}
+
+	$.widget.bridge( name, constructor );
+};
+
+$.widget.extend = function( target ) {
+	var input = slice.call( arguments, 1 ),
+		inputIndex = 0,
+		inputLength = input.length,
+		key,
+		value;
+	for ( ; inputIndex < inputLength; inputIndex++ ) {
+		for ( key in input[ inputIndex ] ) {
+			value = input[ inputIndex ][ key ];
+			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
+				// Clone objects
+				if ( $.isPlainObject( value ) ) {
+					target[ key ] = $.isPlainObject( target[ key ] ) ?
+						$.widget.extend( {}, target[ key ], value ) :
+						// Don't extend strings, arrays, etc. with objects
+						$.widget.extend( {}, value );
+				// Copy everything else by reference
+				} else {
+					target[ key ] = value;
+				}
+			}
+		}
+	}
+	return target;
+};
+
+$.widget.bridge = function( name, object ) {
+	var fullName = object.prototype.widgetFullName || name;
+	$.fn[ name ] = function( options ) {
+		var isMethodCall = typeof options === "string",
+			args = slice.call( arguments, 1 ),
+			returnValue = this;
+
+		// allow multiple hashes to be passed on init
+		options = !isMethodCall && args.length ?
+			$.widget.extend.apply( null, [ options ].concat(args) ) :
+			options;
+
+		if ( isMethodCall ) {
+			this.each(function() {
+				var methodValue,
+					instance = $.data( this, fullName );
+				if ( !instance ) {
+					return $.error( "cannot call methods on " + name + " prior to initialization; " +
+						"attempted to call method '" + options + "'" );
+				}
+				if ( !$.isFunction( instance[options] ) || options.charAt( 0 ) === "_" ) {
+					return $.error( "no such method '" + options + "' for " + name + " widget instance" );
+				}
+				methodValue = instance[ options ].apply( instance, args );
+				if ( methodValue !== instance && methodValue !== undefined ) {
+					returnValue = methodValue && methodValue.jquery ?
+						returnValue.pushStack( methodValue.get() ) :
+						methodValue;
+					return false;
+				}
+			});
+		} else {
+			this.each(function() {
+				var instance = $.data( this, fullName );
+				if ( instance ) {
+					instance.option( options || {} )._init();
+				} else {
+					$.data( this, fullName, new object( options, this ) );
+				}
+			});
+		}
+
+		return returnValue;
+	};
+};
+
+$.Widget = function( /* options, element */ ) {};
+$.Widget._childConstructors = [];
+
+$.Widget.prototype = {
+	widgetName: "widget",
+	widgetEventPrefix: "",
+	defaultElement: "<div>",
+	options: {
+		disabled: false,
+
+		// callbacks
+		create: null
+	},
+	_createWidget: function( options, element ) {
+		element = $( element || this.defaultElement || this )[ 0 ];
+		this.element = $( element );
+		this.uuid = uuid++;
+		this.eventNamespace = "." + this.widgetName + this.uuid;
+		this.options = $.widget.extend( {},
+			this.options,
+			this._getCreateOptions(),
+			options );
+
+		this.bindings = $();
+		this.hoverable = $();
+		this.focusable = $();
+
+		if ( element !== this ) {
+			$.data( element, this.widgetFullName, this );
+			this._on( true, this.element, {
+				remove: function( event ) {
+					if ( event.target === element ) {
+						this.destroy();
+					}
+				}
+			});
+			this.document = $( element.style ?
+				// element within the document
+				element.ownerDocument :
+				// element is window or document
+				element.document || element );
+			this.window = $( this.document[0].defaultView || this.document[0].parentWindow );
+		}
+
+		this._create();
+		this._trigger( "create", null, this._getCreateEventData() );
+		this._init();
+	},
+	_getCreateOptions: $.noop,
+	_getCreateEventData: $.noop,
+	_create: $.noop,
+	_init: $.noop,
+
+	destroy: function() {
+		this._destroy();
+		// we can probably remove the unbind calls in 2.0
+		// all event bindings should go through this._on()
+		this.element
+			.unbind( this.eventNamespace )
+			// 1.9 BC for #7810
+			// TODO remove dual storage
+			.removeData( this.widgetName )
+			.removeData( this.widgetFullName )
+			// support: jquery <1.6.3
+			// http://bugs.jquery.com/ticket/9413
+			.removeData( $.camelCase( this.widgetFullName ) );
+		this.widget()
+			.unbind( this.eventNamespace )
+			.removeAttr( "aria-disabled" )
+			.removeClass(
+				this.widgetFullName + "-disabled " +
+				"ui-state-disabled" );
+
+		// clean up events and states
+		this.bindings.unbind( this.eventNamespace );
+		this.hoverable.removeClass( "ui-state-hover" );
+		this.focusable.removeClass( "ui-state-focus" );
+	},
+	_destroy: $.noop,
+
+	widget: function() {
+		return this.element;
+	},
+
+	option: function( key, value ) {
+		var options = key,
+			parts,
+			curOption,
+			i;
+
+		if ( arguments.length === 0 ) {
+			// don't return a reference to the internal hash
+			return $.widget.extend( {}, this.options );
+		}
+
+		if ( typeof key === "string" ) {
+			// handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
+			options = {};
+			parts = key.split( "." );
+			key = parts.shift();
+			if ( parts.length ) {
+				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
+				for ( i = 0; i < parts.length - 1; i++ ) {
+					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
+					curOption = curOption[ parts[ i ] ];
+				}
+				key = parts.pop();
+				if ( value === undefined ) {
+					return curOption[ key ] === undefined ? null : curOption[ key ];
+				}
+				curOption[ key ] = value;
+			} else {
+				if ( value === undefined ) {
+					return this.options[ key ] === undefined ? null : this.options[ key ];
+				}
+				options[ key ] = value;
+			}
+		}
+
+		this._setOptions( options );
+
+		return this;
+	},
+	_setOptions: function( options ) {
+		var key;
+
+		for ( key in options ) {
+			this._setOption( key, options[ key ] );
+		}
+
+		return this;
+	},
+	_setOption: function( key, value ) {
+		this.options[ key ] = value;
+
+		if ( key === "disabled" ) {
+			this.widget()
+				.toggleClass( this.widgetFullName + "-disabled ui-state-disabled", !!value )
+				.attr( "aria-disabled", value );
+			this.hoverable.removeClass( "ui-state-hover" );
+			this.focusable.removeClass( "ui-state-focus" );
+		}
+
+		return this;
+	},
+
+	enable: function() {
+		return this._setOption( "disabled", false );
+	},
+	disable: function() {
+		return this._setOption( "disabled", true );
+	},
+
+	_on: function( suppressDisabledCheck, element, handlers ) {
+		var delegateElement,
+			instance = this;
+
+		// no suppressDisabledCheck flag, shuffle arguments
+		if ( typeof suppressDisabledCheck !== "boolean" ) {
+			handlers = element;
+			element = suppressDisabledCheck;
+			suppressDisabledCheck = false;
+		}
+
+		// no element argument, shuffle and use this.element
+		if ( !handlers ) {
+			handlers = element;
+			element = this.element;
+			delegateElement = this.widget();
+		} else {
+			// accept selectors, DOM elements
+			element = delegateElement = $( element );
+			this.bindings = this.bindings.add( element );
+		}
+
+		$.each( handlers, function( event, handler ) {
+			function handlerProxy() {
+				// allow widgets to customize the disabled handling
+				// - disabled as an array instead of boolean
+				// - disabled class as method for disabling individual parts
+				if ( !suppressDisabledCheck &&
+						( instance.options.disabled === true ||
+							$( this ).hasClass( "ui-state-disabled" ) ) ) {
+					return;
+				}
+				return ( typeof handler === "string" ? instance[ handler ] : handler )
+					.apply( instance, arguments );
+			}
+
+			// copy the guid so direct unbinding works
+			if ( typeof handler !== "string" ) {
+				handlerProxy.guid = handler.guid =
+					handler.guid || handlerProxy.guid || $.guid++;
+			}
+
+			var match = event.match( /^(\w+)\s*(.*)$/ ),
+				eventName = match[1] + instance.eventNamespace,
+				selector = match[2];
+			if ( selector ) {
+				delegateElement.delegate( selector, eventName, handlerProxy );
+			} else {
+				element.bind( eventName, handlerProxy );
+			}
+		});
+	},
+
+	_off: function( element, eventName ) {
+		eventName = (eventName || "").split( " " ).join( this.eventNamespace + " " ) + this.eventNamespace;
+		element.unbind( eventName ).undelegate( eventName );
+	},
+
+	_delay: function( handler, delay ) {
+		function handlerProxy() {
+			return ( typeof handler === "string" ? instance[ handler ] : handler )
+				.apply( instance, arguments );
+		}
+		var instance = this;
+		return setTimeout( handlerProxy, delay || 0 );
+	},
+
+	_hoverable: function( element ) {
+		this.hoverable = this.hoverable.add( element );
+		this._on( element, {
+			mouseenter: function( event ) {
+				$( event.currentTarget ).addClass( "ui-state-hover" );
+			},
+			mouseleave: function( event ) {
+				$( event.currentTarget ).removeClass( "ui-state-hover" );
+			}
+		});
+	},
+
+	_focusable: function( element ) {
+		this.focusable = this.focusable.add( element );
+		this._on( element, {
+			focusin: function( event ) {
+				$( event.currentTarget ).addClass( "ui-state-focus" );
+			},
+			focusout: function( event ) {
+				$( event.currentTarget ).removeClass( "ui-state-focus" );
+			}
+		});
+	},
+
+	_trigger: function( type, event, data ) {
+		var prop, orig,
+			callback = this.options[ type ];
+
+		data = data || {};
+		event = $.Event( event );
+		event.type = ( type === this.widgetEventPrefix ?
+			type :
+			this.widgetEventPrefix + type ).toLowerCase();
+		// the original event may come from any element
+		// so we need to reset the target on the new event
+		event.target = this.element[ 0 ];
+
+		// copy original event properties over to the new event
+		orig = event.originalEvent;
+		if ( orig ) {
+			for ( prop in orig ) {
+				if ( !( prop in event ) ) {
+					event[ prop ] = orig[ prop ];
+				}
+			}
+		}
+
+		this.element.trigger( event, data );
+		return !( $.isFunction( callback ) &&
+			callback.apply( this.element[0], [ event ].concat( data ) ) === false ||
+			event.isDefaultPrevented() );
+	}
+};
+
+$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
+	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+		if ( typeof options === "string" ) {
+			options = { effect: options };
+		}
+		var hasOptions,
+			effectName = !options ?
+				method :
+				options === true || typeof options === "number" ?
+					defaultEffect :
+					options.effect || defaultEffect;
+		options = options || {};
+		if ( typeof options === "number" ) {
+			options = { duration: options };
+		}
+		hasOptions = !$.isEmptyObject( options );
+		options.complete = callback;
+		if ( options.delay ) {
+			element.delay( options.delay );
+		}
+		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
+			element[ method ]( options );
+		} else if ( effectName !== method && element[ effectName ] ) {
+			element[ effectName ]( options.duration, options.easing, callback );
+		} else {
+			element.queue(function( next ) {
+				$( this )[ method ]();
+				if ( callback ) {
+					callback.call( element[ 0 ] );
+				}
+				next();
+			});
+		}
+	};
+});
+
+})( jQuery );
+
+define("plugins/visualsearch/jquery.ui.widget", function(){});
+
+/*!
+ * jQuery UI Autocomplete 1.10.0
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/autocomplete/
+ *
+ * Depends:
+ *	jquery.ui.core.js
+ *	jquery.ui.widget.js
+ *	jquery.ui.position.js
+ *	jquery.ui.menu.js
+ */
+(function( $, undefined ) {
+
+// used to prevent race conditions with remote data sources
+var requestIndex = 0;
+
+$.widget( "ui.autocomplete", {
+	version: "1.10.0",
+	defaultElement: "<input>",
+	options: {
+		appendTo: null,
+		autoFocus: false,
+		delay: 300,
+		minLength: 1,
+		position: {
+			my: "left top",
+			at: "left bottom",
+			collision: "none"
+		},
+		source: null,
+
+		// callbacks
+		change: null,
+		close: null,
+		focus: null,
+		open: null,
+		response: null,
+		search: null,
+		select: null
+	},
+
+	pending: 0,
+
+	_create: function() {
+		// Some browsers only repeat keydown events, not keypress events,
+		// so we use the suppressKeyPress flag to determine if we've already
+		// handled the keydown event. #7269
+		// Unfortunately the code for & in keypress is the same as the up arrow,
+		// so we use the suppressKeyPressRepeat flag to avoid handling keypress
+		// events when we know the keydown event was used to modify the
+		// search term. #7799
+		var suppressKeyPress, suppressKeyPressRepeat, suppressInput;
+
+		this.isMultiLine = this._isMultiLine();
+		this.valueMethod = this.element[ this.element.is( "input,textarea" ) ? "val" : "text" ];
+		this.isNewMenu = true;
+
+		this.element
+			.addClass( "ui-autocomplete-input" )
+			.attr( "autocomplete", "off" );
+
+		this._on( this.element, {
+			keydown: function( event ) {
+				/*jshint maxcomplexity:15*/
+				if ( this.element.prop( "readOnly" ) ) {
+					suppressKeyPress = true;
+					suppressInput = true;
+					suppressKeyPressRepeat = true;
+					return;
+				}
+
+				suppressKeyPress = false;
+				suppressInput = false;
+				suppressKeyPressRepeat = false;
+				var keyCode = $.ui.keyCode;
+				switch( event.keyCode ) {
+				case keyCode.PAGE_UP:
+					suppressKeyPress = true;
+					this._move( "previousPage", event );
+					break;
+				case keyCode.PAGE_DOWN:
+					suppressKeyPress = true;
+					this._move( "nextPage", event );
+					break;
+				case keyCode.UP:
+					suppressKeyPress = true;
+					this._keyEvent( "previous", event );
+					break;
+				case keyCode.DOWN:
+					suppressKeyPress = true;
+					this._keyEvent( "next", event );
+					break;
+				case keyCode.ENTER:
+				case keyCode.NUMPAD_ENTER:
+					// when menu is open and has focus
+					if ( this.menu.active ) {
+						// #6055 - Opera still allows the keypress to occur
+						// which causes forms to submit
+						suppressKeyPress = true;
+						event.preventDefault();
+						this.menu.select( event );
+					}
+					break;
+				case keyCode.TAB:
+					if ( this.menu.active ) {
+						this.menu.select( event );
+					}
+					break;
+				case keyCode.ESCAPE:
+					if ( this.menu.element.is( ":visible" ) ) {
+						this._value( this.term );
+						this.close( event );
+						// Different browsers have different default behavior for escape
+						// Single press can mean undo or clear
+						// Double press in IE means clear the whole form
+						event.preventDefault();
+					}
+					break;
+				default:
+					suppressKeyPressRepeat = true;
+					// search timeout should be triggered before the input value is changed
+					this._searchTimeout( event );
+					break;
+				}
+			},
+			keypress: function( event ) {
+				if ( suppressKeyPress ) {
+					suppressKeyPress = false;
+					event.preventDefault();
+					return;
+				}
+				if ( suppressKeyPressRepeat ) {
+					return;
+				}
+
+				// replicate some key handlers to allow them to repeat in Firefox and Opera
+				var keyCode = $.ui.keyCode;
+				switch( event.keyCode ) {
+				case keyCode.PAGE_UP:
+					this._move( "previousPage", event );
+					break;
+				case keyCode.PAGE_DOWN:
+					this._move( "nextPage", event );
+					break;
+				case keyCode.UP:
+					this._keyEvent( "previous", event );
+					break;
+				case keyCode.DOWN:
+					this._keyEvent( "next", event );
+					break;
+				}
+			},
+			input: function( event ) {
+				if ( suppressInput ) {
+					suppressInput = false;
+					event.preventDefault();
+					return;
+				}
+				this._searchTimeout( event );
+			},
+			focus: function() {
+				this.selectedItem = null;
+				this.previous = this._value();
+			},
+			blur: function( event ) {
+				if ( this.cancelBlur ) {
+					delete this.cancelBlur;
+					return;
+				}
+
+				clearTimeout( this.searching );
+				this.close( event );
+				this._change( event );
+			}
+		});
+
+		this._initSource();
+		this.menu = $( "<ul>" )
+			.addClass( "ui-autocomplete" )
+			.appendTo( this._appendTo() )
+			.menu({
+				// custom key handling for now
+				input: $(),
+				// disable ARIA support, the live region takes care of that
+				role: null
+			})
+			.zIndex( this.element.zIndex() + 1 )
+			.hide()
+			.data( "ui-menu" );
+
+		this._on( this.menu.element, {
+			mousedown: function( event ) {
+				// prevent moving focus out of the text field
+				event.preventDefault();
+
+				// IE doesn't prevent moving focus even with event.preventDefault()
+				// so we set a flag to know when we should ignore the blur event
+				this.cancelBlur = true;
+				this._delay(function() {
+					delete this.cancelBlur;
+				});
+
+				// clicking on the scrollbar causes focus to shift to the body
+				// but we can't detect a mouseup or a click immediately afterward
+				// so we have to track the next mousedown and close the menu if
+				// the user clicks somewhere outside of the autocomplete
+				var menuElement = this.menu.element[ 0 ];
+				if ( !$( event.target ).closest( ".ui-menu-item" ).length ) {
+					this._delay(function() {
+						var that = this;
+						this.document.one( "mousedown", function( event ) {
+							if ( event.target !== that.element[ 0 ] &&
+									event.target !== menuElement &&
+									!$.contains( menuElement, event.target ) ) {
+								that.close();
+							}
+						});
+					});
+				}
+			},
+			menufocus: function( event, ui ) {
+				// #7024 - Prevent accidental activation of menu items in Firefox
+				if ( this.isNewMenu ) {
+					this.isNewMenu = false;
+					if ( event.originalEvent && /^mouse/.test( event.originalEvent.type ) ) {
+						this.menu.blur();
+
+						this.document.one( "mousemove", function() {
+							$( event.target ).trigger( event.originalEvent );
+						});
+
+						return;
+					}
+				}
+
+				var item = ui.item.data( "ui-autocomplete-item" );
+				if ( false !== this._trigger( "focus", event, { item: item } ) ) {
+					// use value to match what will end up in the input, if it was a key event
+					if ( event.originalEvent && /^key/.test( event.originalEvent.type ) ) {
+						this._value( item.value );
+					}
+				} else {
+					// Normally the input is populated with the item's value as the
+					// menu is navigated, causing screen readers to notice a change and
+					// announce the item. Since the focus event was canceled, this doesn't
+					// happen, so we update the live region so that screen readers can
+					// still notice the change and announce it.
+					this.liveRegion.text( item.value );
+				}
+			},
+			menuselect: function( event, ui ) {
+				var item = ui.item.data( "ui-autocomplete-item" ),
+					previous = this.previous;
+
+				// only trigger when focus was lost (click on menu)
+				if ( this.element[0] !== this.document[0].activeElement ) {
+					this.element.focus();
+					this.previous = previous;
+					// #6109 - IE triggers two focus events and the second
+					// is asynchronous, so we need to reset the previous
+					// term synchronously and asynchronously :-(
+					this._delay(function() {
+						this.previous = previous;
+						this.selectedItem = item;
+					});
+				}
+
+				if ( false !== this._trigger( "select", event, { item: item } ) ) {
+					this._value( item.value );
+				}
+				// reset the term after the select event
+				// this allows custom select handling to work properly
+				this.term = this._value();
+
+				this.close( event );
+				this.selectedItem = item;
+			}
+		});
+
+		this.liveRegion = $( "<span>", {
+				role: "status",
+				"aria-live": "polite"
+			})
+			.addClass( "ui-helper-hidden-accessible" )
+			.insertAfter( this.element );
+
+		// turning off autocomplete prevents the browser from remembering the
+		// value when navigating through history, so we re-enable autocomplete
+		// if the page is unloaded before the widget is destroyed. #7790
+		this._on( this.window, {
+			beforeunload: function() {
+				this.element.removeAttr( "autocomplete" );
+			}
+		});
+	},
+
+	_destroy: function() {
+		clearTimeout( this.searching );
+		this.element
+			.removeClass( "ui-autocomplete-input" )
+			.removeAttr( "autocomplete" );
+		this.menu.element.remove();
+		this.liveRegion.remove();
+	},
+
+	_setOption: function( key, value ) {
+		this._super( key, value );
+		if ( key === "source" ) {
+			this._initSource();
+		}
+		if ( key === "appendTo" ) {
+			this.menu.element.appendTo( this._appendTo() );
+		}
+		if ( key === "disabled" && value && this.xhr ) {
+			this.xhr.abort();
+		}
+	},
+
+	_appendTo: function() {
+		var element = this.options.appendTo;
+
+		if ( element ) {
+			element = element.jquery || element.nodeType ?
+				$( element ) :
+				this.document.find( element ).eq( 0 );
+		}
+
+		if ( !element ) {
+			element = this.element.closest( ".ui-front" );
+		}
+
+		if ( !element.length ) {
+			element = this.document[0].body;
+		}
+
+		return element;
+	},
+
+	_isMultiLine: function() {
+		// Textareas are always multi-line
+		if ( this.element.is( "textarea" ) ) {
+			return true;
+		}
+		// Inputs are always single-line, even if inside a contentEditable element
+		// IE also treats inputs as contentEditable
+		if ( this.element.is( "input" ) ) {
+			return false;
+		}
+		// All other element types are determined by whether or not they're contentEditable
+		return this.element.prop( "isContentEditable" );
+	},
+
+	_initSource: function() {
+		var array, url,
+			that = this;
+		if ( $.isArray(this.options.source) ) {
+			array = this.options.source;
+			this.source = function( request, response ) {
+				response( $.ui.autocomplete.filter( array, request.term ) );
+			};
+		} else if ( typeof this.options.source === "string" ) {
+			url = this.options.source;
+			this.source = function( request, response ) {
+				if ( that.xhr ) {
+					that.xhr.abort();
+				}
+				that.xhr = $.ajax({
+					url: url,
+					data: request,
+					dataType: "json",
+					success: function( data ) {
+						response( data );
+					},
+					error: function() {
+						response( [] );
+					}
+				});
+			};
+		} else {
+			this.source = this.options.source;
+		}
+	},
+
+	_searchTimeout: function( event ) {
+		clearTimeout( this.searching );
+		this.searching = this._delay(function() {
+			// only search if the value has changed
+			if ( this.term !== this._value() ) {
+				this.selectedItem = null;
+				this.search( null, event );
+			}
+		}, this.options.delay );
+	},
+
+	search: function( value, event ) {
+		value = value != null ? value : this._value();
+
+		// always save the actual value, not the one passed as an argument
+		this.term = this._value();
+
+		if ( value.length < this.options.minLength ) {
+			return this.close( event );
+		}
+
+		if ( this._trigger( "search", event ) === false ) {
+			return;
+		}
+
+		return this._search( value );
+	},
+
+	_search: function( value ) {
+		this.pending++;
+		this.element.addClass( "ui-autocomplete-loading" );
+		this.cancelSearch = false;
+
+		this.source( { term: value }, this._response() );
+	},
+
+	_response: function() {
+		var that = this,
+			index = ++requestIndex;
+
+		return function( content ) {
+			if ( index === requestIndex ) {
+				that.__response( content );
+			}
+
+			that.pending--;
+			if ( !that.pending ) {
+				that.element.removeClass( "ui-autocomplete-loading" );
+			}
+		};
+	},
+
+	__response: function( content ) {
+		if ( content ) {
+			content = this._normalize( content );
+		}
+		this._trigger( "response", null, { content: content } );
+		if ( !this.options.disabled && content && content.length && !this.cancelSearch ) {
+			this._suggest( content );
+			this._trigger( "open" );
+		} else {
+			// use ._close() instead of .close() so we don't cancel future searches
+			this._close();
+		}
+	},
+
+	close: function( event ) {
+		this.cancelSearch = true;
+		this._close( event );
+	},
+
+	_close: function( event ) {
+		if ( this.menu.element.is( ":visible" ) ) {
+			this.menu.element.hide();
+			this.menu.blur();
+			this.isNewMenu = true;
+			this._trigger( "close", event );
+		}
+	},
+
+	_change: function( event ) {
+		if ( this.previous !== this._value() ) {
+			this._trigger( "change", event, { item: this.selectedItem } );
+		}
+	},
+
+	_normalize: function( items ) {
+		// assume all items have the right format when the first item is complete
+		if ( items.length && items[0].label && items[0].value ) {
+			return items;
+		}
+		return $.map( items, function( item ) {
+			if ( typeof item === "string" ) {
+				return {
+					label: item,
+					value: item
+				};
+			}
+			return $.extend({
+				label: item.label || item.value,
+				value: item.value || item.label
+			}, item );
+		});
+	},
+
+	_suggest: function( items ) {
+		var ul = this.menu.element
+			.empty()
+			.zIndex( this.element.zIndex() + 1 );
+		this._renderMenu( ul, items );
+		this.menu.refresh();
+
+		// size and position menu
+		ul.show();
+		this._resizeMenu();
+		ul.position( $.extend({
+			of: this.element
+		}, this.options.position ));
+
+		if ( this.options.autoFocus ) {
+			this.menu.next();
+		}
+	},
+
+	_resizeMenu: function() {
+		var ul = this.menu.element;
+		ul.outerWidth( Math.max(
+			// Firefox wraps long text (possibly a rounding bug)
+			// so we add 1px to avoid the wrapping (#7513)
+			ul.width( "" ).outerWidth() + 1,
+			this.element.outerWidth()
+		) );
+	},
+
+	_renderMenu: function( ul, items ) {
+		var that = this;
+		$.each( items, function( index, item ) {
+			that._renderItemData( ul, item );
+		});
+	},
+
+	_renderItemData: function( ul, item ) {
+		return this._renderItem( ul, item ).data( "ui-autocomplete-item", item );
+	},
+
+	_renderItem: function( ul, item ) {
+		return $( "<li>" )
+			.append( $( "<a>" ).text( item.label ) )
+			.appendTo( ul );
+	},
+
+	_move: function( direction, event ) {
+		if ( !this.menu.element.is( ":visible" ) ) {
+			this.search( null, event );
+			return;
+		}
+		if ( this.menu.isFirstItem() && /^previous/.test( direction ) ||
+				this.menu.isLastItem() && /^next/.test( direction ) ) {
+			this._value( this.term );
+			this.menu.blur();
+			return;
+		}
+		this.menu[ direction ]( event );
+	},
+
+	widget: function() {
+		return this.menu.element;
+	},
+
+	_value: function() {
+		return this.valueMethod.apply( this.element, arguments );
+	},
+
+	_keyEvent: function( keyEvent, event ) {
+		if ( !this.isMultiLine || this.menu.element.is( ":visible" ) ) {
+			this._move( keyEvent, event );
+
+			// prevents moving cursor to beginning/end of the text field in some browsers
+			event.preventDefault();
+		}
+	}
+});
+
+$.extend( $.ui.autocomplete, {
+	escapeRegex: function( value ) {
+		return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&");
+	},
+	filter: function(array, term) {
+		var matcher = new RegExp( $.ui.autocomplete.escapeRegex(term), "i" );
+		return $.grep( array, function(value) {
+			return matcher.test( value.label || value.value || value );
+		});
+	}
+});
+
+
+// live region extension, adding a `messages` option
+// NOTE: This is an experimental API. We are still investigating
+// a full solution for string manipulation and internationalization.
+$.widget( "ui.autocomplete", $.ui.autocomplete, {
+	options: {
+		messages: {
+			noResults: "No search results.",
+			results: function( amount ) {
+				return amount + ( amount > 1 ? " results are" : " result is" ) +
+					" available, use up and down arrow keys to navigate.";
+			}
+		}
+	},
+
+	__response: function( content ) {
+		var message;
+		this._superApply( arguments );
+		if ( this.options.disabled || this.cancelSearch ) {
+			return;
+		}
+		if ( content && content.length ) {
+			message = this.options.messages.results( content.length );
+		} else {
+			message = this.options.messages.noResults;
+		}
+		this.liveRegion.text( message );
+	}
+});
+
+}( jQuery ));
+
+define("plugins/visualsearch/jquery.ui.autocomplete", function(){});
+
+/*!
+ * jQuery UI Menu 1.10.0
+ * http://jqueryui.com
+ *
+ * Copyright 2013 jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/menu/
+ *
+ * Depends:
+ *	jquery.ui.core.js
+ *	jquery.ui.widget.js
+ *	jquery.ui.position.js
+ */
+(function( $, undefined ) {
+
+$.widget( "ui.menu", {
+	version: "1.10.0",
+	defaultElement: "<ul>",
+	delay: 300,
+	options: {
+		icons: {
+			submenu: "ui-icon-carat-1-e"
+		},
+		menus: "ul",
+		position: {
+			my: "left top",
+			at: "right top"
+		},
+		role: "menu",
+
+		// callbacks
+		blur: null,
+		focus: null,
+		select: null
+	},
+
+	_create: function() {
+		this.activeMenu = this.element;
+		// flag used to prevent firing of the click handler
+		// as the event bubbles up through nested menus
+		this.mouseHandled = false;
+		this.element
+			.uniqueId()
+			.addClass( "ui-menu ui-widget ui-widget-content ui-corner-all" )
+			.toggleClass( "ui-menu-icons", !!this.element.find( ".ui-icon" ).length )
+			.attr({
+				role: this.options.role,
+				tabIndex: 0
+			})
+			// need to catch all clicks on disabled menu
+			// not possible through _on
+			.bind( "click" + this.eventNamespace, $.proxy(function( event ) {
+				if ( this.options.disabled ) {
+					event.preventDefault();
+				}
+			}, this ));
+
+		if ( this.options.disabled ) {
+			this.element
+				.addClass( "ui-state-disabled" )
+				.attr( "aria-disabled", "true" );
+		}
+
+		this._on({
+			// Prevent focus from sticking to links inside menu after clicking
+			// them (focus should always stay on UL during navigation).
+			"mousedown .ui-menu-item > a": function( event ) {
+				event.preventDefault();
+			},
+			"click .ui-state-disabled > a": function( event ) {
+				event.preventDefault();
+			},
+			"click .ui-menu-item:has(a)": function( event ) {
+				var target = $( event.target ).closest( ".ui-menu-item" );
+				if ( !this.mouseHandled && target.not( ".ui-state-disabled" ).length ) {
+					this.mouseHandled = true;
+
+					this.select( event );
+					// Open submenu on click
+					if ( target.has( ".ui-menu" ).length ) {
+						this.expand( event );
+					} else if ( !this.element.is( ":focus" ) ) {
+						// Redirect focus to the menu
+						this.element.trigger( "focus", [ true ] );
+
+						// If the active item is on the top level, let it stay active.
+						// Otherwise, blur the active item since it is no longer visible.
+						if ( this.active && this.active.parents( ".ui-menu" ).length === 1 ) {
+							clearTimeout( this.timer );
+						}
+					}
+				}
+			},
+			"mouseenter .ui-menu-item": function( event ) {
+				var target = $( event.currentTarget );
+				// Remove ui-state-active class from siblings of the newly focused menu item
+				// to avoid a jump caused by adjacent elements both having a class with a border
+				target.siblings().children( ".ui-state-active" ).removeClass( "ui-state-active" );
+				this.focus( event, target );
+			},
+			mouseleave: "collapseAll",
+			"mouseleave .ui-menu": "collapseAll",
+			focus: function( event, keepActiveItem ) {
+				// If there's already an active item, keep it active
+				// If not, activate the first item
+				var item = this.active || this.element.children( ".ui-menu-item" ).eq( 0 );
+
+				if ( !keepActiveItem ) {
+					this.focus( event, item );
+				}
+			},
+			blur: function( event ) {
+				this._delay(function() {
+					if ( !$.contains( this.element[0], this.document[0].activeElement ) ) {
+						this.collapseAll( event );
+					}
+				});
+			},
+			keydown: "_keydown"
+		});
+
+		this.refresh();
+
+		// Clicks outside of a menu collapse any open menus
+		this._on( this.document, {
+			click: function( event ) {
+				if ( !$( event.target ).closest( ".ui-menu" ).length ) {
+					this.collapseAll( event );
+				}
+
+				// Reset the mouseHandled flag
+				this.mouseHandled = false;
+			}
+		});
+	},
+
+	_destroy: function() {
+		// Destroy (sub)menus
+		this.element
+			.removeAttr( "aria-activedescendant" )
+			.find( ".ui-menu" ).addBack()
+				.removeClass( "ui-menu ui-widget ui-widget-content ui-corner-all ui-menu-icons" )
+				.removeAttr( "role" )
+				.removeAttr( "tabIndex" )
+				.removeAttr( "aria-labelledby" )
+				.removeAttr( "aria-expanded" )
+				.removeAttr( "aria-hidden" )
+				.removeAttr( "aria-disabled" )
+				.removeUniqueId()
+				.show();
+
+		// Destroy menu items
+		this.element.find( ".ui-menu-item" )
+			.removeClass( "ui-menu-item" )
+			.removeAttr( "role" )
+			.removeAttr( "aria-disabled" )
+			.children( "a" )
+				.removeUniqueId()
+				.removeClass( "ui-corner-all ui-state-hover" )
+				.removeAttr( "tabIndex" )
+				.removeAttr( "role" )
+				.removeAttr( "aria-haspopup" )
+				.children().each( function() {
+					var elem = $( this );
+					if ( elem.data( "ui-menu-submenu-carat" ) ) {
+						elem.remove();
+					}
+				});
+
+		// Destroy menu dividers
+		this.element.find( ".ui-menu-divider" ).removeClass( "ui-menu-divider ui-widget-content" );
+	},
+
+	_keydown: function( event ) {
+		/*jshint maxcomplexity:20*/
+		var match, prev, character, skip, regex,
+			preventDefault = true;
+
+		function escape( value ) {
+			return value.replace( /[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&" );
+		}
+
+		switch ( event.keyCode ) {
+		case $.ui.keyCode.PAGE_UP:
+			this.previousPage( event );
+			break;
+		case $.ui.keyCode.PAGE_DOWN:
+			this.nextPage( event );
+			break;
+		case $.ui.keyCode.HOME:
+			this._move( "first", "first", event );
+			break;
+		case $.ui.keyCode.END:
+			this._move( "last", "last", event );
+			break;
+		case $.ui.keyCode.UP:
+			this.previous( event );
+			break;
+		case $.ui.keyCode.DOWN:
+			this.next( event );
+			break;
+		case $.ui.keyCode.LEFT:
+			this.collapse( event );
+			break;
+		case $.ui.keyCode.RIGHT:
+			if ( this.active && !this.active.is( ".ui-state-disabled" ) ) {
+				this.expand( event );
+			}
+			break;
+		case $.ui.keyCode.ENTER:
+		case $.ui.keyCode.SPACE:
+			this._activate( event );
+			break;
+		case $.ui.keyCode.ESCAPE:
+			this.collapse( event );
+			break;
+		default:
+			preventDefault = false;
+			prev = this.previousFilter || "";
+			character = String.fromCharCode( event.keyCode );
+			skip = false;
+
+			clearTimeout( this.filterTimer );
+
+			if ( character === prev ) {
+				skip = true;
+			} else {
+				character = prev + character;
+			}
+
+			regex = new RegExp( "^" + escape( character ), "i" );
+			match = this.activeMenu.children( ".ui-menu-item" ).filter(function() {
+				return regex.test( $( this ).children( "a" ).text() );
+			});
+			match = skip && match.index( this.active.next() ) !== -1 ?
+				this.active.nextAll( ".ui-menu-item" ) :
+				match;
+
+			// If no matches on the current filter, reset to the last character pressed
+			// to move down the menu to the first item that starts with that character
+			if ( !match.length ) {
+				character = String.fromCharCode( event.keyCode );
+				regex = new RegExp( "^" + escape( character ), "i" );
+				match = this.activeMenu.children( ".ui-menu-item" ).filter(function() {
+					return regex.test( $( this ).children( "a" ).text() );
+				});
+			}
+
+			if ( match.length ) {
+				this.focus( event, match );
+				if ( match.length > 1 ) {
+					this.previousFilter = character;
+					this.filterTimer = this._delay(function() {
+						delete this.previousFilter;
+					}, 1000 );
+				} else {
+					delete this.previousFilter;
+				}
+			} else {
+				delete this.previousFilter;
+			}
+		}
+
+		if ( preventDefault ) {
+			event.preventDefault();
+		}
+	},
+
+	_activate: function( event ) {
+		if ( !this.active.is( ".ui-state-disabled" ) ) {
+			if ( this.active.children( "a[aria-haspopup='true']" ).length ) {
+				this.expand( event );
+			} else {
+				this.select( event );
+			}
+		}
+	},
+
+	refresh: function() {
+		var menus,
+			icon = this.options.icons.submenu,
+			submenus = this.element.find( this.options.menus );
+
+		// Initialize nested menus
+		submenus.filter( ":not(.ui-menu)" )
+			.addClass( "ui-menu ui-widget ui-widget-content ui-corner-all" )
+			.hide()
+			.attr({
+				role: this.options.role,
+				"aria-hidden": "true",
+				"aria-expanded": "false"
+			})
+			.each(function() {
+				var menu = $( this ),
+					item = menu.prev( "a" ),
+					submenuCarat = $( "<span>" )
+						.addClass( "ui-menu-icon ui-icon " + icon )
+						.data( "ui-menu-submenu-carat", true );
+
+				item
+					.attr( "aria-haspopup", "true" )
+					.prepend( submenuCarat );
+				menu.attr( "aria-labelledby", item.attr( "id" ) );
+			});
+
+		menus = submenus.add( this.element );
+
+		// Don't refresh list items that are already adapted
+		menus.children( ":not(.ui-menu-item):has(a)" )
+			.addClass( "ui-menu-item" )
+			.attr( "role", "presentation" )
+			.children( "a" )
+				.uniqueId()
+				.addClass( "ui-corner-all" )
+				.attr({
+					tabIndex: -1,
+					role: this._itemRole()
+				});
+
+		// Initialize unlinked menu-items containing spaces and/or dashes only as dividers
+		menus.children( ":not(.ui-menu-item)" ).each(function() {
+			var item = $( this );
+			// hyphen, em dash, en dash
+			if ( !/[^\-—–\s]/.test( item.text() ) ) {
+				item.addClass( "ui-widget-content ui-menu-divider" );
+			}
+		});
+
+		// Add aria-disabled attribute to any disabled menu item
+		menus.children( ".ui-state-disabled" ).attr( "aria-disabled", "true" );
+
+		// If the active item has been removed, blur the menu
+		if ( this.active && !$.contains( this.element[ 0 ], this.active[ 0 ] ) ) {
+			this.blur();
+		}
+	},
+
+	_itemRole: function() {
+		return {
+			menu: "menuitem",
+			listbox: "option"
+		}[ this.options.role ];
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "icons" ) {
+			this.element.find( ".ui-menu-icon" )
+				.removeClass( this.options.icons.submenu )
+				.addClass( value.submenu );
+		}
+		this._super( key, value );
+	},
+
+	focus: function( event, item ) {
+		var nested, focused;
+		this.blur( event, event && event.type === "focus" );
+
+		this._scrollIntoView( item );
+
+		this.active = item.first();
+		focused = this.active.children( "a" ).addClass( "ui-state-focus" );
+		// Only update aria-activedescendant if there's a role
+		// otherwise we assume focus is managed elsewhere
+		if ( this.options.role ) {
+			this.element.attr( "aria-activedescendant", focused.attr( "id" ) );
+		}
+
+		// Highlight active parent menu item, if any
+		this.active
+			.parent()
+			.closest( ".ui-menu-item" )
+			.children( "a:first" )
+			.addClass( "ui-state-active" );
+
+		if ( event && event.type === "keydown" ) {
+			this._close();
+		} else {
+			this.timer = this._delay(function() {
+				this._close();
+			}, this.delay );
+		}
+
+		nested = item.children( ".ui-menu" );
+		if ( nested.length && ( /^mouse/.test( event.type ) ) ) {
+			this._startOpening(nested);
+		}
+		this.activeMenu = item.parent();
+
+		this._trigger( "focus", event, { item: item } );
+	},
+
+	_scrollIntoView: function( item ) {
+		var borderTop, paddingTop, offset, scroll, elementHeight, itemHeight;
+		if ( this._hasScroll() ) {
+			borderTop = parseFloat( $.css( this.activeMenu[0], "borderTopWidth" ) ) || 0;
+			paddingTop = parseFloat( $.css( this.activeMenu[0], "paddingTop" ) ) || 0;
+			offset = item.offset().top - this.activeMenu.offset().top - borderTop - paddingTop;
+			scroll = this.activeMenu.scrollTop();
+			elementHeight = this.activeMenu.height();
+			itemHeight = item.height();
+
+			if ( offset < 0 ) {
+				this.activeMenu.scrollTop( scroll + offset );
+			} else if ( offset + itemHeight > elementHeight ) {
+				this.activeMenu.scrollTop( scroll + offset - elementHeight + itemHeight );
+			}
+		}
+	},
+
+	blur: function( event, fromFocus ) {
+		if ( !fromFocus ) {
+			clearTimeout( this.timer );
+		}
+
+		if ( !this.active ) {
+			return;
+		}
+
+		this.active.children( "a" ).removeClass( "ui-state-focus" );
+		this.active = null;
+
+		this._trigger( "blur", event, { item: this.active } );
+	},
+
+	_startOpening: function( submenu ) {
+		clearTimeout( this.timer );
+
+		// Don't open if already open fixes a Firefox bug that caused a .5 pixel
+		// shift in the submenu position when mousing over the carat icon
+		if ( submenu.attr( "aria-hidden" ) !== "true" ) {
+			return;
+		}
+
+		this.timer = this._delay(function() {
+			this._close();
+			this._open( submenu );
+		}, this.delay );
+	},
+
+	_open: function( submenu ) {
+		var position = $.extend({
+			of: this.active
+		}, this.options.position );
+
+		clearTimeout( this.timer );
+		this.element.find( ".ui-menu" ).not( submenu.parents( ".ui-menu" ) )
+			.hide()
+			.attr( "aria-hidden", "true" );
+
+		submenu
+			.show()
+			.removeAttr( "aria-hidden" )
+			.attr( "aria-expanded", "true" )
+			.position( position );
+	},
+
+	collapseAll: function( event, all ) {
+		clearTimeout( this.timer );
+		this.timer = this._delay(function() {
+			// If we were passed an event, look for the submenu that contains the event
+			var currentMenu = all ? this.element :
+				$( event && event.target ).closest( this.element.find( ".ui-menu" ) );
+
+			// If we found no valid submenu ancestor, use the main menu to close all sub menus anyway
+			if ( !currentMenu.length ) {
+				currentMenu = this.element;
+			}
+
+			this._close( currentMenu );
+
+			this.blur( event );
+			this.activeMenu = currentMenu;
+		}, this.delay );
+	},
+
+	// With no arguments, closes the currently active menu - if nothing is active
+	// it closes all menus.  If passed an argument, it will search for menus BELOW
+	_close: function( startMenu ) {
+		if ( !startMenu ) {
+			startMenu = this.active ? this.active.parent() : this.element;
+		}
+
+		startMenu
+			.find( ".ui-menu" )
+				.hide()
+				.attr( "aria-hidden", "true" )
+				.attr( "aria-expanded", "false" )
+			.end()
+			.find( "a.ui-state-active" )
+				.removeClass( "ui-state-active" );
+	},
+
+	collapse: function( event ) {
+		var newItem = this.active &&
+			this.active.parent().closest( ".ui-menu-item", this.element );
+		if ( newItem && newItem.length ) {
+			this._close();
+			this.focus( event, newItem );
+		}
+	},
+
+	expand: function( event ) {
+		var newItem = this.active &&
+			this.active
+				.children( ".ui-menu " )
+				.children( ".ui-menu-item" )
+				.first();
+
+		if ( newItem && newItem.length ) {
+			this._open( newItem.parent() );
+
+			// Delay so Firefox will not hide activedescendant change in expanding submenu from AT
+			this._delay(function() {
+				this.focus( event, newItem );
+			});
+		}
+	},
+
+	next: function( event ) {
+		this._move( "next", "first", event );
+	},
+
+	previous: function( event ) {
+		this._move( "prev", "last", event );
+	},
+
+	isFirstItem: function() {
+		return this.active && !this.active.prevAll( ".ui-menu-item" ).length;
+	},
+
+	isLastItem: function() {
+		return this.active && !this.active.nextAll( ".ui-menu-item" ).length;
+	},
+
+	_move: function( direction, filter, event ) {
+		var next;
+		if ( this.active ) {
+			if ( direction === "first" || direction === "last" ) {
+				next = this.active
+					[ direction === "first" ? "prevAll" : "nextAll" ]( ".ui-menu-item" )
+					.eq( -1 );
+			} else {
+				next = this.active
+					[ direction + "All" ]( ".ui-menu-item" )
+					.eq( 0 );
+			}
+		}
+		if ( !next || !next.length || !this.active ) {
+			next = this.activeMenu.children( ".ui-menu-item" )[ filter ]();
+		}
+
+		this.focus( event, next );
+	},
+
+	nextPage: function( event ) {
+		var item, base, height;
+
+		if ( !this.active ) {
+			this.next( event );
+			return;
+		}
+		if ( this.isLastItem() ) {
+			return;
+		}
+		if ( this._hasScroll() ) {
+			base = this.active.offset().top;
+			height = this.element.height();
+			this.active.nextAll( ".ui-menu-item" ).each(function() {
+				item = $( this );
+				return item.offset().top - base - height < 0;
+			});
+
+			this.focus( event, item );
+		} else {
+			this.focus( event, this.activeMenu.children( ".ui-menu-item" )
+				[ !this.active ? "first" : "last" ]() );
+		}
+	},
+
+	previousPage: function( event ) {
+		var item, base, height;
+		if ( !this.active ) {
+			this.next( event );
+			return;
+		}
+		if ( this.isFirstItem() ) {
+			return;
+		}
+		if ( this._hasScroll() ) {
+			base = this.active.offset().top;
+			height = this.element.height();
+			this.active.prevAll( ".ui-menu-item" ).each(function() {
+				item = $( this );
+				return item.offset().top - base + height > 0;
+			});
+
+			this.focus( event, item );
+		} else {
+			this.focus( event, this.activeMenu.children( ".ui-menu-item" ).first() );
+		}
+	},
+
+	_hasScroll: function() {
+		return this.element.outerHeight() < this.element.prop( "scrollHeight" );
+	},
+
+	select: function( event ) {
+		// TODO: It should never be possible to not have an active item at this
+		// point, but the tests don't trigger mouseenter before click.
+		this.active = this.active || $( event.target ).closest( ".ui-menu-item" );
+		var ui = { item: this.active };
+		if ( !this.active.has( ".ui-menu" ).length ) {
+			this.collapseAll( event, true );
+		}
+		this._trigger( "select", event, ui );
+	}
+});
+
+}( jQuery ));
+
+define("plugins/visualsearch/jquery.ui.menu", function(){});
+
+// This is the annotated source code for
+// [VisualSearch.js](http://documentcloud.github.com/visualsearch/),
+// a rich search box for real data.
+// 
+// The annotated source HTML is generated by
+// [Docco](http://jashkenas.github.com/docco/).
+
+/** @license VisualSearch.js 0.4.0
+ *  (c) 2011 Samuel Clay, @samuelclay, DocumentCloud Inc.
+ *  VisualSearch.js may be freely distributed under the MIT license.
+ *  For all details and documentation:
+ *  http://documentcloud.github.com/visualsearch
+ */
+
+(function() {
+
+  var $ = jQuery; // Handle namespaced jQuery
+
+  // Setting up VisualSearch globals. These will eventually be made instance-based.
+  if (!window.VS) window.VS = {};
+  if (!VS.app)    VS.app    = {};
+  if (!VS.ui)     VS.ui     = {};
+  if (!VS.model)  VS.model  = {};
+  if (!VS.utils)  VS.utils  = {};
+
+  // Sets the version for VisualSearch to be used programatically elsewhere.
+  VS.VERSION = '0.4.0';
+
+  VS.VisualSearch = function(options) {
+    var defaults = {
+      container   : '',
+      query       : '',
+      autosearch  : true,
+      unquotable  : [],
+      remainder   : 'text',
+      showFacets  : true,
+      callbacks   : {
+        search          : $.noop,
+        focus           : $.noop,
+        blur            : $.noop,
+        facetMatches    : $.noop,
+        valueMatches    : $.noop
+      }
+    };
+    this.options           = _.extend({}, defaults, options);
+    this.options.callbacks = _.extend({}, defaults.callbacks, options.callbacks);
+    
+    VS.app.hotkeys.initialize();
+    this.searchQuery   = new VS.model.SearchQuery();
+    this.searchBox     = new VS.ui.SearchBox({
+        app: this, 
+        showFacets: this.options.showFacets
+    });
+    
+    if (options.container) {
+
+      var searchBox = this.searchBox.render().el;
+
+      $(this.options.container).html(searchBox);
+    }
+    this.searchBox.value(this.options.query || '');
+
+    // Disable page caching for browsers that incorrectly cache the visual search inputs.
+    // This is forced the browser to re-render the page when it is retrieved in its history.
+    $(window).bind('unload', function(e) {});
+
+    // Gives the user back a reference to the `searchBox` so they
+    // can use public methods.
+    return this;
+  };
+
+  // Entry-point used to tie all parts of VisualSearch together. It will either attach
+  // itself to `options.container`, or pass back the `searchBox` so it can be rendered
+  // at will.
+  VS.init = function(options) {
+    return new VS.VisualSearch(options);
+  };
+
+})();
+
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// The search box is responsible for managing the many facet views and input views.
+VS.ui.SearchBox = Backbone.View.extend({
+
+  id  : 'search',
+
+  events : {
+    'click .VS-cancel-search-box' : 'clearSearch',
+    'mousedown .VS-search-box'    : 'maybeFocusSearch',
+    'dblclick .VS-search-box'     : 'highlightSearch',
+    'click .VS-search-box'        : 'maybeTripleClick'
+  },
+  manage: false,
+  // Creating a new SearchBox registers handlers for re-rendering facets when necessary,
+  // as well as handling typing when a facet is selected.
+  initialize : function() {
+    this.app = this.options.app;
+    this.flags = {
+      allSelected : false
+    };
+    this.facetViews = [];
+    this.inputViews = [];
+    _.bindAll(this, 'renderFacets', '_maybeDisableFacets', 'disableFacets',
+              'deselectAllFacets', 'addedFacet', 'removedFacet', 'changedFacet');
+    this.app.searchQuery
+            .bind('reset', this.renderFacets)
+            .bind('add', this.addedFacet)
+            .bind('remove', this.removedFacet)
+            .bind('change', this.changedFacet);
+    $(document).bind('keydown', this._maybeDisableFacets);
+  },
+
+  // Renders the search box, but requires placement on the page through `this.el`.
+  render : function() {
+    $(this.el).append(JST['search_box']({}));
+    $(document.body).setMode('no', 'search');
+
+    return this;
+  },
+
+  // # Querying Facets #
+
+  // Either gets a serialized query string or sets the faceted query from a query string.
+  value : function(query) {
+    if (query == null) return this.serialize();
+    return this.setQuery(query);
+  },
+
+  // Uses the VS.app.searchQuery collection to serialize the current query from the various
+  // facets that are in the search box.
+  serialize : function() {
+    var query           = [];
+    var inputViewsCount = this.inputViews.length;
+
+    this.app.searchQuery.each(_.bind(function(facet, i) {
+      query.push(this.inputViews[i].value());
+      query.push(facet.serialize());
+    }, this));
+
+    if (inputViewsCount) {
+      query.push(this.inputViews[inputViewsCount-1].value());
+    }
+
+    return _.compact(query).join(' ');
+  },
+  
+  // Returns any facet views that are currently selected. Useful for changing the value
+  // callbacks based on what else is in the search box and which facet is being edited.
+  selected: function() {
+    return _.select(this.facetViews, function(view) { 
+      return view.modes.editing == 'is' || view.modes.selected == 'is';
+    });
+  },
+  
+  // Similar to `this.selected`, returns any facet models that are currently selected.
+  selectedModels: function() {
+    return _.pluck(this.selected(), 'model');
+  },
+
+  // Takes a query string and uses the SearchParser to parse and render it. Note that
+  // `VS.app.SearchParser` refreshes the `VS.app.searchQuery` collection, which is bound
+  // here to call `this.renderFacets`.
+  setQuery : function(query) {
+    this.currentQuery = query;
+    VS.app.SearchParser.parse(this.app, query);
+  },
+
+  // Returns the position of a facet/input view. Useful when moving between facets.
+  viewPosition : function(view) {
+    var views    = view.type == 'facet' ? this.facetViews : this.inputViews;
+    var position = _.indexOf(views, view);
+    if (position == -1) position = 0;
+    return position;
+  },
+
+  // Used to launch a search. Hitting enter or clicking the search button.
+  searchEvent : function(e) {
+    var query = this.value();
+    this.focusSearch(e);
+    this.value(query);
+    this.app.options.callbacks.search(query, this.app.searchQuery);
+  },
+
+  // # Rendering Facets #
+
+  // Add a new facet. Facet will be focused and ready to accept a value. Can also
+  // specify position, in the case of adding facets from an inbetween input.
+  addFacet : function(category, initialQuery, position) {
+    category     = VS.utils.inflector.trim(category);
+    initialQuery = VS.utils.inflector.trim(initialQuery || '');
+    if (!category) return;
+    
+    var model = new VS.model.SearchFacet({
+      category : category,
+      value    : initialQuery || '',
+      app      : this.app
+    });
+    this.app.searchQuery.add(model, {at: position});
+  },
+
+  // Renders a newly added facet, and selects it.
+  addedFacet : function (model) {
+    this.renderFacets();
+    var facetView = _.detect(this.facetViews, function(view) {
+      if (view.model == model) return true;
+    });
+
+    _.defer(function() {
+      facetView.enableEdit();
+    });
+  },
+
+  // Changing a facet programmatically re-renders it.
+  changedFacet: function () {
+    this.renderFacets();
+  },
+
+  // When removing a facet, potentially do something. For now, the adjacent
+  // remaining facet is selected, but this is handled by the facet's view,
+  // since its position is unknown by the time the collection triggers this
+  // remove callback.
+  removedFacet : function (facet, query, options) {},
+
+  // Renders each facet as a searchFacet view.
+  renderFacets : function() {
+    this.facetViews = [];
+    this.inputViews = [];
+
+    this.$('.VS-search-inner').empty();
+
+    this.app.searchQuery.each(_.bind(this.renderFacet, this));
+
+    // Add on an n+1 empty search input on the very end.
+    this.renderSearchInput();
+    this.renderPlaceholder();
+  },
+
+  // Render a single facet, using its category and query value.
+  renderFacet : function(facet, position) {
+    var view = new VS.ui.SearchFacet({
+      app   : this.app,
+      model : facet,
+      order : position
+    });
+
+    // Input first, facet second.
+    this.renderSearchInput();
+    this.facetViews.push(view);
+    this.$('.VS-search-inner').children().eq(position*2).after(view.render().el);
+
+    view.calculateSize();
+    _.defer(_.bind(view.calculateSize, view));
+
+    return view;
+  },
+
+  // Render a single input, used to create and autocomplete facets
+  renderSearchInput : function() {
+    var input = new VS.ui.SearchInput({
+      position: this.inputViews.length, 
+      app: this.app,
+      showFacets: this.options.showFacets
+    });
+    this.$('.VS-search-inner').append(input.render().el);
+    this.inputViews.push(input);
+  },
+  
+  // Handles showing/hiding the placeholder text
+  renderPlaceholder : function() {
+    var $placeholder = this.$('.VS-placeholder');
+    if (this.app.searchQuery.length) {
+      $placeholder.addClass("VS-hidden");
+    } else {
+      $placeholder.removeClass("VS-hidden")
+                  .text(this.app.options.placeholder);
+    }
+  },
+
+  // # Modifying Facets #
+
+  // Clears out the search box. Command+A + delete can trigger this, as can a cancel button.
+  //
+  // If a `clearSearch` callback was provided, the callback is invoked and
+  // provided with a function performs the actual removal of the data.  This
+  // allows third-party developers to either clear data asynchronously, or
+  // prior to performing their custom "clear" logic.
+  clearSearch : function(e) {
+    var actualClearSearch = _.bind(function() {
+      this.disableFacets();
+      this.value('');
+      this.flags.allSelected = false;
+      this.searchEvent(e);
+      this.focusSearch(e);
+    }, this);
+
+    if (this.app.options.callbacks.clearSearch) {
+      this.app.options.callbacks.clearSearch(actualClearSearch);
+    } else {
+      actualClearSearch();
+    }
+  },
+
+  // Command+A selects all facets.
+  selectAllFacets : function() {
+    this.flags.allSelected = true;
+
+    $(document).one('click.selectAllFacets', this.deselectAllFacets);
+
+    _.each(this.facetViews, function(facetView, i) {
+      facetView.selectFacet();
+    });
+    _.each(this.inputViews, function(inputView, i) {
+      inputView.selectText();
+    });
+  },
+
+  // Used by facets and input to see if all facets are currently selected.
+  allSelected : function(deselect) {
+    if (deselect) this.flags.allSelected = false;
+    return this.flags.allSelected;
+  },
+
+  // After `selectAllFacets` is engaged, this method is bound to the entire document.
+  // This immediate disables and deselects all facets, but it also checks if the user
+  // has clicked on either a facet or an input, and properly selects the view.
+  deselectAllFacets : function(e) {
+    this.disableFacets();
+
+    if (this.$(e.target).is('.category,input')) {
+      var el   = $(e.target).closest('.search_facet,.search_input');
+      var view = _.detect(this.facetViews.concat(this.inputViews), function(v) {
+        return v.el == el[0];
+      });
+      if (view.type == 'facet') {
+        view.selectFacet();
+      } else if (view.type == 'input') {
+        _.defer(function() {
+          view.enableEdit(true);
+        });
+      }
+    }
+  },
+
+  // Disables all facets except for the passed in view. Used when switching between
+  // facets, so as not to have to keep state of active facets.
+  disableFacets : function(keepView) {
+    _.each(this.inputViews, function(view) {
+      if (view && view != keepView &&
+          (view.modes.editing == 'is' || view.modes.selected == 'is')) {
+        view.disableEdit();
+      }
+    });
+    _.each(this.facetViews, function(view) {
+      if (view && view != keepView &&
+          (view.modes.editing == 'is' || view.modes.selected == 'is')) {
+        view.disableEdit();
+        view.deselectFacet();
+      }
+    });
+
+    this.flags.allSelected = false;
+    this.removeFocus();
+    $(document).unbind('click.selectAllFacets');
+  },
+
+  // Resize all inputs to account for extra keystrokes which may be changing the facet
+  // width incorrectly. This is a safety check to ensure inputs are correctly sized.
+  resizeFacets : function(view) {
+    _.each(this.facetViews, function(facetView, i) {
+      if (!view || facetView == view) {
+        facetView.resize();
+      }
+    });
+  },
+
+  // Handles keydown events on the document. Used to complete the Cmd+A deletion, and
+  // blurring focus.
+  _maybeDisableFacets : function(e) {
+    if (this.flags.allSelected && VS.app.hotkeys.key(e) == 'backspace') {
+      e.preventDefault();
+      this.clearSearch(e);
+      return false;
+    } else if (this.flags.allSelected && VS.app.hotkeys.printable(e)) {
+      this.clearSearch(e);
+    }
+  },
+
+  // # Focusing Facets #
+
+  // Move focus between facets and inputs. Takes a direction as well as many options
+  // for skipping over inputs and only to facets, placement of cursor position in facet
+  // (i.e. at the end), and selecting the text in the input/facet.
+  focusNextFacet : function(currentView, direction, options) {
+    options = options || {};
+    var viewCount    = this.facetViews.length;
+    var viewPosition = options.viewPosition || this.viewPosition(currentView);
+
+    if (!options.skipToFacet) {
+      // Correct for bouncing between matching text and facet arrays.
+      if (currentView.type == 'text'  && direction > 0) direction -= 1;
+      if (currentView.type == 'facet' && direction < 0) direction += 1;
+    } else if (options.skipToFacet && currentView.type == 'text' &&
+               viewCount == viewPosition && direction >= 0) {
+      // Special case of looping around to a facet from the last search input box.
+      return false;
+    }
+    var view, next = Math.min(viewCount, viewPosition + direction);
+
+    if (currentView.type == 'text') {
+      if (next >= 0 && next < viewCount) {
+        view = this.facetViews[next];
+      } else if (next == viewCount) {
+        view = this.inputViews[this.inputViews.length-1];
+      }
+      if (view && options.selectFacet && view.type == 'facet') {
+        view.selectFacet();
+      } else if (view) {
+        view.enableEdit();
+        view.setCursorAtEnd(direction || options.startAtEnd);
+      }
+    } else if (currentView.type == 'facet') {
+      if (options.skipToFacet) {
+        if (next >= viewCount || next < 0) {
+          view = _.last(this.inputViews);
+          view.enableEdit();
+        } else {
+          view = this.facetViews[next];
+          view.enableEdit();
+          view.setCursorAtEnd(direction || options.startAtEnd);
+        }
+      } else {
+        view = this.inputViews[next];
+        view.enableEdit();
+      }
+    }
+    if (options.selectText) view.selectText();
+    this.resizeFacets();
+    
+    return true;
+  },
+
+  maybeFocusSearch : function(e) {
+    if ($(e.target).is('.VS-search-box') ||
+        $(e.target).is('.VS-search-inner') ||
+        e.type == 'keydown') {
+      this.focusSearch(e);
+    }
+  },
+
+  // Bring focus to last input field.
+  focusSearch : function(e, selectText) {
+    var view = this.inputViews[this.inputViews.length-1];
+    view.enableEdit(selectText);
+    if (!selectText) view.setCursorAtEnd(-1);
+    if (e.type == 'keydown') {
+      view.keydown(e);
+      view.box.trigger('keydown');
+    }
+    _.defer(_.bind(function() {
+      if (!this.$('input:focus').length) {
+        view.enableEdit(selectText);
+      }
+    }, this));
+  },
+
+  // Double-clicking on the search wrapper should select the existing text in
+  // the last search input. Also start the triple-click timer.
+  highlightSearch : function(e) {
+    if ($(e.target).is('.VS-search-box') ||
+        $(e.target).is('.VS-search-inner') ||
+        e.type == 'keydown') {
+      var lastinput = this.inputViews[this.inputViews.length-1];
+      lastinput.startTripleClickTimer();
+      this.focusSearch(e, true);
+    }
+  },
+
+  maybeTripleClick : function(e) {
+    var lastinput = this.inputViews[this.inputViews.length-1];
+    return lastinput.maybeTripleClick(e);
+  },
+
+  // Used to show the user is focused on some input inside the search box.
+  addFocus : function() {
+    this.app.options.callbacks.focus();
+    this.$('.VS-search-box').addClass('VS-focus');
+  },
+
+  // User is no longer focused on anything in the search box.
+  removeFocus : function() {
+    this.app.options.callbacks.blur();
+    var focus = _.any(this.facetViews.concat(this.inputViews), function(view) {
+      return view.isFocused();
+    });
+    if (!focus) this.$('.VS-search-box').removeClass('VS-focus');
+  },
+
+  // Show a menu which adds pre-defined facets to the search box. This is unused for now.
+  showFacetCategoryMenu : function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (this.facetCategoryMenu && this.facetCategoryMenu.modes.open == 'is') {
+      return this.facetCategoryMenu.close();
+    }
+
+    var items = [
+      {title: 'Account', onClick: _.bind(this.addFacet, this, 'account', '')},
+      {title: 'Project', onClick: _.bind(this.addFacet, this, 'project', '')},
+      {title: 'Filter', onClick: _.bind(this.addFacet, this, 'filter', '')},
+      {title: 'Access', onClick: _.bind(this.addFacet, this, 'access', '')}
+    ];
+
+    var menu = this.facetCategoryMenu || (this.facetCategoryMenu = new dc.ui.Menu({
+      items       : items,
+      standalone  : true
+    }));
+
+    this.$('.VS-icon-search').after(menu.render().open().content);
+    return false;
+  }
+
+});
+
+})();
+
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// This is the visual search facet that holds the category and its autocompleted
+// input field.
+VS.ui.SearchFacet = Backbone.View.extend({
+
+  type : 'facet',
+
+  className : 'search_facet',
+
+  events : {
+    'click .category'           : 'selectFacet',
+    'keydown input'             : 'keydown',
+    'mousedown input'           : 'enableEdit',
+    'mouseover .VS-icon-cancel' : 'showDelete',
+    'mouseout .VS-icon-cancel'  : 'hideDelete',
+    'click .VS-icon-cancel'     : 'remove'
+  },
+
+  manage: false,
+
+  initialize : function(options) {
+    this.flags = {
+      canClose : false
+    };
+    _.bindAll(this, 'set', 'keydown', 'deselectFacet', 'deferDisableEdit');
+  },
+
+  // Rendering the facet sets up autocompletion, events on blur, and populates
+  // the facet's input with its starting value.
+  render : function() {
+    $(this.el).html(JST['search_facet']({
+      model : this.model
+    }));
+
+    this.setMode('not', 'editing');
+    this.setMode('not', 'selected');
+    this.box = this.$('input');
+    this.box.val(this.model.label());
+    this.box.bind('blur', this.deferDisableEdit);
+    // Handle paste events with `propertychange`
+    this.box.bind('input propertychange', this.keydown);
+    this.setupAutocomplete();
+
+    return this;
+  },
+
+  // This method is used to setup the facet's input to auto-grow.
+  // This is defered in the searchBox so it can be attached to the
+  // DOM to get the correct font-size.
+  calculateSize : function() {
+    this.box.autoGrowInput();
+    this.box.unbind('updated.autogrow');
+    this.box.bind('updated.autogrow', _.bind(this.moveAutocomplete, this));
+  },
+
+  // Forces a recalculation of this facet's input field's value. Called when
+  // the facet is focused, removed, or otherwise modified.
+  resize : function(e) {
+    this.box.trigger('resize.autogrow', e);
+  },
+
+  // Watches the facet's input field to see if it matches the beginnings of
+  // words in `autocompleteValues`, which is different for every category.
+  // If the value, when selected from the autocompletion menu, is different
+  // than what it was, commit the facet and search for it.
+  setupAutocomplete : function() {
+    this.box.autocomplete({
+      source    : _.bind(this.autocompleteValues, this),
+      minLength : 0,
+      delay     : 0,
+      autoFocus : true,
+      position  : {offset : "0 5"},
+      create    : _.bind(function(e, ui) {
+        $(this.el).find('.ui-autocomplete-input').css('z-index','auto');
+      }, this),
+      select    : _.bind(function(e, ui) {
+        e.preventDefault();
+        var originalValue = this.model.get('value');
+        this.set(ui.item.value);
+        if (originalValue != ui.item.value || this.box.val() != ui.item.value) {
+          if (this.options.app.options.autosearch) {
+            this.search(e);
+          } else {
+              this.options.app.searchBox.renderFacets();
+              this.options.app.searchBox.focusNextFacet(this, 1, {viewPosition: this.options.order});
+          }
+        }
+        return false;
+      }, this),
+      open      : _.bind(function(e, ui) {
+        var box = this.box;
+        this.box.autocomplete('widget').find('.ui-menu-item').each(function() {
+          var $value = $(this),
+              autoCompleteData = $value.data('item.autocomplete') || $value.data('ui-autocomplete-item');
+
+          if (autoCompleteData['value'] == box.val() && box.data('uiAutocomplete').menu.activate) {
+            box.data('uiAutocomplete').menu.activate(new $.Event("mouseover"), $value);
+          }
+        });
+      }, this)
+    });
+
+    this.box.autocomplete('widget').addClass('VS-interface');
+  },
+
+  // As the facet's input field grows, it may move to the next line in the
+  // search box. `autoGrowInput` triggers an `updated` event on the input
+  // field, which is bound to this method to move the autocomplete menu.
+  moveAutocomplete : function() {
+    var autocomplete = this.box.data('uiAutocomplete');
+    if (autocomplete) {
+      autocomplete.menu.element.position({
+        my        : "left top",
+        at        : "left bottom",
+        of        : this.box.data('uiAutocomplete').element,
+        collision : "flip",
+        offset    : "0 5"
+      });
+    }
+  },
+
+  // When a user enters a facet and it is being edited, immediately show
+  // the autocomplete menu and size it to match the contents.
+  searchAutocomplete : function(e) {
+    var autocomplete = this.box.data('uiAutocomplete');
+    if (autocomplete) {
+      var menu = autocomplete.menu.element;
+      autocomplete.search();
+
+      // Resize the menu based on the correctly measured width of what's bigger:
+      // the menu's original size or the menu items' new size.
+      menu.outerWidth(Math.max(
+        menu.width('').outerWidth(),
+        autocomplete.element.outerWidth()
+      ));
+    }
+  },
+
+  // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
+  // and anything else that takes focus out of the facet's input field.
+  closeAutocomplete : function() {
+    var autocomplete = this.box.data('uiAutocomplete');
+    if (autocomplete) autocomplete.close();
+  },
+
+  // Search terms used in the autocomplete menu. These are specific to the facet,
+  // and only match for the facet's category. The values are then matched on the
+  // first letter of any word in matches, and finally sorted according to the
+  // value's own category. You can pass `preserveOrder` as an option in the 
+  // `facetMatches` callback to skip any further ordering done client-side.
+  autocompleteValues : function(req, resp) {
+    var category = this.model.get('category');
+    var value    = this.model.get('value');
+    var searchTerm = req.term;
+
+    this.options.app.options.callbacks.valueMatches(category, searchTerm, function(matches, options) {
+      options = options || {};
+      matches = matches || [];
+      
+      if (searchTerm && value != searchTerm) {
+        if (options.preserveMatches) {
+          resp(matches);
+        } else {
+          var re = VS.utils.inflector.escapeRegExp(searchTerm || '');
+          var matcher = new RegExp('\\b' + re, 'i');
+          matches = $.grep(matches, function(item) {
+            return matcher.test(item) ||
+                   matcher.test(item.value) ||
+                   matcher.test(item.label);
+        });
+        }
+      }
+      
+      if (options.preserveOrder) {
+        resp(matches);
+      } else {
+        resp(_.sortBy(matches, function(match) {
+          if (match == value || match.value == value) return '';
+          else return match;
+        }));
+      }
+    });
+
+  },
+
+  // Sets the facet's model's value.
+  set : function(value) {
+    if (!value) return;
+    this.model.set({'value': value});
+  },
+
+  // Before the searchBox performs a search, we need to close the
+  // autocomplete menu.
+  search : function(e, direction) {
+    if (!direction) direction = 1;
+    this.closeAutocomplete();
+    this.options.app.searchBox.searchEvent(e);
+    _.defer(_.bind(function() {
+      this.options.app.searchBox.focusNextFacet(this, direction, {viewPosition: this.options.order});
+    }, this));
+  },
+
+  // Begin editing the facet's input. This is called when the user enters
+  // the input either from another facet or directly clicking on it.
+  //
+  // This method tells all other facets and inputs to disable so it can have
+  // the sole focus. It also prepares the autocompletion menu.
+  enableEdit : function() {
+    if (this.modes.editing != 'is') {
+      this.setMode('is', 'editing');
+      this.deselectFacet();
+      if (this.box.val() == '') {
+        this.box.val(this.model.get('value'));
+      }
+    }
+
+    this.flags.canClose = false;
+    this.options.app.searchBox.disableFacets(this);
+    this.options.app.searchBox.addFocus();
+    _.defer(_.bind(function() {
+      this.options.app.searchBox.addFocus();
+    }, this));
+    this.resize();
+    this.searchAutocomplete();
+    this.box.focus();
+  },
+
+  // When the user blurs the input, they may either be going to another input
+  // or off the search box entirely. If they go to another input, this facet
+  // will be instantly disabled, and the canClose flag will be turned back off.
+  //
+  // However, if the user clicks elsewhere on the page, this method starts a timer
+  // that checks if any of the other inputs are selected or are being edited. If
+  // not, then it can finally close itself and its autocomplete menu.
+  deferDisableEdit : function() {
+    this.flags.canClose = true;
+    _.delay(_.bind(function() {
+      if (this.flags.canClose && !this.box.is(':focus') &&
+          this.modes.editing == 'is' && this.modes.selected != 'is') {
+        this.disableEdit();
+      }
+    }, this), 250);
+  },
+
+  // Called either by other facets receiving focus or by the timer in `deferDisableEdit`,
+  // this method will turn off the facet, remove any text selection, and close
+  // the autocomplete menu.
+  disableEdit : function() {
+    var newFacetQuery = VS.utils.inflector.trim(this.box.val());
+    if (newFacetQuery != this.model.get('value')) {
+      this.set(newFacetQuery);
+    }
+    this.flags.canClose = false;
+    this.box.selectRange(0, 0);
+    this.box.blur();
+    this.setMode('not', 'editing');
+    this.closeAutocomplete();
+    this.options.app.searchBox.removeFocus();
+  },
+
+  // Selects the facet, which blurs the facet's input and highlights the facet.
+  // If this is the only facet being selected (and not part of a select all event),
+  // we attach a mouse/keyboard watcher to check if the next action by the user
+  // should delete this facet or just deselect it.
+  selectFacet : function(e) {
+    if (e) e.preventDefault();
+    var allSelected = this.options.app.searchBox.allSelected();
+    if (this.modes.selected == 'is') return;
+
+    if (this.box.is(':focus')) {
+      this.box.setCursorPosition(0);
+      this.box.blur();
+    }
+
+    this.flags.canClose = false;
+    this.closeAutocomplete();
+    this.setMode('is', 'selected');
+    this.setMode('not', 'editing');
+    if (!allSelected || e) {
+      $(document).unbind('keydown.facet', this.keydown);
+      $(document).unbind('click.facet', this.deselectFacet);
+      _.defer(_.bind(function() {
+        $(document).unbind('keydown.facet').bind('keydown.facet', this.keydown);
+        $(document).unbind('click.facet').one('click.facet', this.deselectFacet);
+      }, this));
+      this.options.app.searchBox.disableFacets(this);
+      this.options.app.searchBox.addFocus();
+    }
+    return false;
+  },
+
+  // Turns off highlighting on the facet. Called in a variety of ways, this
+  // only deselects the facet if it is selected, and then cleans up the
+  // keyboard/mouse watchers that were created when the facet was first
+  // selected.
+  deselectFacet : function(e) {
+    if (e) e.preventDefault();
+    if (this.modes.selected == 'is') {
+      this.setMode('not', 'selected');
+      this.closeAutocomplete();
+      this.options.app.searchBox.removeFocus();
+    }
+    $(document).unbind('keydown.facet', this.keydown);
+    $(document).unbind('click.facet', this.deselectFacet);
+    return false;
+  },
+
+  // Is the user currently focused in this facet's input field?
+  isFocused : function() {
+    return this.box.is(':focus');
+  },
+
+  // Hovering over the delete button styles the facet so the user knows that
+  // the delete button will kill the entire facet.
+  showDelete : function() {
+    $(this.el).addClass('search_facet_maybe_delete');
+  },
+
+  // On `mouseout`, the user is no longer hovering on the delete button.
+  hideDelete : function() {
+    $(this.el).removeClass('search_facet_maybe_delete');
+  },
+
+  // When switching between facets, depending on the direction the cursor is
+  // coming from, the cursor in this facet's input field should match the original
+  // direction.
+  setCursorAtEnd : function(direction) {
+    if (direction == -1) {
+      this.box.setCursorPosition(this.box.val().length);
+    } else {
+      this.box.setCursorPosition(0);
+    }
+  },
+
+  // Deletes the facet and sends the cursor over to the nearest input field.
+  remove : function(e) {
+    var committed = this.model.get('value');
+    this.deselectFacet();
+    this.disableEdit();
+    this.options.app.searchQuery.remove(this.model);
+    if (committed && this.options.app.options.autosearch) {
+      this.search(e, -1);
+    } else {
+      this.options.app.searchBox.renderFacets();
+      this.options.app.searchBox.focusNextFacet(this, -1, {viewPosition: this.options.order});
+    }
+  },
+
+  // Selects the text in the facet's input field. When the user tabs between
+  // facets, convention is to highlight the entire field.
+  selectText: function() {
+    this.box.selectRange(0, this.box.val().length);
+  },
+
+  // Handles all keyboard inputs when in the facet's input field. This checks
+  // for movement between facets and inputs, entering a new value that needs
+  // to be autocompleted, as well as the removal of this facet.
+  keydown : function(e) {
+    var key = VS.app.hotkeys.key(e);
+
+    if (key == 'enter' && this.box.val()) {
+      this.disableEdit();
+      this.search(e);
+    } else if (key == 'left') {
+      if (this.modes.selected == 'is') {
+        this.deselectFacet();
+        this.options.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
+      } else if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
+        this.selectFacet();
+      }
+    } else if (key == 'right') {
+      if (this.modes.selected == 'is') {
+        e.preventDefault();
+        this.deselectFacet();
+        this.setCursorAtEnd(0);
+        this.enableEdit();
+      } else if (this.box.getCursorPosition() == this.box.val().length) {
+        e.preventDefault();
+        this.disableEdit();
+        this.options.app.searchBox.focusNextFacet(this, 1);
+      }
+    } else if (VS.app.hotkeys.shift && key == 'tab') {
+      e.preventDefault();
+      this.options.app.searchBox.focusNextFacet(this, -1, {
+        startAtEnd  : -1,
+        skipToFacet : true,
+        selectText  : true
+      });
+    } else if (key == 'tab') {
+      e.preventDefault();
+      this.options.app.searchBox.focusNextFacet(this, 1, {
+        skipToFacet : true,
+        selectText  : true
+      });
+    } else if (VS.app.hotkeys.command && (e.which == 97 || e.which == 65)) {
+      e.preventDefault();
+      this.options.app.searchBox.selectAllFacets();
+      return false;
+    } else if (VS.app.hotkeys.printable(e) && this.modes.selected == 'is') {
+      this.options.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
+      this.remove(e);
+    } else if (key == 'backspace') {
+      if (this.modes.selected == 'is') {
+        e.preventDefault();
+        this.remove(e);
+      } else if (this.box.getCursorPosition() == 0 &&
+                 !this.box.getSelection().length) {
+        e.preventDefault();
+        this.selectFacet();
+      }
+    }
+
+    // Handle paste events
+    if (e.which == null) {
+        // this.searchAutocomplete(e);
+        _.defer(_.bind(this.resize, this, e));
+    } else {
+      this.resize(e);
+    }
+  }
+
+});
+
+})();
+
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// This is the visual search input that is responsible for creating new facets.
+// There is one input placed in between all facets.
+VS.ui.SearchInput = Backbone.View.extend({
+
+  type : 'text',
+
+  className : 'search_input ui-menu',
+
+  events : {
+    'keypress input'  : 'keypress',
+    'keydown input'   : 'keydown',
+    'click input'     : 'maybeTripleClick',
+    'dblclick input'  : 'startTripleClickTimer'
+  },
+
+  manage: false,
+
+  initialize : function() {
+    this.app = this.options.app;
+    this.flags = {
+      canClose : false
+    };
+    _.bindAll(this, 'removeFocus', 'addFocus', 'moveAutocomplete', 'deferDisableEdit');
+  },
+
+  // Rendering the input sets up autocomplete, events on focusing and blurring
+  // the input, and the auto-grow of the input.
+  render : function() {
+    $(this.el).html(JST['search_input']({}));
+
+    this.setMode('not', 'editing');
+    this.setMode('not', 'selected');
+    this.box = this.$('input');
+    this.box.autoGrowInput();
+    this.box.bind('updated.autogrow', this.moveAutocomplete);
+    this.box.bind('blur',  this.deferDisableEdit);
+    this.box.bind('focus', this.addFocus);
+    this.setupAutocomplete();
+
+    return this;
+  },
+
+  // Watches the input and presents an autocompleted menu, taking the
+  // remainder of the input field and adding a separate facet for it.
+  //
+  // See `addTextFacetRemainder` for explanation on how the remainder works.
+  setupAutocomplete : function() {
+    this.box.autocomplete({
+      minLength : this.options.showFacets ? 0 : 1,
+      delay     : 50,
+      autoFocus : true,
+      position  : {offset : "0 -1"},
+      source    : _.bind(this.autocompleteValues, this),
+      create    : _.bind(function(e, ui) {
+        $(this.el).find('.ui-autocomplete-input').css('z-index','auto');
+      }, this),
+      select    : _.bind(function(e, ui) {
+        e.preventDefault();
+        // stopPropogation does weird things in jquery-ui 1.9
+        // e.stopPropagation();
+        var remainder = this.addTextFacetRemainder(ui.item.value);
+        var position  = this.options.position + (remainder ? 1 : 0);
+        this.app.searchBox.addFacet(ui.item instanceof String ? ui.item : ui.item.value, '', position);
+        return false;
+      }, this)
+    });
+
+    // Renders the results grouped by the categories they belong to.
+    this.box.data('uiAutocomplete')._renderMenu = function(ul, items) {
+      var category = '';
+      _.each(items, _.bind(function(item, i) {
+        if (item.category && item.category != category) {
+          ul.append('<li class="ui-autocomplete-category">'+item.category+'</li>');
+          category = item.category;
+        }
+        
+        if(this._renderItemData) {
+          this._renderItemData(ul, item);
+        } else {
+          this._renderItem(ul, item);
+        }
+        
+      }, this));
+    };
+
+    this.box.autocomplete('widget').addClass('VS-interface');
+  },
+
+  // Search terms used in the autocomplete menu. The values are matched on the
+  // first letter of any word in matches, and finally sorted according to the
+  // value's own category. You can pass `preserveOrder` as an option in the
+  // `facetMatches` callback to skip any further ordering done client-side.
+  autocompleteValues : function(req, resp) {
+    var searchTerm = req.term;
+    var lastWord   = searchTerm.match(/\w+\*?$/); // Autocomplete only last word.
+    var re         = VS.utils.inflector.escapeRegExp(lastWord && lastWord[0] || '');
+    this.app.options.callbacks.facetMatches(function(prefixes, options) {
+      options = options || {};
+      prefixes = prefixes || [];
+
+      // Only match from the beginning of the word.
+      var matcher    = new RegExp('^' + re, 'i');
+      var matches    = $.grep(prefixes, function(item) {
+        return item && matcher.test(item.label || item);
+      });
+
+      if (options.preserveOrder) {
+        resp(matches);
+      } else {
+        resp(_.sortBy(matches, function(match) {
+          if (match.label) return match.category + '-' + match.label;
+          else             return match;
+        }));
+      }
+    });
+
+  },
+
+  // Closes the autocomplete menu. Called on disabling, selecting, deselecting,
+  // and anything else that takes focus out of the facet's input field.
+  closeAutocomplete : function() {
+    var autocomplete = this.box.data('uiAutocomplete');
+    if (autocomplete) autocomplete.close();
+  },
+
+  // As the input field grows, it may move to the next line in the
+  // search box. `autoGrowInput` triggers an `updated` event on the input
+  // field, which is bound to this method to move the autocomplete menu.
+  moveAutocomplete : function() {
+    var autocomplete = this.box.data('uiAutocomplete');
+    if (autocomplete) {
+      autocomplete.menu.element.position({
+        my        : "left top",
+        at        : "left bottom",
+        of        : this.box.data('uiAutocomplete').element,
+        collision : "none",
+        offset    : '0 -1'
+      });
+    }
+  },
+
+  // When a user enters a facet and it is being edited, immediately show
+  // the autocomplete menu and size it to match the contents.
+  searchAutocomplete : function(e) {
+    var autocomplete = this.box.data('uiAutocomplete');
+    if (autocomplete) {
+      var menu = autocomplete.menu.element;
+      autocomplete.search();
+
+      // Resize the menu based on the correctly measured width of what's bigger:
+      // the menu's original size or the menu items' new size.
+      menu.outerWidth(Math.max(
+        menu.width('').outerWidth(),
+        autocomplete.element.outerWidth()
+      ));
+    }
+  },
+
+  // If a user searches for "word word category", the category would be
+  // matched and autocompleted, and when selected, the "word word" would
+  // also be caught as the remainder and then added in its own facet.
+  addTextFacetRemainder : function(facetValue) {
+    var boxValue = this.box.val();
+    var lastWord = boxValue.match(/\b(\w+)$/);
+    
+    if (!lastWord) {
+      return '';
+    }
+
+    var matcher = new RegExp(lastWord[0], "i");
+    if (facetValue.search(matcher) == 0) {
+      boxValue = boxValue.replace(/\b(\w+)$/, '');
+    }
+    boxValue = boxValue.replace('^\s+|\s+$', '');
+    
+    if (boxValue) {
+      this.app.searchBox.addFacet(this.app.options.remainder, boxValue, this.options.position);
+    }
+    
+    return boxValue;
+  },
+
+  // Directly called to focus the input. This is different from `addFocus`
+  // because this is not called by a focus event. This instead calls a
+  // focus event causing the input to become focused.
+  enableEdit : function(selectText) {
+    this.addFocus();
+    if (selectText) {
+      this.selectText();
+    }
+    this.box.focus();
+  },
+
+  // Event called on user focus on the input. Tells all other input and facets
+  // to give up focus, and starts revving the autocomplete.
+  addFocus : function() {
+    this.flags.canClose = false;
+    if (!this.app.searchBox.allSelected()) {
+      this.app.searchBox.disableFacets(this);
+    }
+    this.app.searchBox.addFocus();
+    this.setMode('is', 'editing');
+    this.setMode('not', 'selected');
+    if (!this.app.searchBox.allSelected()) {
+        this.searchAutocomplete();
+    }
+  },
+
+  // Directly called to blur the input. This is different from `removeFocus`
+  // because this is not called by a blur event.
+  disableEdit : function() {
+    this.box.blur();
+    this.removeFocus();
+  },
+
+  // Event called when user blur's the input, either through the keyboard tabbing
+  // away or the mouse clicking off. Cleans up
+  removeFocus : function() {
+    this.flags.canClose = false;
+    this.app.searchBox.removeFocus();
+    this.setMode('not', 'editing');
+    this.setMode('not', 'selected');
+    this.closeAutocomplete();
+  },
+
+  // When the user blurs the input, they may either be going to another input
+  // or off the search box entirely. If they go to another input, this facet
+  // will be instantly disabled, and the canClose flag will be turned back off.
+  //
+  // However, if the user clicks elsewhere on the page, this method starts a timer
+  // that checks if any of the other inputs are selected or are being edited. If
+  // not, then it can finally close itself and its autocomplete menu.
+  deferDisableEdit : function() {
+    this.flags.canClose = true;
+    _.delay(_.bind(function() {
+      if (this.flags.canClose &&
+          !this.box.is(':focus') &&
+          this.modes.editing == 'is') {
+        this.disableEdit();
+      }
+    }, this), 250);
+  },
+
+  // Starts a timer that will cause a triple-click, which highlights all facets.
+  startTripleClickTimer : function() {
+    this.tripleClickTimer = setTimeout(_.bind(function() {
+      this.tripleClickTimer = null;
+    }, this), 500);
+  },
+
+  // Event on click that checks if a triple click is in play. The
+  // `tripleClickTimer` is counting down, ready to be engaged and intercept
+  // the click event to force a select all instead.
+  maybeTripleClick : function(e) {
+    if (!!this.tripleClickTimer) {
+      e.preventDefault();
+      this.app.searchBox.selectAllFacets();
+      return false;
+    }
+  },
+
+  // Is the user currently focused in the input field?
+  isFocused : function() {
+    return this.box.is(':focus');
+  },
+
+  // When serializing the facets, the inputs need to also have their values represented,
+  // in case they contain text that is not yet faceted (but will be once the search is
+  // completed).
+  value : function() {
+    return this.box.val();
+  },
+
+  // When switching between facets and inputs, depending on the direction the cursor
+  // is coming from, the cursor in this facet's input field should match the original
+  // direction.
+  setCursorAtEnd : function(direction) {
+    if (direction == -1) {
+      this.box.setCursorPosition(this.box.val().length);
+    } else {
+      this.box.setCursorPosition(0);
+    }
+  },
+
+  // Selects the entire range of text in the input. Useful when tabbing between inputs
+  // and facets.
+  selectText : function() {
+    this.box.selectRange(0, this.box.val().length);
+    if (!this.app.searchBox.allSelected()) {
+      this.box.focus();
+    } else {
+      this.setMode('is', 'selected');
+    }
+  },
+
+  // Before the searchBox performs a search, we need to close the
+  // autocomplete menu.
+  search : function(e, direction) {
+    if (!direction) direction = 0;
+    this.closeAutocomplete();
+    this.app.searchBox.searchEvent(e);
+    _.defer(_.bind(function() {
+      this.app.searchBox.focusNextFacet(this, direction);
+    }, this));
+  },
+
+  // Callback fired on key press in the search box. We search when they hit return.
+  keypress : function(e) {
+    var key = VS.app.hotkeys.key(e);
+
+    if (key == 'enter') {
+      return this.search(e, 100);
+    } else if (VS.app.hotkeys.colon(e)) {
+      this.box.trigger('resize.autogrow', e);
+      var query    = this.box.val();
+      var prefixes = [];
+      if (this.app.options.callbacks.facetMatches) {
+          this.app.options.callbacks.facetMatches(function(p) {
+              prefixes = p;
+          });
+      }
+      var labels   = _.map(prefixes, function(prefix) {
+        if (prefix.label) return prefix.label;
+        else              return prefix;
+      });
+      if (_.contains(labels, query)) {
+        e.preventDefault();
+        var remainder = this.addTextFacetRemainder(query);
+        var position  = this.options.position + (remainder?1:0);
+        this.app.searchBox.addFacet(query, '', position);
+        return false;
+      }
+    } else if (key == 'backspace') {
+      if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        this.app.searchBox.resizeFacets();
+        return false;
+      }
+    }
+  },
+
+  // Handles all keyboard inputs when in the input field. This checks
+  // for movement between facets and inputs, entering a new value that needs
+  // to be autocompleted, as well as stepping between facets with backspace.
+  keydown : function(e) {
+    var key = VS.app.hotkeys.key(e);
+
+    if (key == 'left') {
+      if (this.box.getCursorPosition() == 0) {
+        e.preventDefault();
+        this.app.searchBox.focusNextFacet(this, -1, {startAtEnd: -1});
+      }
+    } else if (key == 'right') {
+      if (this.box.getCursorPosition() == this.box.val().length) {
+        e.preventDefault();
+        this.app.searchBox.focusNextFacet(this, 1, {selectFacet: true});
+      }
+    } else if (VS.app.hotkeys.shift && key == 'tab') {
+      e.preventDefault();
+      this.app.searchBox.focusNextFacet(this, -1, {selectText: true});
+    } else if (key == 'tab') {
+      var value = this.box.val();
+      if (value.length) {
+        e.preventDefault();
+        var remainder = this.addTextFacetRemainder(value);
+        var position  = this.options.position + (remainder?1:0);
+        if (value != remainder) {
+            this.app.searchBox.addFacet(value, '', position);
+        }
+      } else {
+        var foundFacet = this.app.searchBox.focusNextFacet(this, 0, {
+          skipToFacet: true,
+          selectText: true
+        });
+        if (foundFacet) {
+          e.preventDefault();
+        }
+      }
+    } else if (VS.app.hotkeys.command &&
+               String.fromCharCode(e.which).toLowerCase() == 'a') {
+      e.preventDefault();
+      this.app.searchBox.selectAllFacets();
+      return false;
+    } else if (key == 'backspace' && !this.app.searchBox.allSelected()) {
+      if (this.box.getCursorPosition() == 0 && !this.box.getSelection().length) {
+        e.preventDefault();
+        this.app.searchBox.focusNextFacet(this, -1, {backspace: true});
+        return false;
+      }
+    } else if (key == 'end') {
+      var view = this.app.searchBox.inputViews[this.app.searchBox.inputViews.length-1];
+      view.setCursorAtEnd(-1);
+    } else if (key == 'home') {
+      var view = this.app.searchBox.inputViews[0];
+      view.setCursorAtEnd(-1);
+    }
+
+    this.box.trigger('resize.autogrow', e);
+  }
+
+});
+
+})();
+
+(function(){
+
+  var $ = jQuery; // Handle namespaced jQuery
+
+  // Makes the view enter a mode. Modes have both a 'mode' and a 'group',
+  // and are mutually exclusive with any other modes in the same group.
+  // Setting will update the view's modes hash, as well as set an HTML class
+  // of *[mode]_[group]* on the view's element. Convenient way to swap styles
+  // and behavior.
+  Backbone.View.prototype.setMode = function(mode, group) {
+    this.modes || (this.modes = {});
+    if (this.modes[group] === mode) return;
+    $(this.el).setMode(mode, group);
+    this.modes[group] = mode;
+  };
+
+})();
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// DocumentCloud workspace hotkeys. To tell if a key is currently being pressed,
+// just ask `VS.app.hotkeys.[key]` on `keypress`, or ask `VS.app.hotkeys.key(e)`
+// on `keydown`.
+//
+// For the most headache-free way to use this utility, check modifier keys,
+// like shift and command, with `VS.app.hotkeys.shift`, and check every other
+// key with `VS.app.hotkeys.key(e) == 'key_name'`.
+VS.app.hotkeys = {
+
+  // Keys that will be mapped to the `hotkeys` namespace.
+  KEYS: {
+    '16':  'shift',
+    '17':  'command',
+    '91':  'command',
+    '93':  'command',
+    '224': 'command',
+    '13':  'enter',
+    '37':  'left',
+    '38':  'upArrow',
+    '39':  'right',
+    '40':  'downArrow',
+    '46':  'delete',
+    '8':   'backspace',
+    '35':  'end',
+    '36':  'home',
+    '9':   'tab',
+    '188': 'comma'
+  },
+
+  // Binds global keydown and keyup events to listen for keys that match `this.KEYS`.
+  initialize : function() {
+    _.bindAll(this, 'down', 'up', 'blur');
+    $(document).bind('keydown', this.down);
+    $(document).bind('keyup', this.up);
+    $(window).bind('blur', this.blur);
+  },
+
+  // On `keydown`, turn on all keys that match.
+  down : function(e) {
+    var key = this.KEYS[e.which];
+    if (key) this[key] = true;
+  },
+
+  // On `keyup`, turn off all keys that match.
+  up : function(e) {
+    var key = this.KEYS[e.which];
+    if (key) this[key] = false;
+  },
+
+  // If an input is blurred, all keys need to be turned off, since they are no longer
+  // able to modify the document.
+  blur : function(e) {
+    for (var key in this.KEYS) this[this.KEYS[key]] = false;
+  },
+
+  // Check a key from an event and return the common english name.
+  key : function(e) {
+    return this.KEYS[e.which];
+  },
+
+  // Colon is special, since the value is different between browsers.
+  colon : function(e) {
+    var charCode = e.which;
+    return charCode && String.fromCharCode(charCode) == ":";
+  },
+
+  // Check a key from an event and match it against any known characters.
+  // The `keyCode` is different depending on the event type: `keydown` vs. `keypress`.
+  //
+  // These were determined by looping through every `keyCode` and `charCode` that
+  // resulted from `keydown` and `keypress` events and counting what was printable.
+  printable : function(e) {
+    var code = e.which;
+    if (e.type == 'keydown') {
+      if (code == 32 ||                      // space
+          (code >= 48 && code <= 90) ||      // 0-1a-z
+          (code >= 96 && code <= 111) ||     // 0-9+-/*.
+          (code >= 186 && code <= 192) ||    // ;=,-./^
+          (code >= 219 && code <= 222)) {    // (\)'
+        return true;
+      }
+    } else {
+      // [space]!"#$%&'()*+,-.0-9:;<=>?@A-Z[\]^_`a-z{|} and unicode characters
+      if ((code >= 32 && code <= 126)  ||
+          (code >= 160 && code <= 500) ||
+          (String.fromCharCode(code) == ":")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+};
+
+})();
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// Naive English transformations on words. Only used for a few transformations 
+// in VisualSearch.js.
+VS.utils.inflector = {
+
+  // Delegate to the ECMA5 String.prototype.trim function, if available.
+  trim : function(s) {
+    return s.trim ? s.trim() : s.replace(/^\s+|\s+$/g, '');
+  },
+  
+  // Escape strings that are going to be used in a regex. Escapes punctuation
+  // that would be incorrect in a regex.
+  escapeRegExp : function(s) {
+    return s.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+  }
+};
+
+})();
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+$.fn.extend({
+
+  // Makes the selector enter a mode. Modes have both a 'mode' and a 'group',
+  // and are mutually exclusive with any other modes in the same group.
+  // Setting will update the view's modes hash, as well as set an HTML class
+  // of *[mode]_[group]* on the view's element. Convenient way to swap styles
+  // and behavior.
+  setMode : function(state, group) {
+    group    = group || 'mode';
+    var re   = new RegExp("\\w+_" + group + "(\\s|$)", 'g');
+    var mode = (state === null) ? "" : state + "_" + group;
+    this.each(function() {
+      this.className = (this.className.replace(re, '')+' '+mode)
+                       .replace(/\s\s/g, ' ');
+    });
+    return mode;
+  },
+
+  // When attached to an input element, this will cause the width of the input
+  // to match its contents. This calculates the width of the contents of the input
+  // by measuring a hidden shadow div that should match the styling of the input.
+  autoGrowInput: function() {
+    return this.each(function() {
+      var $input  = $(this);
+      var $tester = $('<div />').css({
+        opacity     : 0,
+        top         : -9999,
+        left        : -9999,
+        position    : 'absolute',
+        whiteSpace  : 'nowrap'
+      }).addClass('VS-input-width-tester').addClass('VS-interface');
+
+      // Watch for input value changes on all of these events. `resize`
+      // event is called explicitly when the input has been changed without
+      // a single keypress.
+      var events = 'keydown.autogrow keypress.autogrow ' +
+                   'resize.autogrow change.autogrow';
+      $input.next('.VS-input-width-tester').remove();
+      $input.after($tester);
+      $input.unbind(events).bind(events, function(e, realEvent) {
+        if (realEvent) e = realEvent;
+        var value = $input.val();
+
+        // Watching for the backspace key is tricky because it may not
+        // actually be deleting the character, but instead the key gets
+        // redirected to move the cursor from facet to facet.
+        if (VS.app.hotkeys.key(e) == 'backspace') {
+          var position = $input.getCursorPosition();
+          if (position > 0) value = value.slice(0, position-1) +
+                                    value.slice(position, value.length);
+        } else if (VS.app.hotkeys.printable(e) &&
+                   !VS.app.hotkeys.command) {
+          value += String.fromCharCode(e.which);
+        }
+        value = value.replace(/&/g, '&amp;')
+                     .replace(/\s/g,'&nbsp;')
+                     .replace(/</g, '&lt;')
+                     .replace(/>/g, '&gt;');
+
+        $tester.html(value);
+
+        $input.width($tester.width() + 3 + parseInt($input.css('min-width')));
+        $input.trigger('updated.autogrow');
+      });
+
+      // Sets the width of the input on initialization.
+      $input.trigger('resize.autogrow');
+    });
+  },
+
+
+  // Cross-browser method used for calculating where the cursor is in an
+  // input field.
+  getCursorPosition: function() {
+    var position = 0;
+    var input    = this.get(0);
+
+    if (document.selection) { // IE
+      input.focus();
+      var sel    = document.selection.createRange();
+      var selLen = document.selection.createRange().text.length;
+      sel.moveStart('character', -input.value.length);
+      position   = sel.text.length - selLen;
+    } else if (input && $(input).is(':visible') &&
+               input.selectionStart != null) { // Firefox/Safari
+      position = input.selectionStart;
+    }
+
+    return position;
+  },
+
+  // A simple proxy for `selectRange` that sets the cursor position in an
+  // input field.
+  setCursorPosition: function(position) {
+    return this.each(function() {
+      return $(this).selectRange(position, position);
+    });
+  },
+
+  // Cross-browser way to select text in an input field.
+  selectRange: function(start, end) {
+    return this.filter(':visible').each(function() {
+      if (this.setSelectionRange) { // FF/Webkit
+        this.focus();
+        this.setSelectionRange(start, end);
+      } else if (this.createTextRange) { // IE
+        var range = this.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', end);
+        range.moveStart('character', start);
+        if (end - start >= 0) range.select();
+      }
+    });
+  },
+
+  // Returns an object that contains the text selection range values for
+  // an input field.
+  getSelection: function() {
+    var input = this[0];
+
+    if (input.selectionStart != null) { // FF/Webkit
+      var start = input.selectionStart;
+      var end   = input.selectionEnd;
+      return {
+        start   : start,
+        end     : end,
+        length  : end-start,
+        text    : input.value.substr(start, end-start)
+      };
+    } else if (document.selection) { // IE
+      var range = document.selection.createRange();
+      if (range) {
+        var textRange = input.createTextRange();
+        var copyRange = textRange.duplicate();
+        textRange.moveToBookmark(range.getBookmark());
+        copyRange.setEndPoint('EndToStart', textRange);
+        var start = copyRange.text.length;
+        var end   = start + range.text.length;
+        return {
+          start   : start,
+          end     : end,
+          length  : end-start,
+          text    : range.text
+        };
+      }
+    }
+    return {start: 0, end: 0, length: 0};
+  }
+
+});
+
+// Debugging in Internet Explorer. This allows you to use 
+// `console.log(['message', var1, var2, ...])`. Just remove the `false` and
+// add your console.logs. This will automatically stringify objects using
+// `JSON.stringify', so you can read what's going out. Think of this as a
+// *Diet Firebug Lite Zero with Lemon*.
+if (false) {
+  window.console = {};
+  var _$ied;
+  window.console.log = function(msg) {
+    if (_.isArray(msg)) {
+      var message = msg[0];
+      var vars = _.map(msg.slice(1), function(arg) {
+        return JSON.stringify(arg);
+      }).join(' - ');
+    }
+    if(!_$ied){
+      _$ied = $('<div><ol></ol></div>').css({
+        'position': 'fixed',
+        'bottom': 10,
+        'left': 10,
+        'zIndex': 20000,
+        'width': $('body').width() - 80,
+        'border': '1px solid #000',
+        'padding': '10px',
+        'backgroundColor': '#fff',
+        'fontFamily': 'arial,helvetica,sans-serif',
+        'fontSize': '11px'
+      });
+      $('body').append(_$ied);
+    }
+    var $message = $('<li>'+message+' - '+vars+'</li>').css({
+      'borderBottom': '1px solid #999999'
+    });
+    _$ied.find('ol').append($message);
+    _.delay(function() {
+      $message.fadeOut(500);
+    }, 5000);
+  };
+
+}
+
+})();
+
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// Used to extract keywords and facets from the free text search.
+var QUOTES_RE   = "('[^']+'|\"[^\"]+\")";
+var FREETEXT_RE = "('[^']+'|\"[^\"]+\"|[^'\"\\s]\\S*)";
+var CATEGORY_RE = FREETEXT_RE +                     ':\\s*';
+VS.app.SearchParser = {
+
+  // Matches `category: "free text"`, with and without quotes.
+  ALL_FIELDS : new RegExp(CATEGORY_RE + FREETEXT_RE, 'g'),
+
+  // Matches a single category without the text. Used to correctly extract facets.
+  CATEGORY   : new RegExp(CATEGORY_RE),
+
+  // Called to parse a query into a collection of `SearchFacet` models.
+  parse : function(instance, query) {
+    var searchFacets = this._extractAllFacets(instance, query);
+    instance.searchQuery.reset(searchFacets);
+    return searchFacets;
+  },
+
+  // Walks the query and extracts facets, categories, and free text.
+  _extractAllFacets : function(instance, query) {
+    var facets = [];
+    var originalQuery = query;
+    while (query) {
+      var category, value;
+      originalQuery = query;
+      var field = this._extractNextField(query);
+      if (!field) {
+        category = instance.options.remainder;
+        value    = this._extractSearchText(query);
+        query    = VS.utils.inflector.trim(query.replace(value, ''));
+      } else if (field.indexOf(':') != -1) {
+        category = field.match(this.CATEGORY)[1].replace(/(^['"]|['"]$)/g, '');
+        value    = field.replace(this.CATEGORY, '').replace(/(^['"]|['"]$)/g, '');
+        query    = VS.utils.inflector.trim(query.replace(field, ''));
+      } else if (field.indexOf(':') == -1) {
+        category = instance.options.remainder;
+        value    = field;
+        query    = VS.utils.inflector.trim(query.replace(value, ''));
+      }
+
+      if (category && value) {
+          var searchFacet = new VS.model.SearchFacet({
+            category : category,
+            value    : VS.utils.inflector.trim(value),
+            app      : instance
+          });
+          facets.push(searchFacet);
+      }
+      if (originalQuery == query) break;
+    }
+
+    return facets;
+  },
+
+  // Extracts the first field found, capturing any free text that comes
+  // before the category.
+  _extractNextField : function(query) {
+    var textRe = new RegExp('^\\s*(\\S+)\\s+(?=' + QUOTES_RE + FREETEXT_RE + ')');
+    var textMatch = query.match(textRe);
+    if (textMatch && textMatch.length >= 1) {
+      return textMatch[1];
+    } else {
+      return this._extractFirstField(query);
+    }
+  },
+
+  // If there is no free text before the facet, extract the category and value.
+  _extractFirstField : function(query) {
+    var fields = query.match(this.ALL_FIELDS);
+    return fields && fields.length && fields[0];
+  },
+
+  // If the found match is not a category and facet, extract the trimmed free text.
+  _extractSearchText : function(query) {
+    query = query || '';
+    var text = VS.utils.inflector.trim(query.replace(this.ALL_FIELDS, ''));
+    return text;
+  }
+
+};
+
+})();
+
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// The model that holds individual search facets and their categories.
+// Held in a collection by `VS.app.searchQuery`.
+VS.model.SearchFacet = Backbone.Model.extend({
+
+  // Extract the category and value and serialize it in preparation for
+  // turning the entire searchBox into a search query that can be sent
+  // to the server for parsing and searching.
+  serialize : function() {
+    var category = this.quoteCategory(this.get('category'));
+    var value    = VS.utils.inflector.trim(this.get('value'));
+    var remainder = this.get("app").options.remainder;
+
+    if (!value) return '';
+
+    if (!_.contains(this.get("app").options.unquotable || [], category) && category != remainder) {
+      value = this.quoteValue(value);
+    }
+
+    if (category != remainder) {
+      category = category + ': ';
+    } else {
+      category = "";
+    }
+    return category + value;
+  },
+  
+  // Wrap categories that have spaces or any kind of quote with opposite matching
+  // quotes to preserve the complex category during serialization.
+  quoteCategory : function(category) {
+    var hasDoubleQuote = (/"/).test(category);
+    var hasSingleQuote = (/'/).test(category);
+    var hasSpace       = (/\s/).test(category);
+    
+    if (hasDoubleQuote && !hasSingleQuote) {
+      return "'" + category + "'";
+    } else if (hasSpace || (hasSingleQuote && !hasDoubleQuote)) {
+      return '"' + category + '"';
+    } else {
+      return category;
+    }
+  },
+  
+  // Wrap values that have quotes in opposite matching quotes. If a value has
+  // both single and double quotes, just use the double quotes.
+  quoteValue : function(value) {
+    var hasDoubleQuote = (/"/).test(value);
+    var hasSingleQuote = (/'/).test(value);
+    
+    if (hasDoubleQuote && !hasSingleQuote) {
+      return "'" + value + "'";
+    } else {
+      return '"' + value + '"';
+    }
+  },
+  
+  // If provided, use a custom label instead of the raw value.
+  label : function() {
+      return this.get('label') || this.get('value');
+  }
+
+});
+
+})();
+(function() {
+
+var $ = jQuery; // Handle namespaced jQuery
+
+// Collection which holds all of the individual facets (category: value).
+// Used for finding and removing specific facets.
+VS.model.SearchQuery = Backbone.Collection.extend({
+
+  // Model holds the category and value of the facet.
+  model : VS.model.SearchFacet,
+  
+  // Turns all of the facets into a single serialized string.
+  serialize : function() {
+    return this.map(function(facet){ return facet.serialize(); }).join(' ');
+  },
+  
+  facets : function() {
+    return this.map(function(facet) {
+      var value = {};
+      value[facet.get('category')] = facet.get('value');
+      return value;
+    });
+  },
+
+  // Find a facet by its category. Multiple facets with the same category
+  // is fine, but only the first is returned.
+  find : function(category) {
+    var facet = this.detect(function(facet) {
+      return facet.get('category').toLowerCase() == category.toLowerCase();
+    });
+    return facet && facet.get('value');
+  },
+
+  // Counts the number of times a specific category is in the search query.
+  count : function(category) {
+    return this.select(function(facet) {
+      return facet.get('category').toLowerCase() == category.toLowerCase();
+    }).length;
+  },
+
+  // Returns an array of extracted values from each facet in a category.
+  values : function(category) {
+    var facets = this.select(function(facet) {
+      return facet.get('category').toLowerCase() == category.toLowerCase();
+    });
+    return _.map(facets, function(facet) { return facet.get('value'); });
+  },
+
+  // Checks all facets for matches of either a category or both category and value.
+  has : function(category, value) {
+    return this.any(function(facet) {
+      var categoryMatched = facet.get('category').toLowerCase() == category.toLowerCase();
+      if (!value) return categoryMatched;
+      return categoryMatched && facet.get('value') == value;
+    });
+  },
+
+  // Used to temporarily hide specific categories and serialize the search query.
+  withoutCategory : function() {
+    var categories = _.map(_.toArray(arguments), function(cat) { return cat.toLowerCase(); });
+    return this.map(function(facet) {
+      if (!_.include(categories, facet.get('category').toLowerCase())) { 
+        return facet.serialize();
+      };
+    }).join(' ');
+  }
+
+});
+
+})();
+(function(){
+window.JST = window.JST || {};
+
+window.JST['search_box'] = _.template('<div class="VS-search">\n  <div class="VS-search-box-wrapper VS-search-box">\n    <div class="VS-icon VS-icon-search"></div>\n    <div class="VS-placeholder"></div>\n    <div class="VS-search-inner"></div>\n    <div class="VS-icon VS-icon-cancel VS-cancel-search-box" title="clear search"></div>\n  </div>\n</div>');
+window.JST['search_facet'] = _.template('<% if (model.has(\'category\')) { %>\n  <div class="category"><%= model.get(\'category\') %>:</div>\n<% } %>\n\n<div class="search_facet_input_container">\n  <input type="text" class="search_facet_input ui-menu VS-interface" value="" />\n</div>\n\n<div class="search_facet_remove VS-icon VS-icon-cancel"></div>');
+window.JST['search_input'] = _.template('<input type="text" class="ui-menu" />');
+})();
+define("plugins/visualsearch/visualsearch", function(){});
+
 // Generated by CoffeeScript 1.6.2
-define('modules/ProjectSearch',['app'], function(app) {
-  var ProjectSearch;
+define('modules/ProjectSearch',['app', 'plugins/visualsearch/visualsearch'], function(app) {
+  var ProjectSearch,
+    _this = this;
 
   ProjectSearch = {
     fields: {
       'Title': 'partial',
-      'Teaser': function(obj, valArray) {
-        return this.partialMatchFilter(obj, 'TeaserText', valArray);
+      'Space': 'partial',
+      'Location': 'partial',
+      'Text': function(obj, valArray) {
+        return ProjectSearch.test(obj, 'TeaserText', valArray, 'partial');
       },
-      'Name': function(obj, valArray) {
-        return true;
+      'Type': function(obj, valArray) {
+        return ProjectSearch.test(obj, 'ClassName', valArray, 'partial');
+      },
+      'Category': function(obj, valArray) {
+        var result;
+
+        if (obj.Categories && obj.Categories.length) {
+          result = true;
+          _.each(valArray, function(val) {
+            var out;
+
+            out = false;
+            _.each(obj.Categories, function(cat) {
+              if (ProjectSearch.exactMatchFilter(cat, 'Title', val)) {
+                return out = true;
+              }
+            });
+            if (!out) {
+              return result = false;
+            }
+          });
+          return result;
+        }
+        return false;
+      },
+      'Person': function(obj, valArray) {
+        var result;
+
+        if (obj.Persons && obj.Persons.length) {
+          result = true;
+          _.each(ProjectSearch.partializeArray(valArray), function(val) {
+            var out;
+
+            out = false;
+            _.each(obj.Persons, function(person) {
+              var fullName;
+
+              fullName = (person.FirstName ? person.FirstName + ' ' : '') + (person.Surname ? person.Surname : '');
+              if (fullName.indexOf(val) >= 0) {
+                return out = true;
+              }
+            });
+            if (!out) {
+              return result = false;
+            }
+          });
+          return result;
+        }
+        return false;
       }
     },
     /**
@@ -7860,6 +11967,7 @@ define('modules/ProjectSearch',['app'], function(app) {
       var els, out, segment, vals, _i, _len, _ref;
 
       out = {};
+      term = decodeURI(term);
       _ref = term.split(';');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         segment = _ref[_i];
@@ -7872,53 +11980,299 @@ define('modules/ProjectSearch',['app'], function(app) {
       }
       return out;
     },
-    test: function(obj, key, valArray) {
-      var type;
+    makeSearchTerm: function(obj) {
+      var a, a2, key, v, val, _i, _len;
 
+      a = [];
+      for (key in obj) {
+        val = obj[key];
+        a2 = [];
+        if (!_.isArray(val)) {
+          val = [val];
+        }
+        for (_i = 0, _len = val.length; _i < _len; _i++) {
+          v = val[_i];
+          if (v) {
+            a2.push(v);
+          }
+        }
+        if (a2.length) {
+          a.push("" + key + ":" + (a2.join('|')));
+        }
+      }
+      return encodeURI(a.join(';'));
+    },
+    partializeArray: function(valArray) {
+      var out, val, _i, _len;
+
+      out = [];
+      for (_i = 0, _len = valArray.length; _i < _len; _i++) {
+        val = valArray[_i];
+        out = out.concat(val.split(' '));
+      }
+      return out;
+    },
+    test: function(obj, key, valArray, forceMethod) {
+      var method, result, type, val, _i, _len;
+
+      result = true;
       if (!_.isArray(valArray)) {
         valArray = [valArray];
       }
-      if (type = this.fields[key]) {
+      type = forceMethod || this.fields[key];
+      if (type) {
         if (_.isFunction(type)) {
-          return type.call(this, obj, valArray);
+          result = type.call(this, obj, valArray);
         } else {
           if (type === 'exact') {
-            return this.exactMatchFilter(obj, key, valArray);
-          } else if (type) {
-            return this.partialMatchFilter(obj, key, valArray);
+            method = 'exactMatchFilter';
+          } else {
+            method = 'partialMatchFilter';
+            valArray = this.partializeArray(valArray);
+          }
+          for (_i = 0, _len = valArray.length; _i < _len; _i++) {
+            val = valArray[_i];
+            if (!this[method](obj, key, val)) {
+              return false;
+            }
           }
         }
       }
-      return true;
+      return result;
     },
-    partialMatchFilter: function(obj, key, valArray) {
-      var pattern, query;
-
-      query = valArray.join('|');
-      pattern = new RegExp($.trim(query), 'i');
-      console.log(obj[key]);
-      if (obj.hasOwnProperty(key) && pattern.test(obj[key])) {
-        return true;
-      }
-      return false;
-    },
-    exactMatchFilter: function(obj, key, valArray) {
-      var pattern, query, val, _i, _len;
+    partialMatchFilter: function(obj, key, val) {
+      var against;
 
       if (!obj.hasOwnProperty(key)) {
         return false;
       }
-      for (_i = 0, _len = valArray.length; _i < _len; _i++) {
-        val = valArray[_i];
-        query = "^" + val + "$";
-        pattern = new RegExp(query, 'i');
-        if (pattern.test(val)) {
-          return true;
-        }
+      against = obj[key].toLowerCase();
+      if (against.indexOf(val.toLowerCase()) >= 0) {
+        return true;
+      }
+      return false;
+    },
+    exactMatchFilter: function(obj, key, val) {
+      if (!obj.hasOwnProperty(key)) {
+        return false;
+      }
+      if (val.toLowerCase() === obj[key].toLowerCase()) {
+        return true;
       }
       return false;
     }
   };
+  ProjectSearch.getVisualSearchMatches = function() {
+    var matches, persons, used, wholePortfolio, year, years, _i, _len;
+
+    wholePortfolio = app.wholePortfolioJSON();
+    matches = {
+      Title: [],
+      Space: [],
+      Location: [],
+      Person: [],
+      Year: [],
+      Type: ['Project', 'Exhibition', 'Excursion', 'Workshop']
+    };
+    years = [];
+    persons = [];
+    used = [];
+    _.each(wholePortfolio, function(m) {
+      var d;
+
+      if (m.Title) {
+        matches.Title.push(m.Title);
+      }
+      if (m.Space) {
+        matches.Space.push(m.Space);
+      }
+      if (m.Location) {
+        matches.Location.push(m.Location);
+      }
+      if (m.YearSearch) {
+        d = parseInt(m.YearSearch);
+      }
+      if (d) {
+        years.push(d);
+      }
+      return _.each(m.Persons, function(person) {
+        var fullname;
+
+        if (person.FirstName && person.Surname) {
+          fullname = "" + person.Surname + ", " + person.FirstName;
+          if (_.indexOf(used, fullname) < 0) {
+            persons.push({
+              label: fullname,
+              value: "" + person.FirstName + " " + person.Surname
+            });
+            return used.push(fullname);
+          }
+        }
+      });
+    });
+    matches.Person = _.sortBy(persons, function(p) {
+      return p.label;
+    });
+    years = _.sortBy(_.uniq(years), function(y) {
+      return y * -1;
+    });
+    for (_i = 0, _len = years.length; _i < _len; _i++) {
+      year = years[_i];
+      matches.Year.push(year.toString());
+    }
+    return matches;
+  };
+  ProjectSearch.View = Backbone.View.extend({
+    template: 'searchbar',
+    id: 'searchbar',
+    search: {
+      'Category': []
+    },
+    events: {
+      'click .category-filter a': 'updateCategorySearch'
+    },
+    initialize: function(opts) {
+      if (opts.searchTerm) {
+        this.search = ProjectSearch.transformSearchTerm(opts.searchTerm);
+      }
+      if (!this.search.Category) {
+        return this.search.Category = [];
+      }
+    },
+    doSearch: function() {
+      var directTo, searchTerm;
+
+      console.group('searching for');
+      console.log(this.search);
+      searchTerm = ProjectSearch.makeSearchTerm(this.search);
+      console.log(searchTerm);
+      console.groupEnd();
+      directTo = searchTerm ? "/portfolio/search/" + searchTerm + "/" : '/portfolio/';
+      return Backbone.history.navigate(directTo, true);
+    },
+    updateCategorySearch: function(e) {
+      var $a, i, meth, title;
+
+      e.preventDefault();
+      $a = $(e.target);
+      $a.blur();
+      title = $a.data('title');
+      i = _.indexOf(this.search.Category, title);
+      if (i < 0) {
+        this.search.Category.push(title);
+        meth = 'addClass';
+      } else {
+        this.search.Category.splice(i, 1);
+        meth = 'removeClass';
+      }
+      $a[meth]('active');
+      this.doSearch();
+      return false;
+    },
+    initVisualSearch: function() {
+      var $visSearch, autoMatches,
+        _this = this;
+
+      $visSearch = this.$el.find('.visualsearch');
+      autoMatches = ProjectSearch.VisualSearchMatches = ProjectSearch.VisualSearchMatches || ProjectSearch.getVisualSearchMatches();
+      this.visualSearch = VS.init({
+        container: $visSearch,
+        remainder: 'Text',
+        callbacks: {
+          search: function(query, searchCollection) {
+            _this.search = {
+              Category: _this.search.Category
+            };
+            searchCollection.each(function(facet) {
+              var cat;
+
+              cat = facet.get('category');
+              if (!_this.search[cat]) {
+                _this.search[cat] = [];
+              }
+              return _this.search[cat].push(facet.get('value'));
+            });
+            console.log(_this.search);
+            return _this.doSearch();
+          },
+          facetMatches: function(callback) {
+            return callback(['Type', 'Person', 'Title', 'Year', 'Space', 'Location']);
+          },
+          valueMatches: function(facet, searchTerm, callback) {
+            switch (facet) {
+              case 'Person':
+                return callback(autoMatches.Person);
+              case 'Title':
+                return callback(autoMatches.Title);
+              case 'Year':
+                return callback(autoMatches.Year);
+              case 'Space':
+                return callback(autoMatches.Space);
+              case 'Location':
+                return callback(autoMatches.Location);
+              case 'Type':
+                return callback(autoMatches.Type);
+            }
+          }
+        }
+      });
+      this.prePopulateSearchBox();
+      console.log('Project search view: %o', this.search);
+      return console.log(this.visualSearch);
+    },
+    prePopulateSearchBox: function() {
+      var key, query, v, val, _i, _len, _ref;
+
+      query = '';
+      _ref = this.search;
+      for (key in _ref) {
+        val = _ref[key];
+        if (key !== 'Category') {
+          for (_i = 0, _len = val.length; _i < _len; _i++) {
+            v = val[_i];
+            query += "\"" + key + "\": \"" + v + "\" ";
+          }
+        }
+      }
+      return this.visualSearch.searchBox.value(query);
+    },
+    updateCategoryClasses: function() {
+      _this = this;
+      return this.$el.find('.category-filter a').each(function() {
+        var $this, cat, title, _i, _len, _ref, _results;
+
+        $this = $(this);
+        title = $this.data('title').toLowerCase();
+        _ref = _this.search.Category;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          cat = _ref[_i];
+          if (cat.toLowerCase() === title) {
+            _results.push($this.addClass('active'));
+          } else {
+            _results.push(void 0);
+          }
+        }
+        return _results;
+      });
+    },
+    afterRender: function() {
+      this.updateCategoryClasses();
+      return this.initVisualSearch();
+    },
+    serialize: function() {
+      var json;
+
+      json = {};
+      json.Categories = _.map(app.Collections.Category.models, function(cat) {
+        return {
+          ID: cat.id,
+          Title: cat.get('Title')
+        };
+      });
+      return json;
+    }
+  });
   return ProjectSearch;
 });
 
@@ -7960,20 +12314,12 @@ define('modules/DataRetrieval',['app', 'modules/ProjectSearch'], function(app, P
       return returnDfd.promise();
     },
     filterProjectTypesBySearchTerm: function(searchTerm) {
-      var model, out, result, searchObj, tmp, wholePortfolio, _i, _len;
+      var out, result, searchObj, wholePortfolio;
 
       wholePortfolio = app.Cache.WholePortfolio;
-      if (!app.Cache.WholePortfolioJSON) {
-        tmp = [];
-        for (_i = 0, _len = wholePortfolio.length; _i < _len; _i++) {
-          model = wholePortfolio[_i];
-          tmp.push(model.toJSON());
-        }
-        app.Cache.WholePortfolioJSON = tmp;
-      }
       searchObj = ProjectSearch.transformSearchTerm(searchTerm);
-      console.log(searchObj);
-      result = _.filter(app.Cache.WholePortfolioJSON, function(model) {
+      console.log('Search obj found by data retrieval: %o', searchObj);
+      result = _.filter(app.wholePortfolioJSON(), function(model) {
         result = true;
         _.each(searchObj, function(vals, key) {
           if (!ProjectSearch.test(model, key, vals)) {
@@ -8019,6 +12365,23 @@ define('modules/DataRetrieval',['app', 'modules/ProjectSearch'], function(app, P
         });
       } else {
         dfd.resolve();
+      }
+      return dfd.promise();
+    },
+    forCategories: function() {
+      var dfd;
+
+      dfd = new $.Deferred();
+      if (app.CategoriesFetched) {
+        dfd.resolve();
+      } else {
+        JJRestApi.getFromDomOrApi('Category').done(function(data) {
+          if (data && _.isArray(data)) {
+            app.handleFetchedModels('Category', data);
+            app.CategoriesFetched = true;
+          }
+          return dfd.resolve();
+        });
       }
       return dfd.promise();
     },
@@ -8304,6 +12667,30 @@ define('modules/RecycleBin',['app'], function(app) {
     });
   };
   return RecycleBin;
+});
+
+// Generated by CoffeeScript 1.6.2
+define('modules/Website',['app', 'modules/RecycleBin'], function(app, RecycleBin) {
+  
+  var Website;
+
+  Website = app.module();
+  Website.Views.ListView = Backbone.View.extend({
+    tagName: 'li',
+    template: 'website-list-item',
+    className: 'Website',
+    serialize: function() {
+      return {
+        ID: this.model.id,
+        Title: this.model.get('Title'),
+        Link: this.model.get('Link')
+      };
+    },
+    afterRender: function() {
+      return RecycleBin.setViewAsRecyclable(this);
+    }
+  });
+  return Website;
 });
 
 (function(t,e){if(typeof exports=="object")module.exports=e();else if(typeof define=="function"&&define.amd)define('plugins/misc/spin.min',[],e);else t.Spinner=e()})(this,function(){var t=["webkit","Moz","ms","O"],e={},i;function o(t,e){var i=document.createElement(t||"div"),o;for(o in e)i[o]=e[o];return i}function n(t){for(var e=1,i=arguments.length;e<i;e++)t.appendChild(arguments[e]);return t}var r=function(){var t=o("style",{type:"text/css"});n(document.getElementsByTagName("head")[0],t);return t.sheet||t.styleSheet}();function s(t,o,n,s){var a=["opacity",o,~~(t*100),n,s].join("-"),f=.01+n/s*100,l=Math.max(1-(1-t)/o*(100-f),t),d=i.substring(0,i.indexOf("Animation")).toLowerCase(),u=d&&"-"+d+"-"||"";if(!e[a]){r.insertRule("@"+u+"keyframes "+a+"{"+"0%{opacity:"+l+"}"+f+"%{opacity:"+t+"}"+(f+.01)+"%{opacity:1}"+(f+o)%100+"%{opacity:"+t+"}"+"100%{opacity:"+l+"}"+"}",r.cssRules.length);e[a]=1}return a}function a(e,i){var o=e.style,n,r;if(o[i]!==undefined)return i;i=i.charAt(0).toUpperCase()+i.slice(1);for(r=0;r<t.length;r++){n=t[r]+i;if(o[n]!==undefined)return n}}function f(t,e){for(var i in e)t.style[a(t,i)||i]=e[i];return t}function l(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var o in i)if(t[o]===undefined)t[o]=i[o]}return t}function d(t){var e={x:t.offsetLeft,y:t.offsetTop};while(t=t.offsetParent)e.x+=t.offsetLeft,e.y+=t.offsetTop;return e}var u={lines:12,length:7,width:5,radius:10,rotate:0,corners:1,color:"#000",direction:1,speed:1,trail:100,opacity:1/4,fps:20,zIndex:2e9,className:"spinner",top:"auto",left:"auto",position:"relative"};function p(t){if(typeof this=="undefined")return new p(t);this.opts=l(t||{},p.defaults,u)}p.defaults={};l(p.prototype,{spin:function(t){this.stop();var e=this,n=e.opts,r=e.el=f(o(0,{className:n.className}),{position:n.position,width:0,zIndex:n.zIndex}),s=n.radius+n.length+n.width,a,l;if(t){t.insertBefore(r,t.firstChild||null);l=d(t);a=d(r);f(r,{left:(n.left=="auto"?l.x-a.x+(t.offsetWidth>>1):parseInt(n.left,10)+s)+"px",top:(n.top=="auto"?l.y-a.y+(t.offsetHeight>>1):parseInt(n.top,10)+s)+"px"})}r.setAttribute("role","progressbar");e.lines(r,e.opts);if(!i){var u=0,p=(n.lines-1)*(1-n.direction)/2,c,h=n.fps,m=h/n.speed,y=(1-n.opacity)/(m*n.trail/100),g=m/n.lines;(function v(){u++;for(var t=0;t<n.lines;t++){c=Math.max(1-(u+(n.lines-t)*g)%m*y,n.opacity);e.opacity(r,t*n.direction+p,c,n)}e.timeout=e.el&&setTimeout(v,~~(1e3/h))})()}return e},stop:function(){var t=this.el;if(t){clearTimeout(this.timeout);if(t.parentNode)t.parentNode.removeChild(t);this.el=undefined}return this},lines:function(t,e){var r=0,a=(e.lines-1)*(1-e.direction)/2,l;function d(t,i){return f(o(),{position:"absolute",width:e.length+e.width+"px",height:e.width+"px",background:t,boxShadow:i,transformOrigin:"left",transform:"rotate("+~~(360/e.lines*r+e.rotate)+"deg) translate("+e.radius+"px"+",0)",borderRadius:(e.corners*e.width>>1)+"px"})}for(;r<e.lines;r++){l=f(o(),{position:"absolute",top:1+~(e.width/2)+"px",transform:e.hwaccel?"translate3d(0,0,0)":"",opacity:e.opacity,animation:i&&s(e.opacity,e.trail,a+r*e.direction,e.lines)+" "+1/e.speed+"s linear infinite"});if(e.shadow)n(l,f(d("#000","0 0 4px "+"#000"),{top:2+"px"}));n(t,n(l,d(e.color,"0 0 1px rgba(0,0,0,.1)")))}return t},opacity:function(t,e,i){if(e<t.childNodes.length)t.childNodes[e].style.opacity=i}});function c(){function t(t,e){return o("<"+t+' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">',e)}r.addRule(".spin-vml","behavior:url(#default#VML)");p.prototype.lines=function(e,i){var o=i.length+i.width,r=2*o;function s(){return f(t("group",{coordsize:r+" "+r,coordorigin:-o+" "+-o}),{width:r,height:r})}var a=-(i.width+i.length)*2+"px",l=f(s(),{position:"absolute",top:a,left:a}),d;function u(e,r,a){n(l,n(f(s(),{rotation:360/i.lines*e+"deg",left:~~r}),n(f(t("roundrect",{arcsize:i.corners}),{width:o,height:i.width,left:i.radius,top:-i.width>>1,filter:a}),t("fill",{color:i.color,opacity:i.opacity}),t("stroke",{opacity:0}))))}if(i.shadow)for(d=1;d<=i.lines;d++)u(d,-2,"progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)");for(d=1;d<=i.lines;d++)u(d);return n(e,l)};p.prototype.opacity=function(t,e,i,o){var n=t.firstChild;o=o.shadow&&o.lines||0;if(n&&e+o<n.childNodes.length){n=n.childNodes[e+o];n=n&&n.firstChild;n=n&&n.firstChild;if(n)n.opacity=i}}}var h=f(o("group"),{behavior:"url(#default#VML)"});if(!a(h,"transform")&&h.adj)c();else i=a(h,"animation");return p});
@@ -10587,6 +14974,7 @@ define("plugins/editor/marked_jjedit", function(){});
       this.fileDragPermitted = true;
       this.pendingAjax = [];
       this.customParsers = {};
+      this.firstTimeRendered = false;
       this.options = $.extend({}, this.defaults, opts);
       this.$input = selector instanceof jQuery ? selector : $(selector);
       this.$input._val = this.$input[this.options.contentGetter];
@@ -10745,9 +15133,10 @@ define("plugins/editor/marked_jjedit", function(){});
         if (_this.customParsers.images) {
           data.images = _this.customParsers.images.returnIds();
         }
-        if (_this.options.onChange) {
-          return _this.options.onChange(data);
+        if (_this.options.onChange && _this.firstTimeRendered) {
+          _this.options.onChange(data);
         }
+        return _this.firstTimeRendered = true;
       });
     };
 
@@ -16042,9 +20431,9 @@ var __hasProp = {}.hasOwnProperty,
   	 # @param int end
   */
 
-  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, SelectEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
+  var DateEditable, InlineEditable, JJEditable, JJEditor, JJPopoverEditable, MarkdownEditable, ModalEditable, SelectEditable, SelectListConfirmEditable, SelectListEditable, SelectPersonEditable, SplitMarkdownEditable, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
 
-  $.fn.selectRange = function(start, end) {
+  $.fn._selectRange = function(start, end) {
     if (!end) {
       end = start;
     }
@@ -17028,7 +21417,7 @@ var __hasProp = {}.hasOwnProperty,
       var _this = this;
 
       if (!element) {
-        console.log('JJPopoverEditabel: no element found.');
+        console.log('JJPopoverEditable: no element found.');
         return;
       }
       if (!this._options.position) {
@@ -17054,7 +21443,7 @@ var __hasProp = {}.hasOwnProperty,
 
             $input = $('input, textarea', _this.api.tooltip).eq(0);
             try {
-              $input.selectRange($input.val().length);
+              $input._selectRange($input.val().length);
             } catch (_error) {
               e = _error;
               false;
@@ -17100,8 +21489,10 @@ var __hasProp = {}.hasOwnProperty,
           return _this.close();
         }
       });
-      element.on(this.getNamespacedEventName('click'), function() {
-        return _this.toggle();
+      element.on(this.getNamespacedEventName('click'), function(e) {
+        e.preventDefault();
+        _this.toggle();
+        return false;
       });
       $(window).on(this.getNamespacedEventName('resize'), function() {
         return _this.updateTooltipDimensions();
@@ -17180,8 +21571,6 @@ var __hasProp = {}.hasOwnProperty,
       var dataName;
 
       dataName = (this.getDataFullName()).toLowerCase().replace('.', '-');
-      console.log(this);
-      console.log(this.name);
       return ['editor-popover'].concat([this.name, dataName], this.popoverClasses).join(' ');
     };
 
@@ -17540,6 +21929,7 @@ var __hasProp = {}.hasOwnProperty,
     SelectEditable.prototype.members = function() {
       SelectEditable.__super__.members.call(this);
       this.contentTypes = ['select'];
+      this.popoverClasses = ['selectable'];
       this.contentSeperator = ', ';
       return this._source = {};
     };
@@ -17563,6 +21953,10 @@ var __hasProp = {}.hasOwnProperty,
       return this.setSource(this._source);
     };
 
+    SelectEditable.prototype.onElementChange = function(e, $el, value, id) {
+      return true;
+    };
+
     SelectEditable.prototype.createPopupContent = function() {
       var $input, $label, i, id, idAttr, source, title, _ref5,
         _this = this;
@@ -17580,7 +21974,7 @@ var __hasProp = {}.hasOwnProperty,
           $input.prop('checked', true);
         }
         $input.on(this.getNamespacedEventName('change'), function(e) {
-          var $target, changed, index, value;
+          var $target, changed, index, isChecked, value;
 
           value = _this.getValue();
           $target = $(e.target);
@@ -17589,7 +21983,13 @@ var __hasProp = {}.hasOwnProperty,
             id = parseInt(id, 10);
           }
           index = _this.getValueIndex(id);
+          isChecked = $target.prop('checked');
           changed = false;
+          if (false === _this.onElementChange(e, $target, value, id)) {
+            e.preventDefault();
+            $target.prop('checked', !isChecked);
+            return false;
+          }
           if ($target.is(':checked')) {
             if (-1 === index) {
               value.push(id);
@@ -17699,7 +22099,7 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     SelectEditable.prototype.setValueToContent = function(val, isPlaceholder) {
-      var i, id, source, title, titles, _ref5;
+      var checked, i, id, source, title, titles, _ref5;
 
       titles = [];
       if (val) {
@@ -17707,22 +22107,24 @@ var __hasProp = {}.hasOwnProperty,
         for (i in _ref5) {
           source = _ref5[i];
           id = source.id || source.ID;
+          checked = false;
           if (-1 !== $.inArray(id, val)) {
             title = source.title || source.Title;
             titles.push(title);
-            this.updatePopoverContent(title, id);
+            checked = true;
           }
+          this.updatePopoverContent(title, id, checked);
         }
         return this.updateContent(titles);
       }
     };
 
-    SelectEditable.prototype.updatePopoverContent = function(title, id) {
+    SelectEditable.prototype.updatePopoverContent = function(title, id, checked) {
       var input;
 
       if (this.$set) {
         input = this.$set.find('#' + this.getDataName().toLowerCase() + '-item-' + id);
-        return input.prop('checked', true);
+        return input.prop('checked', checked);
       }
     };
 
@@ -17820,6 +22222,219 @@ var __hasProp = {}.hasOwnProperty,
     return SelectListEditable;
 
   })(SelectEditable);
+  SelectListConfirmEditable = (function(_super) {
+    __extends(SelectListConfirmEditable, _super);
+
+    function SelectListConfirmEditable() {
+      _ref7 = SelectListConfirmEditable.__super__.constructor.apply(this, arguments);
+      return _ref7;
+    }
+
+    SelectListConfirmEditable.prototype.members = function() {
+      SelectListConfirmEditable.__super__.members.call(this);
+      this.contentTypes = ['select-list-confirm'];
+      return this._options = {
+        confirm: 'Are you sure to do this?'
+      };
+    };
+
+    SelectListConfirmEditable.prototype.init = function(element) {
+      var confirmOpts, confirmTxt;
+
+      confirmTxt = element.data(this.editor.attr._namespace + 'confirm');
+      if (confirmTxt) {
+        confirmOpts = {
+          confirm: confirmTxt
+        };
+        this.updateOptions(confirmOpts, true);
+      }
+      return SelectListConfirmEditable.__super__.init.call(this, element);
+    };
+
+    SelectListConfirmEditable.prototype.getConfirm = function() {
+      return this.getOptions().confirm;
+    };
+
+    SelectListConfirmEditable.prototype.onElementChange = function(e, $el, value, id) {
+      return confirm(this.getConfirm());
+    };
+
+    return SelectListConfirmEditable;
+
+  })(SelectListEditable);
+  ModalEditable = (function(_super) {
+    __extends(ModalEditable, _super);
+
+    function ModalEditable() {
+      _ref8 = ModalEditable.__super__.constructor.apply(this, arguments);
+      return _ref8;
+    }
+
+    ModalEditable.prototype.members = function() {
+      ModalEditable.__super__.members.call(this);
+      this.contentTypes = ['modal'];
+      this.inputs = [];
+      return this.buttons = [];
+    };
+
+    ModalEditable.prototype.init = function(element) {
+      ModalEditable.__super__.init.call(this, element);
+      this._options = {
+        fields: {
+          Foo: {
+            placeholder: 'Bar'
+          }
+        },
+        buttons: {
+          Submit: {
+            type: 'submit'
+          },
+          Cancel: {
+            type: 'cancel'
+          }
+        }
+      };
+      this.setFields(element.data(this.editor.attr._namespace + 'fields'));
+      return this.setButtons(element.data(this.editor.attr._namespace + 'buttons'));
+    };
+
+    ModalEditable.prototype.getForm = function() {
+      var $buttons, $form,
+        _this = this;
+
+      $form = $('<form>').submit(function(e) {
+        e.preventDefault();
+        return _this.submit();
+      });
+      $.each(this.inputs, function(i, $input) {
+        return $form.append($input);
+      });
+      $buttons = $('<div class="buttons">');
+      $.each(this.buttons, function(i, $button) {
+        return $buttons.append($button);
+      });
+      return $form.append($buttons);
+    };
+
+    ModalEditable.prototype.getFields = function() {
+      return this.getOptions().fields;
+    };
+
+    ModalEditable.prototype.setFields = function(fields) {
+      var $input, data, name, _ref9;
+
+      if (fields) {
+        this._options.fields = fields;
+      }
+      if (this._options.fields) {
+        _ref9 = this._options.fields;
+        for (name in _ref9) {
+          data = _ref9[name];
+          if (!data.type) {
+            data.type = 'text';
+          }
+          if (!data.placeholder) {
+            data.placeholder = name;
+          }
+          $input = $('<input type="' + data.type + '"name="' + name + '" placeholder="' + data.placeholder + '"/>');
+          this.inputs.push($input);
+        }
+      }
+      return this.setPopoverContent();
+    };
+
+    ModalEditable.prototype.getButtons = function() {
+      return this.getOptions().buttons;
+    };
+
+    ModalEditable.prototype.setButtons = function(buttons) {
+      var $btn, data, name, _ref9;
+
+      if (buttons) {
+        this._options.buttons = buttons;
+      }
+      if (this._options.buttons) {
+        _ref9 = this._options.buttons;
+        for (name in _ref9) {
+          data = _ref9[name];
+          if (data.type === 'submit' || 'cancel') {
+            $btn = $('<button type="' + data.type + '">' + name + '</button>');
+            if (data.type === 'submit') {
+              this._addSubmitEvent($btn);
+            } else if (data.type === 'cancel') {
+              this._addCancelEvent($btn);
+            }
+            this.buttons.push($btn);
+          }
+        }
+      }
+      return this.setPopoverContent();
+    };
+
+    ModalEditable.prototype._addSubmitEvent = function($btn, type) {
+      var _this = this;
+
+      if (type == null) {
+        type = 'click';
+      }
+      return $btn.on(type, function(e) {
+        e.preventDefault();
+        _this.submit();
+        return false;
+      });
+    };
+
+    ModalEditable.prototype.submit = function() {
+      var data,
+        _this = this;
+
+      data = {};
+      $.each(this.inputs, function(i, input) {
+        var $input;
+
+        $input = $(input);
+        return data[$input.attr('name')] = $input.val();
+      });
+      this.setValue(data);
+      return this.close();
+    };
+
+    ModalEditable.prototype._addCancelEvent = function($btn) {
+      var _this = this;
+
+      return $btn.on('click', function(e) {
+        e.preventDefault();
+        _this.close();
+        return false;
+      });
+    };
+
+    ModalEditable.prototype.close = function() {
+      ModalEditable.__super__.close.call(this);
+      return $('input, textarea', this.api.tooltip).val('');
+    };
+
+    ModalEditable.prototype.getPopoverButtons = function() {
+      console.log($buttons);
+      return $buttons;
+    };
+
+    ModalEditable.prototype.setPopoverContent = function(value) {
+      if (!value) {
+        value = this.getForm();
+      }
+      return ModalEditable.__super__.setPopoverContent.call(this, value);
+    };
+
+    ModalEditable.prototype.setValue = function(value, silent) {
+      if (!silent) {
+        return this.triggerDataEvent('submit', value);
+      }
+    };
+
+    return ModalEditable;
+
+  })(JJPopoverEditable);
   window.JJEditor = JJEditor;
   window.editorComponents = {};
   window.editorComponents.JJEditable = JJEditable;
@@ -17830,7 +22445,9 @@ var __hasProp = {}.hasOwnProperty,
   window.editorComponents.SplitMarkdownEditable = SplitMarkdownEditable;
   window.editorComponents.SelectEditable = SelectEditable;
   window.editorComponents.SelectListEditable = SelectListEditable;
-  return window.editorComponents.SelectPersonEditable = SelectPersonEditable;
+  window.editorComponents.SelectPersonEditable = SelectPersonEditable;
+  window.editorComponents.SelectListConfirmEditable = SelectListConfirmEditable;
+  return window.editorComponents.ModalEditable = ModalEditable;
   /*
   	# init file transfer
   	jQuery.event.props.push 'dataTransfer'
@@ -17869,7 +22486,7 @@ var __hasProp = {}.hasOwnProperty,
 define("plugins/editor/jquery.editor-popover", function(){});
 
 // Generated by CoffeeScript 1.6.2
-define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'plugins/misc/spin.min', 'plugins/misc/jquery.list', 'plugins/editor/jquery.jjdropzone', 'plugins/editor/jquery.jjmarkdown', 'plugins/editor/jquery.editor-popover'], function(app, DataRetrieval, RecycleBin, Spinner) {
+define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website', 'plugins/misc/spin.min', 'plugins/misc/jquery.list', 'plugins/editor/jquery.jjdropzone', 'plugins/editor/jquery.jjmarkdown', 'plugins/editor/jquery.editor-popover'], function(app, DataRetrieval, RecycleBin, Website, Spinner) {
   
   var UserSidebar;
 
@@ -17922,6 +22539,7 @@ define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBi
     },
     subView: null,
     events: {
+      'click nav a': 'blurAfterClick',
       'click [data-editor-sidebar-content]': 'toggleSidebarCheck',
       'click .icon-switch': 'switchEditorView',
       'click .icon-publish': 'clickPublish'
@@ -17932,6 +22550,11 @@ define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBi
     cleanup: function() {
       return Backbone.Events.off('projectEdited', this.handlePublishActive);
     },
+    blurAfterClick: function(e) {
+      e.preventDefault();
+      $(e.target).blur();
+      return false;
+    },
     switchEditorView: function(e) {
       e.preventDefault();
       if (app.isEditor) {
@@ -17940,14 +22563,18 @@ define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBi
       return false;
     },
     clickPublish: function(e) {
-      var method, toSet;
+      var $target, method, toSet;
 
       e.preventDefault();
+      $target = $(e.target);
       if (app.isEditor) {
         toSet = app.ProjectEditor.model.get('IsPublished') ? false : true;
         method = toSet ? 'add' : 'remove';
-        app.ProjectEditor.model.save('IsPublished', toSet);
-        $(e.target)[method + 'Class']('published');
+        $target.addClass('publishing');
+        app.ProjectEditor.model.rejectAndSave('IsPublished', toSet).always(function() {
+          return $target.removeClass('publishing');
+        });
+        $target[method + 'Class']('published');
       }
       return false;
     },
@@ -18322,8 +22949,10 @@ define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBi
       return bio.api.reposition();
     },
     initMetaEditor: function() {
-      this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'SplitMarkdownEditable']);
-      return this.metaEditor.on('stateUpdate', function(e) {
+      var _this = this;
+
+      this.metaEditor = new JJEditor($('.meta-info'), ['InlineEditable', 'MarkdownEditable', 'ModalEditable']);
+      this.metaEditor.on('stateUpdate', function(e) {
         var key, val, _changed, _ref;
 
         _changed = false;
@@ -18344,6 +22973,39 @@ define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBi
         if (_changed) {
           return app.CurrentMemberPerson.rejectAndSave();
         }
+      });
+      return this.metaEditor.on('submit:CurrentPerson.Website', function(val) {
+        var MType, website;
+
+        if (val.Title && val.Link) {
+          MType = JJRestApi.Model('Website');
+          website = new MType({
+            Title: val.Title,
+            Link: val.Link
+          });
+          app.CurrentMemberPerson.get('Websites').add(website);
+          _this.addWebsiteView(website, true);
+          return app.CurrentMemberPerson.save();
+        }
+      });
+    },
+    addWebsiteView: function(model, render) {
+      var view;
+
+      view = new Website.Views.ListView({
+        model: model
+      });
+      this.insertView('.websites', view);
+      if (render) {
+        view.render();
+      }
+      return true;
+    },
+    beforeRender: function() {
+      var _this = this;
+
+      return app.CurrentMemberPerson.get('Websites').each(function(website) {
+        return _this.addWebsiteView(website);
       });
     },
     afterRender: function() {
@@ -18619,6 +23281,7 @@ define('modules/UserSidebar',['app', 'modules/DataRetrieval', 'modules/RecycleBi
       return Backbone.Events.on('projectEdited', this.handleActive, this);
     },
     afterRender: function() {
+      this._afterRender();
       if (app.isEditor) {
         return this.handleActive(app.ProjectEditor.model);
       }
@@ -18683,7 +23346,7 @@ define('modules/Auth',['app', 'modules/UserSidebar'], function(app, UserSidebar)
           return Auth.updateUserWidget();
         });
       } else if (data.Email !== app.CurrentMember.Email) {
-        return Auth.redirectTo('secured/dashboard');
+        return Auth.redirectTo('login');
       }
     } else {
       return app.CurrentMember = {};
@@ -18874,6 +23537,30 @@ define('modules/SuperProject',['app'], function(app) {
         });
       }
       return _changed;
+    },
+    basicListWithoutCurrentMember: function(relKey) {
+      var out;
+
+      out = [];
+      _.each(this.get(relKey).toJSON(), function(person) {
+        var obj;
+
+        obj = {
+          ID: person.ID,
+          Title: person.FirstName + ' ' + (person.Surname ? person.Surname : '')
+        };
+        if (obj.ID !== app.CurrentMemberPerson.id) {
+          return out.push(obj);
+        }
+      });
+      return out;
+    },
+    getEditorsKey: function() {
+      if (this.get('ClassName') === 'Project') {
+        return 'BlockedEditors';
+      } else {
+        return 'Editors';
+      }
     }
   });
   return SuperProject;
@@ -18900,807 +23587,3369 @@ define('modules/Project',['app', 'modules/SuperProject'], function(app, SuperPro
   return Project;
 });
 
+/*!
+ * Packery PACKAGED v1.0.6
+ * bin-packing layout library
+ * http://packery.metafizzy.co
+ *
+ * Commercial use requires one-time purchase of a commercial license
+ * http://packery.metafizzy.co/license.html
+ *
+ * Non-commercial use is licensed under the MIT License
+ *
+ * Copyright 2013 Metafizzy
+ */
+
+/*!
+ * classie - class helper functions
+ * from bonzo https://github.com/ded/bonzo
+ * 
+ * classie.has( elem, 'my-class' ) -> true/false
+ * classie.add( elem, 'my-new-class' )
+ * classie.remove( elem, 'my-unwanted-class' )
+ * classie.toggle( elem, 'my-class' )
+ */
+
+/*jshint browser: true, strict: true, undef: true */
+/*global define: false */
+
+( function( window ) {
+
+
+
+// class helper functions from bonzo https://github.com/ded/bonzo
+
+function classReg( className ) {
+  return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+}
+
+// classList support for class management
+// altho to be fair, the api sucks because it won't accept multiple classes at once
+var hasClass, addClass, removeClass;
+
+if ( 'classList' in document.documentElement ) {
+  hasClass = function( elem, c ) {
+    return elem.classList.contains( c );
+  };
+  addClass = function( elem, c ) {
+    elem.classList.add( c );
+  };
+  removeClass = function( elem, c ) {
+    elem.classList.remove( c );
+  };
+}
+else {
+  hasClass = function( elem, c ) {
+    return classReg( c ).test( elem.className );
+  };
+  addClass = function( elem, c ) {
+    if ( !hasClass( elem, c ) ) {
+      elem.className = elem.className + ' ' + c;
+    }
+  };
+  removeClass = function( elem, c ) {
+    elem.className = elem.className.replace( classReg( c ), ' ' );
+  };
+}
+
+function toggleClass( elem, c ) {
+  var fn = hasClass( elem, c ) ? removeClass : addClass;
+  fn( elem, c );
+}
+
+var classie = {
+  // full names
+  hasClass: hasClass,
+  addClass: addClass,
+  removeClass: removeClass,
+  toggleClass: toggleClass,
+  // short names
+  has: hasClass,
+  add: addClass,
+  remove: removeClass,
+  toggle: toggleClass
+};
+
+// transport
+/*if ( typeof _define === 'function' && define.amd ) {
+  // AMD
+  define( classie );
+} else {
+  // browser global
+  window.classie = classie;
+}*/
+window.classie = classie;
+
+})( window );
+
+/*!
+ * eventie v1.0.3
+ * event binding helper
+ *   eventie.bind( elem, 'click', myFn )
+ *   eventie.unbind( elem, 'click', myFn )
+ */
+
+/*jshint browser: true, undef: true, unused: true */
+/*global define: false */
+
+( function( window ) {
+
+
+
+var docElem = document.documentElement;
+
+var bind = function() {};
+
+if ( docElem.addEventListener ) {
+  bind = function( obj, type, fn ) {
+    obj.addEventListener( type, fn, false );
+  };
+} else if ( docElem.attachEvent ) {
+  bind = function( obj, type, fn ) {
+    obj[ type + fn ] = fn.handleEvent ?
+      function() {
+        var event = window.event;
+        // add event.target
+        event.target = event.target || event.srcElement;
+        fn.handleEvent.call( fn, event );
+      } :
+      function() {
+        var event = window.event;
+        // add event.target
+        event.target = event.target || event.srcElement;
+        fn.call( obj, event );
+      };
+    obj.attachEvent( "on" + type, obj[ type + fn ] );
+  };
+}
+
+var unbind = function() {};
+
+if ( docElem.removeEventListener ) {
+  unbind = function( obj, type, fn ) {
+    obj.removeEventListener( type, fn, false );
+  };
+} else if ( docElem.detachEvent ) {
+  unbind = function( obj, type, fn ) {
+    obj.detachEvent( "on" + type, obj[ type + fn ] );
+    try {
+      delete obj[ type + fn ];
+    } catch ( err ) {
+      // can't delete window object properties
+      obj[ type + fn ] = undefined;
+    }
+  };
+}
+
+var eventie = {
+  bind: bind,
+  unbind: unbind
+};
+
+// transport
+/*if ( typeof _define === 'function' && define.amd ) {
+  // AMD
+  define( eventie );
+} else {
+  // browser global
+  window.eventie = eventie;
+}*/
+window.eventie = eventie;
+})( this );
+
+/*!
+ * docReady
+ * Cross browser DOMContentLoaded event emitter
+ */
+
+/*jshint browser: true, strict: true, undef: true, unused: true*/
+/*global define: false */
+
+( function( window ) {
+
+
+
+var document = window.document;
+// collection of functions to be triggered on ready
+var queue = [];
+
+function docReady( fn ) {
+  // throw out non-functions
+  if ( typeof fn !== 'function' ) {
+    return;
+  }
+
+  if ( docReady.isReady ) {
+    // ready now, hit it
+    fn();
+  } else {
+    // queue function when ready
+    queue.push( fn );
+  }
+}
+
+docReady.isReady = false;
+
+// triggered on various doc ready events
+function init( event ) {
+  // bail if IE8 document is not ready just yet
+  var isIE8NotReady = event.type === 'readystatechange' && document.readyState !== 'complete';
+  if ( docReady.isReady || isIE8NotReady ) {
+    return;
+  }
+  docReady.isReady = true;
+
+  // process queue
+  for ( var i=0, len = queue.length; i < len; i++ ) {
+    var fn = queue[i];
+    fn();
+  }
+}
+
+function defineDocReady( eventie ) {
+  eventie.bind( document, 'DOMContentLoaded', init );
+  eventie.bind( document, 'readystatechange', init );
+  eventie.bind( window, 'load', init );
+
+  return docReady;
+}
+
+// transport
+/*if ( typeof _define === 'function' && define.amd ) {
+  // AMD
+  //define( [ 'eventie' ], defineDocReady );
+} else {
+  // browser global
+  window.docReady = defineDocReady( window.eventie );
+}*/
+window.docReady = defineDocReady( window.eventie );
+})( this );
+
+/*!
+ * EventEmitter v4.1.0 - git.io/ee
+ * Oliver Caldwell
+ * MIT license
+ * @preserve
+ */
+
+(function (exports) {
+	// Place the script in strict mode
+	
+
+	/**
+	 * Class for managing events.
+	 * Can be extended to provide event functionality in other classes.
+	 *
+	 * @class Manages event registering and emitting.
+	 */
+	function EventEmitter() {}
+
+	// Shortcuts to improve speed and size
+
+	// Easy access to the prototype
+	var proto = EventEmitter.prototype,
+		nativeIndexOf = Array.prototype.indexOf ? true : false;
+
+	/**
+	 * Finds the index of the listener for the event in it's storage array.
+	 *
+	 * @param {Function} listener Method to look for.
+	 * @param {Function[]} listeners Array of listeners to search through.
+	 * @return {Number} Index of the specified listener, -1 if not found
+	 * @api private
+	 */
+	function indexOfListener(listener, listeners) {
+		// Return the index via the native method if possible
+		if (nativeIndexOf) {
+			return listeners.indexOf(listener);
+		}
+
+		// There is no native method
+		// Use a manual loop to find the index
+		var i = listeners.length;
+		while (i--) {
+			// If the listener matches, return it's index
+			if (listeners[i] === listener) {
+				return i;
+			}
+		}
+
+		// Default to returning -1
+		return -1;
+	}
+
+	/**
+	 * Fetches the events object and creates one if required.
+	 *
+	 * @return {Object} The events storage object.
+	 * @api private
+	 */
+	proto._getEvents = function () {
+		return this._events || (this._events = {});
+	};
+
+	/**
+	 * Returns the listener array for the specified event.
+	 * Will initialise the event object and listener arrays if required.
+	 * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
+	 * Each property in the object response is an array of listener functions.
+	 *
+	 * @param {String|RegExp} evt Name of the event to return the listeners from.
+	 * @return {Function[]|Object} All listener functions for the event.
+	 */
+	proto.getListeners = function (evt) {
+		// Create a shortcut to the storage object
+		// Initialise it if it does not exists yet
+		var events = this._getEvents(),
+			response,
+			key;
+
+		// Return a concatenated array of all matching events if
+		// the selector is a regular expression.
+		if (typeof evt === 'object') {
+			response = {};
+			for (key in events) {
+				if (events.hasOwnProperty(key) && evt.test(key)) {
+					response[key] = events[key];
+				}
+			}
+		}
+		else {
+			response = events[evt] || (events[evt] = []);
+		}
+
+		return response;
+	};
+
+	/**
+	 * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
+	 *
+	 * @param {String|RegExp} evt Name of the event to return the listeners from.
+	 * @return {Object} All listener functions for an event in an object.
+	 */
+	proto.getListenersAsObject = function (evt) {
+		var listeners = this.getListeners(evt),
+			response;
+
+		if (listeners instanceof Array) {
+			response = {};
+			response[evt] = listeners;
+		}
+
+		return response || listeners;
+	};
+
+	/**
+	 * Adds a listener function to the specified event.
+	 * The listener will not be added if it is a duplicate.
+	 * If the listener returns true then it will be removed after it is called.
+	 * If you pass a regular expression as the event name then the listener will be added to all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to attach the listener to.
+	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.addListener = function (evt, listener) {
+		var listeners = this.getListenersAsObject(evt),
+			key;
+
+		for (key in listeners) {
+			if (listeners.hasOwnProperty(key) &&
+				indexOfListener(listener, listeners[key]) === -1) {
+				listeners[key].push(listener);
+			}
+		}
+
+		// Return the instance of EventEmitter to allow chaining
+		return this;
+	};
+
+	/**
+	 * Alias of addListener
+	 */
+	proto.on = proto.addListener;
+
+	/**
+	 * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
+	 * You need to tell it what event names should be matched by a regex.
+	 *
+	 * @param {String} evt Name of the event to create.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.defineEvent = function (evt) {
+		this.getListeners(evt);
+		return this;
+	};
+
+	/**
+	 * Uses defineEvent to define multiple events.
+	 *
+	 * @param {String[]} evts An array of event names to define.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.defineEvents = function (evts)
+	{
+		for (var i = 0; i < evts.length; i += 1) {
+			this.defineEvent(evts[i]);
+		}
+		return this;
+	};
+
+	/**
+	 * Removes a listener function from the specified event.
+	 * When passed a regular expression as the event name, it will remove the listener from all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to remove the listener from.
+	 * @param {Function} listener Method to remove from the event.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.removeListener = function (evt, listener) {
+		var listeners = this.getListenersAsObject(evt),
+			index,
+			key;
+
+		for (key in listeners) {
+			if (listeners.hasOwnProperty(key)) {
+				index = indexOfListener(listener, listeners[key]);
+
+				if (index !== -1) {
+					listeners[key].splice(index, 1);
+				}
+			}
+		}
+
+		// Return the instance of EventEmitter to allow chaining
+		return this;
+	};
+
+	/**
+	 * Alias of removeListener
+	 */
+	proto.off = proto.removeListener;
+
+	/**
+	 * Adds listeners in bulk using the manipulateListeners method.
+	 * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
+	 * You can also pass it a regular expression to add the array of listeners to all events that match it.
+	 * Yeah, this function does quite a bit. That's probably a bad thing.
+	 *
+	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
+	 * @param {Function[]} [listeners] An optional array of listener functions to add.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.addListeners = function (evt, listeners) {
+		// Pass through to manipulateListeners
+		return this.manipulateListeners(false, evt, listeners);
+	};
+
+	/**
+	 * Removes listeners in bulk using the manipulateListeners method.
+	 * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+	 * You can also pass it an event name and an array of listeners to be removed.
+	 * You can also pass it a regular expression to remove the listeners from all events that match it.
+	 *
+	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
+	 * @param {Function[]} [listeners] An optional array of listener functions to remove.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.removeListeners = function (evt, listeners) {
+		// Pass through to manipulateListeners
+		return this.manipulateListeners(true, evt, listeners);
+	};
+
+	/**
+	 * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
+	 * The first argument will determine if the listeners are removed (true) or added (false).
+	 * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+	 * You can also pass it an event name and an array of listeners to be added/removed.
+	 * You can also pass it a regular expression to manipulate the listeners of all events that match it.
+	 *
+	 * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
+	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
+	 * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.manipulateListeners = function (remove, evt, listeners) {
+		// Initialise any required variables
+		var i,
+			value,
+			single = remove ? this.removeListener : this.addListener,
+			multiple = remove ? this.removeListeners : this.addListeners;
+
+		// If evt is an object then pass each of it's properties to this method
+		if (typeof evt === 'object' && !(evt instanceof RegExp)) {
+			for (i in evt) {
+				if (evt.hasOwnProperty(i) && (value = evt[i])) {
+					// Pass the single listener straight through to the singular method
+					if (typeof value === 'function') {
+						single.call(this, i, value);
+					}
+					else {
+						// Otherwise pass back to the multiple function
+						multiple.call(this, i, value);
+					}
+				}
+			}
+		}
+		else {
+			// So evt must be a string
+			// And listeners must be an array of listeners
+			// Loop over it and pass each one to the multiple method
+			i = listeners.length;
+			while (i--) {
+				single.call(this, evt, listeners[i]);
+			}
+		}
+
+		// Return the instance of EventEmitter to allow chaining
+		return this;
+	};
+
+	/**
+	 * Removes all listeners from a specified event.
+	 * If you do not specify an event then all listeners will be removed.
+	 * That means every event will be emptied.
+	 * You can also pass a regex to remove all events that match it.
+	 *
+	 * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.removeEvent = function (evt) {
+		var type = typeof evt,
+			events = this._getEvents(),
+			key;
+
+		// Remove different things depending on the state of evt
+		if (type === 'string') {
+			// Remove all listeners for the specified event
+			delete events[evt];
+		}
+		else if (type === 'object') {
+			// Remove all events matching the regex.
+			for (key in events) {
+				if (events.hasOwnProperty(key) && evt.test(key)) {
+					delete events[key];
+				}
+			}
+		}
+		else {
+			// Remove all listeners in all events
+			delete this._events;
+		}
+
+		// Return the instance of EventEmitter to allow chaining
+		return this;
+	};
+
+	/**
+	 * Emits an event of your choice.
+	 * When emitted, every listener attached to that event will be executed.
+	 * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
+	 * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
+	 * So they will not arrive within the array on the other side, they will be separate.
+	 * You can also pass a regular expression to emit to all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+	 * @param {Array} [args] Optional array of arguments to be passed to each listener.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.emitEvent = function (evt, args) {
+		var listeners = this.getListenersAsObject(evt),
+			i,
+			key,
+			response;
+
+		for (key in listeners) {
+			if (listeners.hasOwnProperty(key)) {
+				i = listeners[key].length;
+
+				while (i--) {
+					// If the listener returns true then it shall be removed from the event
+					// The function is executed either with a basic call or an apply if there is an args array
+					response = args ? listeners[key][i].apply(null, args) : listeners[key][i]();
+					if (response === true) {
+						this.removeListener(evt, listeners[key][i]);
+					}
+				}
+			}
+		}
+
+		// Return the instance of EventEmitter to allow chaining
+		return this;
+	};
+
+	/**
+	 * Alias of emitEvent
+	 */
+	proto.trigger = proto.emitEvent;
+
+	/**
+	 * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
+	 * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
+	 *
+	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+	 * @param {...*} Optional additional arguments to be passed to each listener.
+	 * @return {Object} Current instance of EventEmitter for chaining.
+	 */
+	proto.emit = function (evt) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		return this.emitEvent(evt, args);
+	};
+
+	// Expose the class either via AMD or the global object
+	/*if (typeof _define === 'function' && define.amd) {
+		define(function () {
+			return EventEmitter;
+		});
+	}
+	else {
+		exports.EventEmitter = EventEmitter;
+	}*/
+	exports.EventEmitter = EventEmitter;
+}(this));
+/*!
+ * getStyleProperty by kangax
+ * http://perfectionkills.com/feature-testing-css-properties/
+ */
+
+/*jshint browser: true, strict: true, undef: true */
+/*globals define: false */
+
+( function( window ) {
+
+
+
+var prefixes = 'Webkit Moz ms Ms O'.split(' ');
+var docElemStyle = document.documentElement.style;
+
+function getStyleProperty( propName ) {
+  if ( !propName ) {
+    return;
+  }
+
+  // test standard property first
+  if ( typeof docElemStyle[ propName ] === 'string' ) {
+    return propName;
+  }
+
+  // capitalize
+  propName = propName.charAt(0).toUpperCase() + propName.slice(1);
+
+  // test vendor specific properties
+  var prefixed;
+  for ( var i=0, len = prefixes.length; i < len; i++ ) {
+    prefixed = prefixes[i] + propName;
+    if ( typeof docElemStyle[ prefixed ] === 'string' ) {
+      return prefixed;
+    }
+  }
+}
+
+// transport
+/*if ( typeof _define === 'function' && define.amd ) {
+  // AMD
+  define( function() {
+    return getStyleProperty;
+  });
+} else {
+  // browser global
+  window.getStyleProperty = getStyleProperty;
+}*/
+window.getStyleProperty = getStyleProperty;
+})( window );
+
+/**
+ * getSize v1.1.2
+ * measure size of elements
+ */
+
+/*jshint browser: true, strict: true, undef: true, unused: true */
+/*global define: false */
+
+( function( window, undefined ) {
+
+
+
+// -------------------------- helpers -------------------------- //
+
+var defView = document.defaultView;
+
+var getStyle = defView && defView.getComputedStyle ?
+  function( elem ) {
+    return defView.getComputedStyle( elem, null );
+  } :
+  function( elem ) {
+    return elem.currentStyle;
+  };
+
+// get a number from a string, not a percentage
+function getStyleSize( value ) {
+  var num = parseFloat( value );
+  // not a percent like '100%', and a number
+  var isValid = value.indexOf('%') === -1 && !isNaN( num );
+  return isValid && num;
+}
+
+// -------------------------- measurements -------------------------- //
+
+var measurements = [
+  'paddingLeft',
+  'paddingRight',
+  'paddingTop',
+  'paddingBottom',
+  'marginLeft',
+  'marginRight',
+  'marginTop',
+  'marginBottom',
+  'borderLeftWidth',
+  'borderRightWidth',
+  'borderTopWidth',
+  'borderBottomWidth'
+];
+
+function getZeroSize() {
+  var size = {
+    width: 0,
+    height: 0,
+    innerWidth: 0,
+    innerHeight: 0,
+    outerWidth: 0,
+    outerHeight: 0
+  };
+  for ( var i=0, len = measurements.length; i < len; i++ ) {
+    var measurement = measurements[i];
+    size[ measurement ] = 0;
+  }
+  return size;
+}
+
+
+
+function defineGetSize( getStyleProperty ) {
+
+// -------------------------- box sizing -------------------------- //
+
+var boxSizingProp = getStyleProperty('boxSizing');
+var isBoxSizeOuter;
+
+/**
+ * WebKit measures the outer-width on style.width on border-box elems
+ * IE & Firefox measures the inner-width
+ */
+( function() {
+  if ( !boxSizingProp ) {
+    return;
+  }
+
+  var div = document.createElement('div');
+  div.style.width = '200px';
+  div.style.padding = '1px 2px 3px 4px';
+  div.style.borderStyle = 'solid';
+  div.style.borderWidth = '1px 2px 3px 4px';
+  div.style[ boxSizingProp ] = 'border-box';
+
+  var body = document.body || document.documentElement;
+  body.appendChild( div );
+  var style = getStyle( div );
+
+  isBoxSizeOuter = getStyleSize( style.width ) === 200;
+  body.removeChild( div );
+})();
+
+
+// -------------------------- getSize -------------------------- //
+
+function getSize( elem ) {
+  // do not proceed on non-objects
+  if ( typeof elem !== 'object' || !elem.nodeType ) {
+    return;
+  }
+
+  var style = getStyle( elem );
+
+  // if hidden, everything is 0
+  if ( style.display === 'none' ) {
+    return getZeroSize();
+  }
+
+  var size = {};
+  size.width = elem.offsetWidth;
+  size.height = elem.offsetHeight;
+
+  var isBorderBox = size.isBorderBox = !!( boxSizingProp &&
+    style[ boxSizingProp ] && style[ boxSizingProp ] === 'border-box' );
+
+  // get all measurements
+  for ( var i=0, len = measurements.length; i < len; i++ ) {
+    var measurement = measurements[i];
+    var value = style[ measurement ];
+    var num = parseFloat( value );
+    // any 'auto', 'medium' value will be 0
+    size[ measurement ] = !isNaN( num ) ? num : 0;
+  }
+
+  var paddingWidth = size.paddingLeft + size.paddingRight;
+  var paddingHeight = size.paddingTop + size.paddingBottom;
+  var marginWidth = size.marginLeft + size.marginRight;
+  var marginHeight = size.marginTop + size.marginBottom;
+  var borderWidth = size.borderLeftWidth + size.borderRightWidth;
+  var borderHeight = size.borderTopWidth + size.borderBottomWidth;
+
+  var isBorderBoxSizeOuter = isBorderBox && isBoxSizeOuter;
+
+  // overwrite width and height if we can get it from style
+  var styleWidth = getStyleSize( style.width );
+  if ( styleWidth !== false ) {
+    size.width = styleWidth +
+      // add padding and border unless it's already including it
+      ( isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth );
+  }
+
+  var styleHeight = getStyleSize( style.height );
+  if ( styleHeight !== false ) {
+    size.height = styleHeight +
+      // add padding and border unless it's already including it
+      ( isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight );
+  }
+
+  size.innerWidth = size.width - ( paddingWidth + borderWidth );
+  size.innerHeight = size.height - ( paddingHeight + borderHeight );
+
+  size.outerWidth = size.width + marginWidth;
+  size.outerHeight = size.height + marginHeight;
+
+  return size;
+}
+
+return getSize;
+
+}
+
+// transport
+/*if ( typeof _define === 'function' && define.amd ) {
+  // AMD
+  //define( [ 'get-style-property' ], defineGetSize );
+} else {
+  // browser global
+  window.getSize = defineGetSize( window.getStyleProperty );
+}*/
+window.getSize = defineGetSize( window.getStyleProperty );
+})( window );
+
+/**
+ * Bridget makes jQuery widgets
+ * v1.0.0
+ */
+
+( function( window ) {
+
+
+
+// -------------------------- utils -------------------------- //
+
+var slice = Array.prototype.slice;
+
+function noop() {}
+
+// -------------------------- definition -------------------------- //
+
+function defineBridget( $ ) {
+
+// bail if no jQuery
+if ( !$ ) {
+  return;
+}
+
+// -------------------------- addOptionMethod -------------------------- //
+
+/**
+ * adds option method -> $().plugin('option', {...})
+ * @param {Function} PluginClass - constructor class
+ */
+function addOptionMethod( PluginClass ) {
+  // don't overwrite original option method
+  if ( PluginClass.prototype.option ) {
+    return;
+  }
+
+  // option setter
+  PluginClass.prototype.option = function( opts ) {
+    // bail out if not an object
+    if ( !$.isPlainObject( opts ) ){
+      return;
+    }
+    this.options = $.extend( true, this.options, opts );
+  };
+}
+
+
+// -------------------------- plugin bridge -------------------------- //
+
+// helper function for logging errors
+// $.error breaks jQuery chaining
+var logError = typeof console === 'undefined' ? noop :
+  function( message ) {
+    console.error( message );
+  };
+
+/**
+ * jQuery plugin bridge, access methods like $elem.plugin('method')
+ * @param {String} namespace - plugin name
+ * @param {Function} PluginClass - constructor class
+ */
+function bridge( namespace, PluginClass ) {
+  // add to jQuery fn namespace
+  $.fn[ namespace ] = function( options ) {
+    if ( typeof options === 'string' ) {
+      // call plugin method when first argument is a string
+      // get arguments for method
+      var args = slice.call( arguments, 1 );
+
+      for ( var i=0, len = this.length; i < len; i++ ) {
+        var elem = this[i];
+        var instance = $.data( elem, namespace );
+        if ( !instance ) {
+          logError( "cannot call methods on " + namespace + " prior to initialization; " +
+            "attempted to call '" + options + "'" );
+          continue;
+        }
+        if ( !$.isFunction( instance[options] ) || options.charAt(0) === '_' ) {
+          logError( "no such method '" + options + "' for " + namespace + " instance" );
+          continue;
+        }
+
+        // trigger method with arguments
+        var returnValue = instance[ options ].apply( instance, args );
+
+        // break look and return first value if provided
+        if ( returnValue !== undefined ) {
+          return returnValue;
+        }
+      }
+      // return this if no return value
+      return this;
+    } else {
+      return this.each( function() {
+        var instance = $.data( this, namespace );
+        if ( instance ) {
+          // apply options & init
+          instance.option( options );
+          instance._init();
+        } else {
+          // initialize new instance
+          instance = new PluginClass( this, options );
+          $.data( this, namespace, instance );
+        }
+      });
+    }
+  };
+
+}
+
+// -------------------------- bridget -------------------------- //
+
+/**
+ * converts a Prototypical class into a proper jQuery plugin
+ *   the class must have a ._init method
+ * @param {String} namespace - plugin name, used in $().pluginName
+ * @param {Function} PluginClass - constructor class
+ */
+$.bridget = function( namespace, PluginClass ) {
+  addOptionMethod( PluginClass );
+  bridge( namespace, PluginClass );
+};
+
+}
+
+// transport
+/*if ( typeof _define === 'function' && define.amd ) {
+  // AMD
+  //define( [ 'jquery' ], defineBridget );
+} else {
+  // get jquery from browser global
+  defineBridget( window.jQuery );
+}*/
+defineBridget( window.jQuery );
+})( window );
+
+/**
+ * matchesSelector helper v1.0.1
+ *
+ * @name matchesSelector
+ *   @param {Element} elem
+ *   @param {String} selector
+ */
+
+/*jshint browser: true, strict: true, undef: true, unused: true */
+/*global define: false */
+
+( function( global, ElemProto ) {
+
+  
+
+  var matchesMethod = ( function() {
+    // check un-prefixed
+    if ( ElemProto.matchesSelector ) {
+      return 'matchesSelector';
+    }
+    // check vendor prefixes
+    var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
+
+    for ( var i=0, len = prefixes.length; i < len; i++ ) {
+      var prefix = prefixes[i];
+      var method = prefix + 'MatchesSelector';
+      if ( ElemProto[ method ] ) {
+        return method;
+      }
+    }
+  })();
+
+  // ----- match ----- //
+
+  function match( elem, selector ) {
+    return elem[ matchesMethod ]( selector );
+  }
+
+  // ----- appendToFragment ----- //
+
+  function checkParent( elem ) {
+    // not needed if already has parent
+    if ( elem.parentNode ) {
+      return;
+    }
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild( elem );
+  }
+
+  // ----- query ----- //
+
+  // fall back to using QSA
+  // thx @jonathantneal https://gist.github.com/3062955
+  function query( elem, selector ) {
+    // append to fragment if no parent
+    checkParent( elem );
+
+    // match elem with all selected elems of parent
+    var elems = elem.parentNode.querySelectorAll( selector );
+    for ( var i=0, len = elems.length; i < len; i++ ) {
+      // return true if match
+      if ( elems[i] === elem ) {
+        return true;
+      }
+    }
+    // otherwise return false
+    return false;
+  }
+
+  // ----- matchChild ----- //
+
+  function matchChild( elem, selector ) {
+    checkParent( elem );
+    return match( elem, selector );
+  }
+
+  // ----- matchesSelector ----- //
+
+  var matchesSelector;
+
+  if ( matchesMethod ) {
+    // IE9 supports matchesSelector, but doesn't work on orphaned elems
+    // check for that
+    var div = document.createElement('div');
+    var supportsOrphans = match( div, 'div' );
+    matchesSelector = supportsOrphans ? match : matchChild;
+  } else {
+    matchesSelector = query;
+  }
+
+  // transport
+  /*if ( typeof _define === 'function' && define.amd ) {
+    // AMD
+    define( function() {
+      return matchesSelector;
+    });
+  } else {
+    // browser global
+    window.matchesSelector = matchesSelector;
+  }*/
+ window.matchesSelector = matchesSelector;
+})( this, Element.prototype );
+
+/**
+ * Rect
+ * low-level utility class for basic geometry
+ */
+
+( function( window ) {
+
+
+
+// -------------------------- Packery -------------------------- //
+
+// global namespace
+var Packery = window.Packery = function() {};
+
+// -------------------------- Rect -------------------------- //
+
+function Rect( props ) {
+  // extend properties from defaults
+  for ( var prop in Rect.defaults ) {
+    this[ prop ] = Rect.defaults[ prop ];
+  }
+
+  for ( prop in props ) {
+    this[ prop ] = props[ prop ];
+  }
+
+}
+
+// make available
+Packery.Rect = Rect;
+
+Rect.defaults = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0
+};
+
+/**
+ * Determines whether or not this rectangle wholly encloses another rectangle or point.
+ * @param {Rect} rect
+ * @returns {Boolean}
+**/
+Rect.prototype.contains = function( rect ) {
+  // points don't have width or height
+  var otherWidth = rect.width || 0;
+  var otherHeight = rect.height || 0;
+  return this.x <= rect.x &&
+    this.y <= rect.y &&
+    this.x + this.width >= rect.x + otherWidth &&
+    this.y + this.height >= rect.y + otherHeight;
+};
+
+/**
+ * Determines whether or not the rectangle intersects with another.
+ * @param {Rect} rect
+ * @returns {Boolean}
+**/
+Rect.prototype.overlaps = function( rect ) {
+  var thisRight = this.x + this.width;
+  var thisBottom = this.y + this.height;
+  var rectRight = rect.x + rect.width;
+  var rectBottom = rect.y + rect.height;
+
+  // http://stackoverflow.com/a/306332
+  return this.x < rectRight &&
+    thisRight > rect.x &&
+    this.y < rectBottom &&
+    thisBottom > rect.y;
+};
+
+/**
+ * @param {Rect} rect - the overlapping rect
+ * @returns {Array} freeRects - rects representing the area around the rect
+**/
+Rect.prototype.getMaximalFreeRects = function( rect ) {
+
+  // if no intersection, return false
+  if ( !this.overlaps( rect ) ) {
+    return false;
+  }
+
+  var freeRects = [];
+  var freeRect;
+
+  var thisRight = this.x + this.width;
+  var thisBottom = this.y + this.height;
+  var rectRight = rect.x + rect.width;
+  var rectBottom = rect.y + rect.height;
+
+  // top
+  if ( this.y < rect.y ) {
+    freeRect = new Rect({
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: rect.y - this.y
+    });
+    freeRects.push( freeRect );
+  }
+
+  // right
+  if ( thisRight > rectRight ) {
+    freeRect = new Rect({
+      x: rectRight,
+      y: this.y,
+      width: thisRight - rectRight,
+      height: this.height
+    });
+    freeRects.push( freeRect );
+  }
+
+  // bottom
+  if ( thisBottom > rectBottom ) {
+    freeRect = new Rect({
+      x: this.x,
+      y: rectBottom,
+      width: this.width,
+      height: thisBottom - rectBottom
+    });
+    freeRects.push( freeRect );
+  }
+
+  // left
+  if ( this.x < rect.x ) {
+    freeRect = new Rect({
+      x: this.x,
+      y: this.y,
+      width: rect.x - this.x,
+      height: this.height
+    });
+    freeRects.push( freeRect );
+  }
+
+  return freeRects;
+};
+
+Rect.prototype.canFit = function( rect ) {
+  return this.width >= rect.width && this.height >= rect.height;
+};
+
+
+
+})( window );
+
+( function( window ) {
+
+
+
+var Packery = window.Packery;
+var Rect = Packery.Rect;
+
+
+// -------------------------- Packer -------------------------- //
+
+function Packer( width, height ) {
+  this.width = width || 0;
+  this.height = height || 0;
+
+  this.reset();
+}
+
+Packer.prototype.reset = function() {
+  this.spaces = [];
+  this.newSpaces = [];
+
+  var initialSpace = new Rect({
+    x: 0,
+    y: 0,
+    width: this.width,
+    height: this.height
+  });
+
+  this.spaces.push( initialSpace );
+};
+
+// change x and y of rect to fit with in Packer's available spaces
+Packer.prototype.pack = function( rect ) {
+  for ( var i=0, len = this.spaces.length; i < len; i++ ) {
+    var space = this.spaces[i];
+    if ( space.canFit( rect ) ) {
+      this.placeInSpace( rect, space );
+      break;
+    }
+  }
+};
+
+Packer.prototype.placeInSpace = function( rect, space ) {
+  // place rect in space
+  rect.x = space.x;
+  rect.y = space.y;
+
+  this.placed( rect );
+};
+
+// update spaces with placed rect
+Packer.prototype.placed = function( rect ) {
+  // update spaces
+  var revisedSpaces = [];
+  for ( var i=0, len = this.spaces.length; i < len; i++ ) {
+    var space = this.spaces[i];
+    var newSpaces = space.getMaximalFreeRects( rect );
+    // add either the original space or the new spaces to the revised spaces
+    if ( newSpaces ) {
+      revisedSpaces.push.apply( revisedSpaces, newSpaces );
+    } else {
+      revisedSpaces.push( space );
+    }
+  }
+
+  this.spaces = revisedSpaces;
+
+  // remove redundant spaces
+  Packer.mergeRects( this.spaces );
+
+  this.spaces.sort( Packer.spaceSorterTopLeft );
+};
+
+// -------------------------- utility functions -------------------------- //
+
+/**
+ * Remove redundant rectangle from array of rectangles
+ * @param {Array} rects: an array of Rects
+ * @returns {Array} rects: an array of Rects
+**/
+Packer.mergeRects = function( rects ) {
+  for ( var i=0, len = rects.length; i < len; i++ ) {
+    var rect = rects[i];
+    // skip over this rect if it was already removed
+    if ( !rect ) {
+      continue;
+    }
+    // clone rects we're testing, remove this rect
+    var compareRects = rects.slice(0);
+    // do not compare with self
+    compareRects.splice( i, 1 );
+    // compare this rect with others
+    var removedCount = 0;
+    for ( var j=0, jLen = compareRects.length; j < jLen; j++ ) {
+      var compareRect = compareRects[j];
+      // if this rect contains another,
+      // remove that rect from test collection
+      var indexAdjust = i > j ? 0 : 1;
+      if ( rect.contains( compareRect ) ) {
+        // console.log( 'current test rects:' + testRects.length, testRects );
+        // console.log( i, j, indexAdjust, rect, compareRect );
+        rects.splice( j + indexAdjust - removedCount, 1 );
+        removedCount++;
+      }
+    }
+  }
+
+  return rects;
+};
+
+// top down, then left to right
+Packer.spaceSorterTopLeft = function( a, b ) {
+  return a.y - b.y || a.x - b.x;
+};
+
+// left to right, then top down
+Packer.spaceSorterLeftTop = function( a, b ) {
+  return a.x - b.x || a.y - b.y;
+};
+
+// -----  ----- //
+
+Packery.Packer = Packer;
+
+})( window );
+
+/**
+ * Packery Item Element
+**/
+
+( function( window ) {
+
+
+
+// dependencies
+var Packery = window.Packery;
+var Rect = Packery.Rect;
+var getSize = window.getSize;
+var getStyleProperty = window.getStyleProperty;
+var EventEmitter = window.EventEmitter;
+
+// ----- get style ----- //
+
+var defView = document.defaultView;
+
+var getStyle = defView && defView.getComputedStyle ?
+  function( elem ) {
+    return defView.getComputedStyle( elem, null );
+  } :
+  function( elem ) {
+    return elem.currentStyle;
+  };
+
+
+// extend objects
+function extend( a, b ) {
+  for ( var prop in b ) {
+    a[ prop ] = b[ prop ];
+  }
+  return a;
+}
+
+// -------------------------- CSS3 support -------------------------- //
+
+var transitionProperty = getStyleProperty('transition');
+var transformProperty = getStyleProperty('transform');
+var supportsCSS3 = transitionProperty && transformProperty;
+var is3d = !!getStyleProperty('perspective');
+
+var transitionEndEvent = {
+  WebkitTransition: 'webkitTransitionEnd',
+  MozTransition: 'transitionend',
+  OTransition: 'otransitionend',
+  transition: 'transitionend'
+}[ transitionProperty ];
+
+var transformCSSProperty = {
+  WebkitTransform: '-webkit-transform',
+  MozTransform: '-moz-transform',
+  OTransform: '-o-transform',
+  transform: 'transform'
+}[ transformProperty ];
+
+// -------------------------- Item -------------------------- //
+
+function Item( element, packery ) {
+  this.element = element;
+  this.packery = packery;
+  this.position = {
+    x: 0,
+    y: 0
+  };
+
+  this.rect = new Rect();
+  // rect used for placing, in drag or Packery.fit()
+  this.placeRect = new Rect();
+
+  // style initial style
+  this.element.style.position = 'absolute';
+}
+
+// inherit EventEmitter
+extend( Item.prototype, EventEmitter.prototype );
+
+// trigger specified handler for event type
+Item.prototype.handleEvent = function( event ) {
+  var method = 'on' + event.type;
+  if ( this[ method ] ) {
+    this[ method ]( event );
+  }
+};
+
+Item.prototype.getSize = function() {
+  this.size = getSize( this.element );
+};
+
+/**
+ * apply CSS styles to element
+ * @param {Object} style
+ */
+Item.prototype.css = function( style ) {
+  var elemStyle = this.element.style;
+  for ( var prop in style ) {
+    elemStyle[ prop ] = style[ prop ];
+  }
+};
+
+ // measure position, and sets it
+Item.prototype.getPosition = function() {
+  var style = getStyle( this.element );
+
+  var x = parseInt( style.left, 10 );
+  var y = parseInt( style.top, 10 );
+
+  // clean up 'auto' or other non-integer values
+  x = isNaN( x ) ? 0 : x;
+  y = isNaN( y ) ? 0 : y;
+  // remove padding from measurement
+  var packerySize = this.packery.elementSize;
+  x -= packerySize.paddingLeft;
+  y -= packerySize.paddingTop;
+
+  this.position.x = x;
+  this.position.y = y;
+};
+
+// transform translate function
+var translate = is3d ?
+  function( x, y ) {
+    return 'translate3d( ' + x + 'px, ' + y + 'px, 0)';
+  } :
+  function( x, y ) {
+    return 'translate( ' + x + 'px, ' + y + 'px)';
+  };
+
+
+Item.prototype._transitionTo = function( x, y ) {
+  this.getPosition();
+  // get current x & y from top/left
+  var curX = this.position.x;
+  var curY = this.position.y;
+
+  var compareX = parseInt( x, 10 );
+  var compareY = parseInt( y, 10 );
+  var didNotMove = compareX === this.position.x && compareY === this.position.y;
+
+  // save end position
+  this.setPosition( x, y );
+
+  // if did not move and not transitioning, just go to layout
+  if ( didNotMove && !this.isTransitioning ) {
+    this.layoutPosition();
+    return;
+  }
+
+  var transX = x - curX;
+  var transY = y - curY;
+  var transitionStyle = {};
+  transitionStyle[ transformCSSProperty ] = translate( transX, transY );
+
+  this.transition( transitionStyle, this.layoutPosition );
+};
+
+// non transition + transform support
+Item.prototype.goTo = function( x, y ) {
+  this.setPosition( x, y );
+  this.layoutPosition();
+};
+
+// use transition and transforms if supported
+Item.prototype.moveTo = supportsCSS3 ?
+  Item.prototype._transitionTo : Item.prototype.goTo;
+
+Item.prototype.setPosition = function( x, y ) {
+  this.position.x = parseInt( x, 10 );
+  this.position.y = parseInt( y, 10 );
+};
+
+Item.prototype.layoutPosition = function() {
+  var packerySize = this.packery.elementSize;
+  this.css({
+    // set settled position, apply padding
+    left: ( this.position.x + packerySize.paddingLeft ) + 'px',
+    top : ( this.position.y + packerySize.paddingTop ) + 'px'
+  });
+  this.emitEvent( 'layout', [ this ] );
+};
+
+/**
+ * @param {Object} style - CSS
+ * @param {Function} onTransitionEnd
+ */
+
+// non transition, just trigger callback
+Item.prototype._nonTransition = function( style, onTransitionEnd ) {
+  this.css( style );
+  if ( onTransitionEnd ) {
+    onTransitionEnd.call( this );
+  }
+};
+
+// proper transition
+Item.prototype._transition = function( style, onTransitionEnd ) {
+  this.transitionStyle = style;
+
+  var transitionValue = [];
+  for ( var prop in style ) {
+    transitionValue.push( prop );
+  }
+
+  // enable transition
+  var transitionStyle = {};
+  transitionStyle[ transitionProperty + 'Property' ] = transitionValue.join(',');
+  transitionStyle[ transitionProperty + 'Duration' ] = this.packery.options.transitionDuration;
+
+  this.element.addEventListener( transitionEndEvent, this, false );
+
+  // bind callback to transition end
+  if ( onTransitionEnd ) {
+    this.on( 'transitionEnd', function( _this ) {
+      onTransitionEnd.call( _this );
+      return true; // bind once
+    });
+  }
+
+  // set transition styles
+  this.css( transitionStyle );
+  // set styles that are transitioning
+  this.css( style );
+
+  this.isTransitioning = true;
+};
+
+Item.prototype.transition = Item.prototype[ transitionProperty ? '_transition' : '_nonTransition' ];
+
+Item.prototype.onwebkitTransitionEnd = function( event ) {
+  this.ontransitionend( event );
+};
+
+Item.prototype.onotransitionend = function( event ) {
+  this.ontransitionend( event );
+};
+
+Item.prototype.ontransitionend = function( event ) {
+  // console.log('transition end');
+  // disregard bubbled events from children
+  if ( event.target !== this.element ) {
+    return;
+  }
+
+  // trigger callback
+  if ( this.onTransitionEnd ) {
+    this.onTransitionEnd();
+    delete this.onTransitionEnd;
+  }
+
+  this.removeTransitionStyles();
+  // clean up transition styles
+  var cleanStyle = {};
+  for ( var prop in this.transitionStyle ) {
+    cleanStyle[ prop ] = '';
+  }
+
+  this.css( cleanStyle );
+
+  this.element.removeEventListener( transitionEndEvent, this, false );
+
+  delete this.transitionStyle;
+
+  this.isTransitioning = false;
+
+  this.emitEvent( 'transitionEnd', [ this ] );
+};
+
+Item.prototype.removeTransitionStyles = function() {
+  var noTransStyle = {};
+  // remove transition
+  noTransStyle[ transitionProperty + 'Property' ] = '';
+  noTransStyle[ transitionProperty + 'Duration' ] = '';
+  this.css( noTransStyle );
+};
+
+Item.prototype.remove = function() {
+  // start transition
+  var hiddenStyle = {
+    opacity: 0
+  };
+  hiddenStyle[ transformCSSProperty ] = 'scale(0.001)';
+
+  this.transition( hiddenStyle, this.removeElem );
+};
+
+
+// remove element from DOM
+Item.prototype.removeElem = function() {
+  this.element.parentNode.removeChild( this.element );
+  this.emitEvent( 'remove', [ this ] );
+};
+
+Item.prototype.reveal = !transitionProperty ? function() {} : function() {
+  // hide item
+  var hiddenStyle = {
+    opacity: 0
+  };
+  hiddenStyle[ transformCSSProperty ] = 'scale(0.001)';
+  this.css( hiddenStyle );
+  // force redraw. http://blog.alexmaccaw.com/css-transitions
+  var h = this.element.offsetHeight;
+  // transition to revealed
+  var visibleStyle = {
+    opacity: 1
+  };
+  visibleStyle[ transformCSSProperty ] = 'scale(1)';
+  this.transition( visibleStyle );
+  // hack for JSHint to hush about unused var
+  h = null;
+};
+
+Item.prototype.destroy = function() {
+  this.css({
+    position: '',
+    left: '',
+    top: ''
+  });
+};
+
+// -------------------------- drag -------------------------- //
+
+Item.prototype.dragStart = function() {
+  this.getPosition();
+  this.removeTransitionStyles();
+  // remove transform property from transition
+  if ( this.isTransitioning && transformProperty ) {
+    this.element.style[ transformProperty ] = 'none';
+  }
+  this.getSize();
+  // create place rect, used for position when dragged then dropped
+  // or when positioning
+  this.isPlacing = true;
+  this.needsPositioning = false;
+  this.positionPlaceRect( this.position.x, this.position.y );
+  this.isTransitioning = false;
+  this.didDrag = false;
+};
+
+/**
+ * handle item when it is dragged
+ * @param {Number} x - horizontal position of dragged item
+ * @param {Number} y - vertical position of dragged item
+ */
+Item.prototype.dragMove = function( x, y ) {
+  this.didDrag = true;
+  var packerySize = this.packery.elementSize;
+  x -= packerySize.paddingLeft;
+  y -= packerySize.paddingTop;
+  this.positionPlaceRect( x, y );
+};
+
+Item.prototype.dragStop = function() {
+  this.getPosition();
+  var isDiffX = this.position.x !== this.placeRect.x;
+  var isDiffY = this.position.y !== this.placeRect.y;
+  // set post-drag positioning flag
+  this.needsPositioning = isDiffX || isDiffY;
+  // reset flag
+  this.didDrag = false;
+};
+
+// -------------------------- placing -------------------------- //
+
+/**
+ * position a rect that will occupy space in the packer
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Boolean} isMaxYContained
+ */
+Item.prototype.positionPlaceRect = function( x, y, isMaxYOpen ) {
+  this.placeRect.x = this.getPlaceRectCoord( x, true );
+  this.placeRect.y = this.getPlaceRectCoord( y, false, isMaxYOpen );
+};
+
+/**
+ * get x/y coordinate for place rect
+ * @param {Number} coord - x or y
+ * @param {Boolean} isX
+ * @param {Boolean} isMaxOpen - does not limit value to outer bound
+ * @returns {Number} coord - processed x or y
+ */
+Item.prototype.getPlaceRectCoord = function( coord, isX, isMaxOpen ) {
+  var measure = isX ? 'Width' : 'Height';
+  var size = this.size[ 'outer' + measure ];
+  var segment = this.packery[ isX ? 'columnWidth' : 'rowHeight' ];
+  var parentSize = this.packery.elementSize[ 'inner' + measure ];
+
+  // additional parentSize calculations for Y
+  if ( !isX ) {
+    parentSize = Math.max( parentSize, this.packery.maxY );
+    // prevent gutter from bumping up height when non-vertical grid
+    if ( !this.packery.rowHeight ) {
+      parentSize -= this.packery.gutter;
+    }
+  }
+
+  var max;
+
+  if ( segment ) {
+    segment += this.packery.gutter;
+    // allow for last column to reach the edge
+    parentSize += isX ? this.packery.gutter : 0;
+    // snap to closest segment
+    coord = Math.round( coord / segment );
+    // contain to outer bound
+    // x values must be contained, y values can grow box by 1
+    var maxSegments = Math[ isX ? 'floor' : 'ceil' ]( parentSize / segment );
+    maxSegments -= Math.ceil( size / segment );
+    max = maxSegments;
+  } else {
+    max = parentSize - size;
+  }
+
+  coord = isMaxOpen ? coord : Math.min( coord, max );
+  coord *= segment || 1;
+
+  return Math.max( 0, coord );
+};
+
+Item.prototype.copyPlaceRectPosition = function() {
+  this.rect.x = this.placeRect.x;
+  this.rect.y = this.placeRect.y;
+};
+
+// --------------------------  -------------------------- //
+
+// publicize
+Packery.Item = Item;
+
+})( window );
+
+
+/*!
+ * Packery v1.0.6
+ * bin-packing layout library
+ * http://packery.metafizzy.co
+ *
+ * Commercial use requires one-time purchase of a commercial license
+ * http://packery.metafizzy.co/license.html
+ *
+ * Non-commercial use is licensed under the MIT License
+ *
+ * Copyright 2013 Metafizzy
+ */
+
+( function( window ) {
+
+
+
+// Packery classes
+var _Packery = window.Packery;
+var Rect = _Packery.Rect;
+var Packer = _Packery.Packer;
+var Item = _Packery.Item;
+
+// dependencies
+var classie = window.classie;
+var docReady = window.docReady;
+var EventEmitter = window.EventEmitter;
+var eventie = window.eventie;
+var getSize = window.getSize;
+var matchesSelector = window.matchesSelector;
+
+// ----- vars ----- //
+
+var document = window.document;
+var console = window.console;
+var jQuery = window.jQuery;
+
+// -------------------------- helpers -------------------------- //
+
+// extend objects
+function extend( a, b ) {
+  for ( var prop in b ) {
+    a[ prop ] = b[ prop ];
+  }
+  return a;
+}
+
+// turn element or nodeList into an array
+function makeArray( obj ) {
+  var ary = [];
+  if ( typeof obj.length === 'number' ) {
+    // convert nodeList to array
+    for ( var i=0, len = obj.length; i < len; i++ ) {
+      ary.push( obj[i] );
+    }
+  } else {
+    // array of single index
+    ary.push( obj );
+  }
+  return ary;
+}
+
+// http://stackoverflow.com/a/384380/182183
+var isElement = ( typeof HTMLElement === 'object' ) ?
+  function isElementDOM2( obj ) {
+    return obj instanceof HTMLElement;
+  } :
+  function isElementQuirky( obj ) {
+    return obj && typeof obj === 'object' &&
+      obj.nodeType === 1 && typeof obj.nodeName === 'string';
+  };
+
+// index of helper cause IE8
+var indexOf = Array.prototype.indexOf ? function( ary, obj ) {
+    return ary.indexOf( obj );
+  } : function( ary, obj ) {
+    for ( var i=0, len = ary.length; i < len; i++ ) {
+      if ( ary[i] === obj ) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+
+// -------------------------- Packery -------------------------- //
+
+// globally unique identifiers
+var GUID = 0;
+// internal store of all Packery intances
+var packeries = {};
+
+function Packery( element, options ) {
+  // bail out if not proper element
+  if ( !element || !isElement( element ) ) {
+    if ( console ) {
+      console.error( 'bad Packery element: ' + element );
+    }
+    return;
+  }
+
+  this.element = element;
+
+  // options
+  this.options = extend( {}, this.options );
+  extend( this.options, options );
+
+  // add id for Packery.getFromElement
+  var id = ++GUID;
+  this.element.packeryGUID = id; // expando
+  packeries[ id ] = this; // associate via id
+
+  // kick it off
+  this._create();
+
+  if ( this.options.isInitLayout ) {
+    this.layout();
+  }
+}
+
+// inherit EventEmitter
+extend( Packery.prototype, EventEmitter.prototype );
+
+// default options
+Packery.prototype.options = {
+  containerStyle: {
+    position: 'relative'
+  },
+  isInitLayout: true,
+  isResizeBound: true,
+  transitionDuration: '0.4s'
+};
+
+Packery.prototype._create = function() {
+  // initial properties
+  this.packer = new Packer();
+  // get items from children
+  this.reloadItems();
+  // collection of element that don't get laid out
+  this.stampedElements = [];
+  this.stamp( this.options.stamped );
+
+  var containerStyle = this.options.containerStyle;
+  extend( this.element.style, containerStyle );
+
+  // bind resize method
+  if ( this.options.isResizeBound ) {
+    this.bindResize();
+  }
+
+  // create drag handlers
+  var _this = this;
+  this.handleDraggabilly = {
+    dragStart: function( draggie ) {
+      _this.itemDragStart( draggie.element );
+    },
+    dragMove: function( draggie ) {
+      _this.itemDragMove( draggie.element, draggie.position.x, draggie.position.y );
+    },
+    dragEnd: function( draggie ) {
+      _this.itemDragEnd( draggie.element );
+    }
+  };
+
+  this.handleUIDraggable = {
+    start: function handleUIDraggableStart( event ) {
+      _this.itemDragStart( event.currentTarget );
+    },
+    drag: function handleUIDraggableDrag( event, ui ) {
+      _this.itemDragMove( event.currentTarget, ui.position.left, ui.position.top );
+    },
+    stop: function handleUIDraggableStop( event ) {
+      _this.itemDragEnd( event.currentTarget );
+    }
+  };
+
+};
+
+// goes through all children again and gets bricks in proper order
+Packery.prototype.reloadItems = function() {
+  // collection of item elements
+  this.items = this._getItems( this.element.children );
+};
+
+
+/**
+ * get item elements to be used in layout
+ * @param {Array or NodeList or HTMLElement} elems
+ * @returns {Array} items - collection of new Packery Items
+ */
+Packery.prototype._getItems = function( elems ) {
+
+  var itemElems = this._filterFindItemElements( elems );
+
+  // create new Packery Items for collection
+  var items = [];
+  for ( var i=0, len = itemElems.length; i < len; i++ ) {
+    var elem = itemElems[i];
+    var item = new Item( elem, this );
+    items.push( item );
+  }
+
+  return items;
+};
+
+/**
+ * get item elements to be used in layout
+ * @param {Array or NodeList or HTMLElement} elems
+ * @returns {Array} items - item elements
+ */
+Packery.prototype._filterFindItemElements = function( elems ) {
+  // make array of elems
+  elems = makeArray( elems );
+  var itemSelector = this.options.itemSelector;
+
+  if ( !itemSelector ) {
+    return elems;
+  }
+
+  var itemElems = [];
+
+  // filter & find items if we have an item selector
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    // filter siblings
+    if ( matchesSelector( elem, itemSelector ) ) {
+      itemElems.push( elem );
+    }
+    // find children
+    var childElems = elem.querySelectorAll( itemSelector );
+    // concat childElems to filterFound array
+    for ( var j=0, jLen = childElems.length; j < jLen; j++ ) {
+      itemElems.push( childElems[j] );
+    }
+  }
+
+  return itemElems;
+};
+
+/**
+ * getter method for getting item elements
+ * @returns {Array} elems - collection of item elements
+ */
+Packery.prototype.getItemElements = function() {
+  var elems = [];
+  for ( var i=0, len = this.items.length; i < len; i++ ) {
+    elems.push( this.items[i].element );
+  }
+  return elems;
+};
+
+// ----- init & layout ----- //
+
+/**
+ * lays out all items
+ */
+Packery.prototype.layout = function() {
+  this._prelayout();
+
+  // don't animate first layout
+  var isInstant = this.options.isLayoutInstant !== undefined ?
+    this.options.isLayoutInstant : !this._isLayoutInited;
+  this.layoutItems( this.items, isInstant );
+
+  // flag for initalized
+  this._isLayoutInited = true;
+};
+
+// _init is alias for layout
+Packery.prototype._init = Packery.prototype.layout;
+
+/**
+ * logic before any new layout
+ */
+Packery.prototype._prelayout = function() {
+  // reset packer
+  this.elementSize = getSize( this.element );
+
+  this._getMeasurements();
+
+  this.packer.width = this.elementSize.innerWidth + this.gutter;
+  this.packer.height = Number.POSITIVE_INFINITY;
+  this.packer.reset();
+
+  // layout
+  this.maxY = 0;
+  this.placeStampedElements();
+};
+
+/**
+ * update columnWidth, rowHeight, & gutter
+ * @private
+ */
+Packery.prototype._getMeasurements = function() {
+  this._getMeasurement( 'columnWidth', 'width' );
+  this._getMeasurement( 'rowHeight', 'height' );
+  this._getMeasurement( 'gutter', 'width' );
+};
+
+/**
+ * get measurement from option, for columnWidth, rowHeight, gutter
+ * if option is String -> get element from selector string, & get size of element
+ * if option is Element -> get size of element
+ * else use option as a number
+ *
+ * @param {String} measurement
+ * @param {String} size - width or height
+ * @private
+ */
+Packery.prototype._getMeasurement = function( measurement, size ) {
+  var option = this.options[ measurement ];
+  var elem;
+  if ( !option ) {
+    // default to 0
+    this[ measurement ] = 0;
+  } else {
+    if ( typeof option === 'string' ) {
+      elem = this.element.querySelector( option );
+    } else if ( isElement( option ) ) {
+      elem = option;
+    }
+    // use size of element, if element
+    this[ measurement ] = elem ? getSize( elem )[ size ] : option;
+  }
+};
+
+/**
+ * layout a collection of item elements
+ * @param {Array} items - array of Packery.Items
+ * @param {Boolean} isInstant - disable transitions for setting item position
+ */
+Packery.prototype.layoutItems = function( items, isInstant ) {
+  // console.log('layout Items');
+  var layoutItems = this._getLayoutItems( items );
+
+  if ( !layoutItems || !layoutItems.length ) {
+    // no items, just emit layout complete with empty array
+    this.emitEvent( 'layoutComplete', [ this, [] ] );
+  } else {
+    this._itemsOn( layoutItems, 'layout', function onItemsLayout() {
+      this.emitEvent( 'layoutComplete', [ this, layoutItems ] );
+    });
+
+    for ( var i=0, len = layoutItems.length; i < len; i++ ) {
+      var item = layoutItems[i];
+      // listen to layout events for callback
+      this._packItem( item );
+      this._layoutItem( item, isInstant );
+    }
+  }
+
+  // set container size
+  var elemSize = this.elementSize;
+  var elemH = this.maxY - this.gutter;
+  // add padding and border width if border box
+  if ( elemSize.isBorderBox ) {
+    elemH += elemSize.paddingBottom + elemSize.paddingTop +
+      elemSize.borderTopWidth + elemSize.borderBottomWidth;
+  }
+  // prevent negative size, which causes error in IE
+  elemH = Math.max( elemH, 0 );
+  this.element.style.height = elemH + 'px';
+};
+
+/**
+ * filters items for non-ignored items
+ * @param {Array} items
+ * @returns {Array} layoutItems
+ */
+Packery.prototype._getLayoutItems = function( items ) {
+  var layoutItems = [];
+  for ( var i=0, len = items.length; i < len; i++ ) {
+    var item = items[i];
+    if ( !item.isIgnored ) {
+      layoutItems.push( item );
+    }
+  }
+  return layoutItems;
+};
+
+/**
+ * layout item in packer
+ * @param {Packery.Item} item
+ */
+Packery.prototype._packItem = function( item ) {
+  this._setRectSize( item.element, item.rect );
+  // pack the rect in the packer
+  this.packer.pack( item.rect );
+  this._setMaxY( item.rect );
+};
+
+/**
+ * set max Y value, for height of container
+ * @param {Packery.Rect} rect
+ * @private
+ */
+Packery.prototype._setMaxY = function( rect ) {
+  this.maxY = Math.max( rect.y + rect.height, this.maxY );
+};
+
+/**
+ * set the width and height of a rect, applying columnWidth and rowHeight
+ * @param {Element} elem
+ * @param {Packery.Rect} rect
+ */
+Packery.prototype._setRectSize = function( elem, rect ) {
+  var size = getSize( elem );
+  var w = size.outerWidth;
+  var h = size.outerHeight;
+  // size for columnWidth and rowHeight, if available
+  var colW = this.columnWidth + this.gutter;
+  var rowH = this.rowHeight + this.gutter;
+  w = this.columnWidth ? Math.ceil( w / colW ) * colW : w + this.gutter;
+  h = this.rowHeight ? Math.ceil( h / rowH ) * rowH : h + this.gutter;
+  // rect must fit in packer
+  rect.width = Math.min( w, this.packer.width );
+  rect.height = h;
+};
+
+/**
+ * Sets position of item in DOM
+ * @param {Packery.Item} item
+ * @param {Boolean} isInstant - disables transitions
+ */
+Packery.prototype._layoutItem = function( item, isInstant ) {
+
+  // copy over position of packed rect to item element
+  var rect = item.rect;
+  if ( isInstant ) {
+    // if not transition, just set CSS
+    item.goTo( rect.x, rect.y );
+  } else {
+    item.moveTo( rect.x, rect.y );
+  }
+
+};
+
+/**
+ * trigger a callback for a collection of items events
+ * @param {Array} items - Packery.Items
+ * @param {String} eventName
+ * @param {Function} callback
+ */
+Packery.prototype._itemsOn = function( items, eventName, callback ) {
+  var doneCount = 0;
+  var count = items.length;
+  // event callback
+  var _this = this;
+  function tick() {
+    doneCount++;
+    if ( doneCount === count ) {
+      callback.call( _this );
+    }
+    return true; // bind once
+  }
+  // bind callback
+  for ( var i=0, len = items.length; i < len; i++ ) {
+    var item = items[i];
+    item.on( eventName, tick );
+  }
+};
+
+// -------------------------- stamp -------------------------- //
+
+/**
+ * adds elements to stampedElements
+ * @param {NodeList, Array, Element, or String} elems
+ */
+Packery.prototype.stamp = function( elems ) {
+  if ( !elems ) {
+    return;
+  }
+  // if string, use argument as selector string
+  if ( typeof elems === 'string' ) {
+    elems = this.element.querySelectorAll( elems );
+  }
+  elems = makeArray( elems );
+  this.stampedElements.push.apply( this.stampedElements, elems );
+  // ignore
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    this.ignore( elem );
+  }
+};
+
+/**
+ * removes elements to stampedElements
+ * @param {NodeList, Array, or Element} elems
+ */
+Packery.prototype.unstamp = function( elems ) {
+  if ( !elems ){
+    return;
+  }
+  elems = makeArray( elems );
+
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    // filter out removed stamp elements
+    var index = indexOf( this.stampedElements, elem );
+    if ( index !== -1 ) {
+      this.stampedElements.splice( index, 1 );
+    }
+    this.unignore( elem );
+  }
+
+};
+
+// make spaces for stamped elements
+Packery.prototype.placeStampedElements = function() {
+  if ( !this.stampedElements || !this.stampedElements.length ) {
+    return;
+  }
+
+  this._getBounds();
+
+  for ( var i=0, len = this.stampedElements.length; i < len; i++ ) {
+    var elem = this.stampedElements[i];
+    this.placeStamp( elem );
+  }
+};
+
+// update boundingLeft / Top
+Packery.prototype._getBounds = function() {
+  // get bounding rect for container element
+  var elementBoundingRect = this.element.getBoundingClientRect();
+  this._boundingLeft = elementBoundingRect.left + this.elementSize.paddingLeft;
+  this._boundingTop  = elementBoundingRect.top  + this.elementSize.paddingTop;
+};
+
+/**
+ * makes space for element
+ * @param {Element} elem
+ */
+Packery.prototype.placeStamp = function( elem ) {
+  var item = this.getItem( elem );
+  var rect;
+  if ( item && item.isPlacing ) {
+    rect = item.placeRect;
+  } else {
+    rect = this._getElementOffsetRect( elem );
+  }
+
+  this._setRectSize( elem, rect );
+  // save its space in the packer
+  this.packer.placed( rect );
+  this._setMaxY( rect );
+};
+
+/**
+ * get x/y position of element relative to container element
+ * @param {Element} elem
+ * @returns {Rect} rect
+ */
+Packery.prototype._getElementOffsetRect = function( elem ) {
+  var boundingRect = elem.getBoundingClientRect();
+  var rect = new Rect({
+    x: boundingRect.left - this._boundingLeft,
+    y: boundingRect.top - this._boundingTop
+  });
+  rect.x -= this.elementSize.borderLeftWidth;
+  rect.y -= this.elementSize.borderTopWidth;
+  return rect;
+};
+
+// -------------------------- resize -------------------------- //
+
+// enable event handlers for listeners
+// i.e. resize -> onresize
+Packery.prototype.handleEvent = function( event ) {
+  var method = 'on' + event.type;
+  if ( this[ method ] ) {
+    this[ method ]( event );
+  }
+};
+
+/**
+ * Bind layout to window resizing
+ */
+Packery.prototype.bindResize = function() {
+  // bind just one listener
+  if ( this.isResizeBound ) {
+    return;
+  }
+  eventie.bind( window, 'resize', this );
+  this.isResizeBound = true;
+};
+
+/**
+ * Unbind layout to window resizing
+ */
+Packery.prototype.unbindResize = function() {
+  eventie.unbind( window, 'resize', this );
+  this.isResizeBound = false;
+};
+
+// original debounce by John Hann
+// http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+
+// this fires every resize
+Packery.prototype.onresize = function() {
+  if ( this.resizeTimeout ) {
+    clearTimeout( this.resizeTimeout );
+  }
+
+  var _this = this;
+  function delayed() {
+    _this.resize();
+  }
+
+  this.resizeTimeout = setTimeout( delayed, 100 );
+};
+
+// debounced, layout on resize
+Packery.prototype.resize = function() {
+  // don't trigger if size did not change
+  var size = getSize( this.element );
+  // check that elementSize and size are there
+  // IE8 triggers resize on body size change, so they might not be
+  var hasSizes = this.elementSize && size;
+  if ( hasSizes && size.innerWidth === this.elementSize.innerWidth ) {
+    return;
+  }
+
+  this.layout();
+
+  delete this.resizeTimeout;
+};
+
+
+// -------------------------- methods -------------------------- //
+
+/**
+ * add items to Packery instance
+ * @param {Array or NodeList or Element} elems
+ * @returns {Array} items - Packery.Items
+**/
+Packery.prototype.addItems = function( elems ) {
+  var items = this._getItems( elems );
+  if ( !items.length ) {
+    return;
+  }
+  // add items to collection
+  this.items.push.apply( this.items, items );
+  return items;
+};
+
+/**
+ * Layout newly-appended item elements
+ * @param {Array or NodeList or Element} elems
+ */
+Packery.prototype.appended = function( elems ) {
+  var items = this.addItems( elems );
+  if ( !items.length ) {
+    return;
+  }
+  // layout and reveal just the new items
+  this.layoutItems( items, true );
+  this.reveal( items );
+};
+
+/**
+ * Layout prepended elements
+ * @param {Array or NodeList or Element} elems
+ */
+Packery.prototype.prepended = function( elems ) {
+  var items = this._getItems( elems );
+  if ( !items.length ) {
+    return;
+  }
+  // add items to beginning of collection
+  var previousItems = this.items.slice(0);
+  this.items = items.concat( previousItems );
+  // start new layout
+  this._prelayout();
+  // layout new stuff without transition
+  this.layoutItems( items, true );
+  this.reveal( items );
+  // layout previous items
+  this.layoutItems( previousItems );
+};
+
+// reveal a collection of items
+Packery.prototype.reveal = function( items ) {
+  if ( !items || !items.length ) {
+    return;
+  }
+  for ( var i=0, len = items.length; i < len; i++ ) {
+    var item = items[i];
+    item.reveal();
+  }
+};
+
+/**
+ * get Packery.Item, given an Element
+ * @param {Element} elem
+ * @param {Function} callback
+ * @returns {Packery.Item} item
+ */
+Packery.prototype.getItem = function( elem ) {
+  // loop through items to get the one that matches
+  for ( var i=0, len = this.items.length; i < len; i++ ) {
+    var item = this.items[i];
+    if ( item.element === elem ) {
+      // return item
+      return item;
+    }
+  }
+};
+
+/**
+ * get collection of Packery.Items, given Elements
+ * @param {Array} elems
+ * @returns {Array} items - Packery.Items
+ */
+Packery.prototype.getItems = function( elems ) {
+  if ( !elems || !elems.length ) {
+    return;
+  }
+  var items = [];
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    var item = this.getItem( elem );
+    if ( item ) {
+      items.push( item );
+    }
+  }
+
+  return items;
+};
+
+/**
+ * remove element(s) from instance and DOM
+ * @param {Array or NodeList or Element} elems
+ */
+Packery.prototype.remove = function( elems ) {
+  elems = makeArray( elems );
+
+  var removeItems = this.getItems( elems );
+
+  this._itemsOn( removeItems, 'remove', function() {
+    this.emitEvent( 'removeComplete', [ this, removeItems ] );
+  });
+
+  for ( var i=0, len = removeItems.length; i < len; i++ ) {
+    var item = removeItems[i];
+    item.remove();
+    // remove item from collection
+    var index = indexOf( this.items, item );
+    this.items.splice( index, 1 );
+  }
+};
+
+/**
+ * keep item in collection, but do not lay it out
+ * @param {Element} elem
+ */
+Packery.prototype.ignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    item.isIgnored = true;
+  }
+};
+
+/**
+ * return item to layout collection
+ * @param {Element} elem
+ */
+Packery.prototype.unignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    delete item.isIgnored;
+  }
+};
+
+Packery.prototype.sortItemsByPosition = function() {
+  // console.log('sortItemsByPosition');
+  this.items.sort( function( a, b ) {
+    return a.position.y - b.position.y || a.position.x - b.position.x;
+  });
+};
+
+/**
+ * Fit item element in its current position
+ * Packery will position elements around it
+ * useful for expanding elements
+ *
+ * @param {Element} elem
+ * @param {Number} x - horizontal destination position, optional
+ * @param {Number} y - vertical destination position, optional
+ */
+Packery.prototype.fit = function( elem, x, y ) {
+  var item = this.getItem( elem );
+  if ( !item ) {
+    return;
+  }
+
+  // prepare internal properties
+  this._getMeasurements();
+
+  // stamp item to get it out of layout
+  this.stamp( item.element );
+  // required for positionPlaceRect
+  item.getSize();
+  // set placing flag
+  item.isPlacing = true;
+  // fall back to current position for fitting
+  x = x === undefined ? item.rect.x: x;
+  y = y === undefined ? item.rect.y: y;
+
+  // position it best at its destination
+  item.positionPlaceRect( x, y, true );
+
+  // emit event when item is fit and other items are laid out
+  var _this = this;
+  var ticks = 0;
+  function tick() {
+    ticks++;
+    if ( ticks !== 2 ) {
+      return;
+    }
+    _this.emitEvent( 'fitComplete', [ _this, item ] );
+  }
+  item.on( 'layout', function() {
+    tick();
+    return true;
+  });
+  this.on( 'layoutComplete', function() {
+    tick();
+    return true;
+  });
+  item.moveTo( item.placeRect.x, item.placeRect.y );
+  // layout everything else
+  this.layout();
+
+  // return back to regularly scheduled programming
+  this.unstamp( item.element );
+  this.sortItemsByPosition();
+  // un set placing flag, back to normal
+  item.isPlacing = false;
+  // copy place rect position
+  item.copyPlaceRectPosition();
+};
+
+// -------------------------- drag -------------------------- //
+
+/**
+ * handle an item drag start event
+ * @param {Element} elem
+ */
+Packery.prototype.itemDragStart = function( elem ) {
+  this.stamp( elem );
+  var item = this.getItem( elem );
+  if ( item ) {
+    item.dragStart();
+  }
+};
+
+/**
+ * handle an item drag move event
+ * @param {Element} elem
+ * @param {Number} x - horizontal change in position
+ * @param {Number} y - vertical change in position
+ */
+Packery.prototype.itemDragMove = function( elem, x, y ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    item.dragMove( x, y );
+  }
+
+  // debounce
+  var _this = this;
+  // debounce triggering layout
+  function delayed() {
+    _this.layout();
+    delete _this.dragTimeout;
+  }
+
+  this.clearDragTimeout();
+
+  this.dragTimeout = setTimeout( delayed, 40 );
+};
+
+Packery.prototype.clearDragTimeout = function() {
+  if ( this.dragTimeout ) {
+    clearTimeout( this.dragTimeout );
+  }
+};
+
+/**
+ * handle an item drag end event
+ * @param {Element} elem
+ */
+Packery.prototype.itemDragEnd = function( elem ) {
+  var item = this.getItem( elem );
+  var itemDidDrag;
+  if ( item ) {
+    itemDidDrag = item.didDrag;
+    item.dragStop();
+  }
+  // if elem didn't move, or if it doesn't need positioning
+  // unignore and unstamp and call it a day
+  if ( !item || ( !itemDidDrag && !item.needsPositioning ) ) {
+    this.unstamp( elem );
+    return;
+  }
+  // procced with dragged item
+
+  classie.add( item.element, 'is-positioning-post-drag' );
+
+  // save this var, as it could get reset in dragStart
+  var itemNeedsPositioning = item.needsPositioning;
+  var asyncCount = itemNeedsPositioning ? 2 : 1;
+  var completeCount = 0;
+  var _this = this;
+  function onLayoutComplete() {
+    completeCount++;
+    // don't proceed if not complete
+    if ( completeCount !== asyncCount ) {
+      return true;
+    }
+    // reset item
+    if ( item ) {
+      classie.remove( item.element, 'is-positioning-post-drag' );
+      item.isPlacing = false;
+      item.copyPlaceRectPosition();
+    }
+
+    _this.unstamp( elem );
+    // only sort when item moved
+    _this.sortItemsByPosition();
+
+    // emit item drag event now that everything is done
+    if ( item && itemNeedsPositioning ) {
+      _this.emitEvent( 'dragItemPositioned', [ _this, item ] );
+    }
+    // listen once
+    return true;
+  }
+
+  if ( itemNeedsPositioning ) {
+    item.on( 'layout', onLayoutComplete );
+    item.moveTo( item.placeRect.x, item.placeRect.y );
+  } else if ( item ) {
+    // item didn't need placement
+    item.copyPlaceRectPosition();
+  }
+
+  this.clearDragTimeout();
+  this.on( 'layoutComplete', onLayoutComplete );
+  this.layout();
+
+};
+
+/**
+ * binds Draggabilly events
+ * @param {Draggabilly} draggie
+ */
+Packery.prototype.bindDraggabillyEvents = function( draggie ) {
+  draggie.on( 'dragStart', this.handleDraggabilly.dragStart );
+  draggie.on( 'dragMove', this.handleDraggabilly.dragMove );
+  draggie.on( 'dragEnd', this.handleDraggabilly.dragEnd );
+};
+
+/**
+ * binds jQuery UI Draggable events
+ * @param {jQuery} $elems
+ */
+Packery.prototype.bindUIDraggableEvents = function( $elems ) {
+  $elems
+    .on( 'dragstart', this.handleUIDraggable.start )
+    .on( 'drag', this.handleUIDraggable.drag )
+    .on( 'dragstop', this.handleUIDraggable.stop );
+};
+
+// ----- destroy ----- //
+
+// remove and disable Packery instance
+Packery.prototype.destroy = function() {
+  // reset element styles
+  this.element.style.position = '';
+  this.element.style.height = '';
+  delete this.element.packeryGUID;
+
+  // destroy items
+  for ( var i=0, len = this.items.length; i < len; i++ ) {
+    var item = this.items[i];
+    item.destroy();
+  }
+
+  this.unbindResize();
+};
+
+// -------------------------- data -------------------------- //
+
+/**
+ * get Packery instance from element
+ * @param {Element} elem
+ * @returns {Packery}
+ */
+Packery.data = function( elem ) {
+  var id = elem.packeryGUID;
+  return id && packeries[ id ];
+};
+
+// -------------------------- declarative -------------------------- //
+
+/**
+ * allow user to initialize Packery via .js-packery class
+ * options are parsed from data-packery-option attribute
+ */
+docReady( function() {
+  var elems = document.querySelectorAll('.js-packery');
+
+  for ( var i=0, len = elems.length; i < len; i++ ) {
+    var elem = elems[i];
+    var attr = elem.getAttribute('data-packery-options');
+    var options;
+    try {
+      options = attr && JSON.parse( attr );
+    } catch ( error ) {
+      // log error, do not initialize
+      if ( console ) {
+        console.error( 'Error parsing data-packery-options on ' +
+          elem.nodeName.toLowerCase() + ( elem.id ? '#' + elem.id : '' ) + ': ' +
+          error );
+      }
+      continue;
+    }
+    // initialize
+    var pckry = new Packery( elem, options );
+    // make available via $().data('packery')
+    if ( jQuery ) {
+      jQuery.data( elem, 'packery', pckry );
+    }
+  }
+});
+
+// -------------------------- jQuery bridge -------------------------- //
+
+// make into jQuery plugin
+if ( jQuery && jQuery.bridget ) {
+  jQuery.bridget( 'packery', Packery );
+}
+
+// -------------------------- transport -------------------------- //
+
+// back in global
+Packery.Rect = Rect;
+Packery.Packer = Packer;
+Packery.Item = Item;
+window.Packery = Packery;
+
+})( window );
+define("plugins/packery/packery.pkgd", function(){});
+
 // Generated by CoffeeScript 1.6.2
-/*
 
-    000000  0000000000    000000000000000000
-    000000  0000000000    00000000000000000000
-    000000      000000    000000   00000  000000
-    000000      000000    000000     000  000000
-     00000      000000    000000       0  000000
-       000      000000    000000          000000
-         0      000000    000000          000000
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-    Neue Medien - Kunsthochschule Kassel
-    http://neuemedienkassel.de
-*/
+(function($) {
+  /*
+  	layout a collection of item elements
+  	@param {Array} items - array of Packery.Items
+  	@param {Boolean} isInstant - disable transitions for setting item position
+  */
 
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var JJPackery, JJPackeryMan, packery_layoutItems;
 
-(function($, window) {
-  var Border, Box2DHolder, Entity, GravityCenter, RadialGravityStorage, RectangleEntity, _ref;
-
-  window.requestAnimFrame = (function() {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback, element) {
-      return window.setTimeout(callback, 1000 / 60);
-    };
-  })();
-  window.debugGravity = false;
-  window.logger = function() {
-    if (window.debugGravity) {
-      return console.log(arguments[0]);
-    }
+  packery_layoutItems = Packery.prototype.layoutItems;
+  Packery.prototype.layoutItems = function(items, isInstant) {
+    this.maxY = 0;
+    return packery_layoutItems.call(this, items, isInstant);
   };
-  /*
-  	 # Creates a basic Entity with the given parameters
-  	 # this should be just the base class to extend.
-  	 #
-  	 # @param int id
-  	 # @param float x
-  	 # @param float y
-  	 # @param float angle (optional)
-  */
-
-  Entity = (function() {
-    function Entity(id, x, y, scaleFactor) {
-      this.id = id;
-      this.x = x;
-      this.y = y;
-      this.scaleFactor = scaleFactor != null ? scaleFactor : 30;
-    }
-
-    Entity.prototype.update = function(x, y, angle) {
-      this.x = x;
-      this.y = y;
-      this.angle = angle;
-    };
-
-    Entity.prototype.setAwake = function(isAwake) {
-      this.isAwake = isAwake;
-    };
-
-    Entity.prototype.scale = function() {
-      return this.scaleFactor;
-    };
-
-    Entity.prototype.draw = function() {};
-
-    return Entity;
-
-  })();
-  /*
-  	 # Creates a Rectangle with the given parameters
-  	 #
-  	 # @param int id
-  	 # @param float x
-  	 # @param float y
-  	 # @param float width
-  	 # @param float height
-  	 # @param float angle (optional)
-  */
-
-  RectangleEntity = (function(_super) {
-    __extends(RectangleEntity, _super);
-
-    RectangleEntity.prototype.color = 'red';
-
-    RectangleEntity.prototype.sleepColor = 'gray';
-
-    function RectangleEntity(id, x, y, width, height, scaleFactor) {
-      this.id = id;
-      this.x = x;
-      this.y = y;
-      this.width = width != null ? width : 0;
-      this.height = height != null ? height : 0;
-      this.scaleFactor = scaleFactor != null ? scaleFactor : 30;
-      /*
-      			$item = $("[data-gravity-item=#{@id}]")
-      
-      			if not $item.length
-      				$('<div class="entity" data-gravity-item="' + @id + '">' + @id + '</div>')
-      					.appendTo('.gravity')
-      */
-
-      RectangleEntity.__super__.constructor.call(this, this.id, this.x, this.y, this.scaleFactor);
-    }
-
-    RectangleEntity.prototype.halfWidth = function() {
-      return this.width / 2;
-    };
-
-    RectangleEntity.prototype.halfHeight = function() {
-      return this.height / 2;
-    };
-
-    RectangleEntity.prototype.draw = function() {
-      var $item;
-
-      $item = $("[data-gravity-item=" + this.id + "]");
-      if ($item.length) {
-        /*
-        				tooltip = window.currentTooltip
-        				if tooltip.targetId and tooltip.targetId is @id
-        					$item.qtip 'reposition'
-        
-        					logger 'update tooltip'
-        */
-
-        return $("[data-gravity-item=" + this.id + "]").css({
-          'top': this.y * this.scale(),
-          'left': this.x * this.scale(),
-          'margin-top': -this.height * this.scale() / 2,
-          'margin-left': -this.width * this.scale() / 2,
-          'height': this.height * this.scale(),
-          'width': this.width * this.scale()
-        });
-      }
-    };
-
-    return RectangleEntity;
-
-  })(Entity);
-  Border = (function(_super) {
-    __extends(Border, _super);
-
-    function Border(id, x, y, width, height, scaleFactor) {
-      var $item;
-
-      this.id = id;
-      this.x = x;
-      this.y = y;
-      this.width = width != null ? width : 0;
-      this.height = height != null ? height : 0;
-      this.scaleFactor = scaleFactor != null ? scaleFactor : 30;
-      $item = $("[data-gravity-item=" + this.id + "]");
-      if (!$item.length) {
-        $('<div class="entity" data-gravity-item="' + this.id + '">' + this.id + '</div>').appendTo('.gravity');
-      }
-      Border.__super__.constructor.call(this, this.id, this.x, this.y, this.scaleFactor);
-    }
-
-    return Border;
-
-  })(RectangleEntity);
-  GravityCenter = (function(_super) {
-    __extends(GravityCenter, _super);
-
-    function GravityCenter() {
-      _ref = GravityCenter.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
-    GravityCenter.prototype.color = 'green';
-
-    GravityCenter.prototype.draw = function() {};
-
-    return GravityCenter;
-
-  })(RectangleEntity);
-  Box2DHolder = (function() {
-    Box2DHolder.prototype.useWorker = false;
-
-    Box2DHolder.prototype.worker = null;
-
-    Box2DHolder.prototype.bodiesState = {};
-
-    Box2DHolder.prototype.world = {};
-
-    Box2DHolder.prototype.border = {};
-
-    Box2DHolder.prototype.box = null;
-
-    Box2DHolder.prototype.msgID = 0;
-
-    Box2DHolder.prototype.needToDraw = true;
-
-    Box2DHolder.prototype.scaleFactor = 30;
-
-    Box2DHolder.prototype.setScale = function(val) {
-      logger("box2DHolder set scale to " + val);
-      this.scaleFactor = val;
-      if (this.worker) {
-        return this.worker.postMessage({
-          key: 'setscale',
-          value: val
-        });
-      }
-    };
-
-    Box2DHolder.prototype.setDimensions = function(width, height) {
-      this.width = width;
-      this.height = height;
-      if (this.worker) {
-        this.worker.postMessage({
-          key: 'dimensions',
-          width: this.n(this.width),
-          height: this.n(this.height)
-        });
-        logger("set dimensions: " + (this.n(this.width)) + " - " + (this.n(this.height)));
-        return this.needToDraw = true;
-      }
-    };
-
+  JJPackery = (function() {
     /*
-    		 # constructs the Box2DHolder
-    		 #
-    		 # @param int width
-    		 # @param int height
+    		 # construct variables
     */
+    JJPackery.prototype.members = function() {
+      this.$window = $();
+      this.$container = $();
+      this.$sizing = $();
+      this.$packeryEl = $();
+      this.packery = null;
+      this.resizeTimeout = null;
+      this.updateLayout = true;
+      this.fitInWindow = true;
+      this.rendered = 0;
+      this.onResizeLayout = false;
+      this.layoutIsComplete = false;
+      this.started = false;
+      this.itemDimensions = [];
+      this.transitionDuration = '.4s';
+      return this.factor = .3;
+    };
 
-
-    function Box2DHolder(width, height, padding, scale, workerOpts) {
-      this.width = width;
-      this.height = height;
-      this.padding = padding;
-      this.workerOpts = workerOpts;
-      this.loop = __bind(this.loop, this);
-      this.init = function() {
-        var _this = this;
-
-        logger('Box2DHolder init');
-        this.setScale(scale);
-        this.useWorker = this.hasWebWorker();
-        document.addEventListener('webkitvisibilitychange', (function() {
-          if (document.webkitHidden) {
-            return _this.stop();
-          } else {
-            return _this.start();
-          }
-        }), false);
-        if (this.useWorker) {
-          this.initWorker();
-        } else {
-          this.initNonWorker();
-        }
-        this.setDimensions(this.width, this.height);
-        return this.loop();
-      };
-      /*
-      			 # Returns whether the page supports web workers
-      */
-
-      this.hasWebWorker = function() {
-        return typeof Worker !== 'undefined';
-      };
-      /*
-      			 # creates the worker and sends the entities down the wire
-      */
-
-      this.initWorker = function() {
-        var _this = this;
-
-        this.worker = new Worker(this.workerOpts.physics);
-        return this.worker.onmessage = function(e) {
-          var id, newBodies, newBody, _results;
-
-          if ('log' === e.data.key) {
-            logger(e.data.log);
-            return;
-          }
-          newBodies = e.data.bodiesState;
-          _this.bodiesState = $.extend({}, _this.bodiesState, newBodies);
-          _results = [];
-          for (id in _this.bodiesState) {
-            newBody = newBodies[id];
-            if (_this.world[id]) {
-              if (newBody) {
-                _this.world[id].setAwake(true);
-                _this.bodiesState[id] = newBody;
-                _results.push(_this.needToDraw = true);
-              } else if (_this.world[id].isAwake) {
-                _this.needToDraw = true;
-                _results.push(_this.world[id].setAwake(false));
-              } else {
-                _results.push(void 0);
-              }
-            } else {
-              _results.push(void 0);
-            }
-          }
-          return _results;
-        };
-      };
-      /*
-      			 # creates the worker fallback
-      */
-
-      this.initNonWorker = function() {
-        alert('no webworker support :(');
-        return logger('init non worker');
-      };
+    function JJPackery() {
+      this.onResize = __bind(this.onResize, this);      console.log('JJPackery');
+      this.members();
       this.init();
+      this.start();
     }
 
     /*
-    		 # public add
+    		 # fill variables
     */
 
 
-    Box2DHolder.prototype.add = function(obj) {
-      var entity, gravity;
-
-      if (obj.id === 'gravity') {
-        gravity = new GravityCenter(obj.id, this.n(obj.left), this.n(obj.top), this.scaleFactor);
-        return this.addGravity(gravity);
-      } else if (obj.width && obj.height) {
-        entity = new RectangleEntity(obj.id, this.n(obj.left), this.n(obj.top), this.n(obj.width), this.n(obj.height), this.scaleFactor);
-        return this.addEntity(entity);
+    JJPackery.prototype.init = function() {
+      this.$window = $(window);
+      this.$container = $('.packery-wrapper');
+      this.$sizing = $('.packery-test', this.$container);
+      this.$packeryEl = $('.packery', this.$container);
+      if (this.fitInWindow) {
+        return this.$packeryEl.addClass('fit-in-window').css('max-height', this.$window.height());
       }
     };
 
-    /*
-    		 # n pixel to float values
-    */
-
-
-    Box2DHolder.prototype.n = function(num) {
-      return num / this.scaleFactor;
-    };
-
-    Box2DHolder.prototype.w = function(num) {
-      return num += this.n(this.padding * this.width);
-    };
-
-    Box2DHolder.prototype.h = function(num) {
-      return num += this.n(this.padding * this.height);
-    };
-
-    /*
-    		 # running thread
-    */
-
-
-    Box2DHolder.prototype.looper = 0;
-
-    Box2DHolder.prototype.loop = function(animStart) {
-      this.update(animStart);
-      this.draw();
-      return window.requestAnimFrame(this.loop);
-    };
-
-    /*
-    		 # (re)-starts the simulation
-    */
-
-
-    Box2DHolder.prototype.start = function() {
-      return this.worker.postMessage({
-        key: 'start'
-      });
-    };
-
-    /*
-    		 # stops the simulation
-    */
-
-
-    Box2DHolder.prototype.stop = function() {
-      return this.worker.postMessage({
-        key: 'stop'
-      });
-    };
-
-    /*
-    */
-
-
-    Box2DHolder.prototype.addGravity = function(gravity) {
-      logger('add Gravity');
-      return this.worker.postMessage({
-        key: 'addEntity',
-        entity: gravity
-      });
-    };
-
-    /*
-    */
-
-
-    Box2DHolder.prototype.addEntity = function(entity) {
-      logger("added entity '" + entity.id + "'");
-      this.world[entity.id] = entity;
-      this.worker.postMessage({
-        key: 'addEntity',
-        entity: this.world[entity.id]
-      });
-      return this.needToDraw = true;
-    };
-
-    /*
-    		 # triggers the update
-    		 # uses the worker if possible and sends him a message down the pipe
-    		 #
-    */
-
-
-    Box2DHolder.prototype.update = function(animStart) {
-      var entity, id, state, _results;
-
-      if (this.useWorker) {
-        if (this.needToDraw) {
-          this.worker.postMessage({
-            key: 'req',
-            id: this.msgID
-          });
-          this.msgID++;
+    JJPackery.prototype.calcAndLayout = function() {
+      if (this.packery && this.updateLayout) {
+        console.log('calc and relayout');
+        if (this.fitInWindow) {
+          this.calc();
         }
+        return this.packery.layout();
+      }
+    };
+
+    JJPackery.prototype.setToCenter = function() {
+      var elHeight, winHeight;
+
+      winHeight = this.$window.height();
+      elHeight = this.$packeryEl.height();
+      if (elHeight <= winHeight) {
+        return this.$packeryEl.css('top', Math.floor((winHeight - elHeight) / 2));
       } else {
-        this.box.update();
-        this.bodiesState = this.box.getState();
-        this.needToDraw = true;
+        return this.$packeryEl.css('top', 0);
       }
-      _results = [];
-      for (id in this.bodiesState) {
-        entity = this.world[id];
-        state = this.bodiesState[id];
-        if (entity) {
-          _results.push(entity.update(this.w(state.x), this.h(state.y), state.a));
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
+    };
+
+    JJPackery.prototype.hiddenLayout = function(duration) {
+      this.onResizeLayout = true;
+      this.packery.layout();
+      return this.onResizeLayout = false;
     };
 
     /*
-    		 # redraws the world entities if nessessary
+    		 # on resize handler
     		 #
-    		 # @use this.needToDraw
     */
 
 
-    Box2DHolder.prototype.draw = function() {
-      var entity, id, _ref1;
-
-      if (!this.needToDraw) {
-        return;
+    JJPackery.prototype.onResize = function() {
+      if (this.fitInWindow) {
+        this.calc();
+        this.$packeryEl.css('max-height', this.$window.height());
       }
-      _ref1 = this.world;
-      for (id in _ref1) {
-        entity = _ref1[id];
-        entity = this.world[id];
-        entity.draw();
+      if (!this.layoutIsComplete) {
+        console.log('not layoutIsComplete');
+        this.layoutIsComplete = true;
+        this.packery.layout();
       }
-      return this.needToDraw = false;
+      this.packery.layout();
+      this.setToCenter();
+      if (this.layoutIsComplete && !this.started) {
+        console.log('started');
+        this.started = true;
+        return this.show();
+      }
     };
 
-    return Box2DHolder;
+    /*
+    		 # returns the centered position of the given element
+    		 #
+    		 # @return [object] position
+    */
 
-  })();
-  RadialGravityStorage = {
-    itemIdCount: 0,
-    implementationCount: 0,
-    implementations: {}
-  };
-  window.Storage = RadialGravityStorage;
-  window.currentTooltip = {};
-  return $.extend($.fn, {
-    RadialGravity: function(methodOrOptions) {
-      var dataIdName, methods, self, storage;
 
-      this.defaultOptions = {
-        elementSelector: null,
-        itemIdPrefix: 'gravity-item-',
-        padding: 0,
-        box2d: {
-          scale: 100
-        },
-        worker: {
-          physics: 'physics.js'
+    JJPackery.prototype.getCenterPos = function($el) {
+      var elCenter, elPos;
+
+      elPos = $el.offset();
+      return elCenter = {
+        top: elPos.top + $el.height() / 2,
+        left: elPos.left + $el.width() / 2
+      };
+    };
+
+    /*
+    		 # returns the distance between two points
+    		 #
+    		 # @param p1 
+    		 # @param p2
+    		 #
+    		 # @return Number
+    */
+
+
+    JJPackery.prototype.getLineDistance = function(p1, p2) {
+      var xs, ys;
+
+      xs = ys = 0;
+      xs = p2.left - p1.left;
+      xs *= xs;
+      ys = p2.top - p1.top;
+      ys *= ys;
+      return Math.sqrt(xs + ys);
+    };
+
+    /*
+    		 # applies the radial effect to all ItemElements
+    		 #
+    */
+
+
+    JJPackery.prototype.applyRadialGravityEffect = function() {
+      var packeryCenter,
+        _this = this;
+
+      packeryCenter = this.getCenterPos(this.$packeryEl);
+      return $.each(this.packery.getItemElements(), function(i, el) {
+        return _this._applyRadialGravityEffectToElement(el, packeryCenter);
+      });
+    };
+
+    /*
+    		 # applies the radial effect to the given element
+    		 #
+    		 # @param HTMLElement el
+    		 # @param point gravity center
+    */
+
+
+    JJPackery.prototype._applyRadialGravityEffectToElement = function(el, center) {
+      var $el, ba, bc, elPos, expFactor, margins, third, xFactor, yFactor;
+
+      $el = $(el);
+      elPos = this.getCenterPos($el);
+      third = {
+        top: elPos.top,
+        left: center.left
+      };
+      ba = third.top - center.top;
+      bc = elPos.left - third.left;
+      expFactor = this.getLineDistance(center, elPos) * this.factor / 200;
+      yFactor = (ba / Math.abs(ba)) * expFactor * this.getLineDistance(center, third);
+      xFactor = (bc / Math.abs(bc)) * expFactor * this.getLineDistance(elPos, third);
+      margins = {
+        'margin-top': yFactor,
+        'margin-left': xFactor
+      };
+      $el.css(margins);
+      return true;
+    };
+
+    /*
+    		 # init tooltip to all ItemElements
+    		 #
+    */
+
+
+    JJPackery.prototype.initTooltips = function() {
+      var _this = this;
+
+      console.log('init tooltips');
+      $.each(this.packery.getItemElements(), function(i, el) {
+        return _this._initTooltip(el);
+      });
+      return false;
+    };
+
+    JJPackery.prototype._initTooltip = function(el) {
+      var $el, $metaSection, api, foo, getMargin, hideTimeout, hideTip, marginOffset, mouseOutEl, mouseOutTip, showTimeout,
+        _this = this;
+
+      mouseOutEl = true;
+      mouseOutTip = true;
+      api = {};
+      showTimeout = null;
+      hideTimeout = null;
+      hideTip = function() {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
         }
+        return hideTimeout = setTimeout(function() {
+          console.log(mouseOutEl);
+          console.log(mouseOutTip);
+          if (mouseOutEl && mouseOutTip) {
+            $el.add(api.tooltip).off('mouseleave.tooltip');
+            return api.hide();
+          }
+        }, 200);
       };
-      dataIdName = 'gravity-id';
-      self = this;
-      storage = function(count) {
-        return RadialGravityStorage.implementations[count];
+      /*
+      			showTip = =>
+      				if showTimeout
+      					clearTimeout showTimeout
+      				
+      				showTimeout = setTimeout =>
+      					console.log 'show tip'
+      					api.show()
+      				, 500
+      */
+
+      $el = $(el);
+      $metaSection = $('section[role=tooltip-content]', $el);
+      marginOffset = -20;
+      getMargin = function(api) {
+        var $tooltip, margin;
+
+        margin = marginOffset;
+        $tooltip = $(api.tooltip);
+        if ($tooltip.hasClass('qtip-pos-rb')) {
+          console.log('inverse margin');
+          margin *= -1;
+        }
+        return margin;
       };
-      methods = {
-        init: function(options) {
-          var getCountId, opts,
-            _this = this;
-
-          opts = $.extend({}, this.defaultOptions, options);
-          getCountId = function() {
-            RadialGravityStorage.itemIdCount++;
-            return RadialGravityStorage.itemIdCount;
-          };
-          return this.each(function(i, el) {
-            var addGravity, addItemEvents, findItems, getItemId, getStorageId, init, initResize, initTooltip, layoutItems, resizeTimeoutId, setAndUpdateDimensions, setDimensions, storageId, updateItemDimensions;
-
-            storageId = RadialGravityStorage.implementationCount;
-            RadialGravityStorage.implementationCount++;
-            RadialGravityStorage.implementations[storageId] = {
-              $container: null,
-              box2DHolder: null,
-              width: 0,
-              height: 0,
-              options: opts
-            };
-            storage = function() {
-              return RadialGravityStorage.implementations[storageId];
-            };
-            setDimensions = function() {
-              var height, store, width;
-
-              store = storage();
-              store.$container.css('min-height', $(window).height());
-              width = store.$container.width();
-              height = store.$container.height();
-              width = width - (opts.padding * width);
-              height = height - (opts.padding * height);
-              store.width = width;
-              store.height = height;
-              if (store.height <= 0) {
-                return store.height = $(window).height();
-              }
-            };
-            setAndUpdateDimensions = function() {
-              var store;
-
-              setDimensions();
-              store = storage();
-              return store.box2DHolder.setDimensions(store.width, store.height);
-            };
-            init = function() {
-              storage().$container = $(el).data(dataIdName, storageId);
-              setDimensions();
-              storage().box2DHolder = new Box2DHolder(storage().width, storage().height, opts.padding, opts.box2d.scale, opts.worker);
-              initResize();
-              addGravity();
-              return findItems();
-            };
-            resizeTimeoutId = null;
-            initResize = function() {
+      if ($metaSection.length) {
+        foo = this;
+        $el.qtip({
+          content: {
+            text: $metaSection.html()
+          },
+          show: {
+            delay: 500,
+            event: 'mouseenter',
+            effect: function(api) {
               var _this = this;
 
-              return window.onresize = function(event) {
-                clearTimeout(resizeTimeoutId);
-                return resizeTimeoutId = setTimeout(function() {
-                  setAndUpdateDimensions();
-                  logger('on resize');
-                  return addGravity();
-                }, 10);
-              };
-            };
-            getStorageId = function() {
-              return opts.itemIdPrefix + ("" + storageId + "-");
-            };
-            getItemId = function() {
-              return getStorageId() + getCountId();
-            };
-            addGravity = function() {
-              return methods.add({
-                id: 'gravity',
-                top: storage().height / 2,
-                left: storage().width / 2
-              }, storageId);
-            };
-            layoutItems = function($items) {
-              var angle, inc, store, x, y;
-
-              inc = Math.PI * 2 / $items.length;
-              x = y = angle = 0;
-              store = storage();
-              return $items.each(function(i, el) {
-                var $item, d, noise;
-
-                noise = Math.random() * 100;
-                $item = $(el);
-                if (Math.random() > .5) {
-                  noise *= -1;
-                }
-                d = Math.min(store.width, store.height) / 2;
-                x = Math.max($item.width(), Math.min(store.width - $item.width(), d * Math.cos(angle) + d + noise));
-                y = Math.max($item.height(), Math.min(store.height - $item.height(), d * Math.sin(angle) + d + noise));
-                console.log(x);
-                console.log(y);
-                el.style.position = 'absolute';
-                el.style.left = x + 'px';
-                el.style.top = y + 'px';
-                return angle += inc;
-              });
-            };
-            updateItemDimensions = function($items) {
-              return $items.each(function(i, el) {
-                var $item, height, rand, width;
-
-                $item = $(el);
-                if (!$item.hasClass('resizable')) {
-                  return;
-                }
-                rand = Math.max(.2, Math.random() * 1.8);
-                width = $item.width() * rand;
-                height = $item.height() * rand;
-                $item.width(width);
-                return $item.height(height);
-              });
-            };
-            initTooltip = function($item) {
-              var $metaSection, getMargin, marginOffset;
-
-              $metaSection = $('section[role=tooltip-content]', $item);
-              marginOffset = -20;
-              getMargin = function(api) {
-                var $tooltip, margin;
-
-                margin = marginOffset;
-                $tooltip = $(api.tooltip);
-                if ($tooltip.hasClass('qtip-pos-rb')) {
-                  logger('inverse margin');
-                  margin *= -1;
-                }
-                return margin;
-              };
-              if ($metaSection.length) {
-                $item.qtip({
-                  content: {
-                    text: $metaSection.html()
-                  },
-                  /*
-                  								events:
-                  									render: (event, api) ->
-                  										# Grab the tooltip element from the API elements object
-                  
-                  										#updateMargin api
-                  */
-
-                  show: {
-                    event: 'mouseenter',
-                    effect: function(api) {
-                      $item.addClass('has-tooltip');
-                      return $(this).stop(true, true).css({
-                        'margin-left': getMargin(api)
-                      }).show().animate({
-                        'margin-left': 0,
-                        'opacity': 1
-                      }, 200);
-                    }
-                  },
-                  hide: {
-                    event: 'mouseleave',
-                    effect: function(api) {
-                      return $(this).stop(true, true).animate({
-                        'margin-left': getMargin(api),
-                        'opacity': 0
-                      }, 200, function() {
-                        $item.removeClass('has-tooltip');
-                        return $(this).hide();
-                      });
-                    }
-                  },
-                  /*
-                  								events:
-                  									show: (e, api) ->
-                  										window.currentTooltip = 
-                  											tip			: @
-                  											target		: api.target
-                  											targetId	: $(api.target).attr 'data-gravity-item'
-                  											api			: api
-                  
-                  									hide: (e, api) ->
-                  										window.currentTooltip = {}
-                  */
-
-                  position: {
-                    at: "right bottom",
-                    my: "left bottom",
-                    viewport: storage().$container,
-                    adjust: {
-                      method: 'flip shift',
-                      x: 0,
-                      y: 10
-                    }
-                  }
+              $el.addClass('has-tooltip');
+              $(this).stop(true, true).css({
+                'margin-left': getMargin(api)
+              }).show().animate({
+                'margin-left': 0,
+                'opacity': 1
+              }, 200);
+              console.log(api.tooltip);
+              if (api.tooltip) {
+                $(api.tooltip).one('mouseenter.tooltip', function() {
+                  return mouseOutTip = false;
                 });
-                return logger($item.qtip('api').tooltip);
               }
-            };
-            addItemEvents = function($item) {
-              return $item.imagesLoaded().done(function($images) {
-                $item.addClass('loaded');
-                return initTooltip($item);
+              return $el.add(api.tooltip).one('mouseleave.tooltip', function(e) {
+                if ($(e.target).closest('.qtip').length) {
+                  mouseOutTip = true;
+                } else {
+                  mouseOutEl = true;
+                }
+                hideTip();
+                return console.log('close tooltip');
               });
-            };
-            findItems = function() {
-              var $items,
-                _this = this;
-
-              $items = opts.elementSelector ? storage().$container.find(opts.elementSelector) : storage().$container.children();
-              updateItemDimensions($items);
-              layoutItems($items);
-              return $.each($items, function(index, item) {
-                var $item, itemData, itemId, pos;
-
-                $item = $(item);
-                pos = $item.position();
-                itemId = getItemId();
-                addItemEvents($item);
-                itemData = {
-                  id: itemId,
-                  width: $item.width(),
-                  height: $item.height(),
-                  top: pos.top,
-                  left: pos.left
-                };
-                $item.attr('data-gravity-item', itemId);
-                return methods.add(itemData, storageId);
+            }
+          },
+          hide: {
+            event: false,
+            effect: function(api) {
+              return $(this).stop(true, true).animate({
+                'margin-left': getMargin(api),
+                'opacity': 0
+              }, 200, function() {
+                $el.removeClass('has-tooltip');
+                return $(this).hide();
               });
-            };
-            init();
-            return true;
-          });
-        },
-        show: function() {},
-        hide: function() {},
-        update: function(content) {},
-        /*
-        			setPadding: (p) ->
-        				@
-        */
+            }
+          },
+          /*
+          					events:
+          						show: (e, api) ->
+          							window.currentTooltip = 
+          								tip			: @
+          								target		: api.target
+          								targetId	: $(api.target).attr 'data-gravity-item'
+          								api			: api
+          
+          						hide: (e, api) ->
+          							window.currentTooltip = {}
+          */
 
-        /*
-        			 # adds an item to the gravity world
-        			 #
-        			 # @param object data
-        			 #
-        			 # @example
-        			 # 		$('selector').RadialGravity('add', {
-        			 #			id: 'foobar',
-        			 #			width: 100,
-        			 #			height: 100,
-        			 #			top: 0,
-        			 #			left: 0
-        			 #		});
-        */
-
-        add: function(data, implementationCount) {
-          if (implementationCount === void 0) {
-            implementationCount = $(this).data(dataIdName);
-          } else if (typeof implementationCount !== 'number') {
-            console.error('Couldn\'t add items to gravity container.');
+          position: {
+            at: "right bottom",
+            my: "left bottom",
+            viewport: this.$container,
+            adjust: {
+              method: 'flip shift',
+              x: 0,
+              y: 10
+            }
           }
-          return storage(implementationCount).box2DHolder.add(data);
-        }
-      };
-      if (methods[methodOrOptions]) {
-        return methods[methodOrOptions].apply(this, Array.prototype.slice.call(arguments, 1));
-      } else if (typeof methodOrOptions === 'object' || !methodOrOptions) {
-        return methods.init.apply(this, arguments);
-      } else {
-        console.error("Method " + method + " does not exist on $.RadialGravity");
-      }
-      return this;
-    }
-  });
-})(this.jQuery || this.Zepto, this);
+        });
+        api = $el.qtip('api');
+        console.log(api);
+        /*
+        				@api.tooltip.on('mouseenter', =>
+        					mouseOutTip = false
+        				)
+        				.on('mouseleave', =>
+        					mouseOutTip = true
+        					hideTip()
+        				)
+        */
 
-define("plugins/gravity/jquery.gravity", function(){});
+        return $('> a', $el).on('mouseleave', function() {
+          console.log('leave');
+          mouseOutEl = true;
+          return hideTip();
+        });
+      }
+    };
+
+    JJPackery.prototype.update = function() {
+      if (this.packery) {
+        return this.packery.layout();
+      }
+    };
+
+    JJPackery.prototype.destroy = function() {
+      if (this.packery) {
+        return this.packery.destroy();
+      }
+    };
+
+    JJPackery.prototype.calc = function(rewind) {
+      var $item, $stamps, buffer, dims, factor, i, imageSquare, item, itemSquare, items, limit, newWidth, square, stampSquare, width, _ref, _ref1, _results, _results1;
+
+      limit = .7;
+      buffer = .05;
+      square = this.$window.height() * this.$window.width();
+      itemSquare = 0;
+      imageSquare = 0;
+      stampSquare = 0;
+      $stamps = this.$packeryEl.find('.stamp');
+      $stamps.each(function(i, el) {
+        var $item;
+
+        $item = $(el);
+        return stampSquare += $item.width() * $item.height();
+      });
+      _ref = this.packery.getItemElements();
+      for (i in _ref) {
+        item = _ref[i];
+        $item = $(item);
+        imageSquare += $item.width() * $item.height();
+      }
+      itemSquare = imageSquare + stampSquare;
+      console.log(square);
+      console.log(itemSquare);
+      console.log(itemSquare / square);
+      if (imageSquare / square > limit + buffer) {
+        console.log('more than ' + limit + '%');
+        items = this.packery.getItemElements();
+        console.log(items.length);
+        _results = [];
+        for (i in items) {
+          item = items[i];
+          $item = $(item);
+          $item.width($item.width() * limit);
+          _results.push($item.height($item.height * limit));
+        }
+        return _results;
+      } else if (imageSquare / square < limit - buffer) {
+        factor = square / imageSquare - buffer;
+        console.log(factor);
+        _ref1 = this.packery.items;
+        _results1 = [];
+        for (i in _ref1) {
+          item = _ref1[i];
+          dims = item.initialDimensions;
+          if (!dims) {
+            continue;
+          }
+          $item = $(item.element);
+          width = $item.width();
+          console.log(width * factor);
+          newWidth = Math.min(dims.width, width * factor);
+          _results1.push($item.width(newWidth));
+        }
+        return _results1;
+      }
+    };
+
+    JJPackery.prototype.saveItemDimensions = function() {
+      var i, item, _ref;
+
+      _ref = this.packery.items;
+      for (i in _ref) {
+        item = _ref[i];
+        item.initialDimensions = {
+          width: item.rect.width,
+          height: item.rect.height
+        };
+      }
+      return false;
+    };
+
+    JJPackery.prototype.show = function() {
+      console.log('show');
+      this.packery.options.transitionDuration = this.transitionDuration;
+      this.saveItemDimensions();
+      this.setToCenter();
+      this.initTooltips();
+      this.applyRadialGravityEffect();
+      return this.$container.addClass('loaded').addClass('has-gravity');
+    };
+
+    JJPackery.prototype.start = function() {
+      var _this = this;
+
+      return this.$container.imagesLoaded(function() {
+        _this.packery = new Packery(_this.$packeryEl[0], {
+          containerStyle: null,
+          itemSelector: '.packery-item',
+          gutter: 0,
+          stamped: '.stamp',
+          transitionDuration: 0,
+          isResizeBound: false,
+          isInitLayout: false
+        });
+        _this.packery.maxY = _this.$window.height();
+        _this.packery.on('layoutComplete', function() {
+          _this.rendered++;
+          if (_this.rendered === 1) {
+            console.log('hidden trigger');
+          } else {
+            _this.layoutIsComplete = true;
+          }
+          console.log('layout is complete');
+          return false;
+        });
+        _this.$window.on('resize', function() {
+          if (_this.resizeTimeout) {
+            clearTimeout(_this.resizeTimeout);
+          }
+          return _this.resizeTimeout = setTimeout(_this.onResize, 200);
+        });
+        return _this.onResize();
+      });
+    };
+
+    return JJPackery;
+
+  })();
+  JJPackeryMan = function() {
+    return new JJPackery;
+  };
+  window.JJPackeryClass = JJPackery;
+  return window.JJPackeryMan = JJPackeryMan;
+})(jQuery);
+
+define("plugins/packery/packerytest", function(){});
 
 // Generated by CoffeeScript 1.6.2
-define('modules/Gravity',['app', 'plugins/gravity/jquery.gravity'], function(app) {
-  var Gravity;
+define('modules/JJPackery',['app', 'plugins/packery/packerytest'], function(app) {
+  var JJPackery;
 
-  Gravity = app.module();
-  Gravity.Views.Container = Backbone.View.extend({
-    className: 'gravity',
-    initGravity: function() {
-      return $(this.el).RadialGravity({
-        worker: {
-          physics: '/app/assets/js/plugins/gravity/backend/physics.js'
-        }
-      });
-    },
+  JJPackery = app.module();
+  JJPackery.Views.Container = Backbone.View.extend({
+    tagName: 'section',
+    className: 'packery-wrapper',
+    template: 'packery-container',
     afterRender: function() {
-      return this.initGravity();
+      JJPackeryMan();
+      if (this._afterRender) {
+        return this._afterRender();
+      }
     }
   });
-  return Gravity;
+  return JJPackery;
 });
 
 // Generated by CoffeeScript 1.6.2
-define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
+define('modules/Portfolio',['app', 'modules/JJPackery'], function(app, JJPackery) {
   var Portfolio;
 
   Portfolio = app.module();
@@ -19708,8 +26957,38 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
     person_group_length: 4,
     group_project_title: 'Group project'
   };
-  Portfolio.Views.GravityContainer = Gravity.Views.Container.extend({
-    tagName: 'section',
+  Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend({
+    cleanup: function() {
+      return Backbone.Events.off('search', this.handleSearch);
+    },
+    initialize: function() {
+      return Backbone.Events.on('search', this.handleSearch, this);
+    },
+    handleSearch: function(searchResults) {
+      if (this.__manager__.hasRendered) {
+        return this.triggerSearchOnChildren(searchResults);
+      } else {
+        this.searchResults = searchResults;
+        return this.doSearchAfterRender = true;
+      }
+    },
+    triggerSearchOnChildren: function(searchResults) {
+      console.log(searchResults);
+      return _.each(this.views['.packery'], function(childView) {
+        var found, method, model;
+
+        model = childView.model;
+        if (!searchResults) {
+          return childView.doShow();
+        } else {
+          found = _.find(searchResults, function(result) {
+            return result === childView.model;
+          });
+          method = found ? 'doShow' : 'doHide';
+          return childView[method]();
+        }
+      });
+    },
     beforeRender: function() {
       var model, modelArray, _i, _len, _results;
 
@@ -19719,23 +26998,41 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
         _results = [];
         for (_i = 0, _len = modelArray.length; _i < _len; _i++) {
           model = modelArray[_i];
-          _results.push(this.insertView('', new Portfolio.Views.ListItem({
+          _results.push(this.insertView('.packery', new Portfolio.Views.ListItem({
             model: model,
             linkTo: this.options.linkTo
           })));
         }
         return _results;
       }
+    },
+    _afterRender: function() {
+      if (this.doSearchAfterRender) {
+        this.triggerSearchOnChildren(this.searchResults);
+        this.doSearchAfterRender = false;
+        return this.searchResults = null;
+      }
     }
   });
   Portfolio.Views.ListItem = Backbone.View.extend({
     tagName: 'article',
-    className: 'gravity-item resizable',
-    template: 'gravity-list-item',
+    className: 'packery-item resizable',
+    template: 'packery-list-item',
+    doShow: function() {
+      console.log('showing %o', this.model);
+      return this.$el.removeClass('hidden');
+    },
+    doHide: function() {
+      console.log('hiding %o', this.model);
+      return this.$el.addClass('hidden');
+    },
     serialize: function() {
       var data;
 
       data = this.model ? this.model.toJSON() : {};
+      data.Persons = _.sortBy(data.Persons, function(person) {
+        return person.Surname;
+      });
       data.LinkTo = this.options.linkTo;
       return data;
     }
@@ -19764,9 +27061,13 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
 
       json = this.model ? this.model.toJSON() : {};
       types = ['Projects', 'ChildProjects', 'ParentProjects'];
-      if (json.Persons.length > Portfolio.Config.person_group_length) {
+      json.Persons = _.sortBy(json.Persons, function(person) {
+        return person.Surname;
+      });
+      if (parseInt(json.Persons.length) > parseInt(Portfolio.Config.person_group_length)) {
         json.IsGroup = true;
       }
+      console.log(json);
       json.combinedProjects = [];
       _.each(types, function(type) {
         if (_.isArray(json[type])) {
@@ -19780,13 +27081,13 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
     var conf, length, out;
 
     conf = Portfolio.Config;
-    if (!(persons.length < conf.person_group_length)) {
+    if (!(persons.length <= conf.person_group_length)) {
       return conf.group_project_title;
     }
     out = '';
     length = persons.length;
     _.each(persons, function(person, i) {
-      out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + person.Surname + '</a>';
+      out += '<a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + (person.Surname ? person.Surname : '') + '</a>';
       if (i < (length - 2)) {
         return out += ', ';
       } else if (i < (length - 1)) {
@@ -19795,7 +27096,7 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
     });
     return out;
   });
-  Handlebars.registerHelper('niceDate', function(model) {
+  Handlebars.registerHelper('niceDate', function(model, forceYear) {
     var out;
 
     if (!(model.DateRangeNice || model.FrontendDate)) {
@@ -19805,19 +27106,38 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
     if (model.DateRangeNice) {
       out += model.DateRangeNice;
     } else if (model.FrontendDate) {
-      out += model.FrontendDate;
+      if (!forceYear) {
+        out += model.FrontendDate;
+      } else {
+        out += model.FrontendDate.split(' ')[1];
+      }
     }
     return out;
   });
   Handlebars.registerHelper('teaserMeta', function() {
     var nameSummary, niceDate;
 
-    niceDate = Handlebars.helpers.niceDate(this);
+    niceDate = Handlebars.helpers.niceDate(this, true);
     if (this.ClassName === 'Project') {
       nameSummary = Handlebars.helpers.nameSummary(this.Persons);
       return "" + nameSummary + " // " + niceDate;
     } else {
       return niceDate;
+    }
+  });
+  Handlebars.registerHelper('SpaceAndLocation', function() {
+    var out;
+
+    out = [];
+    if (this.Space) {
+      out.push(this.Space);
+    }
+    if (this.Location) {
+      out.push(this.Location);
+    }
+    out.join(', ');
+    if (out) {
+      return "<p>" + out + "</p>";
     }
   });
   Handlebars.registerHelper('portfoliolist', function(items, title, options) {
@@ -19830,7 +27150,7 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
     length = 0;
     out = '<ul>';
     _.each(items, function(item) {
-      if (item.IsPortfolio && item.IsPublished) {
+      if (item.IsPublished) {
         out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
         return length++;
       }
@@ -19842,6 +27162,16 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
     } else {
       return '';
     }
+  });
+  Handlebars.registerHelper('personlist', function(persons) {
+    var out;
+
+    out = '<ul>';
+    _.each(persons, function(person) {
+      return out += '<li><a href="/about/' + person.UrlSlug + '/">' + person.FirstName + ' ' + (person.Surname ? person.Surname : '') + '</a></li>';
+    });
+    out += '</ul>';
+    return "<h4>Contributors</h4>" + out;
   });
   Handlebars.registerHelper('commaSeparatedWebsites', function(websites) {
     var a;
@@ -19856,7 +27186,7 @@ define('modules/Portfolio',['app', 'modules/Gravity'], function(app, Gravity) {
 });
 
 // Generated by CoffeeScript 1.6.2
-define('modules/Person',['app', 'modules/Gravity', 'modules/Portfolio'], function(app, Gravity, Portfolio) {
+define('modules/Person',['app', 'modules/JJPackery', 'modules/Portfolio'], function(app, JJPackery, Portfolio) {
   var Person;
 
   Person = app.module();
@@ -19877,16 +27207,21 @@ define('modules/Person',['app', 'modules/Gravity', 'modules/Portfolio'], functio
           return 'alumni';
         }
         return '';
+      },
+      getFullName: function() {
+        if (this.get('FullName')) {
+          return this.get('FullName');
+        }
+        return (this.get('FirstName') ? this.get('FirstName') : '') + ' ' + (this.get('Surname') ? this.get('Surname') : '');
       }
     });
     return JJRestApi.extendCollection('Person', {
       foo: 'bar'
     });
   });
-  Person.Views.GravityContainer = Gravity.Views.Container.extend({
-    tagName: 'section',
+  Person.Views.PackeryContainer = JJPackery.Views.Container.extend({
     beforeRender: function() {
-      var model, modelArray, projectType, rel, rels, _i, _j, _k, _len, _len1, _len2, _ref;
+      var model, modelArray, projectType, rel, rels, _i, _j, _k, _len, _len1, _len2, _ref, _results;
 
       console.log('render person page with normal view');
       modelArray = [];
@@ -19901,23 +27236,27 @@ define('modules/Person',['app', 'modules/Gravity', 'modules/Portfolio'], functio
           }
         }
       }
+      this.insertView('.packery', new Person.Views.InfoItem({
+        model: this.model
+      }));
+      _results = [];
       for (_k = 0, _len2 = modelArray.length; _k < _len2; _k++) {
         model = modelArray[_k];
         if (model.get('IsPublished')) {
-          this.insertView('', new Portfolio.Views.ListItem({
+          _results.push(this.insertView('.packery', new Portfolio.Views.ListItem({
             model: model,
             linkTo: 'about/' + this.model.get('UrlSlug')
-          }));
+          })));
+        } else {
+          _results.push(void 0);
         }
       }
-      return this.insertView('', new Person.Views.InfoItem({
-        model: this.model
-      }));
+      return _results;
     }
   });
   Person.Views.InfoItem = Backbone.View.extend({
     tagName: 'article',
-    className: 'gravity-item person-info',
+    className: 'packery-item person-info',
     template: 'person-info-item',
     serialize: function() {
       if (this.model) {
@@ -20136,13 +27475,12 @@ define('modules/Calendar',['app'], function(app) {
 });
 
 // Generated by CoffeeScript 1.6.2
-define('modules/About',['app', 'modules/Gravity'], function(app, Gravity) {
+define('modules/About',['app', 'modules/JJPackery'], function(app, JJPackery) {
   var About;
 
   About = app.module();
-  About.Views.GravityContainer = Gravity.Views.Container.extend({
-    tagName: 'section',
-    template: 'about-gravity',
+  About.Views.PackeryContainer = JJPackery.Views.Container.extend({
+    template: 'about-packery',
     initialize: function(options) {
       this.groupImage = options.groupImage;
       return this.persons = options.persons;
@@ -20169,7 +27507,7 @@ define('modules/About',['app', 'modules/Gravity'], function(app, Gravity) {
         _results = [];
         for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
           employee = _ref2[_k];
-          _results.push(this.insertView('', new About.Views.EmployeeItem({
+          _results.push(this.insertView('.packery', new About.Views.EmployeeItem({
             model: employee
           })));
         }
@@ -20178,7 +27516,7 @@ define('modules/About',['app', 'modules/Gravity'], function(app, Gravity) {
     },
     afterRender: function() {
       $(document).trigger($.Event('about:rendered'));
-      return this.initGravity();
+      return JJPackeryMan();
     },
     serialize: function() {
       return {
@@ -20195,7 +27533,7 @@ define('modules/About',['app', 'modules/Gravity'], function(app, Gravity) {
   });
   About.Views.EmployeeItem = Backbone.View.extend({
     tagName: 'section',
-    className: 'person gravity-item',
+    className: 'person packery-item',
     template: 'employee-item',
     serialize: function() {
       return this.model.toJSON();
@@ -20426,7 +27764,7 @@ define('modules/NMMarkdownParser',['app', 'modules/DataRetrieval', 'modules/DocI
 });
 
 // Generated by CoffeeScript 1.6.2
-define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'modules/NMMarkdownParser'], function(app, DataRetrieval, Auth, Portfolio) {
+define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'modules/Website', 'modules/NMMarkdownParser'], function(app, DataRetrieval, Auth, Portfolio, Website) {
   var ProjectEditor;
 
   ProjectEditor = app.module();
@@ -20611,7 +27949,7 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
       var markdownEditor,
         _this = this;
 
-      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable', 'SelectPersonEditable', 'SelectListEditable']);
+      this.editor = new JJEditor(this.$el, ['InlineEditable', 'DateEditable', 'SplitMarkdownEditable', 'SelectEditable', 'SelectPersonEditable', 'SelectListEditable', 'SelectListConfirmEditable', 'ModalEditable']);
       markdownEditor = this.editor.getComponentByName('ProjectMain.Text').markdown;
       _.extend(markdownEditor.options, {
         additionalPOSTData: {
@@ -20632,16 +27970,31 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
       this.editor.on('stateUpdate', function(e) {
         return _this.stateUpdate(e);
       });
+      this.editor.on('submit:ProjectMain.Website', function(val) {
+        var MType, website;
+
+        if (val.Title && val.Link) {
+          MType = JJRestApi.Model('Website');
+          website = new MType({
+            Title: val.Title,
+            Link: val.Link
+          });
+          _this.model.get('Websites').add(website);
+          _this.addWebsiteView(website, true);
+          return _this.model.save();
+        }
+      });
       return this;
     },
     stateUpdate: function(e) {
-      var key, relKey, text, val, _changed, _ref,
+      var existPost, key, newPost, relKey, text, toPost, val, xhr, _changed, _populateEditors, _ref,
         _this = this;
 
       console.group('STATE UPDATE');
       console.log('this: %o', this);
       console.log('state: ', e.ProjectMain);
       _changed = false;
+      _populateEditors = false;
       _ref = e.ProjectMain;
       for (key in _ref) {
         val = _ref[key];
@@ -20689,21 +28042,53 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
         } else if (key === 'Person') {
           val.push(app.CurrentMemberPerson.id);
           if (this.model.setRelCollByIds('Persons', val)) {
+            _populateEditors = true;
             _changed = true;
           }
         } else if (key === 'Category') {
           if (this.model.setRelCollByIds('Categories', val)) {
             _changed = true;
           }
+        } else if (key === 'BlockedEditors' || key === 'Editors') {
+          if (_.difference(val, app.ProjectEditor[key]).length > 0 || _.difference(app.ProjectEditor[key], val).length > 0) {
+            app.ProjectEditor[key] = val;
+            toPost = {
+              className: this.model.get('ClassName'),
+              id: this.model.id,
+              editors: val
+            };
+            existPost = app.ProjectEditor.ChangeEditorsPost;
+            if (existPost && existPost.readyState !== 4) {
+              existPost.abort();
+            }
+            newPost = app.ProjectEditor.ChangeEditorsPost = $.post(app.Config.ChangeEditorsUrl, toPost);
+            newPost.done(function(confirmed) {
+              if (_.difference(confirmed, app.ProjectEditor[key]).length > 0 || _.difference(app.ProjectEditor[key], confirmed).length > 0) {
+                console.log('change to confirmed');
+                app.ProjectEditor[key] = confirmed;
+                return _populateEditors = true;
+              }
+            });
+          }
+        } else if (key === 'Title' && this.model.get('Title') !== val) {
+          this.model.set('Title', val);
+          _changed = true;
         }
       }
       console.groupEnd();
       if (_changed) {
-        return this.model.rejectAndSave();
+        xhr = this.model.rejectAndSave();
+        if (xhr) {
+          return xhr.done(function(model) {
+            if (_populateEditors) {
+              return _this.populateEditorsSelectable(_this.model.getEditorsKey(), false);
+            }
+          });
+        }
       }
     },
     populateSelectEditables: function() {
-      var sanitize, type, _fn, _i, _len, _ref,
+      var sanitize, type, _fn, _i, _j, _len, _len1, _ref, _ref1, _results,
         _this = this;
 
       sanitize = {
@@ -20752,8 +28137,7 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
         type = _ref[_i];
         _fn(type);
       }
-      console.log(sanitize);
-      return $.getJSON(app.Config.BasicListUrl).done(function(res) {
+      $.getJSON(app.Config.BasicListUrl).done(function(res) {
         var selectSubClasses, selectables, subClass, _j, _len1;
 
         if (_.isObject(res)) {
@@ -20782,9 +28166,65 @@ define('modules/ProjectEditor',['app', 'modules/DataRetrieval', 'modules/Auth', 
           });
         }
       });
+      _ref1 = ['BlockedEditors', 'Editors'];
+      _results = [];
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        type = _ref1[_j];
+        _results.push((function(type) {
+          var selectable;
+
+          if (selectable = _this.editor.getComponentByName('ProjectMain.' + type)) {
+            return $.getJSON(app.Config.GetEditorsUrl, {
+              className: _this.model.get('ClassName'),
+              id: _this.model.id
+            }).done(function(ids) {
+              if (_.isArray(ids)) {
+                app.ProjectEditor[type] = ids;
+                return _this.populateEditorsSelectable(type);
+              }
+            });
+          }
+        })(type));
+      }
+      return _results;
+    },
+    populateEditorsSelectable: function(type, silent) {
+      var personsIdArray, personsIdList, selectable;
+
+      if (silent == null) {
+        silent = true;
+      }
+      if (selectable = this.editor.getComponentByName('ProjectMain.' + type)) {
+        personsIdList = this.model.basicListWithoutCurrentMember('Persons');
+        personsIdArray = _.map(personsIdList, function(o) {
+          return o.ID;
+        });
+        selectable.setSource(personsIdList, silent);
+        app.ProjectEditor[type] = _.intersection(app.ProjectEditor[type], personsIdArray);
+        return selectable.setValue(app.ProjectEditor[type], silent);
+      }
+    },
+    addWebsiteView: function(model, render) {
+      var view;
+
+      view = new Website.Views.ListView({
+        model: model
+      });
+      this.insertView('.websites', view);
+      if (render) {
+        view.render();
+      }
+      return true;
     },
     serialize: function() {
       return app.ProjectEditor.modelJSON;
+    },
+    beforeRender: function() {
+      var _this = this;
+
+      return this.model.get('Websites').each(function(website) {
+        return _this.addWebsiteView(website);
+      });
     },
     afterRender: function() {
       this.initEditor();
@@ -20907,7 +28347,7 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
           });
         }
         modelsArray = app.Cache.Featured;
-        _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
+        _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
         calendarContainer = new Calendar.Views.Container({
           collection: app.Collections.CalendarEntry
         });
@@ -20941,7 +28381,7 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
             IsEmployee: true
           })
         };
-        view = new About.Views.GravityContainer({
+        view = new About.Views.PackeryContainer({
           groupImage: image,
           persons: persons
         });
@@ -20969,7 +28409,7 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
             return template = templ.get('Url');
           }
         });
-        view = !template ? new Person.Views.GravityContainer({
+        view = !template ? new Person.Views.PackeryContainer({
           model: model
         }) : new Person.Views.Custom({
           model: model,
@@ -20982,11 +28422,13 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
       return this.showPortfolioDetailed(uglyHash, nameSlug);
     },
     showPortfolio: function(searchTerm) {
-      var justUpdate, mainDfd,
+      var justUpdate, mainDfd, seed1, seed2,
         _this = this;
 
       mainDfd = this.rejectAndHandle();
-      DataRetrieval.forProjectsOverview(app.Config.Portfolio).done(function() {
+      seed1 = DataRetrieval.forCategories();
+      seed2 = DataRetrieval.forProjectsOverview(app.Config.Portfolio);
+      $.when(seed1, seed2).done(function() {
         return mainDfd.resolve();
       });
       if (searchTerm) {
@@ -20994,7 +28436,7 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
       }
       justUpdate = app.currentLayoutName === 'portfolio' ? true : false;
       return mainDfd.done(function() {
-        var layout, modelsArray;
+        var layout, modelsArray, searchedFor;
 
         if (!justUpdate) {
           layout = app.useLayout('portfolio');
@@ -21006,14 +28448,16 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
           });
         }
         modelsArray = app.Cache.WholePortfolio;
-        if (searchTerm) {
-          modelsArray = DataRetrieval.filterProjectTypesBySearchTerm(searchTerm);
-        }
         if (!justUpdate) {
-          return _this.showGravityViewForModels(modelsArray, 'portfolio', layout);
-        } else {
-          return console.log('add or remove models');
+          _this.showPackeryViewForModels(modelsArray, 'portfolio', layout);
+          layout.insertViewAndRenderMaybe('', new ProjectSearch.View({
+            searchTerm: searchTerm
+          }));
         }
+        searchedFor = searchTerm ? DataRetrieval.filterProjectTypesBySearchTerm(searchTerm) : null;
+        console.log('foobar');
+        console.log(searchedFor);
+        return Backbone.Events.trigger('search', searchedFor);
       });
     },
     showPortfolioDetailed: function(uglyHash, nameSlug) {
@@ -21057,7 +28501,9 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
           return layout.setViewAndRenderMaybe('', detailView);
         });
       } else {
-        mainDfd.done(this.fourOhFour);
+        mainDfd.done(function() {
+          return _this.fourOhFour();
+        });
         return mainDfd.resolve();
       }
     },
@@ -21180,14 +28626,14 @@ define('router',['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'mo
         return layout.setViewAndRenderMaybe('', errorView);
       });
     },
-    showGravityViewForModels: function(modelsArray, linkTo, layout) {
-      var gravityContainer;
+    showPackeryViewForModels: function(modelsArray, linkTo, layout) {
+      var packeryContainer;
 
-      gravityContainer = new Portfolio.Views.GravityContainer({
+      packeryContainer = new Portfolio.Views.PackeryContainer({
         collection: modelsArray,
         linkTo: linkTo
       });
-      return layout.setViewAndRenderMaybe('#gravity-container', gravityContainer);
+      return layout.setViewAndRenderMaybe('#packery-container', packeryContainer);
     },
     getProjectTypeModels: function(where) {
       var projectType, returnArray, _i, _len, _ref;
@@ -21325,9 +28771,11 @@ define("plugins/misc/misc", function(){});
 // Generated by CoffeeScript 1.6.2
 require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Excursion', 'modules/Workshop', 'modules/Exhibition', 'modules/CalendarEntry', 'modules/RecycleBin', 'plugins/misc/spin.min', 'plugins/misc/misc'], function(app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, RecycleBin, Spinner, misc) {
   Backbone.JJRelational.Config.work_with_store = true;
+  app.ajaxCount = 0;
   app.Router = new Router();
   app.Layout;
   app.PageInfos = {};
+  app.CategoriesFetched;
   app.Collections = {};
   app.Cache = {};
   app.Cache.UserGallery = {
@@ -21347,7 +28795,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   console.log(app);
   app.Config = {
     ProjectTypes: ['Project', 'Excursion', 'Workshop', 'Exhibition'],
-    StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage'],
+    StoreHooks: ['Project', 'Excursion', 'Workshop', 'Exhibition', 'Person', 'CalendarEntry', 'DocImage', 'Category'],
     ClassEnc: {
       '0': 'Project',
       '1': 'Excursion',
@@ -21358,6 +28806,8 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     DocImageUrl: 'imagery/images/docimage/',
     PersonImageUrl: 'imagery/images/personimage/',
     BasicListUrl: 'lists/all/',
+    GetEditorsUrl: 'api/v2/Editors/getEditors',
+    ChangeEditorsUrl: 'api/v2/Editors/changeEditors',
     ChangeCredentialsUrl: 'api/v2/Auth/credentials/',
     UrlSuffixes: {
       about_persons: '?search=IsExternal:0'
@@ -21698,6 +29148,20 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   app.resolveClassTypeByHash = function(uglyHash) {
     return this.Config.ClassEnc[uglyHash.substr(0, 1)];
   };
+  app.wholePortfolioJSON = function() {
+    var model, tmp, wholePortfolio, _i, _len;
+
+    wholePortfolio = this.Cache.WholePortfolio;
+    if (!this.Cache.WholePortfolioJSON) {
+      tmp = [];
+      for (_i = 0, _len = wholePortfolio.length; _i < _len; _i++) {
+        model = wholePortfolio[_i];
+        tmp.push(model.toJSON());
+      }
+      this.Cache.WholePortfolioJSON = tmp;
+    }
+    return this.Cache.WholePortfolioJSON;
+  };
   app.bindListeners();
   Backbone.View.prototype.showMessageAt = function(msg, $appendTo, className) {
     var $el;
@@ -21723,7 +29187,7 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
     _.each(Backbone.__pendingSaveReqs, function(req) {
       if (req.cid === _this.cid) {
         found = true;
-        if (req.xhr.readyState !== 4) {
+        if (req.xhr && req.xhr.readyState !== 4) {
           req.xhr.abort();
         }
         return req.xhr = xhr;
@@ -21751,8 +29215,27 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
       return block.inverse(this);
     }
   });
+  Handlebars.registerHelper('console', function(what) {
+    console.log(what);
+    return 'logging...';
+  });
   $(function() {
+    app.$body = $('body');
     jQuery.event.props.push('dataTransfer');
+    $(document).bind('ajaxSend', function(event, xhr, settings) {
+      if (settings.type !== 'GET') {
+        app.ajaxCount++;
+        return app.$body.addClass('requesting');
+      }
+    });
+    $(document).bind('ajaxComplete', function(event, xhr, settings) {
+      if (settings.type !== 'GET') {
+        app.ajaxCount--;
+        if (app.ajaxCount === 0) {
+          return app.$body.removeClass('requesting');
+        }
+      }
+    });
     $(document).on('dragenter dragover dragleave drop', function(e) {
       if (e.type === 'dragenter' || e.type === 'dragover') {
         $.fireGlobalDragEvent('dragstart', e.target, 'file');
@@ -21826,7 +29309,9 @@ require.config({
       exports: 'Handlebars'
     },
     'plugins/tooltip/jquery.qtip': ['jquery'],
-    'plugins/gravity/jquery.gravity': ['plugins/tooltip/jquery.qtip'],
+    'plugins/packery/packery.pkgd': ['jquery'],
+    'plugins/packery/packerytest': ['plugins/packery/packery.pkgd', 'plugins/tooltip/jquery.qtip'],
+    'modules/JJPackery': ['plugins/packery/packerytest'],
     'responsiveimage/picturefill': ['responsiveimage/external/matchmedia'],
     'plugins/misc/spin.min': ['jquery'],
     'plugins/misc/misc': ['jquery'],
@@ -21841,7 +29326,10 @@ require.config({
     'plugins/backbone.layoutmanager': ['backbone'],
     'plugins/backbone.JJRelational': ['backbone'],
     'plugins/backbone.JJRestApi': ['backbone'],
-    'modules/NMMarkdownParser': ['plugins/editor/jquery.jjmarkdown']
+    'modules/NMMarkdownParser': ['plugins/editor/jquery.jjmarkdown'],
+    'plugins/visualsearch/jquery.ui.autocomplete': ['plugins/visualsearch/jquery.ui.widget'],
+    'plugins/visualsearch/jquery.ui.menu': ['plugins/visualsearch/jquery.ui.widget'],
+    'plugins/visualsearch/visualsearch': ['plugins/backbone.layoutmanager', 'plugins/visualsearch/jquery.ui.core', 'plugins/visualsearch/jquery.ui.autocomplete', 'plugins/visualsearch/jquery.ui.menu']
   }
 });
 

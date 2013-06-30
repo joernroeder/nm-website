@@ -82,13 +82,14 @@ var classie = {
 };
 
 // transport
-if ( typeof _define === 'function' && define.amd ) {
+/*if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( classie );
 } else {
   // browser global
   window.classie = classie;
-}
+}*/
+window.classie = classie;
 
 })( window );
 
@@ -157,14 +158,14 @@ var eventie = {
 };
 
 // transport
-if ( typeof _define === 'function' && define.amd ) {
+/*if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( eventie );
 } else {
   // browser global
   window.eventie = eventie;
-}
-
+}*/
+window.eventie = eventie;
 })( this );
 
 /*!
@@ -225,14 +226,14 @@ function defineDocReady( eventie ) {
 }
 
 // transport
-if ( typeof _define === 'function' && define.amd ) {
+/*if ( typeof _define === 'function' && define.amd ) {
   // AMD
-  define( [ 'eventie' ], defineDocReady );
+  //define( [ 'eventie' ], defineDocReady );
 } else {
   // browser global
   window.docReady = defineDocReady( window.eventie );
-}
-
+}*/
+window.docReady = defineDocReady( window.eventie );
 })( this );
 
 /*!
@@ -607,14 +608,15 @@ if ( typeof _define === 'function' && define.amd ) {
 	};
 
 	// Expose the class either via AMD or the global object
-	if (typeof _define === 'function' && define.amd) {
+	/*if (typeof _define === 'function' && define.amd) {
 		define(function () {
 			return EventEmitter;
 		});
 	}
 	else {
 		exports.EventEmitter = EventEmitter;
-	}
+	}*/
+	exports.EventEmitter = EventEmitter;
 }(this));
 /*!
  * getStyleProperty by kangax
@@ -655,7 +657,7 @@ function getStyleProperty( propName ) {
 }
 
 // transport
-if ( typeof _define === 'function' && define.amd ) {
+/*if ( typeof _define === 'function' && define.amd ) {
   // AMD
   define( function() {
     return getStyleProperty;
@@ -663,8 +665,8 @@ if ( typeof _define === 'function' && define.amd ) {
 } else {
   // browser global
   window.getStyleProperty = getStyleProperty;
-}
-
+}*/
+window.getStyleProperty = getStyleProperty;
 })( window );
 
 /**
@@ -835,14 +837,14 @@ return getSize;
 }
 
 // transport
-if ( typeof _define === 'function' && define.amd ) {
+/*if ( typeof _define === 'function' && define.amd ) {
   // AMD
-  define( [ 'get-style-property' ], defineGetSize );
+  //define( [ 'get-style-property' ], defineGetSize );
 } else {
   // browser global
   window.getSize = defineGetSize( window.getStyleProperty );
-}
-
+}*/
+window.getSize = defineGetSize( window.getStyleProperty );
 })( window );
 
 /**
@@ -971,14 +973,14 @@ $.bridget = function( namespace, PluginClass ) {
 }
 
 // transport
-if ( typeof _define === 'function' && define.amd ) {
+/*if ( typeof _define === 'function' && define.amd ) {
   // AMD
-  define( [ 'jquery' ], defineBridget );
+  //define( [ 'jquery' ], defineBridget );
 } else {
   // get jquery from browser global
   defineBridget( window.jQuery );
-}
-
+}*/
+defineBridget( window.jQuery );
 })( window );
 
 /**
@@ -1072,7 +1074,7 @@ if ( typeof _define === 'function' && define.amd ) {
   }
 
   // transport
-  if ( typeof _define === 'function' && define.amd ) {
+  /*if ( typeof _define === 'function' && define.amd ) {
     // AMD
     define( function() {
       return matchesSelector;
@@ -1080,8 +1082,8 @@ if ( typeof _define === 'function' && define.amd ) {
   } else {
     // browser global
     window.matchesSelector = matchesSelector;
-  }
-
+  }*/
+ window.matchesSelector = matchesSelector;
 })( this, Element.prototype );
 
 /**
