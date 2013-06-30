@@ -1543,6 +1543,12 @@ body.editor-sidebar-open {
 			background-position: 0 50%;
 			background-size: 100%;
 
+			&.icon-publish.publishing {
+				position: relative;
+				.transition(~"top .25s ease-in-out");
+				.animation(~"jump 1s infinite");
+			}
+
 			span {
 				display: none;
 			}

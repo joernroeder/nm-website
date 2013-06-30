@@ -2683,6 +2683,19 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   background-position: 0 50%;
   background-size: 100%;
 }
+.editor-sidebar > nav a.icon-publish.publishing {
+  position: relative;
+  -webkit-transition: top .25s ease-in-out;
+  -moz-transition: top .25s ease-in-out;
+  -o-transition: top .25s ease-in-out;
+  -ms-transition: top .25s ease-in-out;
+  transition: top .25s ease-in-out;
+  -webkit-animation: jump 1s infinite;
+  -moz-animation: jump 1s infinite;
+  -o-animation: jump 1s infinite;
+  -ms-animation: jump 1s infinite;
+  animation: jump 1s infinite;
+}
 .editor-sidebar > nav a span {
   display: none;
 }
