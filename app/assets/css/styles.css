@@ -813,7 +813,6 @@ button.Zebra_DatePicker_Icon {
 }
 .stamp {
   position: absolute;
-  background: rgba(255, 0, 0, 0.2);
   width: 7.5%;
   height: 7.5%;
   left: 15%;
@@ -1543,7 +1542,7 @@ x:-o-prefocus,
   margin-left: 5.555555555555555%;
 }
 .portfolio .packery-wrapper {
-  width: 100%;
+  width: 87.5%;
 }
 .portfolio .packery {
   width: 100% !important;
