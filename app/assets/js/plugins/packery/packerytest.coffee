@@ -2,6 +2,17 @@
 
 do ($ = jQuery) ->
 
+	###
+	layout a collection of item elements
+	@param {Array} items - array of Packery.Items
+	@param {Boolean} isInstant - disable transitions for setting item position
+	###
+	packery_layoutItems = Packery.prototype.layoutItems
+
+	Packery::layoutItems = (items, isInstant) ->
+		this.maxY = 0
+		packery_layoutItems.call @, items, isInstant
+
 	class JJPackery
 
 		###
@@ -17,14 +28,27 @@ do ($ = jQuery) ->
 			@resizeTimeout = null
 			
 			@updateLayout = true
+			@fitInWindow = true
 			@rendered = 0
-	
+
+			@onResizeLayout = false
+			@layoutIsComplete = false
+			@started = false
+
+			@itemDimensions = []
+
+			@transitionDuration = '.4s'
+			
+
+			# radial effect
 			@factor = .3
 
+			# tooltip api
 			@api = {}
 
 
 		constructor: ->
+			console.log 'JJPackery'
 			@members()
 
 			@init()
@@ -39,25 +63,59 @@ do ($ = jQuery) ->
 			@$sizing = $ '.packery-test', @$container
 			@$packeryEl = $ '.packery', @$container
 
+			if @fitInWindow
+				@$packeryEl
+					.addClass('fit-in-window')
+					.css('max-height', @$window.height())
+
+
+		calcAndLayout: ->
+			if @packery and @updateLayout
+				console.log 'calc and relayout'
+				@calc() if @fitInWindow
+				@packery.layout()
+
+		setToCenter: ->
+			winHeight = @$window.height()
+			elHeight = @$packeryEl.height()
+
+			if elHeight <= winHeight
+				@$packeryEl.css 'top', Math.floor((winHeight - elHeight) / 2)
+			else
+				@$packeryEl.css 'top', 0
+
+		hiddenLayout: (duration) ->
+			@onResizeLayout = true
+			#@packery.options.transitionDuration = 0
+			@packery.layout()
+			#@packery.options.transitionDuration = duration
+			@onResizeLayout = false
+
 		###
 		 # on resize handler
 		 #
 		###
 		onResize: =>
-			newHeight = @$window.height()
-			@$container.height newHeight
-			@$packeryEl.width Math.floor(@$container.width() / 3) * 2
+			if @fitInWindow
+				@calc()
+				@$packeryEl.css 'max-height', @$window.height()
 
-			@calc()
 
-			@packery.layout() if @packery and @updateLayout # @todo: remove @updateLayout
+			if not @layoutIsComplete
+				#newHeight = @$window.height()
+				#@$container.height newHeight
+				console.log 'not layoutIsComplete'
+				@layoutIsComplete = true
+				@packery.layout()
+			
+			@packery.layout()
+			@setToCenter()
+			#@$packeryEl[0].style.height = 0;
 
-			elHeight = @$packeryEl.height()
-
-			if elHeight <= newHeight
-				@$packeryEl.css 'top', Math.floor((newHeight - elHeight) / 2)
-			else
-				@$packeryEl.css 'top', 0
+			if @layoutIsComplete and not @started
+				console.log 'started'
+				@started = true
+				@show()
 
 		###
 		 # returns the centered position of the given element
@@ -132,14 +190,16 @@ do ($ = jQuery) ->
 		 #
 		###
 		initTooltips: ->
+			console.log 'init tooltips'
 			$.each @packery.getItemElements(), (i, el) =>
 				@_initTooltip el
+
+			false
 
 		getApi: ->
 			@api or {}
 
 		_initTooltip: (el) ->
-			console.log 'init tooltip %O', el
 			$el = $ el
 			$metaSection = $ 'section[role=tooltip-content]', $el
 
@@ -224,35 +284,88 @@ do ($ = jQuery) ->
 		destroy: ->
 			@packery.destroy() if @packery
 
-		calc: ->
-			limit = .9
+		calc: (rewind) ->
+			limit = .7
+			buffer = .05
 
 			square = @$window.height() * @$window.width()
 
 			itemSquare = 0
+			imageSquare = 0
+			stampSquare = 0
 
 			$stamps = @$packeryEl.find '.stamp'
 			$stamps.each (i, el) ->
 				$item = $ el
 
-				itemSquare += $item.width() * $item.height()
+				stampSquare += $item.width() * $item.height()
 
 			for i, item of @packery.getItemElements()
 				$item = $ item
 
-				itemSquare += $item.width() * $item.height()
+				imageSquare += $item.width() * $item.height()
 
-			if itemSquare / square > limit
-				for i, item of @packery.getItemElements()
+			itemSquare = imageSquare + stampSquare
+			
+			console.log square
+			console.log itemSquare
+
+			console.log itemSquare / square
+
+			if imageSquare / square > limit + buffer
+				console.log 'more than ' + limit + '%'
+				items = @packery.getItemElements()
+				console.log items.length
+				for i, item of items
 					$item = $ item
 
 					$item.width $item.width() * limit
 					$item.height $item.height * limit
 
-				$stamps.each (i, el) ->
-					$item = $ el
-					$item.width $item.width() * limit
-					$item.height $item.height * limit
+				#$stamps.each (i, el) ->
+				#	$item = $ el
+				#	$item.width $item.width() * limit
+				#	$item.height $item.height * limit
+			else if imageSquare / square < limit - buffer
+				factor = square / imageSquare - buffer
+				console.log factor
+				for i, item of @packery.items
+					dims = item.initialDimensions
+					
+					continue if not dims
+
+					$item = $ item.element
+					width = $item.width()
+
+					console.log width * factor
+					newWidth = Math.min dims.width, width * factor
+
+					$item.width newWidth
+
+		#	if not rewind
+		#		@calc true
+
+		saveItemDimensions: ->
+			#@itemDimensions
+
+			for i, item of @packery.items
+				item.initialDimensions = 
+					width: item.rect.width
+					height: item.rect.height
+
+				#@packery.items[i]
+
+			false
+
+
+		show: ->
+			console.log 'show'
+			@packery.options.transitionDuration = @transitionDuration
+			@saveItemDimensions()
+			@setToCenter()
+			@initTooltips()
+			@applyRadialGravityEffect()
+			@$container.addClass('loaded').addClass 'has-gravity'
 				
 
 		# ! --- implementation ----------------------
@@ -265,38 +378,55 @@ do ($ = jQuery) ->
 					stamped: '.stamp'
 					#columnWidth: 20
 					#rowHeight: 20
-					#transitionDuration: 0
+					transitionDuration: 0
 					isResizeBound: false
 					isInitLayout: false
-	
+
+				@packery.maxY = @$window.height()
+				
 				@packery.on 'layoutComplete', =>
 					@rendered++
 					if @rendered is 1
 						console.log 'hidden trigger'
-					else if not @$container.hasClass('loaded') and @rendered is 2
-						console.log 'renderd 2 -> not .loaded'
-						# fix element positions.
-						# @todo vielleicht hängt das mit dem nachladen der bilder zusammen...
-						@$window.trigger 'resize'
-					else if @rendered is 3
-						@initTooltips()
-						@applyRadialGravityEffect()
+						#@packery.layout()
+						#@packery.options.transitionDuration = @transitionDuration
+					else 
+						@layoutIsComplete = true
+					#if @rendered is 2
+
+					#else if not @$container.hasClass('loaded') and @rendered is 2
+					#	console.log 'renderd 2 -> not .loaded'
+					#	# fix element positions.
+					#	# @todo vielleicht hängt das mit dem nachladen der bilder zusammen...
+					#	@$window.trigger 'resize'
+					#else if @rendered is 3
+					#	@packery.options.transitionDuration = @transitionDuration
+					#	@setToCenter()
+					#	@initTooltips()
+					#	@applyRadialGravityEffect()
 	
-						@$container.addClass('loaded').addClass 'has-gravity'
-						console.log 'loaded'
+					#	@$container.addClass('loaded').addClass 'has-gravity'
+					#	console.log 'loaded'
+
 	
 					console.log 'layout is complete'
 					false
 	
-				# initial trigger
+				#@rendered++
+
+				@$window.on 'resize', =>
+					clearTimeout @resizeTimeout if @resizeTimeout
+					@resizeTimeout = setTimeout @onResize, 200
+
 				@onResize()
+				
+				#@packery.layout()
+				
+				# initial trigger
+				#@onResize()
 	
 				#@packery.layoutItems [], true
-				@packery.layout()
-	
-				@$window.on 'resize', =>
-					clearTimeout resizeTimeout if resizeTimeout
-					resizeTimeout = setTimeout @onResize, 100
+				#@packery.layout()
 
 
 	JJPackeryMan = -> new JJPackery

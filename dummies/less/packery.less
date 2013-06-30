@@ -1,27 +1,23 @@
 .packery-wrapper {
-	position: relative;
+	//position: relative;
 	width: 100%;
 	min-height: 100%;
 	opacity: 0;
-	padding: 0;
+	padding: 0 !important;
 
-	//.transition(~"opacity .1s ease-in-out");
+	.transition(~"opacity .1s ease-in-out");
 
 	&.loaded {
 		opacity: 1;
 
-	.packery-item {
-		.transition(~"margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005)");
-	}
-
-	&.has-gravity .packery-item {
+		&.has-gravity .packery-item {
 			margin: 0 !important;
 		}
 	}
 }
 
 .packery-test {
-	position: relative;
+	//position: relative;
 	//height: 100%;
 }
 
@@ -35,11 +31,17 @@
 	width: 50%;
 	margin: auto;
 
+	.transition(~"top .4s ease-in-out");
+
 	// clearfix
 	&:after {
 		content: ' ';
 		display: block;
 		clear: both;
+	}
+
+	&.fit-in-window {
+		max-height: 100%;
 	}
 }
 
@@ -131,8 +133,25 @@
 .packery-item {
 	display: inline-block;
 	.box-sizing(border-box);
+	// !important doesn't work with mixings at the moment
+	//.transition(~"margin .15s 1s cubic-bezier(0.825, 1.610, 0.890, 1.005), -webkit-transform 0ms") !important;
+	//.transition-property(-webkit-transition-property, margin) !important;
+	@time: 0.15s;
+	@delay: 1s;
+	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
+	-o-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	-ms-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
+	
+	-webkit-transition-property: -webkit-transition-property, margin !important;
+	-moz-transition-property: -webkit-transition-property, margin !important;
+	-o-transition-property: -webkit-transition-property, margin !important;
+	-ms-transition-property: -webkit-transition-property, margin !important;
+	transition-property: -webkit-transition-property, margin !important;
 
 	&> a {
+		background: red;
 		display: block;
 		border: none;
 		background: rgba(255,0,0,.5);

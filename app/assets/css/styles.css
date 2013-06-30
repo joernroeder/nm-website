@@ -763,27 +763,21 @@ button.Zebra_DatePicker_Icon {
   padding: 5px 0;
 }
 .packery-wrapper {
-  position: relative;
   width: 100%;
   min-height: 100%;
   opacity: 0;
-  padding: 0;
+  padding: 0 !important;
+  -webkit-transition: opacity .1s ease-in-out;
+  -moz-transition: opacity .1s ease-in-out;
+  -o-transition: opacity .1s ease-in-out;
+  -ms-transition: opacity .1s ease-in-out;
+  transition: opacity .1s ease-in-out;
 }
 .packery-wrapper.loaded {
   opacity: 1;
 }
-.packery-wrapper.loaded .packery-item {
-  -webkit-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
-  -moz-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
-  -o-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
-  -ms-transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
-  transition: margin .15s cubic-bezier(0.825, 1.610, 0.890, 1.005);
-}
 .packery-wrapper.loaded.has-gravity .packery-item {
   margin: 0 !important;
-}
-.packery-test {
-  position: relative;
 }
 .packery {
   top: 0;
@@ -793,11 +787,19 @@ button.Zebra_DatePicker_Icon {
   position: relative;
   width: 50%;
   margin: auto;
+  -webkit-transition: top .4s ease-in-out;
+  -moz-transition: top .4s ease-in-out;
+  -o-transition: top .4s ease-in-out;
+  -ms-transition: top .4s ease-in-out;
+  transition: top .4s ease-in-out;
 }
 .packery:after {
   content: ' ';
   display: block;
   clear: both;
+}
+.packery.fit-in-window {
+  max-height: 100%;
 }
 .test {
   display: inline-block;
@@ -871,8 +873,19 @@ button.Zebra_DatePicker_Icon {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -moz-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -o-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -ms-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -webkit-transition-property: -webkit-transition-property, margin !important;
+  -moz-transition-property: -webkit-transition-property, margin !important;
+  -o-transition-property: -webkit-transition-property, margin !important;
+  -ms-transition-property: -webkit-transition-property, margin !important;
+  transition-property: -webkit-transition-property, margin !important;
 }
 .packery-item > a {
+  background: red;
   display: block;
   border: none;
   background: rgba(255, 0, 0, 0.5);
@@ -1416,6 +1429,16 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -moz-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -o-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -ms-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -webkit-transition-property: -webkit-transition-property, margin !important;
+  -moz-transition-property: -webkit-transition-property, margin !important;
+  -o-transition-property: -webkit-transition-property, margin !important;
+  -ms-transition-property: -webkit-transition-property, margin !important;
+  transition-property: -webkit-transition-property, margin !important;
   position: relative;
   display: inline-block;
   -webkit-transition: opacity .2s ease-in-out;
@@ -1427,6 +1450,7 @@ x:-o-prefocus,
 }
 .packery-wrapper > img > a,
 .packery-wrapper .packery-item > a {
+  background: red;
   display: block;
   border: none;
   background: rgba(255, 0, 0, 0.5);
@@ -1766,6 +1790,16 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -moz-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -o-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -ms-transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  transition: margin 0.15s 1s cubic-bezier(0.825, 1.61, 0.89, 1.005) !important;
+  -webkit-transition-property: -webkit-transition-property, margin !important;
+  -moz-transition-property: -webkit-transition-property, margin !important;
+  -o-transition-property: -webkit-transition-property, margin !important;
+  -ms-transition-property: -webkit-transition-property, margin !important;
+  transition-property: -webkit-transition-property, margin !important;
   position: relative;
   display: inline-block;
   -webkit-transition: opacity .2s ease-in-out;
@@ -1794,6 +1828,7 @@ x:-o-prefocus,
   width: 100%;
 }
 .editor .overview article > a {
+  background: red;
   display: block;
   border: none;
   background: rgba(255, 0, 0, 0.5);
