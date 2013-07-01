@@ -776,8 +776,20 @@ button.Zebra_DatePicker_Icon {
 .packery-wrapper.loaded {
   opacity: 1;
 }
-.packery-wrapper.loaded.has-gravity .packery-item {
+.packery-wrapper.loaded.has-gravity .packery-item > div {
+  -webkit-transition: margin .15s cubic-bezier(0.825, 1.810, 0.690, 1.0);
+  -moz-transition: margin .15s cubic-bezier(0.825, 1.810, 0.690, 1.0);
+  -o-transition: margin .15s cubic-bezier(0.825, 1.810, 0.690, 1.0);
+  -ms-transition: margin .15s cubic-bezier(0.825, 1.810, 0.690, 1.0);
+  transition: margin .15s cubic-bezier(0.825, 1.810, 0.690, 1.0);
   margin: 0 !important;
+}
+.packery-wrapper.loaded .packery {
+  -webkit-transition: top .2s ease-in;
+  -moz-transition: top .2s ease-in;
+  -o-transition: top .2s ease-in;
+  -ms-transition: top .2s ease-in;
+  transition: top .2s ease-in;
 }
 .packery {
   top: 0;
@@ -785,13 +797,7 @@ button.Zebra_DatePicker_Icon {
   left: 0;
   right: 0;
   position: relative;
-  width: 50%;
   margin: auto;
-  -webkit-transition: top .4s ease-in-out;
-  -moz-transition: top .4s ease-in-out;
-  -o-transition: top .4s ease-in-out;
-  -ms-transition: top .4s ease-in-out;
-  transition: top .4s ease-in-out;
 }
 .packery:after {
   content: ' ';
@@ -801,18 +807,9 @@ button.Zebra_DatePicker_Icon {
 .packery.fit-in-window {
   max-height: 100%;
 }
-.test {
-  display: inline-block;
-  border: 5px solid red;
-}
-.test.elpos {
-  border-color: green;
-}
-.test.center {
-  border-color: yellow;
-}
 .stamp {
   position: absolute;
+  background: #dedede;
   width: 7.5%;
   height: 7.5%;
   left: 15%;
@@ -872,6 +869,8 @@ button.Zebra_DatePicker_Icon {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -887,16 +886,17 @@ button.Zebra_DatePicker_Icon {
 	*/
 
 }
-.packery-item > a {
+.packery-item > div > a {
   background: #e6e6e6;
   display: block;
   border: none;
 }
-.packery-item > a:hover {
+.packery-item > div > a:hover {
   border: none;
 }
-.packery-item > a img {
+.packery-item > div > a img {
   display: block;
+  min-width: 100%;
   max-width: 100%;
   height: auto;
 }
@@ -1431,6 +1431,8 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -1454,19 +1456,20 @@ x:-o-prefocus,
   transition: opacity .2s ease-in-out;
   z-index: 14000;
 }
-.packery-wrapper > img > a,
-.packery-wrapper .packery-item > a {
+.packery-wrapper > img > div > a,
+.packery-wrapper .packery-item > div > a {
   background: #e6e6e6;
   display: block;
   border: none;
 }
-.packery-wrapper > img > a:hover,
-.packery-wrapper .packery-item > a:hover {
+.packery-wrapper > img > div > a:hover,
+.packery-wrapper .packery-item > div > a:hover {
   border: none;
 }
-.packery-wrapper > img > a img,
-.packery-wrapper .packery-item > a img {
+.packery-wrapper > img > div > a img,
+.packery-wrapper .packery-item > div > a img {
   display: block;
+  min-width: 100%;
   max-width: 100%;
   height: auto;
 }
@@ -1474,18 +1477,18 @@ x:-o-prefocus,
 .packery-wrapper .packery-item section {
   display: none;
 }
-.packery-wrapper > img[data-packery-item].loaded > a,
-.packery-wrapper .packery-item[data-packery-item].loaded > a {
+.packery-wrapper > img[data-packery-item].loaded > div > a,
+.packery-wrapper .packery-item[data-packery-item].loaded > div > a {
   background: #e6e6e6;
 }
-.packery-wrapper > img[data-packery-item].loaded > a img,
-.packery-wrapper .packery-item[data-packery-item].loaded > a img {
+.packery-wrapper > img[data-packery-item].loaded > div > a img,
+.packery-wrapper .packery-item[data-packery-item].loaded > div > a img {
   min-width: 100%;
   max-width: 100%;
   height: auto;
 }
-.packery-wrapper > img > a,
-.packery-wrapper .packery-item > a {
+.packery-wrapper > img > div > a,
+.packery-wrapper .packery-item > div > a {
   position: relative;
   display: block;
   border: none;
@@ -1497,8 +1500,8 @@ x:-o-prefocus,
   padding: 0;
   margin: 0;
 }
-.packery-wrapper > img > a img,
-.packery-wrapper .packery-item > a img {
+.packery-wrapper > img > div > a img,
+.packery-wrapper .packery-item > div > a img {
   display: block;
 }
 .packery-wrapper > img.has-tooltip,
@@ -1509,8 +1512,8 @@ x:-o-prefocus,
 		}*/
 
 }
-.packery-wrapper > img.has-tooltip > a,
-.packery-wrapper .packery-item.has-tooltip > a {
+.packery-wrapper > img.has-tooltip > div > a,
+.packery-wrapper .packery-item.has-tooltip > div > a {
   padding: 0.625em;
   margin: -0.625em;
 }
@@ -1520,6 +1523,9 @@ x:-o-prefocus,
 }
 .main .packery-wrapper {
   width: 100%;
+}
+.main .packery {
+  width: 100% !important;
 }
 .index .packery-wrapper {
   width: 75%;
@@ -1558,18 +1564,22 @@ x:-o-prefocus,
 .about .packery-wrapper {
   width: 100%;
 }
+.about .packery {
+  width: 100% !important;
+}
 .about article {
   margin: 6.4375em 0;
   overflow: hidden;
 }
 .about .statement {
   float: right;
-  width: 50%;
+  width: 75%;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   margin-right: 12.5%;
+  height: auto !important;
 }
 .about .statement p:last-child {
   margin-bottom: 1.5em;
@@ -1581,6 +1591,7 @@ x:-o-prefocus,
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   width: 37.5%;
+  padding: 0.75em;
 }
 .about .group-image img {
   max-width: 100%;
@@ -1735,20 +1746,20 @@ x:-o-prefocus,
 .packery-item.person-info section {
   display: inline-block;
 }
-.packery-item.person-info > section:first-child {
+.packery-item.person-info > div > section:first-child {
   float: left;
   width: 18.75%;
 }
-.packery-item.person-info > section:first-child a {
+.packery-item.person-info > div > section:first-child a {
   display: block;
   border: none;
 }
-.packery-item.person-info > section:first-child img {
+.packery-item.person-info > div > section:first-child img {
   display: block;
   max-width: 100%;
   height: auto;
 }
-.packery-item.person-info > section:last-child {
+.packery-item.person-info > div > section:last-child {
   width: 81.25%;
   padding: 0 0 1.5em 1.5em;
   -webkit-box-sizing: border-box;
@@ -1795,6 +1806,8 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -1836,31 +1849,32 @@ x:-o-prefocus,
   *zoom: 1;
   width: 100%;
 }
-.editor .overview article > a {
+.editor .overview article > div > a {
   background: #e6e6e6;
   display: block;
   border: none;
 }
-.editor .overview article > a:hover {
+.editor .overview article > div > a:hover {
   border: none;
 }
-.editor .overview article > a img {
+.editor .overview article > div > a img {
   display: block;
+  min-width: 100%;
   max-width: 100%;
   height: auto;
 }
 .editor .overview article section {
   display: none;
 }
-.editor .overview article[data-packery-item].loaded > a {
+.editor .overview article[data-packery-item].loaded > div > a {
   background: #e6e6e6;
 }
-.editor .overview article[data-packery-item].loaded > a img {
+.editor .overview article[data-packery-item].loaded > div > a img {
   min-width: 100%;
   max-width: 100%;
   height: auto;
 }
-.editor .overview article > a {
+.editor .overview article > div > a {
   position: relative;
   display: block;
   border: none;
@@ -1872,7 +1886,7 @@ x:-o-prefocus,
   padding: 0;
   margin: 0;
 }
-.editor .overview article > a img {
+.editor .overview article > div > a img {
   display: block;
 }
 .editor .overview article.has-tooltip {
@@ -1882,7 +1896,7 @@ x:-o-prefocus,
 		}*/
 
 }
-.editor .overview article.has-tooltip > a {
+.editor .overview article.has-tooltip > div > a {
   padding: 0.625em;
   margin: -0.625em;
 }
@@ -1901,7 +1915,7 @@ x:-o-prefocus,
 .editor .overview article:after {
   clear: both;
 }
-.editor .overview article > a,
+.editor .overview article > div > a,
 .editor .overview article section.meta {
   float: left;
 }

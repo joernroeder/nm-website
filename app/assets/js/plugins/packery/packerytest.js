@@ -34,6 +34,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.layoutIsComplete = false;
       this.started = false;
       this.itemDimensions = [];
+      this.itemSelector = '.packery-item';
       this.transitionDuration = '.4s';
       return this.factor = .3;
     };
@@ -44,6 +45,28 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.init();
       this.start();
     }
+
+    JJPackery.prototype.randomizeDimensions = function() {
+      var floor, max, min;
+
+      max = 1;
+      min = .5;
+      floor = 10;
+      return $(this.itemSelector, this.$packeryEl).each(function(i, el) {
+        var $el, factor, h, w;
+
+        $el = $(el);
+        if (!$el.hasClass('resizable')) {
+          return;
+        }
+        w = $el.width();
+        h = $el.height();
+        factor = Math.min(max, Math.max(min, Math.random() * (max + min)));
+        console.log(factor);
+        $el.width(Math.floor(w * factor / floor) * floor);
+        return $el.height(Math.floor(h * factor / floor) * floor);
+      });
+    };
 
     /*
     		 # fill variables
@@ -193,7 +216,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         'margin-top': yFactor,
         'margin-left': xFactor
       };
-      $el.css(margins);
+      $('> div', $el).css(margins);
       return true;
     };
 
@@ -344,7 +367,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         				)
         */
 
-        return $('> a', $el).on('mouseleave', function() {
+        return $('> div > a', $el).on('mouseleave', function() {
           console.log('leave');
           mouseOutEl = true;
           return hideTip();
@@ -455,9 +478,10 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         if (!_this.$packeryEl.length) {
           return;
         }
+        _this.randomizeDimensions();
         _this.packery = new Packery(_this.$packeryEl[0], {
           containerStyle: null,
-          itemSelector: '.packery-item',
+          itemSelector: _this.itemSelector,
           gutter: 0,
           stamped: '.stamp',
           transitionDuration: 0,
@@ -470,6 +494,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           if (_this.rendered === 1) {
             console.log('hidden trigger');
           } else {
+            console.log('completed');
             _this.layoutIsComplete = true;
           }
           console.log('layout is complete');

@@ -527,7 +527,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	&[data-packery-item].loaded {
 		//opacity: 1;
 
-		&> a {
+		&> div > a {
 			background: @bgColor;
 
 			img {
@@ -538,7 +538,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
-	&> a {
+	&> div > a {
 		position: relative;
 		display: block;
 		border: none;
@@ -558,7 +558,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	&.has-tooltip {
 		z-index: 16000;
 
-		&> a {
+		&> div > a {
 			padding: @gravityItemBorder / @em;
 			margin: -@gravityItemBorder / @em;
 		}
@@ -577,8 +577,14 @@ x:-o-prefocus, .qtip .qtip-tip{
 // ! --- Home ----------------------------------------------
 
 // fallback
-.main .packery-wrapper {
-	.columnsWidth(8, 8);
+.main {
+	.packery-wrapper {
+		.columnsWidth(8, 8);
+	}
+
+	.packery {
+		width: 100% !important;
+	}	
 }
 
 .index {
@@ -606,6 +612,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	.badge {
 		margin-left: @column;
 	}	
+	
 	.packery-wrapper {
 		.columnsWidth(8, 7);
 	}
@@ -627,6 +634,10 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.columnsWidth(8, 8);
 	}
 
+	.packery {
+		width: 100% !important;
+	}
+
 	article {
 		margin: (@line * 4 / @em) + @typoPrefix 0;
 		overflow: hidden;
@@ -634,9 +645,10 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	.statement {
 		float: right;
-		.columnsWidth(8, 4);
+		.columnsWidth(8, 6);
 		.wrapper;
 		margin-right: 100% / 8 * 1;
+		height: auto !important; // @todo: fix javascript setter!
 
 		p:last-child {
 			margin-bottom: @line * 1 / @em;
@@ -647,6 +659,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		float: right;
 		.wrapper;
 		width: 100% / 8 * 3;
+		padding: @line / 2 / @em;
 
 		img {
 			max-width: 100%;
@@ -762,7 +775,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		display: inline-block;
 	}
 
-	> section:first-child {
+	> div > section:first-child {
 		float: left;
 		//float: left;
 		.columnsWidth(8, @imageWidth);
@@ -779,7 +792,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
-	> section:last-child {
+	> div > section:last-child {
 		.columnsWidth(8, 8 - @imageWidth);
 		padding: 0 0 (@line / @em) (@line / @em);
 		.box-sizing(border-box);
@@ -837,7 +850,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		.clearfix;
 		width: 100%;
 
-		&> a,
+		&> div > a,
 		section.meta {
 			float: left;
 		}

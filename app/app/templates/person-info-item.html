@@ -1,26 +1,30 @@
-<section>
-	{{#if Image.Urls._320}}
-		<a href="/about/{{UrlSlug}}/">
-		{{#with Image.Urls._320}}
-			<img src="{{Url}}" width="{{Width}}" height="{{Height}}" alt="">
-		{{/with}}
-		</a>
-	{{/if}}
-</section>
+<!-- article class="person-info" -->
+<div>
+	<section>
+		{{#if Image.Urls._320}}
+			<a href="/about/{{UrlSlug}}/">
+			{{#with Image.Urls._320}}
+				<img src="{{Url}}" width="{{Width}}" height="{{Height}}" alt="">
+			{{/with}}
+			</a>
+		{{/if}}
+	</section>
 
-<section>
-	<header>
-		<p>{{personMeta}}</p>
-		<h1>{{FirstName}} {{Surname}}</h1>
-	</header>
+	<section>
+		<header>
+			<p>{{personMeta}}</p>
+			<h1>{{FirstName}} {{Surname}}</h1>
+		</header>
 
-	{{{MarkdownedBio}}}
+		{{{MarkdownedBio}}}
 
-	{{#if Websites}}
-		<ul class="websites">
-			{{#each Websites}}
-				<li>{{{website}}}</li>
-			{{/each}}
-		</ul>
-	{{/if}}
-</section>
+		{{#if Websites}}
+			<ul class="websites">
+				{{#each Websites}}
+					<li>{{{website}}}</li>
+				{{/each}}
+			</ul>
+		{{/if}}
+	</section>
+</div>
+<!-- /article -->

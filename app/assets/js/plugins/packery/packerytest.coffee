@@ -37,6 +37,7 @@ do ($ = jQuery) ->
 
 			@itemDimensions = []
 
+			@itemSelector = '.packery-item'
 			@transitionDuration = '.4s'
 			
 
@@ -53,6 +54,22 @@ do ($ = jQuery) ->
 
 			@init()
 			@start()
+
+		randomizeDimensions: ->
+			max = 1
+			min = .5
+			floor = 10
+
+			$(@itemSelector, @$packeryEl).each (i, el) ->
+				$el = $ el
+				return if not $el.hasClass 'resizable'
+
+				w = $el.width()
+				h = $el.height()
+				factor = Math.min(max, Math.max(min, Math.random() * (max+min)))
+				console.log factor
+				$el.width Math.floor(w * factor / floor) * floor
+				$el.height Math.floor(h * factor / floor) * floor
 
 		###
 		 # fill variables
@@ -182,7 +199,7 @@ do ($ = jQuery) ->
 				'margin-top': yFactor
 				'margin-left': xFactor
 
-			$el.css margins
+			$('> div', $el).css margins
 			true
 
 		###
@@ -334,7 +351,7 @@ do ($ = jQuery) ->
 				)
 				###
 
-				$('> a', $el).on('mouseleave', =>
+				$('> div > a', $el).on('mouseleave', =>
 					console.log 'leave'
 					mouseOutEl = true
 					hideTip()
@@ -438,10 +455,12 @@ do ($ = jQuery) ->
 			@$container.imagesLoaded =>
 				console.log @$packeryEl[0]
 				if not @$packeryEl.length then return
-				
+
+				@randomizeDimensions()
+
 				@packery = new Packery @$packeryEl[0],
 					containerStyle: null
-					itemSelector: '.packery-item'
+					itemSelector: @itemSelector
 					gutter: 0
 					stamped: '.stamp'
 					#columnWidth: 20
@@ -458,7 +477,8 @@ do ($ = jQuery) ->
 						console.log 'hidden trigger'
 						#@packery.layout()
 						#@packery.options.transitionDuration = @transitionDuration
-					else 
+					else
+						console.log 'completed'
 						@layoutIsComplete = true
 					#if @rendered is 2
 
