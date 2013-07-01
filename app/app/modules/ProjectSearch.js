@@ -343,7 +343,7 @@ define(['app', 'plugins/visualsearch/visualsearch'], function(app) {
     },
     updateCategoryClasses: function() {
       _this = this;
-      return this.$el.find('.category-filter a').each(function() {
+      return this.$el.find('.category-filter ul a').each(function() {
         var $this, cat, title, _i, _len, _ref, _results;
 
         $this = $(this);

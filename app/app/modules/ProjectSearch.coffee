@@ -247,7 +247,7 @@ define [
 
 			updateCategoryClasses: ->
 				_this = @
-				@.$el.find('.category-filter a').each ->
+				@.$el.find('.category-filter ul a').each ->
 					$this = $ @
 					title = $this.data('title').toLowerCase()
 
