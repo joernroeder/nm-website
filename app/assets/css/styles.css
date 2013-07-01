@@ -3710,6 +3710,15 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   margin-left: -300px;
   z-index: 9999999999999;
 }
+#searchbar > section {
+  display: none;
+}
+#searchbar > section.active {
+  display: block;
+}
+#searchbar > section > a.btn {
+  float: right;
+}
 #searchbar ul {
   -webkit-columns: 4;
   -moz-columns: 4;
@@ -3756,6 +3765,191 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 }
 #searchbar ul a:hover:not(.active):before {
   opacity: .5;
+}
+/* ===================== */
+/* = General and Reset = */
+/* ===================== */
+.VS-search {
+  /*
+	font-family: Arial, sans-serif;
+	color: #373737;
+	font-size: 12px;
+	*/
+
+}
+.VS-search input {
+  display: block;
+  border: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+  margin: 0;
+  padding: 4px;
+  background: transparent;
+  width: 100%;
+  color: #262626;
+}
+.VS-interface,
+.VS-search .dialog,
+.VS-search input {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+  line-height: 1.1em;
+}
+/* ========== */
+/* = Layout = */
+/* ========== */
+.VS-search .VS-search-box {
+  cursor: text;
+  position: relative;
+  background: transparent;
+  background: #dedede;
+  -webkit-transition: background-color .15s ease-in-out;
+  -moz-transition: background-color .15s ease-in-out;
+  -o-transition: background-color .15s ease-in-out;
+  -ms-transition: background-color .15s ease-in-out;
+  transition: background-color .15s ease-in-out;
+  min-height: 2.25em;
+  height: auto;
+}
+.VS-search .VS-search-box.VS-focus {
+  background-color: #d9d9d9;
+}
+.VS-search .VS-placeholder {
+  position: absolute;
+  top: 7px;
+  left: 4px;
+  margin: 0 20px 0 22px;
+  color: red;
+}
+.VS-search .VS-search-box.VS-focus .VS-placeholder,
+.VS-search .VS-search-box .VS-placeholder.VS-hidden {
+  display: none;
+}
+.VS-search .VS-search-inner {
+  position: relative;
+  margin: 0 0.75em;
+  overflow: hidden;
+}
+.VS-search input {
+  width: 100px;
+}
+.VS-search input,
+.VS-search .VS-input-width-tester {
+  padding: 6px 0;
+  float: left;
+}
+.VS-search.VS-focus input {
+  color: #262626;
+}
+.VS-search .VS-icon-search {
+  position: absolute;
+  left: 9px;
+  top: 8px;
+}
+.VS-search .VS-icon-cancel {
+  position: absolute;
+  right: 9px;
+  top: 8px;
+  background: red;
+}
+/* ================ */
+/* = Search Input = */
+/* ================ */
+.VS-search .search_input {
+  height: 28px;
+  float: left;
+  margin-left: -1px;
+}
+.VS-search .search_input input {
+  padding: 6px 3px 6px 2px;
+  width: 10px;
+  z-index: 100;
+  min-width: 4px;
+  position: relative;
+  font-variant: small-caps;
+}
+.VS-search .search_input.is_editing input {
+  color: #202020;
+}
+/* ================ */
+/* = Search Facet = */
+/* ================ */
+.VS-search .search_facet {
+  float: left;
+  margin: 0;
+  position: relative;
+  border: 1px solid red;
+}
+.VS-search .search_facet.is_selected {
+  margin-left: -3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+  background-color: #d2e6fd;
+  background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9);
+  /* FF3.6 */
+
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9));
+  /* Saf4+, Chrome */
+
+  background-image: linear-gradient(top, #d2e6fd, #b0d1f9);
+  border: 1px solid #6eadf5;
+}
+.VS-search .search_facet .category {
+  float: left;
+  font-variant: small-caps;
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  color: #919191;
+  padding: 8px 0 5px;
+  cursor: pointer;
+}
+.VS-search .search_facet .category a {
+  color: #919191;
+}
+.VS-search .search_facet.is_selected .category {
+  margin-left: 3px;
+}
+.VS-search .search_facet .search_facet_input_container {
+  float: left;
+}
+.VS-search .search_facet input {
+  margin: 0;
+  padding: 0;
+  color: #262626;
+  width: auto;
+  z-index: 100;
+  position: relative;
+  padding-top: 1px;
+  padding-bottom: 2px;
+  padding-right: 3px;
+}
+.VS-search .search_facet.is_editing input,
+.VS-search .search_facet.is_selected input {
+  color: #000;
+}
+.VS-search .search_facet .search_facet_remove {
+  position: absolute;
+  left: 0;
+  top: 4px;
+}
+.VS-search .search_facet.is_selected .search_facet_remove {
+  opacity: 0.4;
+  left: 3px;
+  filter: alpha(opacity=40);
+  background-position: center -11px;
+}
+.VS-search .search_facet .search_facet_remove:hover {
+  opacity: 1;
+}
+.VS-search .search_facet.is_editing .category,
+.VS-search .search_facet.is_selected .category {
+  color: #000;
+}
+.VS-search .search_facet.search_facet_maybe_delete .category,
+.VS-search .search_facet.search_facet_maybe_delete input {
+  color: darkred;
 }
 /*
  *
