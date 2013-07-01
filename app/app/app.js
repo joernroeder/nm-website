@@ -55,7 +55,8 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
         }
         return dfd;
       }
-      /*
+      /* @deprecated
+      				# If the template hasn't been compiled yet, then compile.
       				unless JST[path].__compiled__
       					JST[path] = Handlebars.compile JST[path]
       					JST[path].__compiled__ = true
