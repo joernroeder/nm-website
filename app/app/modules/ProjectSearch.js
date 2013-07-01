@@ -247,7 +247,7 @@ define(['app', 'plugins/visualsearch/visualsearch'], function(app) {
     },
     switchSearchView: function(e) {
       e.preventDefault();
-      $(e.target).blur();
+      $(e.target).removeClass('active').blur();
       this.$el.find('section').toggleClass('active');
       return false;
     },

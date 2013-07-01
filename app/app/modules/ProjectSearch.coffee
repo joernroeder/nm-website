@@ -178,7 +178,7 @@ define [
 
 			switchSearchView: (e) ->
 				e.preventDefault()
-				$(e.target).blur()
+				$(e.target).removeClass('active').blur()
 				@.$el.find('section').toggleClass('active')
 				false
 

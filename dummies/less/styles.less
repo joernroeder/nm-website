@@ -769,7 +769,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 	.clearfix();
 
 	display: inline-block;
-	background: rgba(255,255,0,.2);
+	//background: rgba(255,255,0,.2);
 
 	section {
 		display: inline-block;
@@ -2212,15 +2212,14 @@ body.dragover .editor-project-preview {
 
 #searchbar {
 	@width: 600px;
-	border: 1px solid red;
 	background: @bgColor;
 	padding: @line / @em;
 	position: absolute;
-	bottom: 15%;
+	top: 75%;
 	left: 50%;
 	width: @width;
 	margin-left: @width / -2;
-	z-index: 9999999999999;
+	z-index: 15000;
 
 	> section {
 		display: none;
@@ -2230,16 +2229,22 @@ body.dragover .editor-project-preview {
 		}
 
 		> a.btn {
-			float: right;
+			display: inline-block;
+			margin-top: 6 / @em;
+			width: 25%;
+			text-align: right;
 		}
 	}
 
-	ul {
-		@cols: 4;
+	.category-filter ul {
+		@cols: 3;
 		.columns(@cols);
+		width: 75%;
+		float: left;
 		//.column-rule(2px dotted red);
 
 		li {
+			position: relative;
 			-webkit-column-break-inside:avoid;
 			-moz-column-break-inside:avoid;
 			-o-column-break-inside:avoid;
@@ -2281,6 +2286,14 @@ body.dragover .editor-project-preview {
 			&:hover:not(.active):before {
 				opacity: .5;
 			}
+		}
+	}
+
+	.search {
+		.VS-search {
+			width: 75%;
+			display: inline-block;
+			float: left;
 		}
 	}
 }
@@ -2328,7 +2341,7 @@ body.dragover .editor-project-preview {
 	&:before {
 		.icon-font;
 		position: absolute;
-		top: -2.1 / @em;
+		top: 0;
 		display: block;
 		content: '\274E';
 		font-size: 35 / @em;
@@ -2378,7 +2391,7 @@ body.dragover .editor-project-preview {
 .VS-search .VS-search-inner {
 	position: relative;
 	margin: 0 @line / 2 / @em;
-	overflow: hidden;
+	//overflow: hidden;
 }
 .VS-search input {
 	width: 100px;
@@ -2472,15 +2485,14 @@ body.dragover .editor-project-preview {
 .VS-search .search_facet .search_facet_remove {
 	position: absolute;
 	left: 0;
-	
-	display: block;
-	content: 'f';
 }
 	.VS-search .search_facet.is_selected .search_facet_remove {
-		opacity: 0.4;
 		left: 3px;
-		filter: alpha(opacity=40);
 		background-position: center -11px;
+
+		&:before {
+			color: mix(@black, @nmColor);
+		}
 	}
 	.VS-search .search_facet .search_facet_remove:hover {
 		opacity: 1;
@@ -2499,8 +2511,66 @@ body.dragover .editor-project-preview {
 	}
 }
 
+/* ================ */
+/* = Autocomplete = */
+/* ================ */
 
-		
+.ui-helper-hidden-accessible {
+		display: none;
+}
+
+.search_input,
+.search_facet {
+
+	.ui-autocomplete {
+		position: absolute;
+		background-color: @bgColor;
+		cursor: pointer;
+		z-index: 9999999999;
+		top: 30 / @em;
+		padding: 0;
+		margin: 0;
+		width: auto;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.ui-autocomplete .ui-autocomplete-category {
+		.big-caps;
+		padding: 4px 4px 4px;
+		border-top: 1px solid #A2A2A2;
+		border-bottom: 1px solid #A2A2A2;
+		background-color: #B7B7B7;
+		text-shadow: 0 -1px 0 #999;
+		font-weight: bold;
+		color: white;
+		cursor: default;
+	}
+	.ui-autocomplete .ui-menu-item {
+		float: none;
+	}
+	.ui-autocomplete .ui-menu-item a {
+		outline: none;
+		display: block;
+		padding: (@line / 4 / @em) (@line / 2 / @em);
+		color: @black !important;
+
+	}
+	.ui-autocomplete .ui-menu-item a:active {
+		outline: none;
+	}
+	.ui-autocomplete .ui-menu-item .ui-state-hover, .ui-autocomplete .ui-menu-item .ui-state-focus {
+		background-color: @nmColor;
+		margin: 0;
+	}
+	.ui-autocomplete .ui-corner-all {
+		border-radius: 0;
+	}
+	.ui-autocomplete li {
+		list-style: none;
+		width: auto;
+	}
+}
 
 /*
  *
