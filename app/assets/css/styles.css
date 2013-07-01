@@ -3796,6 +3796,34 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
   line-height: 1.1em;
 }
+.VS-search .VS-icon-cancel {
+  width: 1.5em;
+  height: 1.5em;
+  background-position: center 0;
+  cursor: pointer;
+}
+.VS-search .VS-icon-cancel:before {
+  font-family: 'Entypo';
+  font-weight: normal;
+  position: absolute;
+  top: -0.13125em;
+  display: block;
+  content: '\274E';
+  font-size: 2.1875em;
+  color: #bcbcbc;
+  left: 0.25em;
+  -webkit-transition: color .15 ease-in-out;
+  -moz-transition: color .15 ease-in-out;
+  -o-transition: color .15 ease-in-out;
+  -ms-transition: color .15 ease-in-out;
+  transition: color .15 ease-in-out;
+}
+.VS-search .VS-icon-cancel:hover:before {
+  color: #262626;
+}
+.VS-search .search_facet.search_facet_maybe_delete .VS-icon-cancel:hover:before {
+  color: #fff;
+}
 /* ========== */
 /* = Layout = */
 /* ========== */
@@ -3851,7 +3879,6 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   position: absolute;
   right: 9px;
   top: 8px;
-  background: red;
 }
 /* ================ */
 /* = Search Input = */
@@ -3868,6 +3895,12 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   min-width: 4px;
   position: relative;
   font-variant: small-caps;
+  font-size: 1.125em;
+  line-height: 1.3333333333333333em;
+  color: #919191;
+}
+.VS-search .search_input input a {
+  color: #919191;
 }
 .VS-search .search_input.is_editing input {
   color: #202020;
@@ -3878,23 +3911,12 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 .VS-search .search_facet {
   float: left;
   margin: 0;
+  padding-left: 2.0999999999999996em;
   position: relative;
-  border: 1px solid red;
 }
 .VS-search .search_facet.is_selected {
+  background-color: #d9df20;
   margin-left: -3px;
-  -webkit-border-radius: 16px;
-  -moz-border-radius: 16px;
-  border-radius: 16px;
-  background-color: #d2e6fd;
-  background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9);
-  /* FF3.6 */
-
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9));
-  /* Saf4+, Chrome */
-
-  background-image: linear-gradient(top, #d2e6fd, #b0d1f9);
-  border: 1px solid #6eadf5;
 }
 .VS-search .search_facet .category {
   float: left;
@@ -3913,6 +3935,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 }
 .VS-search .search_facet .search_facet_input_container {
   float: left;
+  padding: 10px 0 5px 0.375em;
 }
 .VS-search .search_facet input {
   margin: 0;
@@ -3932,7 +3955,8 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 .VS-search .search_facet .search_facet_remove {
   position: absolute;
   left: 0;
-  top: 4px;
+  display: block;
+  content: 'f';
 }
 .VS-search .search_facet.is_selected .search_facet_remove {
   opacity: 0.4;
@@ -3947,9 +3971,12 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 .VS-search .search_facet.is_selected .category {
   color: #000;
 }
+.VS-search .search_facet.search_facet_maybe_delete {
+  background-color: #d93920;
+}
 .VS-search .search_facet.search_facet_maybe_delete .category,
 .VS-search .search_facet.search_facet_maybe_delete input {
-  color: darkred;
+  color: #fff;
 }
 /*
  *

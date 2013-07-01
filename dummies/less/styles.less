@@ -2314,6 +2314,38 @@ body.dragover .editor-project-preview {
 	line-height: 1.1em;
 }
 
+.VS-search .VS-icon {
+	
+	
+}
+
+.VS-search .VS-icon-cancel {
+	width: @line / @em; height: @line / @em;
+	background-position: center 0;
+	//background-image: url(../images/embed/icons/cancel_search.png?1311104738);
+	cursor: pointer;
+	
+	&:before {
+		.icon-font;
+		position: absolute;
+		top: -2.1 / @em;
+		display: block;
+		content: '\274E';
+		font-size: 35 / @em;
+		color: mix(@gray, @bgColor);
+		left: 4 / @em;
+		.transition(~"color .15 ease-in-out");
+	}
+}
+
+.VS-search .VS-icon-cancel:hover:before {
+	color: @black;
+}
+
+.VS-search .search_facet.search_facet_maybe_delete .VS-icon-cancel:hover:before {
+	color: #fff;
+}
+
 /* ========== */
 /* = Layout = */
 /* ========== */
@@ -2366,7 +2398,6 @@ body.dragover .editor-project-preview {
 .VS-search .VS-icon-cancel {
 	position: absolute;
 	right: 9px; top: 8px;
-	background: red;
 }
 
 /* ================ */
@@ -2384,7 +2415,7 @@ body.dragover .editor-project-preview {
 	z-index: 100;
 	min-width: 4px;
 	position: relative;
-	.small-caps;
+	.big-caps;
 }
 .VS-search .search_input.is_editing input {
 	color: #202020;
@@ -2397,21 +2428,13 @@ body.dragover .editor-project-preview {
 .VS-search .search_facet {
 	float: left;
 	margin: 0;
-	//padding: @line / 4 / @em 14px;
+	padding-left: @line * 1.4 / @em;
 	position: relative;
-	border: 1px solid red;
 	//margin: 3px -3px 3px 0;
 }
 .VS-search .search_facet.is_selected {
-	margin-left: -3px;
-	-webkit-border-radius: 16px;
-	-moz-border-radius: 16px;
-	border-radius: 16px;
-	background-color: #d2e6fd;
-	background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9); /* FF3.6 */
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9)); /* Saf4+, Chrome */
-	background-image: linear-gradient(top, #d2e6fd, #b0d1f9);
-	border: 1px solid #6eadf5;
+	background-color: @nmColor;
+	margin-left: -3px;	
 }
 .VS-search .search_facet .category {
 	float: left;
@@ -2427,6 +2450,7 @@ body.dragover .editor-project-preview {
 }
 .VS-search .search_facet .search_facet_input_container {
 	float: left;
+	padding: 10px 0 5px @line / 4 / @em;
 }
 .VS-search .search_facet input {
 	margin: 0;
@@ -2448,7 +2472,9 @@ body.dragover .editor-project-preview {
 .VS-search .search_facet .search_facet_remove {
 	position: absolute;
 	left: 0;
-	top: 4px;
+	
+	display: block;
+	content: 'f';
 }
 	.VS-search .search_facet.is_selected .search_facet_remove {
 		opacity: 0.4;
@@ -2463,9 +2489,14 @@ body.dragover .editor-project-preview {
 .VS-search .search_facet.is_selected .category {
 	color: #000;
 }
-.VS-search .search_facet.search_facet_maybe_delete .category,
-.VS-search .search_facet.search_facet_maybe_delete input {
-	color: darkred;
+
+.VS-search .search_facet.search_facet_maybe_delete {
+	background-color: @errorColor;
+
+	.category,
+	input {
+		color: #fff;
+	}
 }
 
 
