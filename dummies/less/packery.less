@@ -145,6 +145,13 @@
 	transition-property: -webkit-transition-property, margin !important;
 	*/
 
+	&.hidden {
+		opacity: 0;
+		width: 0;
+		height: 0;
+		visibility: hidden;
+	}
+
 	&> div {
 		//.transition(~"margin .15s 10s cubic-bezier(0.825, 1.610, 0.890, 1.005)");
 	}

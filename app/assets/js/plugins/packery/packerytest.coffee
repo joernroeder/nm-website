@@ -13,6 +13,11 @@ do ($ = jQuery) ->
 		this.maxY = 0
 		packery_layoutItems.call @, items, isInstant
 
+	#packery_item_remove = Packery.Item.prototype.remove
+	Packery.Item::removeElem = ->
+		$(@.element).addClass 'hidden'
+		false
+
 	class JJPackery
 
 		###
@@ -207,7 +212,7 @@ do ($ = jQuery) ->
 		 #
 		###
 		initTooltips: ->
-			console.log 'init tooltips'
+			#console.log 'init tooltips'
 			$.each @packery.getItemElements(), (i, el) =>
 				@_initTooltip el
 
@@ -230,23 +235,10 @@ do ($ = jQuery) ->
 					clearTimeout hideTimeout
 
 				hideTimeout = setTimeout =>
-					console.log mouseOutEl
-					console.log mouseOutTip
 					if mouseOutEl and mouseOutTip
 						$el.add(api.tooltip).off 'mouseleave.tooltip'
 						api.hide()
 				, 200
-
-			###
-			showTip = =>
-				if showTimeout
-					clearTimeout showTimeout
-				
-				showTimeout = setTimeout =>
-					console.log 'show tip'
-					api.show()
-				, 500
-			###
 
 			$el = $ el
 			$metaSection = $ 'section[role=tooltip-content]', $el
@@ -286,7 +278,6 @@ do ($ = jQuery) ->
 									'opacity': 1
 								, 200
 
-							console.log api.tooltip
 							if api.tooltip
 								$(api.tooltip).one 'mouseenter.tooltip', =>
 									mouseOutTip = false
@@ -298,7 +289,6 @@ do ($ = jQuery) ->
 									mouseOutEl = true
 
 								hideTip()
-								console.log 'close tooltip'
 
 
 						
@@ -340,7 +330,6 @@ do ($ = jQuery) ->
 
 				api = $el.qtip 'api'
 
-				console.log api
 				###
 				@api.tooltip.on('mouseenter', =>
 					mouseOutTip = false
@@ -352,7 +341,6 @@ do ($ = jQuery) ->
 				###
 
 				$('> div > a', $el).on('mouseleave', =>
-					console.log 'leave'
 					mouseOutEl = true
 					hideTip()
 				)
@@ -389,15 +377,15 @@ do ($ = jQuery) ->
 
 			itemSquare = imageSquare + stampSquare
 			
-			console.log square
-			console.log itemSquare
+			#console.log square
+			#console.log itemSquare
 
-			console.log itemSquare / square
+			#console.log itemSquare / square
 
 			if imageSquare / square > limit + buffer
-				console.log 'more than ' + limit + '%'
+				#console.log 'more than ' + limit + '%'
 				items = @packery.getItemElements()
-				console.log items.length
+				#console.log items.length
 				for i, item of items
 					$item = $ item
 
@@ -410,7 +398,7 @@ do ($ = jQuery) ->
 				#	$item.height $item.height * limit
 			else if imageSquare / square < limit - buffer
 				factor = square / imageSquare - buffer
-				console.log factor
+				#console.log factor
 				for i, item of @packery.items
 					dims = item.initialDimensions
 					
@@ -419,7 +407,7 @@ do ($ = jQuery) ->
 					$item = $ item.element
 					width = $item.width()
 
-					console.log width * factor
+					#console.log width * factor
 					newWidth = Math.min dims.width, width * factor
 
 					$item.width newWidth
@@ -441,19 +429,39 @@ do ($ = jQuery) ->
 
 
 		show: ->
-			console.log 'show'
 			@packery.options.transitionDuration = @transitionDuration
 			@saveItemDimensions()
 			@setToCenter()
 			@initTooltips()
 			@applyRadialGravityEffect()
 			@$container.addClass('loaded').addClass 'has-gravity'
+
+
+		# ! --- filter elements ---------------------------
+		
+		hideElement: (el) ->
+			if @packery
+				item = @packery.getItem el
+
+				if not item.isIgnored
+					@packery.ignore el
+					item.remove()
+					@packery.layout()
+
+		showElement: (el) ->
+			if @packery
+				$(el).removeClass 'hidden'
+
+				item = @packery.getItem el
+				if item.isIgnored
+					@packery.unignore el
+					item.reveal()
+					@packery.layout()
 				
 
-		# ! --- implementation ----------------------
+		# ! --- implementation ----------------------------
 		start: ->
 			@$container.imagesLoaded =>
-				console.log @$packeryEl[0]
 				if not @$packeryEl.length then return
 
 				@randomizeDimensions()
@@ -517,7 +525,9 @@ do ($ = jQuery) ->
 				#@packery.layout()
 
 
-	JJPackeryMan = -> new JJPackery
+	JJPackeryMan = -> 
+		console.error 'JJPackeryMan is deprecated! Use "new JJPackeryClass()" instead!'
+		new JJPackery
 
 	# reveal
 	window.JJPackeryClass = JJPackery

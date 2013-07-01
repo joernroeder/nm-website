@@ -16,6 +16,10 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     this.maxY = 0;
     return packery_layoutItems.call(this, items, isInstant);
   };
+  Packery.Item.prototype.removeElem = function() {
+    $(this.element).addClass('hidden');
+    return false;
+  };
   JJPackery = (function() {
     /*
     		 # construct variables
@@ -229,7 +233,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     JJPackery.prototype.initTooltips = function() {
       var _this = this;
 
-      console.log('init tooltips');
       $.each(this.packery.getItemElements(), function(i, el) {
         return _this._initTooltip(el);
       });
@@ -250,25 +253,12 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           clearTimeout(hideTimeout);
         }
         return hideTimeout = setTimeout(function() {
-          console.log(mouseOutEl);
-          console.log(mouseOutTip);
           if (mouseOutEl && mouseOutTip) {
             $el.add(api.tooltip).off('mouseleave.tooltip');
             return api.hide();
           }
         }, 200);
       };
-      /*
-      			showTip = =>
-      				if showTimeout
-      					clearTimeout showTimeout
-      				
-      				showTimeout = setTimeout =>
-      					console.log 'show tip'
-      					api.show()
-      				, 500
-      */
-
       $el = $(el);
       $metaSection = $('section[role=tooltip-content]', $el);
       marginOffset = -20;
@@ -302,7 +292,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
                 'margin-left': 0,
                 'opacity': 1
               }, 200);
-              console.log(api.tooltip);
               if (api.tooltip) {
                 $(api.tooltip).one('mouseenter.tooltip', function() {
                   return mouseOutTip = false;
@@ -314,8 +303,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
                 } else {
                   mouseOutEl = true;
                 }
-                hideTip();
-                return console.log('close tooltip');
+                return hideTip();
               });
             }
           },
@@ -356,7 +344,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           }
         });
         api = $el.qtip('api');
-        console.log(api);
         /*
         				@api.tooltip.on('mouseenter', =>
         					mouseOutTip = false
@@ -368,7 +355,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         */
 
         return $('> div > a', $el).on('mouseleave', function() {
-          console.log('leave');
           mouseOutEl = true;
           return hideTip();
         });
@@ -410,13 +396,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         imageSquare += $item.width() * $item.height();
       }
       itemSquare = imageSquare + stampSquare;
-      console.log(square);
-      console.log(itemSquare);
-      console.log(itemSquare / square);
       if (imageSquare / square > limit + buffer) {
-        console.log('more than ' + limit + '%');
         items = this.packery.getItemElements();
-        console.log(items.length);
         _results = [];
         for (i in items) {
           item = items[i];
@@ -427,7 +408,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
         return _results;
       } else if (imageSquare / square < limit - buffer) {
         factor = square / imageSquare - buffer;
-        console.log(factor);
         _ref1 = this.packery.items;
         _results1 = [];
         for (i in _ref1) {
@@ -438,7 +418,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           }
           $item = $(item.element);
           width = $item.width();
-          console.log(width * factor);
           newWidth = Math.min(dims.width, width * factor);
           _results1.push($item.width(newWidth));
         }
@@ -461,7 +440,6 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     };
 
     JJPackery.prototype.show = function() {
-      console.log('show');
       this.packery.options.transitionDuration = this.transitionDuration;
       this.saveItemDimensions();
       this.setToCenter();
@@ -470,11 +448,37 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       return this.$container.addClass('loaded').addClass('has-gravity');
     };
 
+    JJPackery.prototype.hideElement = function(el) {
+      var item;
+
+      if (this.packery) {
+        item = this.packery.getItem(el);
+        if (!item.isIgnored) {
+          this.packery.ignore(el);
+          item.remove();
+          return this.packery.layout();
+        }
+      }
+    };
+
+    JJPackery.prototype.showElement = function(el) {
+      var item;
+
+      if (this.packery) {
+        $(el).removeClass('hidden');
+        item = this.packery.getItem(el);
+        if (item.isIgnored) {
+          this.packery.unignore(el);
+          item.reveal();
+          return this.packery.layout();
+        }
+      }
+    };
+
     JJPackery.prototype.start = function() {
       var _this = this;
 
       return this.$container.imagesLoaded(function() {
-        console.log(_this.$packeryEl[0]);
         if (!_this.$packeryEl.length) {
           return;
         }
@@ -514,6 +518,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
   })();
   JJPackeryMan = function() {
+    console.error('JJPackeryMan is deprecated! Use "new JJPackeryClass()" instead!');
     return new JJPackery;
   };
   window.JJPackeryClass = JJPackery;

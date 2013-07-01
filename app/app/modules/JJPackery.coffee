@@ -14,7 +14,8 @@ define [
 			template: 'packery-container'
 
 			afterRender: ->
-				JJPackeryMan()
+				@packery = new JJPackeryClass()
+				#JJPackeryMan()
 				if @_afterRender then @_afterRender()
 
 		

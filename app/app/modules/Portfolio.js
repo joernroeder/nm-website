@@ -23,19 +23,22 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       }
     },
     triggerSearchOnChildren: function(searchResults) {
+      var _this = this;
+
+      console.log('search on children');
       console.log(searchResults);
       return _.each(this.views['.packery'], function(childView) {
         var found, method, model;
 
         model = childView.model;
         if (!searchResults) {
-          return childView.doShow();
+          return _this.packery.showElement(childView.el);
         } else {
           found = _.find(searchResults, function(result) {
             return result === childView.model;
           });
-          method = found ? 'doShow' : 'doHide';
-          return childView[method]();
+          method = found ? 'showElement' : 'hideElement';
+          return _this.packery[method](childView.el);
         }
       });
     },

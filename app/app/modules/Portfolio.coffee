@@ -27,18 +27,22 @@ define [
 					@doSearchAfterRender = true
 
 			triggerSearchOnChildren: (searchResults) ->
+				console.log 'search on children'
 				console.log searchResults
+
 				# iterate over child views and check if their model is present in the search results
-				_.each @views['.packery'], (childView) ->
+				_.each @views['.packery'], (childView) =>
 					model = childView.model
 					# always show when there is no search
 					unless searchResults
-						childView.doShow()
+						@packery.showElement childView.el
+						#childView.doShow()
 					else
 						found = _.find searchResults, (result) ->
 							return result is childView.model
-						method = if found then 'doShow' else 'doHide'
-						childView[method]()
+						method = if found then 'showElement' else 'hideElement'
+						@packery[method] childView.el
+						#childView[method]()
 
 
 			beforeRender: ->

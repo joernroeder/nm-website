@@ -8,7 +8,7 @@ define(['app', 'plugins/packery/packerytest'], function(app) {
     className: 'packery-wrapper',
     template: 'packery-container',
     afterRender: function() {
-      JJPackeryMan();
+      this.packery = new JJPackeryClass();
       if (this._afterRender) {
         return this._afterRender();
       }

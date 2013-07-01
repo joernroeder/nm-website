@@ -886,6 +886,12 @@ button.Zebra_DatePicker_Icon {
 	*/
 
 }
+.packery-item.hidden {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
 .packery-item > div > a {
   background: #e6e6e6;
   display: block;
@@ -1456,6 +1462,13 @@ x:-o-prefocus,
   transition: opacity .2s ease-in-out;
   z-index: 14000;
 }
+.packery-wrapper > img.hidden,
+.packery-wrapper .packery-item.hidden {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
 .packery-wrapper > img > div > a,
 .packery-wrapper .packery-item > div > a {
   background: #e6e6e6;
@@ -1848,6 +1861,12 @@ x:-o-prefocus,
 
   *zoom: 1;
   width: 100%;
+}
+.editor .overview article.hidden {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  visibility: hidden;
 }
 .editor .overview article > div > a {
   background: #e6e6e6;
