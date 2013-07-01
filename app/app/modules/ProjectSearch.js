@@ -254,11 +254,7 @@ define(['app', 'plugins/visualsearch/visualsearch'], function(app) {
     doSearch: function() {
       var directTo, searchTerm;
 
-      console.group('searching for');
-      console.log(this.search);
       searchTerm = ProjectSearch.makeSearchTerm(this.search);
-      console.log(searchTerm);
-      console.groupEnd();
       directTo = searchTerm ? "/portfolio/search/" + searchTerm + "/" : '/portfolio/';
       return Backbone.history.navigate(directTo, true);
     },

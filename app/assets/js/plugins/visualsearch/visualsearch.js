@@ -595,8 +595,10 @@ VS.ui.SearchFacet = Backbone.View.extend({
   // If the value, when selected from the autocompletion menu, is different
   // than what it was, commit the facet and search for it.
   setupAutocomplete : function() {
+    console.log(this);
     this.box.autocomplete({
       source    : _.bind(this.autocompleteValues, this),
+      appendTo  : this.$el,
       minLength : 0,
       delay     : 0,
       autoFocus : true,
@@ -1009,6 +1011,7 @@ VS.ui.SearchInput = Backbone.View.extend({
       minLength : this.options.showFacets ? 0 : 1,
       delay     : 50,
       autoFocus : true,
+      appendTo  : this.$el,
       position  : {offset : "0 -1"},
       source    : _.bind(this.autocompleteValues, this),
       create    : _.bind(function(e, ui) {

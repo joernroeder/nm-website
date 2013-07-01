@@ -184,11 +184,7 @@ define [
 
 			# takes @search-obj, trasnforms it into a valid search url and fires it. rest is handled by router and DataRetrieval
 			doSearch: ->
-				console.group 'searching for'
-				console.log @search
 				searchTerm = ProjectSearch.makeSearchTerm @search
-				console.log searchTerm
-				console.groupEnd()
 				directTo = if searchTerm then "/portfolio/search/#{searchTerm}/" else '/portfolio/'
 				Backbone.history.navigate directTo, true
 
