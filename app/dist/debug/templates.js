@@ -22,16 +22,16 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n		<section class=\"packery-item group-image\">\n			";
+  buffer += "\n		<section class=\"packery-item group-image\">\n			<div>\n				";
   stack2 = helpers['with'].call(depth0, ((stack1 = ((stack1 = depth0.GroupImage),stack1 == null || stack1 === false ? stack1 : stack1.Urls)),stack1 == null || stack1 === false ? stack1 : stack1._768), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n		</section>\n		";
+  buffer += "\n			<div>\n		</section>\n		";
   return buffer;
   }
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n				<img src=\"";
+  buffer += "\n					<img src=\"";
   if (stack1 = helpers.Url) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Url; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -43,14 +43,14 @@ function program2(depth0,data) {
   if (stack1 = helpers.Height) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Height; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\" />\n			";
+    + "\" />\n				";
   return buffer;
   }
 
-  buffer += "<!-- section class=\"packery-wrapper\" -->\n<div class=\"packery-test\">\n	<div class=\"packery\">\n\n		<!-- left top -->\n		<div class=\"stamp corner left top\"></div>\n		<div class=\"stamp top\"></div>\n		<div class=\"stamp left\"></div>\n\n		<!-- top center -->\n		<div class=\"stamp top center\"></div>\n\n		<!-- right top -->\n		<div class=\"stamp corner right top\"></div>\n		<div class=\"stamp top right\"></div>\n		<div class=\"stamp right\"></div>\n\n		<!-- left center -->\n		<div class=\"stamp left center\"></div>\n\n		<!-- left bottom -->\n		<div class=\"stamp corner left bottom\"></div>\n		<div class=\"stamp bottom\"></div>\n		<div class=\"stamp left bottom\"></div>\n\n		<div class=\"stamp corner right bottom\"></div>\n		<div class=\"stamp bottom right-left\"></div>\n		<div class=\"stamp right bottom\"></div>			\n\n		";
+  buffer += "<!-- section class=\"packery-wrapper\" -->\n<div class=\"packery-test about\">\n	<div class=\"packery\">\n\n		<!-- left top -->\n		<div class=\"stamp corner left top\"></div>\n		<div class=\"stamp top\"></div>\n		<div class=\"stamp left\"></div>\n\n		<!-- top center -->\n		<div class=\"stamp top center\"></div>\n\n		<!-- right top -->\n		<!--<div class=\"stamp corner right top\"></div>\n		<div class=\"stamp top right\"></div>\n		<div class=\"stamp right\"></div>-->\n\n		<!-- left center -->\n		<!--<div class=\"stamp left center\"></div>-->\n\n		<!-- left bottom -->\n		<!--<div class=\"stamp corner left bottom\"></div>\n		<div class=\"stamp bottom\"></div>\n		<div class=\"stamp left bottom\"></div>\n\n		<div class=\"stamp corner right bottom\"></div>\n		<div class=\"stamp bottom right-left\"></div>\n		<div class=\"stamp right bottom\"></div>-->	\n\n		";
   stack1 = helpers['if'].call(depth0, depth0.GroupImage, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n		<section class=\"students packery-item\">\n			<h1>Students</h1>\n			<ul id=\"student-list\"></ul>\n		</section>\n		<section class=\"alumni packery-item\">\n			<h1>Alumni</h1>\n			<ul id=\"alumni-list\"></ul>\n		</section>\n		<section class=\"statement packery-item\">\n			<p>The class <cite>New Media</cite> within the course <cite>Visual Communication</cite> at the <cite>School of Art and Design Kassel</cite> walks a fine line between art, design, provocation and study. The main focus lies on the media consumption of society and its perpetual obsession with technological progress, change and transformation; established processes and methods are permanently questioned and modified.</p>\n			<p>The students in the class <cite>New Media</cite> see themselves as researchers, artists, designers and developers at the same time.</p>\n			<p>Realising and publicly defending a deeply personal idea means also being able to realise the ideas of others. An outstanding developer of own concepts and ideas will have the ability to implement external ideas and concepts as well.</p>\n			<p>There is no need to train service providers for an existing industry, but personalities who by discourse acquired skills which are constantly expanded and established – for oneself and others.</p>\n			<p>By use of the Internet and support of the group these skills are exchanged, discussed and broadened self-educatedly. This provides a topicality and relevance which eludes institutions.</p>\n			<p>To study “New Media” is to be an author. To learn from oneself, to learn seeing, speaking and thinking. To develop a culture of debate. To work on projects together. To mix media and ideas, to fail and learn from it. The aim is to shape a personal position and methodology.</p>\n		</section>\n	</div>\n</div>\n\n<!-- /section -->";
+  buffer += "\n\n		<section class=\"statement packery-item\">\n			<div>\n				<p>The class <cite>New Media</cite> within the course <cite>Visual Communication</cite> at the <cite>School of Art and Design Kassel</cite> walks a fine line between art, design, provocation and study. The main focus lies on the media consumption of society and its perpetual obsession with technological progress, change and transformation; established processes and methods are permanently questioned and modified.</p>\n				<p>The students in the class <cite>New Media</cite> see themselves as researchers, artists, designers and developers at the same time.</p>\n				<p>Realising and publicly defending a deeply personal idea means also being able to realise the ideas of others. An outstanding developer of own concepts and ideas will have the ability to implement external ideas and concepts as well.</p>\n				<p>There is no need to train service providers for an existing industry, but personalities who by discourse acquired skills which are constantly expanded and established – for oneself and others.</p>\n				<p>By use of the Internet and support of the group these skills are exchanged, discussed and broadened self-educatedly. This provides a topicality and relevance which eludes institutions.</p>\n				<p>To study “New Media” is to be an author. To learn from oneself, to learn seeing, speaking and thinking. To develop a culture of debate. To work on projects together. To mix media and ideas, to fail and learn from it. The aim is to shape a personal position and methodology.</p>\n			</div>\n		</section>\n\n		<section class=\"students packery-item\">\n			<div>\n				<h1>Students</h1>\n				<ul id=\"student-list\"></ul>\n			</div>\n		</section>\n		<section class=\"alumni packery-item\">\n			<div>\n				<h1>Alumni</h1>\n				<ul id=\"alumni-list\"></ul>\n			</div>\n		</section>\n	</div>\n</div>\n\n<!-- /section -->";
   return buffer;
   });
 
@@ -211,7 +211,7 @@ function program2(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<!-- section class=\"person gravity-item\" -->\n	<div class=\"img\">\n		";
+  buffer += "<!-- section class=\"person gravity-item\" -->\n<div>\n	<div class=\"img\">\n		";
   stack1 = helpers['if'].call(depth0, depth0.Image, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	</div>\n	<h1><a href=\"/about/";
@@ -230,7 +230,7 @@ function program2(depth0,data,depth1) {
   if (stack1 = helpers.JobTitle) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.JobTitle; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</p>\n\n<!-- /section -->";
+    + "</p>\n</div>\n<!-- /section -->";
   return buffer;
   });
 
@@ -348,7 +348,7 @@ function program5(depth0,data) {
   return buffer;
   }
 
-  buffer += "<!-- article class=\"gravity-item\" -->\n<!--<a href=\"/";
+  buffer += "<!-- article class=\"gravity-item\" -->\n<div>\n<!--<a href=\"/";
   if (stack1 = helpers.LinkTo) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.LinkTo; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -394,7 +394,7 @@ function program5(depth0,data) {
   if (stack1 = helpers.UglyHash) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.UglyHash; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "/\" class=\"btn\">Read More</a>\n	</section>\n<!-- /article -->";
+    + "/\" class=\"btn\">Read More</a>\n	</section>\n<div>\n<!-- /article -->";
   return buffer;
   });
 
@@ -406,20 +406,20 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n		<a href=\"/about/";
+  buffer += "\n			<a href=\"/about/";
   if (stack1 = helpers.UrlSlug) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.UrlSlug; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "/\">\n		";
+    + "/\">\n			";
   stack2 = helpers['with'].call(depth0, ((stack1 = ((stack1 = depth0.Image),stack1 == null || stack1 === false ? stack1 : stack1.Urls)),stack1 == null || stack1 === false ? stack1 : stack1._320), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n		</a>\n	";
+  buffer += "\n			</a>\n		";
   return buffer;
   }
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n			<img src=\"";
+  buffer += "\n				<img src=\"";
   if (stack1 = helpers.Url) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Url; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -431,38 +431,38 @@ function program2(depth0,data) {
   if (stack1 = helpers.Height) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Height; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\" alt=\"\">\n		";
+    + "\" alt=\"\">\n			";
   return buffer;
   }
 
 function program4(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n		<ul class=\"websites\">\n			";
+  buffer += "\n			<ul class=\"websites\">\n				";
   stack1 = helpers.each.call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		</ul>\n	";
+  buffer += "\n			</ul>\n		";
   return buffer;
   }
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n				<li>";
+  buffer += "\n					<li>";
   if (stack1 = helpers.website) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.website; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</li>\n			";
+  buffer += "</li>\n				";
   return buffer;
   }
 
-  buffer += "<section>\n	";
+  buffer += "<!-- article class=\"person-info\" -->\n<div>\n	<section>\n		";
   stack2 = helpers['if'].call(depth0, ((stack1 = ((stack1 = depth0.Image),stack1 == null || stack1 === false ? stack1 : stack1.Urls)),stack1 == null || stack1 === false ? stack1 : stack1._320), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</section>\n\n<section>\n	<header>\n		<p>";
+  buffer += "\n	</section>\n\n	<section>\n		<header>\n			<p>";
   if (stack2 = helpers.personMeta) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.personMeta; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</p>\n		<h1>";
+    + "</p>\n			<h1>";
   if (stack2 = helpers.FirstName) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.FirstName; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
@@ -470,14 +470,14 @@ function program5(depth0,data) {
   if (stack2 = helpers.Surname) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.Surname; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</h1>\n	</header>\n\n	";
+    + "</h1>\n		</header>\n\n		";
   if (stack2 = helpers.MarkdownedBio) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.MarkdownedBio; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n	";
+  buffer += "\n\n		";
   stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</section>";
+  buffer += "\n	</section>\n</div>\n<!-- /article -->";
   return buffer;
   });
 
@@ -762,7 +762,7 @@ function program2(depth0,data) {
   return buffer;
   }
 
-  buffer += "<style>\n	#searchbar {\n		background: #000;\n		color: #fff;\n		position:absolute;\n		top: 80%;\n		left: 45%;\n		width: 600px;\n	}\n\n</style>\n\n<!-- div id=\"projectsearch\" -->\n<div class=\"category-filter\">\n	";
+  buffer += "<!-- div id=\"projectsearch\" -->\n<div class=\"category-filter\">\n	";
   stack1 = helpers['if'].call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	<div class=\"visualsearch\"></div>\n</div>\n<!-- /div -->\n\n\n\n\n\n\n<style>\n\n.VS-search .VS-icon {\n  background-repeat: no-repeat;\n  background-position: center center;\n  vertical-align: middle;\n  width: 16px; height: 16px;\n}\n  .VS-search .VS-icon-cancel {\n    width: 11px; height: 11px;\n    background-position: center 0;\n    background-image: url(../images/embed/icons/cancel_search.png?1311104738);\n    cursor: pointer;\n  }\n    .VS-search .VS-icon-cancel:hover {\n      background-position: center -11px;\n    }\n  .VS-search .VS-icon-search {\n    width: 12px; height: 12px;\n    background-image: url(../images/embed/icons/search_glyph.png?1311104738);\n  }\n\n/*------------------------------ RESET + DEFAULT STYLES ---------------------------------*/\n\n/* \nEric Meyer's final reset.css\nSource: http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/ \n*/\n.VS-search div, .VS-search span, .VS-search a, .VS-search img, \n.VS-search ul, .VS-search li, .VS-search form, .VS-search label,\n.VS-interface ul, .VS-interface li, .VS-interface {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  outline: 0;\n  font-weight: inherit;\n  font-style: inherit;\n  font-size: 100%;\n  font-family: inherit;\n  vertical-align: baseline;\n}\n\n.VS-search :focus {\n  outline: 0;\n}\n.VS-search {\n  line-height: 1;\n  color: black;\n}\n.VS-search ol, .VS-search ul {\n  list-style: none;\n}\n\n/* ===================== */\n/* = General and Reset = */\n/* ===================== */\n\n.VS-search {\n  font-family: Arial, sans-serif;\n  color: #373737;\n  font-size: 12px;\n}\n.VS-search input {\n  display: block;\n  border: none;\n  -moz-box-shadow: none;\n  -webkit-box-shadow: none;\n  box-shadow: none;\n  outline: none;\n  margin: 0; padding: 4px;\n  background: transparent;\n  font-size: 16px;\n  line-height: 20px;\n  width: 100%;\n}\n.VS-interface, .VS-search .dialog, .VS-search input {\n  font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Helvetica, Arial, sans-serif !important;\n  line-height: 1.1em;\n}\n\n/* ========== */\n/* = Layout = */\n/* ========== */\n\n.VS-search .VS-search-box {\n  cursor: text;\n  position: relative;\n  background: transparent;\n  border: 2px solid #ccc;\n  border-radius: 16px; -webkit-border-radius: 16px; -moz-border-radius: 16px;\n  background-color: #fafafa;\n  -webkit-box-shadow: inset 0px 0px 3px #ccc;\n  -moz-box-shadow: inset 0px 0px 3px #ccc;\n  box-shadow: inset 0px 0px 3px #ccc;\n  min-height: 28px;\n  height: auto;\n}\n  .VS-search .VS-search-box.VS-focus {\n    border-color: #acf;\n    -webkit-box-shadow: inset 0px 0px 3px #acf;\n    -moz-box-shadow: inset 0px 0px 3px #acf;\n    box-shadow: inset 0px 0px 3px #acf;\n  }\n  .VS-search .VS-placeholder {\n      position: absolute;\n      top: 7px;\n      left: 4px;\n      margin: 0 20px 0 22px;\n      color: #808080;\n      font-size: 14px;\n  }\n  .VS-search .VS-search-box.VS-focus .VS-placeholder,\n  .VS-search .VS-search-box .VS-placeholder.VS-hidden {\n      display: none;\n  }\n  .VS-search .VS-search-inner {\n    position: relative;\n    margin: 0 20px 0 22px;\n    overflow: hidden;\n  }\n  .VS-search input {\n    width: 100px;\n  }\n  .VS-search input,\n  .VS-search .VS-input-width-tester {\n    padding: 6px 0;\n    float: left;\n    color: #808080;\n    font: 13px/17px Helvetica, Arial;\n  }\n  .VS-search.VS-focus input {\n    color: #606060;\n  }\n  .VS-search .VS-icon-search {\n    position: absolute;\n    left: 9px; top: 8px;\n  }\n  .VS-search .VS-icon-cancel {\n    position: absolute;\n    right: 9px; top: 8px;\n  }\n\n/* ================ */\n/* = Search Facet = */\n/* ================ */\n\n.VS-search .search_facet {\n  float: left;\n  margin: 0;\n  padding: 0 0 0 14px;\n  position: relative;\n  border: 1px solid transparent;\n  height: 20px;\n  margin: 3px -3px 3px 0;\n}\n  .VS-search .search_facet.is_selected {\n    margin-left: -3px;\n    -webkit-border-radius: 16px;\n    -moz-border-radius: 16px;\n    border-radius: 16px;\n    background-color: #d2e6fd;\n    background-image: -moz-linear-gradient(top, #d2e6fd, #b0d1f9); /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#d2e6fd), to(#b0d1f9)); /* Saf4+, Chrome */\n    background-image: linear-gradient(top, #d2e6fd, #b0d1f9);\n    border: 1px solid #6eadf5;\n  }\n  .VS-search .search_facet .category {\n    float: left;\n    text-transform: uppercase;\n    font-weight: bold;\n    font-size: 10px;\n    color: #808080;\n    padding: 8px 0 5px;\n    line-height: 13px;\n    cursor: pointer;\n    padding: 4px 0 0;\n  }\n  .VS-search .search_facet.is_selected .category {\n    margin-left: 3px;\n  }\n  .VS-search .search_facet .search_facet_input_container {\n    float: left;\n  }\n  .VS-search .search_facet input {\n    margin: 0;\n    padding: 0;\n    color: #000;\n    font-size: 13px;\n    line-height: 16px;\n    padding: 5px 0 5px 4px;\n    height: 16px;\n    width: auto;\n    z-index: 100;\n    position: relative;\n    padding-top: 1px;\n    padding-bottom: 2px;\n    padding-right: 3px;\n\n  }\n  .VS-search .search_facet.is_editing input,\n  .VS-search .search_facet.is_selected input {\n    color: #000;\n  }\n  .VS-search .search_facet .search_facet_remove {\n    position: absolute;\n    left: 0;\n    top: 4px;\n  }\n    .VS-search .search_facet.is_selected .search_facet_remove {\n      opacity: 0.4;\n      left: 3px;\n      filter: alpha(opacity=40);\n      background-position: center -11px;\n    }\n    .VS-search .search_facet .search_facet_remove:hover {\n      opacity: 1;\n    }\n  .VS-search .search_facet.is_editing .category,\n  .VS-search .search_facet.is_selected .category {\n    color: #000;\n  }\n  .VS-search .search_facet.search_facet_maybe_delete .category,\n  .VS-search .search_facet.search_facet_maybe_delete input {\n    color: darkred;\n  }\n\n/* ================ */\n/* = Search Input = */\n/* ================ */\n\n.VS-search .search_input {\n  height: 28px;\n  float: left;\n  margin-left: -1px;\n}\n  .VS-search .search_input input {\n    padding: 6px 3px 6px 2px;\n    line-height: 10px;\n    height: 22px;\n    margin-top: -4px;\n    width: 10px;\n    z-index: 100;\n    min-width: 4px;\n    position: relative;\n  }\n  .VS-search .search_input.is_editing input {\n    color: #202020;\n  }\n\n/* ================ */\n/* = Autocomplete = */\n/* ================ */\n\n.ui-helper-hidden-accessible {\n    display: none;\n}\n\n.VS-interface.ui-autocomplete {\n  position: absolute;\n  border: 1px solid #C0C0C0;\n  border-top: 1px solid #D9D9D9;\n  background-color: #F6F6F6;\n  cursor: pointer;\n  z-index: 10000;\n  padding: 0;\n  margin: 0;\n  width: auto;\n  min-width: 80px;\n  max-width: 220px;\n  max-height: 240px;\n  overflow-y: auto;\n  overflow-x: hidden;\n  font-size: 13px;\n  top: 5px;\n  opacity: 0.97;\n  box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -webkit-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5); -moz-box-shadow: 3px 4px 5px -2px rgba(0, 0, 0, 0.5);\n}\n  .VS-interface.ui-autocomplete .ui-autocomplete-category {\n    text-transform: capitalize;\n    font-size: 11px;\n    padding: 4px 4px 4px;\n    border-top: 1px solid #A2A2A2;\n    border-bottom: 1px solid #A2A2A2;\n    background-color: #B7B7B7;\n    text-shadow: 0 -1px 0 #999;\n    font-weight: bold;\n    color: white;\n    cursor: default;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item {\n      float: none;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item a {\n    color: #000;\n    outline: none;\n    display: block;\n    padding: 3px 4px 5px;\n    border-radius: none;\n    line-height: 1;\n    background-color: #F8F8F8;\n    background-image: -moz-linear-gradient(top, #F8F8F8, #F3F3F3); /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#F3F3F3)); /* Saf4+, Chrome */\n    background-image: linear-gradient(top, #F8F8F8, #F3F3F3);\n    border-top: 1px solid #FAFAFA;\n    border-bottom: 1px solid #f0f0f0;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item a:active {\n    outline: none;\n  }\n  .VS-interface.ui-autocomplete .ui-menu-item .ui-state-hover, .VS-interface.ui-autocomplete .ui-menu-item .ui-state-focus {\n    background-color: #6483F7;\n    background-image: -moz-linear-gradient(top, #648bF5, #2465f3); /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#648bF5), to(#2465f3)); /* Saf4+, Chrome */\n    background-image: linear-gradient(top, #648bF5, #2465f3);\n    border-top: 1px solid #5b83ec;\n    border-bottom: 1px solid #1459e9;\n    border-left: none;\n    border-right: none;\n    color: white;\n    margin: 0;\n  }\n  .VS-interface.ui-autocomplete .ui-corner-all {\n    border-radius: 0;\n  }\n  .VS-interface.ui-autocomplete li {\n    list-style: none;\n    width: auto;\n  }\n</style>";

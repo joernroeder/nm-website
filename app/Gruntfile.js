@@ -87,7 +87,7 @@ module.exports = function(grunt) {
 
           // Build Handlebars runtime, instead of full version.
           paths: {
-            handlebars: "../assets/js/libs/handlebars"
+            handlebars: "../assets/js/libs/handlebars-runtime"
           }
         }
       }
