@@ -78,9 +78,7 @@ define [
 			# !- Custom
 			
 			blurAfterClick: (e) ->
-				e.preventDefault()
 				$(e.target).blur()
-				false
 			
 			switchEditorView: (e) ->
 				e.preventDefault()

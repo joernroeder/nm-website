@@ -64,9 +64,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
       return Backbone.Events.off('projectEdited', this.handlePublishActive);
     },
     blurAfterClick: function(e) {
-      e.preventDefault();
-      $(e.target).blur();
-      return false;
+      return $(e.target).blur();
     },
     switchEditorView: function(e) {
       e.preventDefault();

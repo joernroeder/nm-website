@@ -391,6 +391,7 @@
     JJMarkdownEditor.prototype.insertAtEditorPosByEl = function($el, md) {
       var pos, val;
 
+      md += '  \n\n';
       val = this.$input._val();
       if ($el.is(this.$preview)) {
         val = val + md;

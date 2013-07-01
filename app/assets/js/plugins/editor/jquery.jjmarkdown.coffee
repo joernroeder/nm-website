@@ -382,6 +382,7 @@ do ($ = jQuery) ->
 
 		# inserts at the editor-pos of $el. if $el is the $preview-area, appends it
 		insertAtEditorPosByEl : ($el, md) ->
+			md += '  \n\n'
 			val = @.$input._val()
 			if $el.is @.$preview
 				val = val + md
