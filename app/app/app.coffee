@@ -60,7 +60,7 @@ define [
 						dfd = $.ajax(url: app.root + 'app/' + path)
 						app.pendingTemplateReqs[path] = dfd
 						dfd.then (contents) ->
-							JST[path] = Handlebars.compile contents
+							JST[path] = Handlebars.template contents
 							JST[path].__compiled__ = true
 							delete app.pendingTemplateReqs[path]
 							done JST[path]
