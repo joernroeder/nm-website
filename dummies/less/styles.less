@@ -2248,11 +2248,14 @@ body.dragover .editor-project-preview {
 				left: 0;
 				top: 0;
 				.icon-font;
+				opacity: 1;
 				font-size: @font-size * 1.7 / @em;
 				height: @line / 2 / @em;
 				display: none;
 				color: @btnColor;
 				content: '\2713';
+
+				.transition(~"opacity .15 ease-in-out");
 			}
 
 			&:hover,
@@ -2263,7 +2266,7 @@ body.dragover .editor-project-preview {
 				color: @btnHover;
 			}
 
-			&:hover:before {
+			&:hover:not(.active):before {
 				opacity: .5;
 			}
 		}

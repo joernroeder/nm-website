@@ -3734,11 +3734,17 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   top: 0;
   font-family: 'Entypo';
   font-weight: normal;
+  opacity: 1;
   font-size: 1.7em;
   height: 0.75em;
   display: none;
   color: #525252;
   content: '\2713';
+  -webkit-transition: opacity .15 ease-in-out;
+  -moz-transition: opacity .15 ease-in-out;
+  -o-transition: opacity .15 ease-in-out;
+  -ms-transition: opacity .15 ease-in-out;
+  transition: opacity .15 ease-in-out;
 }
 #searchbar ul a:hover,
 #searchbar ul a.active {
@@ -3748,7 +3754,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 #searchbar ul a.active:before {
   display: block;
 }
-#searchbar ul a:hover:before {
+#searchbar ul a:hover:not(.active):before {
   opacity: .5;
 }
 /*
