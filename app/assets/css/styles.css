@@ -3699,6 +3699,58 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 #recycle-bin.done {
   background-color: #d9df20;
 }
+#searchbar {
+  border: 1px solid red;
+  background: #e6e6e6;
+  padding: 1.5em;
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  width: 600px;
+  margin-left: -300px;
+  z-index: 9999999999999;
+}
+#searchbar ul {
+  -webkit-columns: 4;
+  -moz-columns: 4;
+  columns: 4;
+}
+#searchbar ul li {
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  -o-column-break-inside: avoid;
+  -ms-column-break-inside: avoid;
+  column-break-inside: avoid;
+}
+#searchbar ul a {
+  position: relative;
+  display: block;
+  padding-left: 1em;
+  color: #525252;
+}
+#searchbar ul a:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: 'Entypo';
+  font-weight: normal;
+  font-size: 1.7em;
+  height: 0.75em;
+  display: none;
+  color: #525252;
+  content: '\2713';
+}
+#searchbar ul a:hover,
+#searchbar ul a.active {
+  color: #262626;
+}
+#searchbar ul a:hover:before,
+#searchbar ul a.active:before {
+  display: block;
+}
+#searchbar ul a:hover:before {
+  opacity: .5;
+}
 /*
  *
  *  Four-column grid active
