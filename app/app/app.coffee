@@ -33,7 +33,7 @@ define [
 		Backbone.Layout.configure
 			manage: true
 
-			prefix: 'app/app/templates/'
+			prefix: 'app/templates/'
 
 			pendingAjaxRequests: {}
 
@@ -42,11 +42,12 @@ define [
 
 				# check if path is starting with '/' (use absolute)
 				replacedPath = path.replace(Backbone.Layout.prototype.options.prefix, '')
+
 				if replacedPath.indexOf('/') == 0 
 					path = replacedPath.substring(1)
 				else
 					path = path + '.html'
-
+			
 				# If the template has not been loaded yet, then load.
 				unless JST[path]
 					done = @.async()
@@ -56,7 +57,7 @@ define [
 						dfd.then ->
 							done JST[path]
 					else
-						dfd = $.ajax(url: app.root + path)
+						dfd = $.ajax(url: app.root + 'app/' + path)
 						app.pendingTemplateReqs[path] = dfd
 						dfd.then (contents) ->
 							JST[path] = Handlebars.compile contents
@@ -67,9 +68,11 @@ define [
 					return dfd
 
 				# If the template hasn't been compiled yet, then compile.
+				###
 				unless JST[path].__compiled__
-					JST[path] = Handlebars.template JST[path]
+					JST[path] = Handlebars.compile JST[path]
 					JST[path].__compiled__ = true
+				###
 				
 				return JST[path]
 
