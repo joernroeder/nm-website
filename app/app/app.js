@@ -23,7 +23,7 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
   });
   Backbone.Layout.configure({
     manage: true,
-    prefix: 'app/app/templates/',
+    prefix: 'app/templates/',
     pendingAjaxRequests: {},
     fetch: function(path) {
       var dfd, done, replacedPath;
@@ -43,7 +43,7 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
           });
         } else {
           dfd = $.ajax({
-            url: app.root + path
+            url: app.root + 'app/' + path
           });
           app.pendingTemplateReqs[path] = dfd;
           dfd.then(function(contents) {
@@ -55,10 +55,12 @@ define(['jquery', 'underscore', 'backbone', 'handlebars', 'plugins/backbone.layo
         }
         return dfd;
       }
-      if (!JST[path].__compiled__) {
-        JST[path] = Handlebars.template(JST[path]);
-        JST[path].__compiled__ = true;
-      }
+      /*
+      				unless JST[path].__compiled__
+      					JST[path] = Handlebars.compile JST[path]
+      					JST[path].__compiled__ = true
+      */
+
       return JST[path];
     }
   });

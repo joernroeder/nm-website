@@ -4,7 +4,6 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-
     // The lint task will run the build configuration and the application
     // JavaScript through JSHint and report any errors.  You can change the
     // options for this task, by reading this:
@@ -37,6 +36,18 @@ module.exports = function(grunt) {
       ]
     },
 
+    // The handlebars task compiles all application templates into JavaScript
+    // functions using Handlebars templating engine.
+    //
+    // Since this task defaults to writing to the same file as the jst task,
+    // edit the debug task replacing jst with handlebars.
+    //
+    // The concat task depends on this file to exist, so if you decide to
+    // remove this, ensure concat is updated accordingly.
+    handlebars: {
+      "dist/debug/templates.js": ["app/templates/**/*.html"]
+    },
+
     // This task simplifies working with CSS inside Backbone Boilerplate
     // projects.  Instead of manually specifying your stylesheets inside the
     // configuration, you can use `@imports` and this task will concatenate
@@ -62,20 +73,24 @@ module.exports = function(grunt) {
     // This task uses James Burke's excellent r.js AMD build tool.  In the
     // future other builders may be contributed as drop-in alternatives.
     requirejs: {
-      // Include the main configuration file.
-      mainConfigFile: "app/config.js",
+      compile: {
+        options: {
+          // Include the main configuration file.
+          mainConfigFile: "app/config.js",
+          baseUrl: "app",
+          name: "config",
 
-      // Also include the JamJS configuration file.
-      jamConfig: "/assets/jam/require.config.js",
+          // Output file.
+          out: "dist/debug/require.js",
+          // Do not wrap everything in an IIFE.
+          wrap: false,
 
-      // Output file.
-      out: "dist/debug/require.js",
-
-      // Root application module.
-      name: "config",
-
-      // Do not wrap everything in an IIFE.
-      wrap: false
+          // Build Handlebars runtime, instead of full version.
+          paths: {
+            handlebars: "../assets/js/libs/handlebars"
+          }
+        }
+      }
     },
 
     // The concatenate task is used here to merge the almond require/define
@@ -86,8 +101,8 @@ module.exports = function(grunt) {
       dist: {
         src: [
           "assets/js/libs/almond.js",
-          "dist/debug/templates.js",
-          "dist/debug/require.js"
+          "dist/debug/require.js",
+          "dist/debug/templates.js"
         ],
 
         dest: "dist/debug/require.js",
@@ -107,7 +122,7 @@ module.exports = function(grunt) {
     },
 
     // Takes the built require.js file and minifies it for filesize benefits.
-    min: {
+    uglify: {
       "dist/release/require.js": [
         "dist/debug/require.js"
       ]
@@ -224,15 +239,20 @@ module.exports = function(grunt) {
 
   });
 
+  grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   // The debug task will remove all contents inside the dist/ folder, lint
   // all your code, precompile all the underscore templates into
   // dist/debug/templates.js, compile all the application code into
   // dist/debug/require.js, and then concatenate the require/define shim
   // almond.js and dist/debug/templates.js into the require.js file.
-  grunt.registerTask("debug", "clean lint jst requirejs concat styles");
+  grunt.registerTask("debug", ['clean', 'handlebars', 'requirejs', 'concat']);
 
   // The release task will run the debug tasks and then minify the
   // dist/debug/require.js file and CSS files.
-  grunt.registerTask("release", "debug min mincss");
+  grunt.registerTask("release", ['debug', 'uglify']);
 
 };

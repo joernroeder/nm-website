@@ -1,5 +1,6 @@
 .DS_Store
 app/app/*.js
+app/node_modules/
 silverstripe-cache/*
 !/assets/
 /assets/*
