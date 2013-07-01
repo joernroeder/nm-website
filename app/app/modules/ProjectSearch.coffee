@@ -170,10 +170,17 @@ define [
 
 			events:
 				'click .category-filter a': 'updateCategorySearch'
+				'click .btn': 'switchSearchView'
 
 			initialize: (opts) ->
 				if opts.searchTerm then @search = ProjectSearch.transformSearchTerm opts.searchTerm
 				@search.Category = [] if not @search.Category
+
+			switchSearchView: (e) ->
+				e.preventDefault()
+				$(e.target).blur()
+				@.$el.find('section').toggleClass('active')
+				false
 
 			# takes @search-obj, trasnforms it into a valid search url and fires it. rest is handled by router and DataRetrieval
 			doSearch: ->

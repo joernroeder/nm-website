@@ -1,20 +1,18 @@
 <!-- div id="projectsearch" -->
-<div class="category-filter">
-	<section>
-		{{#if Categories}}
-			<ul>
-				{{#each Categories}}
-					<li><a href="#" data-title="{{Title}}" data-id="{{ID}}">{{Title}}</a></li>
-				{{/each}}
-			</ul>
-		{{/if}}
-		<a href="#" data-bypass class="btn">Switch to Search</a>
-	</section>
-	<section>
-		<div class="visualsearch"></div>
-		<a href="#" data-bypass class="btn">Switch to Filters</a>
-	</section>
-</div>
+<section class="category-filter active">
+	{{#if Categories}}
+		<ul>
+			{{#each Categories}}
+				<li><a href="#" data-title="{{Title}}" data-id="{{ID}}">{{Title}}</a></li>
+			{{/each}}
+		</ul>
+	{{/if}}
+	<a href="#" data-bypass class="btn">Switch to Search</a>	
+</section>
+<section class="search">
+  <div class="visualsearch"></div>
+  <a href="#" data-bypass class="btn">Switch to Filters</a>
+</section>
 <!-- /div -->
 
 

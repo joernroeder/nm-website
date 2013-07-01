@@ -234,7 +234,8 @@ define(['app', 'plugins/visualsearch/visualsearch'], function(app) {
       'Category': []
     },
     events: {
-      'click .category-filter a': 'updateCategorySearch'
+      'click .category-filter a': 'updateCategorySearch',
+      'click .btn': 'switchSearchView'
     },
     initialize: function(opts) {
       if (opts.searchTerm) {
@@ -243,6 +244,12 @@ define(['app', 'plugins/visualsearch/visualsearch'], function(app) {
       if (!this.search.Category) {
         return this.search.Category = [];
       }
+    },
+    switchSearchView: function(e) {
+      e.preventDefault();
+      $(e.target).blur();
+      this.$el.find('section').toggleClass('active');
+      return false;
     },
     doSearch: function() {
       var directTo, searchTerm;
