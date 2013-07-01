@@ -433,14 +433,14 @@ require(['app', 'router', 'modules/Auth', 'modules/Project', 'modules/Person', '
   };
   Handlebars.registerHelper('stringCompare', function(what1, what2, block) {
     if (what1 === what2) {
-      return block(this);
+      return block.fn(this);
     } else {
       return block.inverse(this);
     }
   });
   Handlebars.registerHelper('stringDiff', function(what1, what2, block) {
     if (what1 !== what2) {
-      return block(this);
+      return block.fn(this);
     } else {
       return block.inverse(this);
     }

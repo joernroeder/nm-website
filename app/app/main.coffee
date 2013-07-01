@@ -345,13 +345,13 @@ require [
 	# Global Handlebars helpers
 	Handlebars.registerHelper 'stringCompare', (what1, what2, block) ->
 		if what1 is what2
-			return block @
+			return block.fn @
 		else
 			return block.inverse @
 
 	Handlebars.registerHelper 'stringDiff', (what1, what2, block) ->
 		if what1 isnt what2
-			return block @
+			return block.fn @
 		else
 			return block.inverse @
 
