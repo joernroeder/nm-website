@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba"
+                "reference": "34bd8e879adc82fac26eb2c7551a03e04f9b7e3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
-                "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
+                "url": "https://api.github.com/repos/composer/installers/zipball/34bd8e879adc82fac26eb2c7551a03e04f9b7e3a",
+                "reference": "34bd8e879adc82fac26eb2c7551a03e04f9b7e3a",
                 "shasum": ""
             },
             "replace": {
@@ -75,7 +75,7 @@
                 "wordpress",
                 "zend"
             ],
-            "time": "2013-06-28 03:15:23"
+            "time": "2013-06-29 16:45:39"
         },
         {
             "name": "silverstripe/framework",
@@ -83,12 +83,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silverstripe/silverstripe-framework.git",
-                "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75"
+                "reference": "429bbc52237c1c6c64e159b00ab759df4e3fa59f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/a6c3d1e26939e4e3f57193f86285a0cae2659c75",
-                "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75",
+                "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/429bbc52237c1c6c64e159b00ab759df4e3fa59f",
+                "reference": "429bbc52237c1c6c64e159b00ab759df4e3fa59f",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "framework",
                 "silverstripe"
             ],
-            "time": "2013-06-28 10:21:00"
+            "time": "2013-07-02 07:40:56"
         }
     ],
     "packages-dev": [
@@ -143,7 +143,7 @@
                 "silverstripe/framework": "3.*"
             },
             "type": "silverstripe-module",
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Hamish Friedlander",

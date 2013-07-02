@@ -1,139 +1,17 @@
 [
     {
-        "name": "silverstripe/compass",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/silverstripe-labs/silverstripe-compass.git",
-            "reference": "df401ac7e503b30c6cc0828448abeb18ecf767a9"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe-labs/silverstripe-compass/zipball/df401ac7e503b30c6cc0828448abeb18ecf767a9",
-            "reference": "df401ac7e503b30c6cc0828448abeb18ecf767a9",
-            "shasum": ""
-        },
-        "require": {
-            "silverstripe/framework": "3.*"
-        },
-        "time": "2013-01-16 09:27:25",
-        "type": "silverstripe-module",
-        "installation-source": "source",
-        "notification-url": "http://packagist.org/downloads/",
-        "authors": [
-            {
-                "name": "Hamish Friedlander",
-                "email": "hamish@silverstripe.com"
-            }
-        ],
-        "description": "The Compass module for SilverStripe seamlessly integrates Sass and Compass in SilverStripe modules and themes. You write your styles in sass, and the module automatically compiles these sass files to css.",
-        "keywords": [
-            "compass",
-            "css",
-            "sass",
-            "silverstripe"
-        ]
-    },
-    {
-        "name": "silverstripe/docsviewer",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/silverstripe/silverstripe-docsviewer.git",
-            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/cb877536b6cc924bbbe03bc04e336d28e25dfde1",
-            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1",
-            "shasum": ""
-        },
-        "require": {
-            "silverstripe/framework": ">=3.1.x-dev,<4.0"
-        },
-        "time": "2013-06-10 07:55:12",
-        "type": "silverstripe-module",
-        "installation-source": "source",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Will Rossiter",
-                "email": "will@fullscreen.io",
-                "homepage": "http://wilr.github.com"
-            }
-        ],
-        "description": "Documentation viewer module for SilverStripe",
-        "keywords": [
-            "documentation",
-            "silverstripe"
-        ]
-    },
-    {
-        "name": "silverstripe/framework",
-        "version": "3.1.x-dev",
-        "version_normalized": "3.1.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/silverstripe/silverstripe-framework.git",
-            "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/a6c3d1e26939e4e3f57193f86285a0cae2659c75",
-            "reference": "a6c3d1e26939e4e3f57193f86285a0cae2659c75",
-            "shasum": ""
-        },
-        "require": {
-            "composer/installers": "*",
-            "php": ">=5.3.2"
-        },
-        "time": "2013-06-28 10:21:00",
-        "type": "silverstripe-module",
-        "installation-source": "source",
-        "autoload": {
-            "classmap": [
-                "tests/behat/features/bootstrap"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "SilverStripe",
-                "homepage": "http://silverstripe.com"
-            },
-            {
-                "name": "The SilverStripe Community",
-                "homepage": "http://silverstripe.org"
-            }
-        ],
-        "description": "The SilverStripe framework",
-        "homepage": "http://silverstripe.org",
-        "keywords": [
-            "framework",
-            "silverstripe"
-        ]
-    },
-    {
         "name": "composer/installers",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba"
+            "reference": "34bd8e879adc82fac26eb2c7551a03e04f9b7e3a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
-            "reference": "2e0ebaa4990a099ffe490801eefe70cda1ae15ba",
+            "url": "https://api.github.com/repos/composer/installers/zipball/34bd8e879adc82fac26eb2c7551a03e04f9b7e3a",
+            "reference": "34bd8e879adc82fac26eb2c7551a03e04f9b7e3a",
             "shasum": ""
         },
         "replace": {
@@ -143,7 +21,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2013-06-28 03:15:23",
+        "time": "2013-06-29 16:45:39",
         "type": "composer-installer",
         "extra": {
             "class": "Composer\\Installers\\Installer",
@@ -193,6 +71,128 @@
             "symfony",
             "wordpress",
             "zend"
+        ]
+    },
+    {
+        "name": "silverstripe/framework",
+        "version": "3.1.x-dev",
+        "version_normalized": "3.1.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silverstripe/silverstripe-framework.git",
+            "reference": "429bbc52237c1c6c64e159b00ab759df4e3fa59f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/429bbc52237c1c6c64e159b00ab759df4e3fa59f",
+            "reference": "429bbc52237c1c6c64e159b00ab759df4e3fa59f",
+            "shasum": ""
+        },
+        "require": {
+            "composer/installers": "*",
+            "php": ">=5.3.2"
+        },
+        "time": "2013-07-02 07:40:56",
+        "type": "silverstripe-module",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "tests/behat/features/bootstrap"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "SilverStripe",
+                "homepage": "http://silverstripe.com"
+            },
+            {
+                "name": "The SilverStripe Community",
+                "homepage": "http://silverstripe.org"
+            }
+        ],
+        "description": "The SilverStripe framework",
+        "homepage": "http://silverstripe.org",
+        "keywords": [
+            "framework",
+            "silverstripe"
+        ]
+    },
+    {
+        "name": "silverstripe/docsviewer",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silverstripe/silverstripe-docsviewer.git",
+            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/cb877536b6cc924bbbe03bc04e336d28e25dfde1",
+            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1",
+            "shasum": ""
+        },
+        "require": {
+            "silverstripe/framework": ">=3.1.x-dev,<4.0"
+        },
+        "time": "2013-06-10 07:55:12",
+        "type": "silverstripe-module",
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Will Rossiter",
+                "email": "will@fullscreen.io",
+                "homepage": "http://wilr.github.com"
+            }
+        ],
+        "description": "Documentation viewer module for SilverStripe",
+        "keywords": [
+            "documentation",
+            "silverstripe"
+        ]
+    },
+    {
+        "name": "silverstripe/compass",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/silverstripe-labs/silverstripe-compass.git",
+            "reference": "df401ac7e503b30c6cc0828448abeb18ecf767a9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/silverstripe-labs/silverstripe-compass/zipball/df401ac7e503b30c6cc0828448abeb18ecf767a9",
+            "reference": "df401ac7e503b30c6cc0828448abeb18ecf767a9",
+            "shasum": ""
+        },
+        "require": {
+            "silverstripe/framework": "3.*"
+        },
+        "time": "2013-01-16 09:27:25",
+        "type": "silverstripe-module",
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Hamish Friedlander",
+                "email": "hamish@silverstripe.com"
+            }
+        ],
+        "description": "The Compass module for SilverStripe seamlessly integrates Sass and Compass in SilverStripe modules and themes. You write your styles in sass, and the module automatically compiles these sass files to css.",
+        "keywords": [
+            "compass",
+            "css",
+            "sass",
+            "silverstripe"
         ]
     }
 ]
