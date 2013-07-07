@@ -314,12 +314,11 @@ do ($ = jQuery) ->
 						dfdParse.resolve()
 					# element moved in from outside the $preview-area
 					else if md = JJMarkdownEditor._activeDraggable
-						@.insertAtEditorPosByEl $target, md
+						@.insertAtEditorPosByEl $target, md + '  \n\n'
 						JJMarkdownEditor._activeDraggable = null
 						dfdParse.resolve()
 					# upload
 					else if e.dataTransfer.files.length
-
 						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, @.options.additionalPOSTData, @.options.errorMsg, 'image.*'
 
 						uploadDfd.done (data) =>
@@ -364,25 +363,31 @@ do ($ = jQuery) ->
 		# moves $el above $target within the editor, if $target is $preview, append
 		moveInlineElement : ($el, $target) ->
 			mdTag = $el.data('md-tag').replace /\\/g, ''
+			mdNl = mdTag + '  \n\n'
 			
 			pos = $el.data('editor-pos')
 			
 			# add length to position because if the element is inserted before its original position
-			if not ($target.is @.$preview) and ($target.data('editor-pos') < pos) then pos += mdTag.length
+			if not ($target.is @.$preview) and ($target.data('editor-pos') < pos) then pos += mdNl.length
 			# insert the mdTag in editor
-			@.insertAtEditorPosByEl $target, mdTag
+			@.insertAtEditorPosByEl $target, mdNl
 			# remove the obsolete moved mdTag
 			@.removeAtEditorPos pos, mdTag
 
 
 		removeAtEditorPos : (pos, md) ->
 			val = @.$input._val()
-			val = [val.slice(0, pos), val.slice(pos + md.length)].join ''
+			mdLength = md.length
+			# if the md-tag which is to be removed is followed by two newlines, remove them as well (i.e. images)
+			nl = '  \n\n'
+			if val.substring(pos + mdLength, pos + mdLength + nl.length) is nl
+				mdLength += nl.length
+
+			val = [val.slice(0, pos), val.slice(pos + mdLength)].join ''
 			@.$input._val val
 
 		# inserts at the editor-pos of $el. if $el is the $preview-area, appends it
 		insertAtEditorPosByEl : ($el, md) ->
-			md += '  \n\n'
 			val = @.$input._val()
 			if $el.is @.$preview
 				val = val + md

@@ -322,7 +322,7 @@
             _this.inlineElementDragged = null;
             return dfdParse.resolve();
           } else if (md = JJMarkdownEditor._activeDraggable) {
-            _this.insertAtEditorPosByEl($target, md);
+            _this.insertAtEditorPosByEl($target, md + '  \n\n');
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
           } else if (e.dataTransfer.files.length) {
@@ -369,29 +369,34 @@
     };
 
     JJMarkdownEditor.prototype.moveInlineElement = function($el, $target) {
-      var mdTag, pos;
+      var mdNl, mdTag, pos;
 
       mdTag = $el.data('md-tag').replace(/\\/g, '');
+      mdNl = mdTag + '  \n\n';
       pos = $el.data('editor-pos');
       if (!($target.is(this.$preview)) && ($target.data('editor-pos') < pos)) {
-        pos += mdTag.length;
+        pos += mdNl.length;
       }
-      this.insertAtEditorPosByEl($target, mdTag);
+      this.insertAtEditorPosByEl($target, mdNl);
       return this.removeAtEditorPos(pos, mdTag);
     };
 
     JJMarkdownEditor.prototype.removeAtEditorPos = function(pos, md) {
-      var val;
+      var mdLength, nl, val;
 
       val = this.$input._val();
-      val = [val.slice(0, pos), val.slice(pos + md.length)].join('');
+      mdLength = md.length;
+      nl = '  \n\n';
+      if (val.substring(pos + mdLength, pos + mdLength + nl.length) === nl) {
+        mdLength += nl.length;
+      }
+      val = [val.slice(0, pos), val.slice(pos + mdLength)].join('');
       return this.$input._val(val);
     };
 
     JJMarkdownEditor.prototype.insertAtEditorPosByEl = function($el, md) {
       var pos, val;
 
-      md += '  \n\n';
       val = this.$input._val();
       if ($el.is(this.$preview)) {
         val = val + md;
