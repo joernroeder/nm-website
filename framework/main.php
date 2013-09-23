@@ -52,32 +52,36 @@ if (version_compare(phpversion(), '5.3.2', '<')) {
  * @see Director::direct()
  */
 
-
 /**
- * Include SilverStripe's core code
+ * Include the defines that set BASE_PATH, etc
  */
-require_once('core/Core.php');
+require_once('core/Constants.php');
 
 // IIS will sometimes generate this.
 if(!empty($_SERVER['HTTP_X_ORIGINAL_URL'])) {
 	$_SERVER['REQUEST_URI'] = $_SERVER['HTTP_X_ORIGINAL_URL'];
 }
 
+/**
+ * Figure out the request URL
+ */
+global $url;
+
 // PHP 5.4's built-in webserver uses this
 if (php_sapi_name() == 'cli-server') {
 	$url = $_SERVER['REQUEST_URI'];
-	
+
 	// Querystring args need to be explicitly parsed
 	if(strpos($url,'?') !== false) {
 		list($url, $query) = explode('?',$url,2);
 		parse_str($query, $_GET);
 		if ($_GET) $_REQUEST = array_merge((array)$_REQUEST, (array)$_GET);
 	}
-	
-	// Pass back to the webserver for files that exist
-	if(file_exists(BASE_PATH . $url)) return false;
 
-// Apache rewrite rules use this
+	// Pass back to the webserver for files that exist
+	if(file_exists(BASE_PATH . $url) && is_file(BASE_PATH . $url)) return false;
+
+	// Apache rewrite rules use this
 } else if (isset($_GET['url'])) {
 	$url = $_GET['url'];
 	// IIS includes get variables in url
@@ -85,8 +89,8 @@ if (php_sapi_name() == 'cli-server') {
 	if($i !== false) {
 		$url = substr($url, 0, $i);
 	}
-	
-// Lighttpd uses this
+
+	// Lighttpd uses this
 } else {
 	if(strpos($_SERVER['REQUEST_URI'],'?') !== false) {
 		list($url, $query) = explode('?', $_SERVER['REQUEST_URI'], 2);
@@ -100,8 +104,67 @@ if (php_sapi_name() == 'cli-server') {
 // Remove base folders from the URL if webroot is hosted in a subfolder
 if (substr(strtolower($url), 0, strlen(BASE_URL)) == strtolower(BASE_URL)) $url = substr($url, strlen(BASE_URL));
 
-// Connect to database
-require_once('model/DB.php');
+/**
+ * Include SilverStripe's core code
+ */
+require_once('core/startup/ErrorControlChain.php');
+require_once('core/startup/ParameterConfirmationToken.php');
+
+$chain = new ErrorControlChain();
+$token = new ParameterConfirmationToken('flush');
+
+$chain
+	->then(function($chain) use ($token){
+		// First, if $_GET['flush'] was set, but no valid token, suppress the flush
+		if (isset($_GET['flush']) && !$token->tokenProvided()) {
+			unset($_GET['flush']);
+		}
+		else {
+			$chain->setSuppression(false);
+		}
+
+		// Load in core
+		require_once('core/Core.php');
+
+		// Connect to database
+		require_once('model/DB.php');
+		global $databaseConfig;
+		if ($databaseConfig) DB::connect($databaseConfig);
+
+		// Then if a flush was requested, redirect to it
+		if ($token->parameterProvided() && !$token->tokenProvided()) {
+			// First, check if we're in dev mode, or the database doesn't have any security data
+			$canFlush = Director::isDev() || !Security::database_is_ready();
+
+			// Otherwise, we start up the session if needed, then check for admin
+			if (!$canFlush) {
+				if(!isset($_SESSION) && Session::request_contains_session_id()) {
+					Session::start();
+				}
+
+				if (Permission::check('ADMIN')) {
+					$canFlush = true;
+				}
+				else {
+					$loginPage = Director::absoluteURL(Config::inst()->get('Security', 'login_url'));
+					$loginPage .= "?BackURL=" . urlencode($_SERVER['REQUEST_URI']);
+
+					header('location: '.$loginPage, true, 302);
+					die;
+				}
+			}
+
+			// And if we can flush, reload with an authority token
+			if ($canFlush) $token->reloadWithToken();
+		}
+	})
+	// Finally if a flush was requested but there was an error while figuring out if it's allowed, do it anyway
+	->thenIfErrored(function() use ($token){
+		if ($token->parameterProvided() && !$token->tokenProvided()) {
+			$token->reloadWithToken();
+		}
+	})
+	->execute();
 
 global $databaseConfig;
 
@@ -112,16 +175,14 @@ if(!isset($databaseConfig) || !isset($databaseConfig['database']) || !$databaseC
 	}
 	$s = (isset($_SERVER['SSL']) || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')) ? 's' : '';
 	$installURL = "http$s://" . $_SERVER['HTTP_HOST'] . BASE_URL . '/install.php';
-	
+
 	// The above dirname() will equate to "\" on Windows when installing directly from http://localhost (not using
 	// a sub-directory), this really messes things up in some browsers. Let's get rid of the backslashes
 	$installURL = str_replace('\\', '', $installURL);
-	
+
 	header("Location: $installURL");
 	die();
 }
-
-DB::connect($databaseConfig);
 
 // Direct away - this is the "main" function, that hands control to the appropriate controller
 DataModel::set_inst(new DataModel());

@@ -23,7 +23,7 @@ class SS_ConfigManifest {
 	  * the current environment.
 	  * @var array
 	  */
-	protected $variantKeySpec = array();
+	protected $variantKeySpec = false;
 
 	/**
 	 * All the _config.php files. Need to be included every request & can't be cached. Not variant specific.
@@ -88,10 +88,7 @@ class SS_ConfigManifest {
 		$this->includeTests = $includeTests;
 
 		// Get the Zend Cache to load/store cache into
-		$this->cache = SS_Cache::factory('SS_Configuration', 'Core', array(
-			'automatic_serialization' => true,
-			'lifetime' => null
-		));
+		$this->cache = $this->getCache();
 
 		// Unless we're forcing regen, try loading from cache
 		if (!$forceRegen) {
@@ -102,12 +99,24 @@ class SS_ConfigManifest {
 		}
 
 		// If we don't have a variantKeySpec (because we're forcing regen, or it just wasn't in the cache), generate it
-		if (!$this->variantKeySpec) {
+		if (false === $this->variantKeySpec) {
 			$this->regenerate($includeTests);
 		}
 
 		// At this point $this->variantKeySpec will always contain something valid, so we can build the variant
 		$this->buildYamlConfigVariant();
+	}
+
+	/**
+	 * Provides a hook for mock unit tests despite no DI
+	 * @return Zend_Cache_Frontend
+	 */
+	protected function getCache()
+	{
+		return SS_Cache::factory('SS_Configuration', 'Core', array(
+			'automatic_serialization' => true,
+			'lifetime' => null
+		));
 	}
 
 	/**
@@ -291,7 +300,7 @@ class SS_ConfigManifest {
 						// For each, parse out into module/file#name, and set any missing to "*"
 						$header[$order] = array();
 						foreach($orderparts as $part) {
-							preg_match('! (?P<module>\*|\w+)? (\/ (?P<file>\*|\w+))? (\# (?P<fragment>\*|\w+))? !x',
+							preg_match('! (?P<module>\*|[^\/#]+)? (\/ (?P<file>\*|\w+))? (\# (?P<fragment>\*|\w+))? !x',
 								$part, $match);
 
 							$header[$order][] = array(

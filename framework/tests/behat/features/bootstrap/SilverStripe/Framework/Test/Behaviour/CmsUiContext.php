@@ -140,7 +140,7 @@ class CmsUiContext extends BehatContext
 	}
 
 	/**
-	 * @When /^I should see "([^"]*)" in CMS Tree$/
+	 * @When /^I should see "([^"]*)" in the tree$/
 	 */
 	public function stepIShouldSeeInCmsTree($text)
 	{
@@ -151,7 +151,7 @@ class CmsUiContext extends BehatContext
 	}
 
 	/**
-	 * @When /^I should not see "([^"]*)" in CMS Tree$/
+	 * @When /^I should not see "([^"]*)" in the tree$/
 	 */
 	public function stepIShouldNotSeeInCmsTree($text)
 	{
@@ -159,6 +159,17 @@ class CmsUiContext extends BehatContext
 
 		$element = $cms_tree_element->find('named', array('content', "'$text'"));
 		assertNull($element, sprintf('%s found', $text));
+	}
+
+	/**
+	 * @When /^I click on "([^"]*)" in the tree$/
+	 */
+	public function stepIClickOnElementInTheTree($text)
+	{
+		$treeEl = $this->getCmsTreeElement();
+		$treeNode = $treeEl->findLink($text);
+		assertNotNull($treeNode, sprintf('%s not found', $text));
+		$treeNode->click();
 	}
 
 	/**
@@ -246,10 +257,13 @@ class CmsUiContext extends BehatContext
 	public function thePreviewContains($content)
 	{
 		$driver = $this->getSession()->getDriver();
-		$driver->switchToIFrame('cms-preview-iframe');
+		// TODO Remove once we have native support in Mink and php-webdriver,
+		// see https://groups.google.com/forum/#!topic/behat/QNhOuGHKEWI
+		$origWindowName = $driver->getWebDriverSession()->window_handle();
 
+		$driver->switchToIFrame('cms-preview-iframe');
 		$this->getMainContext()->assertPageContainsText($content);
-		$driver->switchToWindow();
+		$driver->switchToWindow($origWindowName);
 	}
 
 	/**
@@ -269,14 +283,16 @@ class CmsUiContext extends BehatContext
 	public function iWaitForThePreviewToLoad() 
 	{
 		$driver = $this->getSession()->getDriver();
+		// TODO Remove once we have native support in Mink and php-webdriver,
+		// see https://groups.google.com/forum/#!topic/behat/QNhOuGHKEWI
+		$origWindowName = $driver->getWebDriverSession()->window_handle();
+
 		$driver->switchToIFrame('cms-preview-iframe');
-		
 		$this->getSession()->wait(
 			5000, 
 			"!jQuery('iframe[name=cms-preview-iframe]').hasClass('loading')"
 		);
-
-		$driver->switchToWindow();   
+		$driver->switchToWindow($origWindowName);   
 	}
 
 	/**
@@ -304,10 +320,13 @@ class CmsUiContext extends BehatContext
 	public function thePreviewDoesNotContain($content)
 	{
 		$driver = $this->getSession()->getDriver();
+		// TODO Remove once we have native support in Mink and php-webdriver,
+		// see https://groups.google.com/forum/#!topic/behat/QNhOuGHKEWI
+		$origWindowName = $driver->getWebDriverSession()->window_handle();
+		
 		$driver->switchToIFrame('cms-preview-iframe');
-
 		$this->getMainContext()->assertPageNotContainsText($content);
-		$driver->switchToWindow();
+		$driver->switchToWindow($origWindowName);
 	}
 
 	/**
@@ -321,7 +340,10 @@ class CmsUiContext extends BehatContext
 		$field = $this->fixStepArgument($field);
 		$value = $this->fixStepArgument($value);
 
-		$nativeField = $this->getSession()->getPage()->findField($field);
+		$nativeField = $this->getSession()->getPage()->find(
+			'named', 
+			array('select', $this->getSession()->getSelectorsHandler()->xpathLiteral($field))
+		);
 		if($nativeField) {
 			$nativeField->selectOption($value);
 			return;
@@ -332,7 +354,9 @@ class CmsUiContext extends BehatContext
 
 		// Find by label
 		$formField = $this->getSession()->getPage()->findField($field);
-		if($formField) $formFields[] = $formField;
+		if($formField && $formField->getTagName() == 'select') {
+			$formFields[] = $formField;
+		}
 
 		// Fall back to finding by title (for dropdowns without a label)
 		if(!$formFields) {
@@ -348,6 +372,15 @@ class CmsUiContext extends BehatContext
 		// Find by name (incl. hidden fields)
 		if(!$formFields) {
 			$formFields = $this->getSession()->getPage()->findAll('xpath', "//*[@name='$field']");
+		}
+
+		// Find by label
+		if(!$formFields) {
+			$label = $this->getSession()->getPage()->find('xpath', "//label[.='$field']");
+			if($label && $for = $label->getAttribute('for')) {
+				$formField = $this->getSession()->getPage()->find('xpath', "//*[@id='$for']");
+				if($formField) $formFields[] = $formField;
+			}
 		}
 
 		assertGreaterThan(0, count($formFields), sprintf(

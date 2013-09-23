@@ -6,12 +6,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "34bd8e879adc82fac26eb2c7551a03e04f9b7e3a"
+            "reference": "b3bd071ea114a57212c75aa6a2eef5cfe0cc798f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/34bd8e879adc82fac26eb2c7551a03e04f9b7e3a",
-            "reference": "34bd8e879adc82fac26eb2c7551a03e04f9b7e3a",
+            "url": "https://api.github.com/repos/composer/installers/zipball/b3bd071ea114a57212c75aa6a2eef5cfe0cc798f",
+            "reference": "b3bd071ea114a57212c75aa6a2eef5cfe0cc798f",
             "shasum": ""
         },
         "replace": {
@@ -21,7 +21,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2013-06-29 16:45:39",
+        "time": "2013-08-20 04:37:09",
         "type": "composer-installer",
         "extra": {
             "class": "Composer\\Installers\\Installer",
@@ -43,13 +43,14 @@
             {
                 "name": "Kyle Robinson Young",
                 "email": "kyle@dontkry.com",
-                "homepage": "https://github.com/shama",
+                "homepage": "http://dontkry.com",
                 "role": "Developer"
             }
         ],
         "description": "A multi-framework Composer library installer",
         "homepage": "http://composer.github.com/installers/",
         "keywords": [
+            "TYPO3 CMS",
             "TYPO3 Flow",
             "TYPO3 Neos",
             "agl",
@@ -80,19 +81,19 @@
         "source": {
             "type": "git",
             "url": "https://github.com/silverstripe/silverstripe-framework.git",
-            "reference": "429bbc52237c1c6c64e159b00ab759df4e3fa59f"
+            "reference": "f8eaf81ae2522a451ad207a96aa7f39cc723c7c3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/429bbc52237c1c6c64e159b00ab759df4e3fa59f",
-            "reference": "429bbc52237c1c6c64e159b00ab759df4e3fa59f",
+            "url": "https://api.github.com/repos/silverstripe/silverstripe-framework/zipball/f8eaf81ae2522a451ad207a96aa7f39cc723c7c3",
+            "reference": "f8eaf81ae2522a451ad207a96aa7f39cc723c7c3",
             "shasum": ""
         },
         "require": {
             "composer/installers": "*",
             "php": ">=5.3.2"
         },
-        "time": "2013-07-02 07:40:56",
+        "time": "2013-09-23 05:13:09",
         "type": "silverstripe-module",
         "installation-source": "source",
         "autoload": {
@@ -128,18 +129,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/silverstripe/silverstripe-docsviewer.git",
-            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1"
+            "reference": "49f56888f233a0cdb0b6b16e5b936af43bf5c002"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/cb877536b6cc924bbbe03bc04e336d28e25dfde1",
-            "reference": "cb877536b6cc924bbbe03bc04e336d28e25dfde1",
+            "url": "https://api.github.com/repos/silverstripe/silverstripe-docsviewer/zipball/49f56888f233a0cdb0b6b16e5b936af43bf5c002",
+            "reference": "49f56888f233a0cdb0b6b16e5b936af43bf5c002",
             "shasum": ""
         },
         "require": {
-            "silverstripe/framework": ">=3.1.x-dev,<4.0"
+            "silverstripe/framework": "~3.1"
         },
-        "time": "2013-06-10 07:55:12",
+        "time": "2013-09-21 21:32:44",
         "type": "silverstripe-module",
         "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",
@@ -184,7 +185,8 @@
         "authors": [
             {
                 "name": "Hamish Friedlander",
-                "email": "hamish@silverstripe.com"
+                "email": "hamish@silverstripe.com",
+                "role": "Developer"
             }
         ],
         "description": "The Compass module for SilverStripe seamlessly integrates Sass and Compass in SilverStripe modules and themes. You write your styles in sass, and the module automatically compiles these sass files to css.",

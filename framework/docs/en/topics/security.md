@@ -127,6 +127,38 @@ or [sanitize](http://htmlpurifier.org/) it correctly.
 See [http://shiflett.org/articles/foiling-cross-site-attacks](http://shiflett.org/articles/foiling-cross-site-attacks)
 for in-depth information about "Cross-Site-Scripting".
 
+### What if I can't trust my editors?
+
+The default configuration of SilverStripe assumes some level of trust is given to your editors who have access
+to the CMS. Though the HTML WYSIWYG editor is configured to provide some control over the HTML an editor provides,
+this is not enforced server side, and so can be bypassed by a malicious editor. A editor that does so can use an
+XSS attack against an admin to perform any administrative action.
+
+If you can't trust your editors, SilverStripe must be configured to filter the content so that any javascript is
+stripped out
+
+To enable filtering, set the HtmlEditorField::$sanitise_server_side [configuration](/topics/configuration) property to
+true, e.g.
+
+	HtmlEditorField::config()->sanitise_server_side = true
+
+The built in sanitiser enforces the TinyMCE whitelist rules on the server side, and is sufficient to eliminate the
+most common XSS vectors.
+
+However some subtle XSS attacks that exploit HTML parsing bugs need heavier filtering. For greater protection
+you can install the [htmlpurifier](https://github.com/silverstripe-labs/silverstripe-htmlpurifier) module which
+will replace the built in sanitiser with one that uses the [HTML Purifier](http://htmlpurifier.org/) library.
+
+In both cases, you must ensure that you have not configured TinyMCE to explicitly allow script elements or other
+javascript-specific attributes.
+
+##### But I also need my editors to provide javascript
+
+It is not currently possible to allow editors to provide javascript content and yet still protect other users
+from any malicious code within that javascript.
+
+We recommend configuring [shortcodes](/reference/shortcodes) that can be used by editors in place of using javascript directly.
+
 ### Escaping model properties
 
 `[api:SSViewer]` (the SilverStripe template engine) automatically takes care of escaping HTML tags from specific
@@ -272,6 +304,15 @@ Some rules of thumb:
 *  Don't concatenate URLs in a template.  It only works in extremely simple cases that usually contain bugs.
 *  Use *Controller::join_links()* to concatenate URLs.  It deals with query strings and other such edge cases.
 
+### Filtering incoming HTML from TinyMCE
+
+In some cases you may be particularly concerned about which HTML elements are addable to Content via the CMS.
+By default, although TinyMCE is configured to restrict some dangerous tags (such as `script` tags), this restriction
+is not enforced server-side. A malicious user with write access to the CMS might create a specific request to avoid
+these restrictions.
+
+To enable server side filtering using the same whitelisting controls as TinyMCE, set the
+HtmlEditorField::$sanitise_server_side config property to true.
 
 ## Cross-Site Request Forgery (CSRF)
 
@@ -282,7 +323,11 @@ match the hash stored in the users session, the request is discarded.
 You can disable this behaviour through `[api:Form->disableSecurityToken()]`.
 
 It is also recommended to limit form submissions to the intended HTTP verb (mostly `GET` or `POST`)
-through `[api:Form->setStrictFormMethodCheck()]`.
+through `[api:Form->setStrictFormMethodCheck()]`. 
+
+Sometimes you need to handle state-changing HTTP submissions which aren't handled through
+SilverStripe's form system. In this case, you can also check the current HTTP request
+for a valid token through `[api:SecurityToken::checkRequest()]`.
 
 ## Casting user input
 
@@ -368,11 +413,62 @@ you need to serve directly.
 
 See [Apache](/installation/webserver) and [Nginx](/installation/nginx) installation documentation for details 
 specific to your web server
+See [Apache](/installation/webserver) and [Nginx](/installation/nginx) installation documentation for details  specific to your web server
+
+## Passwords
+
+SilverStripe stores passwords with a strong hashing algorithm (blowfish) by default
+(see [api:PasswordEncryptor]). It adds randomness to these hashes via
+salt values generated with the strongest entropy generators available on the platform
+(see [api:RandomGenerator]). This prevents brute force attacks with
+[Rainbow tables](http://en.wikipedia.org/wiki/Rainbow_table).
+
+Strong passwords are a crucial part of any system security.
+So in addition to storing the password in a secure fashion,
+you can also enforce specific password policies by configuring
+a [api:PasswordValidator]:
+
+	:::php
+	$validator = new PasswordValidator();
+	$validator->minLength(7);
+	$validator->checkHistoricalPasswords(6);
+	$validator->characterStrength('lowercase','uppercase','digits','punctuation');
+	Member::set_password_validator($validator);
+
+In addition, you can tighten password security with the following configuration settings:
+
+ * `Member.password_expiry_days`: Set the number of days that a password should be valid for.
+ * `Member.lock_out_after_incorrect_logins`: Number of incorrect logins after which
+    the user is blocked from further attempts for the timespan defined in `$lock_out_delay_mins`
+ * `Member.lock_out_delay_mins`: Minutes of enforced lockout after incorrect password attempts.
+ 		Only applies if `lock_out_after_incorrect_logins` is greater than 0.
+
+## Clickjacking: Prevent iframe Inclusion
+
+"[Clickjacking](http://en.wikipedia.org/wiki/Clickjacking)"  is a malicious technique
+where a web user is tricked into clicking on hidden interface elements, which can
+lead to the attacker gaining access to user data or taking control of the website behaviour.
+
+You can signal to browsers that the current response isn't allowed to be 
+included in HTML "frame" or "iframe" elements, and thereby prevent the most common
+attack vector. This is done through a HTTP header, which is usually added in your
+controller's `init()` method:
+
+	:::php
+	class MyController extends Controller {
+		public function init() {
+			parent::init();
+
+			$this->response->addHeader('X-Frame-Options', 'SAMEORIGIN');
+		}
+	}
+	
+
+This is a recommended option to secure any controller which displays
+or submits sensitive user input, and is enabled by default in all CMS controllers,
+as well as the login form.
 
 ##  Related
 
  * [http://silverstripe.org/security-releases/](http://silverstripe.org/security-releases/)
-
-## Links
-
  * [Best-practices for securing MySQL (securityfocus.com)](http://www.securityfocus.com/infocus/1726)

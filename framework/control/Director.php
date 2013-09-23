@@ -127,7 +127,7 @@ class Director implements TemplateGlobalProvider {
 		}
 
 		// Only resume a session if its not started already, and a session identifier exists
-		if(!isset($_SESSION) && (isset($_COOKIE[session_name()]) || isset($_REQUEST[session_name()]))) {
+		if(!isset($_SESSION) && Session::request_contains_session_id()) {
 			Session::start();
 		}
 		// Initiate an empty session - doesn't initialize an actual PHP session until saved (see belwo)
@@ -147,11 +147,22 @@ class Director implements TemplateGlobalProvider {
 
 		// Return code for a redirection request
 		if(is_string($result) && substr($result,0,9) == 'redirect:') {
-			$response = new SS_HTTPResponse();
-			$response->redirect(substr($result, 9));
-			$res = Injector::inst()->get('RequestProcessor')->postRequest($req, $response, $model);
-			if ($res !== false) {
-				$response->output();
+			$url = substr($result, 9);
+
+			if(Director::is_cli()) {
+				// on cli, follow SilverStripe redirects automatically
+				return Director::direct(
+					str_replace(Director::absoluteBaseURL(), '', $url), 
+					DataModel::inst()
+				);
+			} else {
+				$response = new SS_HTTPResponse();
+				$response->redirect($url);
+				$res = Injector::inst()->get('RequestProcessor')->postRequest($req, $response, $model);
+
+				if ($res !== false) {
+					$response->output();
+				}
 			}
 		// Handle a controller
 		} else if($result) {
@@ -715,6 +726,26 @@ class Director implements TemplateGlobalProvider {
 	}
 
 	/**
+	 * Skip any further processing and immediately respond with a redirect to the passed URL.
+	 *
+	 * @param string $destURL - The URL to redirect to
+	 */
+	protected static function force_redirect($destURL) {
+		$response = new SS_HTTPResponse(
+			"<h1>Your browser is not accepting header redirects</h1>".
+			"<p>Please <a href=\"$destURL\">click here</a>",
+			301
+		);
+
+		HTTP::add_cache_headers($response);
+		$response->addHeader('Location', $destURL);
+
+		// TODO: Use an exception - ATM we can be called from _config.php, before Director#handleRequest's try block
+		$response->output();
+		die;
+	}
+
+	/**
 	 * Force the site to run on SSL.
 	 * 
 	 * To use, call from _config.php. For example:
@@ -782,10 +813,7 @@ class Director implements TemplateGlobalProvider {
 			if(class_exists('SapphireTest', false) && SapphireTest::is_running_test()) {
 				return $destURL;
 			} else {
-				if(!headers_sent()) header("Location: $destURL");
-				
-				die("<h1>Your browser is not accepting header redirects</h1>"
-					. "<p>Please <a href=\"$destURL\">click here</a>");
+				self::force_redirect($destURL);
 			}
 		} else {
 			return false;
@@ -800,9 +828,7 @@ class Director implements TemplateGlobalProvider {
 			$destURL = str_replace(Director::protocol(), Director::protocol() . 'www.', 
 				Director::absoluteURL($_SERVER['REQUEST_URI']));
 
-			header("Location: $destURL", true, 301);
-			die("<h1>Your browser is not accepting header redirects</h1>"
-				. "<p>Please <a href=\"$destURL\">click here</a>");
+			self::force_redirect($destURL);
 		}
 	}
 

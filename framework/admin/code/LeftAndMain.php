@@ -449,6 +449,9 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		$title = $this->Title();
 		if(!$response->getHeader('X-Controller')) $response->addHeader('X-Controller', $this->class);
 		if(!$response->getHeader('X-Title')) $response->addHeader('X-Title', urlencode($title));
+
+		// Prevent clickjacking, see https://developer.mozilla.org/en-US/docs/HTTP/X-Frame-Options
+		$this->response->addHeader('X-Frame-Options', 'SAMEORIGIN');
 		
 		return $response;
 	}
@@ -827,7 +830,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		// match the filter criteria until they're queried (and matched up with previously marked nodes).
 		$nodeThresholdLeaf = Config::inst()->get('Hierarchy', 'node_threshold_leaf');
 		if($nodeThresholdLeaf && !$filterFunction) {
-			$nodeCountCallback = function($parent, $numChildren) use($controller, $className, $nodeThresholdLeaf) {
+			$nodeCountCallback = function($parent, $numChildren) use(&$controller, $className, $nodeThresholdLeaf) {
 				if($className == 'SiteTree' && $parent->ID && $numChildren > $nodeThresholdLeaf) {
 					return sprintf(
 						'<ul><li class="readonly"><span class="item">'
@@ -973,7 +976,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		if(substr($SQL_id,0,3) != 'new') {
 			$record = DataObject::get_by_id($className, $SQL_id);
 			if($record && !$record->canEdit()) return Security::permissionFailure($this);
-			if(!$record || !$record->ID) throw new HTTPResponse_Exception("Bad record ID #" . (int)$data['ID'], 404);
+			if(!$record || !$record->ID) $this->httpError(404, "Bad record ID #" . (int)$data['ID']);
 		} else {
 			if(!singleton($this->stat('tree_class'))->canCreate()) return Security::permissionFailure($this);
 			$record = $this->getNewItem($SQL_id, false);
@@ -994,7 +997,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		
 		$record = DataObject::get_by_id($className, Convert::raw2sql($data['ID']));
 		if($record && !$record->canDelete()) return Security::permissionFailure();
-		if(!$record || !$record->ID) throw new HTTPResponse_Exception("Bad record ID #" . (int)$data['ID'], 404);
+		if(!$record || !$record->ID) $this->httpError(404, "Bad record ID #" . (int)$data['ID']);
 		
 		$record->delete();
 
@@ -1278,7 +1281,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 				// new LiteralField(
 				// 	'WelcomeText',
 				// 	sprintf('<p id="WelcomeMessage">%s %s. %s</p>',
-				// 		_t('LeftAndMain_right.ss.WELCOMETO','Welcome to'),
+				// 		_t('LeftAndMain_right_ss.WELCOMETO','Welcome to'),
 				// 		$this->getApplicationName(),
 				// 		_t('CHOOSEPAGE','Please choose an item from the left.')
 				// 	)

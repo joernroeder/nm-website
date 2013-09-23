@@ -149,7 +149,7 @@ form.nostyle label.left { float: none; display: inherit; width: auto; padding: 0
 form.nostyle .middleColumn { margin-left: 0; }
 form.nostyle input.text, form.nostyle textarea, form.nostyle select, form.nostyle .TreeDropdownField { width: auto; max-width: auto; }
 
-.field { display: block; border-bottom: 1px solid #d0d3d5; -webkit-box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); -moz-box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); padding: 0 0 7px 0; margin: 8px 0; *zoom: 1; }
+.field { display: block; border-bottom: 1px solid #d0d3d5; -webkit-box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); -moz-box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); -o-box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); box-shadow: 0 1px 0 rgba(245, 245, 245, 0.8); padding: 0 0 7px 0; margin: 8px 0; *zoom: 1; }
 .field.noborder, .field:last-child { padding-bottom: 0; border-bottom: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
 .field:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .field.nolabel .middleColumn { margin-left: 0; }
@@ -231,7 +231,10 @@ form.small .field input.text, form.small .field textarea, form.small .field sele
 /** ---------------------------------------------------- Grouped form fields ---------------------------------------------------- */
 .fieldgroup .fieldgroup-field { float: left; display: block; padding: 8px 8px 0 0; }
 .fieldgroup .fieldgroup-field .field { border: none; padding-bottom: 0; }
-.fieldgroup .fieldgroup-field label { margin-left: 0; margin-right: 1em; width: auto; }
+.fieldgroup .fieldgroup-field .fieldholder-small { padding: 0 0 8px 0; }
+.fieldgroup .fieldgroup-field .fieldgroup input.text, .fieldgroup .fieldgroup-field .fieldgroup textarea, .fieldgroup .fieldgroup-field .fieldgroup select, .fieldgroup .fieldgroup-field .fieldgroup .TreeDropdownField { margin-left: 0; }
+.fieldgroup .fieldgroup-field .fieldholder-small-label { display: block; }
+.fieldgroup .fieldgroup-field label { padding: 8px 8px 8px 0; margin-left: 0; margin-right: 1em; width: auto; }
 .fieldgroup.stacked .fieldgroup-field { float: none; }
 
 .ss-toggle { margin: 8px 0; }
@@ -445,6 +448,10 @@ body.cms { overflow: hidden; }
 
 .cms-edit-form .message { margin: 16px; }
 .cms-edit-form .ui-tabs-panel .message { margin: 16px 0; }
+
+.notice-item { border: 0; -webkit-border-radius: 3px; -moz-border-radius: 3px; -ms-border-radius: 3px; -o-border-radius: 3px; border-radius: 3px; font-family: inherit; font-size: inherit; padding: 8px 10px 8px 10px; }
+
+.notice-item-close { color: #333333; background: url(../images/filter-icons.png) no-repeat 0 -20px; width: 1px; height: 1px; overflow: hidden; padding: 0px 0 20px 15px; }
 
 /** -------------------------------------------- Page icons -------------------------------------------- */
 .page-icon, a .jstree-pageicon { display: block; width: 16px; height: 16px; background: transparent url(../images/sitetree_ss_pageclass_icons_default.png) no-repeat; }
@@ -789,6 +796,12 @@ form.import-form label.left { width: 250px; }
 .cms #vakata-contextmenu .right, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu .right { right: 100%; left: auto; }
 .cms #vakata-contextmenu .bottom, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu .bottom { bottom: -1px; top: auto; }
 .cms #vakata-contextmenu li ul, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul { display: none; position: absolute; top: -2px; left: 100%; background: #FFF; border: 1px solid silver; -webkit-box-shadow: 0 0 10px #cccccc; -moz-box-shadow: 0 0 10px #cccccc; box-shadow: 0 0 10px #cccccc; }
+.cms #vakata-contextmenu li ul.col-2, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul.col-2 { width: 360px; }
+.cms #vakata-contextmenu li ul.col-2 li, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul.col-2 li { width: 50%; }
+.cms #vakata-contextmenu li ul.col-3, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul.col-3 { width: 540px; }
+.cms #vakata-contextmenu li ul.col-3 li, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul.col-3 li { width: 33%; }
+.cms #vakata-contextmenu li ul li, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul li { min-width: 180px; float: left; }
+.cms #vakata-contextmenu li ul li a, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li ul li a { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
 .cms #vakata-contextmenu li.vakata-separator, .TreeDropdownField .treedropdownfield-panel #vakata-contextmenu li.vakata-separator { min-height: 0; height: 1px; line-height: 1px; font-size: 1px; overflow: hidden; margin: 0 2px; background: #ccc; padding: 0; }
 .cms #vakata-dragged, .TreeDropdownField .treedropdownfield-panel #vakata-dragged { display: block; margin: 0 0 0 0; padding: 4px 4px 4px 24px; position: absolute; top: -2000px; line-height: 16px; z-index: 10000; }
 .cms #vakata-dragged ins, .TreeDropdownField .treedropdownfield-panel #vakata-dragged ins { display: block; text-decoration: none; width: 16px; height: 16px; margin: 0 0 0 0; padding: 0; position: absolute; top: 4px; left: 4px; -moz-border-radius: 4px; border-radius: 4px; -webkit-border-radius: 4px; }

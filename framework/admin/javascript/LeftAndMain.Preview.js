@@ -198,6 +198,7 @@
 			 * Caveat: the preview will be automatically enabled when ".cms-previewable" class is detected.
 			 */
 			disablePreview: function() {
+				this.setPendingURL(null);
 				this._loadUrl('about:blank');
 				this._block();
 				this.changeMode('content', false);
@@ -224,14 +225,30 @@
 			},
 
 			/**
+			 * Return a style element we can use in IE8 to fix fonts (see readystatechange binding in onadd below)
+			 */
+			getOrAppendFontFixStyleElement: function() {
+				var style = $('#FontFixStyleElement');
+				if (!style.length) {
+					style = $(
+						'<style type="text/css" id="FontFixStyleElement" disabled="disabled">'+
+							':before,:after{content:none !important}'+
+						'</style>'
+					).appendTo('head');
+				}
+
+				return style;
+			},
+
+			/**
 			 * Initialise the preview element.
 			 */
 			onadd: function() {
-				var self = this, layoutContainer = this.parent();
+				var self = this, layoutContainer = this.parent(), iframe = this.find('iframe');
 
 				// Create layout and controls
-				this.find('iframe').addClass('center');
-				this.find('iframe').bind('load', function() {
+				iframe.addClass('center');
+				iframe.bind('load', function() {
 					self._adjustIframeForPreview();
 
 					// Load edit view for new page, but only if the preview is activated at the moment.
@@ -240,7 +257,17 @@
 					
 					$(this).removeClass('loading');
 				});
-				
+
+				// If there's any webfonts in the preview, IE8 will start glitching. This fixes that.
+				if ($.browser.msie && 8 === parseInt($.browser.version, 10)) {
+					iframe.bind('readystatechange', function(e) {
+						if(iframe[0].readyState == 'interactive') {
+							self.getOrAppendFontFixStyleElement().removeAttr('disabled');
+							setTimeout(function(){ self.getOrAppendFontFixStyleElement().attr('disabled', 'disabled'); }, 0);
+						}
+					});
+				}
+
 				// Preview might not be available in all admin interfaces - block/disable when necessary
 				this.append('<div class="cms-preview-overlay ui-widget-overlay-light"></div>');
 				this.find('.cms-preview-overlay').hide();			
@@ -301,6 +328,18 @@
 			'from .cms-container': {
 				onafterstatechange: function(){
 					this._initialiseFromContent();
+				}
+			},
+
+			/** @var string A URL that should be displayed in this preview panel once it becomes visible */
+			PendingURL: null,
+
+			oncolumnvisibilitychanged: function() {
+				var url = this.getPendingURL();
+				if (url && !this.is('.column-hidden')) {
+					this.setPendingURL(null);
+					this._loadUrl(url);
+					this._unblock();
 				}
 			},
 
@@ -369,19 +408,36 @@
 					});
 				}
 
+				var url = null;
+
 				if (currentState[0]) {
 					// State is available on the newly loaded content. Get it.
-					this._loadUrl(currentState[0].url);
-					this._unblock();
+					url = currentState[0].url;
 				} else if (states.length) {
 					// Fall back to the first available content state.
 					this.setCurrentStateName(states[0].name);
-					this._loadUrl(states[0].url);
-					this._unblock();
+					url = states[0].url;
 				} else {
 					// No state available at all.
 					this.setCurrentStateName(null);
+				}
+
+				// If this preview panel isn't visible at the moment, delay loading the URL until it (maybe) is later
+				if (this.is('.column-hidden')) {
+					this.setPendingURL(url);
+					this._loadUrl('about:blank');
 					this._block();
+				}
+				else {
+					this.setPendingURL(null);
+
+					if (url) {
+						this._loadUrl(url);
+						this._unblock();
+					}
+					else {
+						this._block();
+					}
 				}
 
 				return this;

@@ -106,7 +106,7 @@ class ImageTest extends SapphireTest {
 	 * of the output image do not resample the file.
 	 */
 	public function testReluctanceToResampling() {
-		 
+
 		$image = $this->objFromFixture('Image', 'imageWithoutTitle');
 		$this->assertTrue($image->isSize(300, 300));
 		
@@ -180,5 +180,38 @@ class ImageTest extends SapphireTest {
 		$this->assertTrue(file_exists($p));
 		$image->deleteFormattedImages();
 		$this->assertFalse(file_exists($p));
+	}
+
+	/**
+	 * Tests that generated images with multiple image manipulations are all deleted
+	 */
+	public function testMultipleGenerateManipulationCallsImageDeletion() {
+		$image = $this->objFromFixture('Image', 'imageWithMetacharacters');
+
+		$firstImage = $image->SetWidth(200);
+		$firstImagePath = $firstImage->getFullPath();
+		$this->assertTrue(file_exists($firstImagePath));
+
+		$secondImage = $firstImage->SetHeight(100);
+		$secondImagePath = $secondImage->getFullPath();
+		$this->assertTrue(file_exists($secondImagePath));
+
+		$image->deleteFormattedImages();
+		$this->assertFalse(file_exists($firstImagePath));
+		$this->assertFalse(file_exists($secondImagePath));
+	}
+
+	/**
+	 * Tests path properties of cached images with multiple image manipulations
+	 */
+	public function testPathPropertiesCachedImage() {
+		$image = $this->objFromFixture('Image', 'imageWithMetacharacters');
+		$firstImage = $image->SetWidth(200);
+		$firstImagePath = $firstImage->getRelativePath();
+		$this->assertEquals($firstImagePath, $firstImage->Filename);
+
+		$secondImage = $firstImage->SetHeight(100);
+		$secondImagePath = $secondImage->getRelativePath();
+		$this->assertEquals($secondImagePath, $secondImage->Filename);
 	}
 }

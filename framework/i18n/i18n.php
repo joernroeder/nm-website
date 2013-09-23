@@ -676,7 +676,8 @@ class i18n extends Object implements TemplateGlobalProvider {
 		),
 		'be' => array(
 			'name' => 'Belarusian',
-			'native' => '&#1041;&#1077;&#1083;&#1072;&#1088;&#1091;&#1089;&#1082;&#1072;&#1103; &#1084;&#1086;&#1074;&#1072;'
+			'native' =>
+				'&#1041;&#1077;&#1083;&#1072;&#1088;&#1091;&#1089;&#1082;&#1072;&#1103; &#1084;&#1086;&#1074;&#1072;'
 		),
 		'bn' => array(
 			'name' => 'Bengali', 
@@ -834,7 +835,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 			'native' => '&#1084;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;'
 		),
 		'mi' => array(
-			'name' => 'Maori', 
+			'name' => 'Māori',
 			'native' => 'Māori'
 		),
 		'ms' => array(
@@ -1024,7 +1025,8 @@ class i18n extends Object implements TemplateGlobalProvider {
 		),
 		'be_BY' => array(
 			'name' => 'Belarusian',
-			'native' => '&#1041;&#1077;&#1083;&#1072;&#1088;&#1091;&#1089;&#1082;&#1072;&#1103; &#1084;&#1086;&#1074;&#1072;'
+			'native' =>
+				'&#1041;&#1077;&#1083;&#1072;&#1088;&#1091;&#1089;&#1082;&#1072;&#1103; &#1084;&#1086;&#1074;&#1072;'
 		),
 		'bn_BD' => array(
 			'name' => 'Bengali',
@@ -1183,7 +1185,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 			'native' => '&#1084;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;'
 		),
 		'mi_NZ' => array(
-			'name' => 'Maori',
+			'name' => 'Māori',
 			'native' => 'Māori'
 		),
 		'ms_MY' => array(
@@ -2044,13 +2046,13 @@ class i18n extends Object implements TemplateGlobalProvider {
 
 				$translation = $adapter->translate($entity, $locale);
 
-				// Return translation only if we found a match thats not the entity itself (Zend fallback)
+					// Return translation only if we found a match thats not the entity itself (Zend fallback)
 				if($translation && $translation != $entity) {
-					$returnValue = $translation;
+						$returnValue = $translation;
 					break 2;
+					}
 				}
 			}
-		}
 
 		// inject the variables from injectionArray (if present)
 		if($injectionArray) {
@@ -2224,12 +2226,17 @@ class i18n extends Object implements TemplateGlobalProvider {
 			$allLocales = Config::inst()->get('i18n', 'all_locales');
 			$moduleLocales = scandir("{$module}/lang/");
 			foreach($moduleLocales as $moduleLocale) {
-				preg_match('/(.*)\.[\w\d]+$/',$moduleLocale, $matches);
-				if($locale = @$matches[1]) {
-					// Normalize locale to include likely region tag.
+				$locale = pathinfo($moduleLocale, PATHINFO_FILENAME);
+				$ext = pathinfo($moduleLocale, PATHINFO_EXTENSION);
+				if($locale && in_array($ext, array('php','yml'))) {
+					// Normalize locale to include likely region tag, avoid repetition in locale labels
 					// TODO Replace with CLDR list of actually available languages/regions
-					$locale = str_replace('-', '_', self::get_locale_from_lang($locale));
-					$locales[$locale] = (isset($allLocales[$locale])) ? $allLocales[$locale] : $locale;
+					// Only allow explicitly registered locales, otherwise we'll get into trouble
+					// if the locale doesn't exist in Zend's CLDR data
+					$fullLocale = self::get_locale_from_lang($locale);
+					if(isset($allLocales[$fullLocale])) {
+						$locales[$fullLocale] = $allLocales[$fullLocale];	
+					}
 				}
 			}
 		}
@@ -2347,7 +2354,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 	public static function get_locale_from_lang($lang) {
 		$subtags = Config::inst()->get('i18n', 'likely_subtags');
 		if(preg_match('/\-|_/', $lang)) {
-			return $lang;
+			return str_replace('-', '_', $lang);
 		} else if(isset($subtags[$lang])) {
 			return $subtags[$lang];
 		} else {
@@ -2460,7 +2467,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 	public static function set_default_locale($locale) {
 		self::$default_locale = $locale;
 	}
-
+	
 	/**
 	 * Includes all available language files for a certain defined locale.
 	 *
@@ -2472,7 +2479,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 			$cache = Zend_Translate::getCache();
 			if($cache) $cache->clean(Zend_Cache::CLEANING_MODE_ALL);
 		}
-
+		
 		// Get list of module => path pairs, and then just the names
 		$modules = SS_ClassLoader::instance()->getManifest()->getModules();
 		$moduleNames = array_keys($modules);
@@ -2498,7 +2505,7 @@ class i18n extends Object implements TemplateGlobalProvider {
 		$sortedModules = array();
 		foreach ($order as $module) {
 			if (isset($modules[$module])) $sortedModules[$module] = $modules[$module];
-		}
+			}
 
 		// Loop in reverse order, meaning the translator with the highest priority goes first
 		$translators = array_reverse(self::get_translators(), true);

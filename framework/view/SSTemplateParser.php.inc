@@ -701,7 +701,7 @@ class SSTemplateParser extends Parser {
 		$arguments = $res['arguments'];
 
 		$res['php'] = '$val .= SSViewer::execute_template('.$template.', $scope->getItem(), array(' . 
-			implode(',', $arguments)."));\n";
+			implode(',', $arguments)."), \$scope);\n";
 
 		if($this->includeDebuggingComments) { // Add include filename comments on dev sites
 			$res['php'] =
@@ -1002,7 +1002,8 @@ class SSTemplateParser extends Parser {
 		// non-dynamically calculated
 		$text = preg_replace(
 			'/href\s*\=\s*\"\#/', 
-			'href="\' . (Config::inst()->get(\'SSViewer\', \'rewrite_hash_links\') ? strip_tags( $_SERVER[\'REQUEST_URI\'] ) : "") . 
+			'href="\' . (Config::inst()->get(\'SSViewer\', \'rewrite_hash_links\') ?' .
+			' strip_tags( $_SERVER[\'REQUEST_URI\'] ) : "") . 
 				\'#',
 			$text
 		);

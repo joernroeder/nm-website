@@ -342,15 +342,19 @@ class JJ_RestfulServer extends RestfulServer {
 		return $response;
 	}
 
-	public static function getAggregate($className, $ids = null, $cols = array('LastEdited')) {
-		$implStatement = '';
+	public static function getAggregate($className, $ids = null, $col = 'LastEdited') {
+		$list = DataList::create($className);
+
+		//$implStatement = '';
 		if ($ids) {
-			$implStatement = 'ID IN (' . implode(',', $ids) . ')';
+			$list->byIDs((array) $ids);
+			//$implStatement = 'ID IN (' . implode(',', $ids) . ')';
 		}
 		
-		$aggregate = new JJ_Aggregate($className, $implStatement);
+		//$aggregate = new JJ_Aggregate($className, $implStatement);
 		
-		return $aggregate->XML_val('Max', $cols);
+		return $list->max($col);
+		//return $aggregate->XML_val('Max', $cols);
 	}
 
 
