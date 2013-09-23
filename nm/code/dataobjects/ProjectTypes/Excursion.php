@@ -153,18 +153,22 @@ class Excursion extends DataObject {
 			'Projects.Title',
 			'Projects.UglyHash',
 			'Projects.IsPortfolio',
+			'Projects.IsPublished',
 
 			'Exhibitions.Title',
 			'Exhibitions.UglyHash',
 			'Exhibitions.IsPortfolio',
+			'Exhibitions.IsPublished',
 
 			'Workshops.Title',
 			'Workshops.UglyHash',
 			'Workshops.IsPortfolio',
+			'Workshops.IsPublished',
 
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
+			'Excursions.IsPublished',
 		),
 		'view.portfolio_init' => array(
 			'ClassName',

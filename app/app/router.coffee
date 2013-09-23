@@ -227,6 +227,8 @@ define [
 					if not model or (not model.get('IsPublished')) or (not nameSlug and not model.get('IsPortfolio')) then return @.fourOhFour()
 					layout = app.useLayout 'main', {customClass: 'detail'}
 					template = ''
+					person = undefined
+
 					if nameSlug
 						person = model.get('Persons').where({ UrlSlug: nameSlug })
 						if person.length
@@ -234,6 +236,7 @@ define [
 								if templ.get('IsDetail') then template = templ.get('Url')
 
 					detailView = if not template then new Portfolio.Views.Detail({ model: model }) else new Person.Views.Custom({ model: model, template: template })
+					if person then detailView.ownedByPerson = person[0]
 					layout.setViewAndRenderMaybe '', detailView
 			else
 				mainDfd.done =>

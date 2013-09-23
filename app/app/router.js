@@ -231,6 +231,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             customClass: 'detail'
           });
           template = '';
+          person = void 0;
           if (nameSlug) {
             person = model.get('Persons').where({
               UrlSlug: nameSlug
@@ -249,6 +250,9 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
             model: model,
             template: template
           });
+          if (person) {
+            detailView.ownedByPerson = person[0];
+          }
           return layout.setViewAndRenderMaybe('', detailView);
         });
       } else {

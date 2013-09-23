@@ -69,6 +69,19 @@ define(['app'], function(app) {
       } else {
         return 'Editors';
       }
+    },
+    setTempUrlPrefix: function(preferPerson) {
+      var personsColl, tempPrefix;
+      tempPrefix = '404';
+      personsColl = this.get('Persons');
+      if (this.get('IsPortfolio')) {
+        tempPrefix = 'portfolio';
+      } else if (preferPerson && personsColl.get(preferPerson.id)) {
+        tempPrefix = 'about/' + preferPerson.get('UrlSlug');
+      } else if (personsColl.length > 0) {
+        tempPrefix = 'about/' + personsColl.models[0].get('UrlSlug');
+      }
+      return this.set('TempUrlPrefix', tempPrefix);
     }
   });
   return SuperProject;

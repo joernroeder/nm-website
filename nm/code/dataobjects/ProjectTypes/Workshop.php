@@ -147,14 +147,17 @@ class Workshop extends DataObject {
 			'Projects.Title',
 			'Projects.UglyHash',
 			'Projects.IsPortfolio',
+			'Projects.IsPublished',
 
 			'Exhibitions.Title',
 			'Exhibitions.UglyHash',
 			'Exhibitions.IsPortfolio',
+			'Exhibitions.IsPublished',
 			
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
+			'Excursions.IsPublished',
 		),
 		'view.portfolio_init' => array(
 			'ClassName',

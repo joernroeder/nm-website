@@ -152,14 +152,17 @@ class Exhibition extends DataObject {
 			'Projects.Title',
 			'Projects.UglyHash',
 			'Projects.IsPortfolio',
+			'Projects.IsPublished',
 
 			'Workshops.Title',
 			'Workshops.UglyHash',
 			'Workshops.IsPortfolio',
+			'Workshops.IsPublished',
 			
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
+			'Excursions.IsPublished'
 		),
 		'view.portfolio_init' => array(
 			'ClassName',

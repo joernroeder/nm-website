@@ -93,7 +93,17 @@ define [
 				$doc = $(document)
 				$doc.trigger(@._codeEv)
 				$doc.trigger(@._afterRenderEv)
+
+			appropriateUrl: (projectItem, person = false) ->
+
+
 			serialize: ->
+				# set the current appropriate detailed URL of related projects (prefer the current person of this detailed page, but always prefer portfolio)
+				for projType in ['Projects', 'ChildProjects', 'ParentProjects', 'Exhibitions', 'Workshops', 'Excursions']
+					coll = @model.get projType
+					if coll
+						coll.each (m) =>
+							m.setTempUrlPrefix @ownedByPerson
 
 				json = if @.model then @.model.toJSON() else {}
 				types = ['Projects', 'ChildProjects', 'ParentProjects']
@@ -106,12 +116,13 @@ define [
 					#json.IsGroupProjectTop = true
 					json.IsGroup = true
 
-				console.log json
 				# set up combined projects
 				json.combinedProjects = []
 				_.each types, (type) =>
 					if _.isArray json[type]
 						json.combinedProjects = json.combinedProjects.concat json[type]
+
+				console.log json
 				json
 
 
@@ -168,9 +179,8 @@ define [
 
 			# build list
 			_.each items, (item) ->
-
 				if item.IsPublished
-					out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>'
+					out += '<li><a href="/' + item.TempUrlPrefix + '/' + item.UglyHash + '/">' + item.Title + '</a></li>'
 					length++
 			out += '</ul>'
 
