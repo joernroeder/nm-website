@@ -1459,7 +1459,7 @@ x:-o-prefocus,
   -o-transition: opacity .2s ease-in-out;
   -ms-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
-  z-index: 14000;
+  z-index: 300;
 }
 .packery-wrapper > img.hidden,
 .packery-wrapper .packery-item.hidden {
@@ -1518,7 +1518,7 @@ x:-o-prefocus,
 }
 .packery-wrapper > img.has-tooltip,
 .packery-wrapper .packery-item.has-tooltip {
-  z-index: 16000;
+  z-index: 350;
   /*img {
 			opacity: 1;
 		}*/
@@ -1840,7 +1840,7 @@ x:-o-prefocus,
   -o-transition: opacity .2s ease-in-out;
   -ms-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-in-out;
-  z-index: 14000;
+  z-index: 300;
   opacity: 1;
   /**
 	 * For modern browsers
@@ -1907,7 +1907,7 @@ x:-o-prefocus,
   display: block;
 }
 .editor .overview article.has-tooltip {
-  z-index: 16000;
+  z-index: 350;
   /*img {
 			opacity: 1;
 		}*/
@@ -2352,7 +2352,7 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   -o-transition: width .3s ease-in-out;
   -ms-transition: width .3s ease-in-out;
   transition: width .3s ease-in-out;
-  z-index: 1;
+  z-index: 500;
 }
 .editor-sidebar:target,
 .editor-sidebar.open {
@@ -3705,7 +3705,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   left: 50%;
   width: 600px;
   margin-left: -300px;
-  z-index: 15000;
+  z-index: 400;
 }
 #searchbar > section {
   display: none;
