@@ -406,14 +406,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n			<a href=\"/about/";
-  if (stack1 = helpers.UrlSlug) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.UrlSlug; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "/\">\n			";
+  buffer += "\n			";
   stack2 = helpers['with'].call(depth0, ((stack1 = ((stack1 = depth0.Image),stack1 == null || stack1 === false ? stack1 : stack1.Urls)),stack1 == null || stack1 === false ? stack1 : stack1._320), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n			</a>\n		";
+  buffer += "\n		";
   return buffer;
   }
 function program2(depth0,data) {
@@ -883,7 +879,7 @@ function program18(depth0,data) {
   if (stack1 = helpers.Text) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Text; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</div>\n\n</section>\n<aside data-editor-scope=\"\\ProjectMain\">\n	<div>\n		<h3>Websites</h3>\n			<ul class=\"websites\">\n			</ul>\n			<button data-editor-type=\"modal\" data-editor-name=\"Website\" data-editor-fields='{\"Title\": {\"type\": \"text\"}, \"Link\": {\"type\": \"text\"}}'>\n				Add Website\n			</button>\n	</div>\n\n	";
+    + "</div>\n\n</section>\n<aside data-editor-scope=\"\\ProjectMain\">\n	<div>\n		<h3>Websites</h3>\n			<ul class=\"websites\">\n			</ul>\n			<button data-editor-type=\"modal\" data-editor-name=\"Website\" data-editor-fields='{\"Title\": {\"type\": \"text\"}, \"Link\": {\"type\": \"text\"}}' class=\"btn\" data-editor-placeholder=\"Add Website\">Add Website</button>\n	</div>\n\n	";
   options = {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data};
   stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Project", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Project", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
