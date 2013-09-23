@@ -338,12 +338,31 @@ class HTTP {
 			$responseHeaders["Cache-Control"] = "max-age=" . self::$cache_age . ", must-revalidate, no-transform";
 			$responseHeaders["Pragma"] = "";
 
-			// To do: User-Agent should only be added in situations where you *are* actually 
+			// To do: User-Agent should only be added in situations where you *are* actually
 			// varying according to user-agent.
 			$responseHeaders['Vary'] = 'Cookie, X-Forwarded-Protocol, User-Agent, Accept';
+		}
+		else {
+			if($body) {
+				// Grab header for checking. Unfortunately HTTPRequest uses a mistyped variant.
+				$contentDisposition = $body->getHeader('Content-disposition');
+				if (!$contentDisposition) $contentDisposition = $body->getHeader('Content-Disposition');
+			}
 
-		} else {
-			$responseHeaders["Cache-Control"] = "no-cache, max-age=0, must-revalidate, no-transform";
+			if(
+				$body &&
+				Director::is_https() &&
+				strstr($_SERVER["HTTP_USER_AGENT"], 'MSIE')==true &&
+				strstr($contentDisposition, 'attachment;')==true
+			) {
+				// IE6-IE8 have problems saving files when https and no-cache are used
+				// (http://support.microsoft.com/kb/323308)
+				// Note: this is also fixable by ticking "Do not save encrypted pages to disk" in advanced options.
+				$responseHeaders["Cache-Control"] = "max-age=3, must-revalidate, no-transform";
+				$responseHeaders["Pragma"] = "";
+			} else {
+				$responseHeaders["Cache-Control"] = "no-cache, max-age=0, must-revalidate, no-transform";
+			}
 		}
 
 		if(self::$modification_date && self::$cache_age > 0) {

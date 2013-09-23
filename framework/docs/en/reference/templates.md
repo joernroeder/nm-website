@@ -15,7 +15,7 @@ Here is a very simple template:
 		<head>
 			<% base_tag %>
 			<title>$Title</title>
-			<% require themedCSS(screen) %>
+			<% require themedCSS("screen") %>
 		</head>
 		<body>
 			<header>
@@ -122,7 +122,7 @@ You can also perform includes using the Requirements Class via the template cont
 [Includes in Templates](requirements#including_inside_template_files) for more details and examples.
 
 	:::ss
-	<% require themedCSS(LeftNavMenu) %>
+	<% require themedCSS("LeftNavMenu") %>
 
 ### Including CSS and JavaScript files (a.k.a "Requirements")
 
@@ -417,7 +417,7 @@ have to repeat it on each reference of a property.
 properties of the collection itself, instead of iterating over it. For example:
 
 	:::ss
-	$Children.Length
+	$Children.Count
 
 returns the number of items in the $Children collection.
 

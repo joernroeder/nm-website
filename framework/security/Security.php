@@ -188,7 +188,10 @@ class Security extends Controller {
 		if(Director::is_ajax()) {
 			$response = ($controller) ? $controller->getResponse() : new SS_HTTPResponse();
 			$response->setStatusCode(403);
-			if(!Member::currentUser()) $response->setBody('NOTLOGGEDIN:');
+			if(!Member::currentUser()) {
+				$response->setBody(_t('ContentController.NOTLOGGEDIN','Not logged in'));
+				$response->setStatusDescription(_t('ContentController.NOTLOGGEDIN','Not logged in'));
+			}
 			return $response;
 		} else {
 			// Prepare the messageSet provided
@@ -270,6 +273,16 @@ class Security extends Controller {
 		return;
 	}
 
+	public function init() {
+		parent::init();
+
+		// Prevent clickjacking, see https://developer.mozilla.org/en-US/docs/HTTP/X-Frame-Options
+		$this->response->addHeader('X-Frame-Options', 'SAMEORIGIN');
+	}
+
+	public function index() {
+		return $this->httpError(404); // no-op
+	}
 
 	/**
 	 * Get the login form to process according to the submitted data
@@ -679,7 +692,7 @@ class Security extends Controller {
 	 * @return Form Returns the lost password form
 	 */
 	public function ChangePasswordForm() {
-        return Object::create('ChangePasswordForm', $this, 'ChangePasswordForm');
+		return Object::create('ChangePasswordForm', $this, 'ChangePasswordForm');
 	}
 
 	/**

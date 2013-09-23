@@ -206,6 +206,9 @@ class Image extends File {
 	 */
 	public function SetRatioSize($width, $height) {
 		
+		// Prevent divide by zero on missing/blank file
+		if(empty($this->width) || empty($this->height)) return null;
+		
 		// Check if image is already sized to the correct dimension
 		$widthRatio = $width / $this->width;
 		$heightRatio = $height / $this->height;
@@ -422,6 +425,8 @@ class Image extends File {
 			$cached = new Image_Cached($cacheFile);
 			// Pass through the title so the templates can use it
 			$cached->Title = $this->Title;
+			// Pass through the parent, to store cached images in correct folder.
+			$cached->ParentID = $this->ParentID;
 			return $cached;
 		}
 	}

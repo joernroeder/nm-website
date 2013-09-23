@@ -141,6 +141,9 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	/**
 	 * @config
 	 * @var boolean Should dataobjects be validated before they are written?
+	 * Caution: Validation can contain safeguards against invalid/malicious data,
+	 * and check permission levels (e.g. on {@link Group}). Therefore it is recommended
+	 * to only disable validation for very specific use cases.
 	 */
 	private static $validation_enabled = true;
 
@@ -155,6 +158,14 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	protected static $_cache_composite_fields = array();
 	protected static $_cache_custom_database_fields = array();
 	protected static $_cache_field_labels = array();
+
+	// base fields which are not defined in static $db
+	private static $fixed_fields = array(
+		'ID' => 'Int',
+		'ClassName' => 'Enum',
+		'LastEdited' => 'SS_Datetime',
+		'Created' => 'SS_Datetime',
+	);
 
 	/**
 	 * Non-static relationship cache, indexed by component name.
@@ -179,6 +190,11 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	
 	/**
 	 * Set whether DataObjects should be validated before they are written.
+	 * 
+	 * Caution: Validation can contain safeguards against invalid/malicious data,
+	 * and check permission levels (e.g. on {@link Group}). Therefore it is recommended
+	 * to only disable validation for very specific use cases.
+	 * 
 	 * @param $enable bool
 	 * @see DataObject::validate()
 	 * @deprecated 3.2 Use the "DataObject.validation_enabled" config setting instead
@@ -223,6 +239,8 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			}
 
 			return array_merge (
+				// TODO: should this be using self::$fixed_fields? only difference is ID field
+				// and ClassName creates an Enum with all values
 				array (
 					'ClassName'  => self::$classname_spec_cache[$class],
 					'Created'    => 'SS_Datetime',
@@ -1458,39 +1476,11 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	}
 
 	/**
-	 * Get the query object for a $has_many Component.
-	 *
-	 * @param string $componentName
-	 * @param string $filter
-	 * @param string|array $sort
-	 * @param string $join Deprecated, use leftJoin($table, $joinClause) instead
-	 * @param string|array $limit
-	 * @return SQLQuery
+	 * @deprecated 3.1 Use getComponents to get a filtered DataList for an object's relation
 	 */
 	public function getComponentsQuery($componentName, $filter = "", $sort = "", $join = "", $limit = "") {
-		if(!$componentClass = $this->has_many($componentName)) {
-			user_error("DataObject::getComponentsQuery(): Unknown 1-to-many component '$componentName'"
-				. " on class '$this->class'", E_USER_ERROR);
-		}
-
-		if($join) {
-			throw new \InvalidArgumentException(
-				'The $join argument has been removed. Use leftJoin($table, $joinClause) instead.'
-			);
-		}
-
-		$joinField = $this->getRemoteJoinField($componentName, 'has_many');
-
-		$id = $this->getField("ID");
-			
-		// get filter
-		$combinedFilter = "\"$joinField\" = '$id'";
-		if(!empty($filter)) $combinedFilter .= " AND ({$filter})";
-			
-		return DataList::create($componentClass)
-			->where($combinedFilter)
-			->canSortBy($sort)
-			->limit($limit);
+		Deprecation::notice('3.1', "Use getComponents to get a filtered DataList for an object's relation");
+		return $this->getComponents($componentName, $filter, $sort, $join, $limit);
 	}
 
 	/**
@@ -2387,15 +2377,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @return boolean
 	 */
 	public function hasDatabaseField($field) {
-		// Add base fields which are not defined in static $db
-		static $fixedFields = array(
-			'ID' => 'Int',
-			'ClassName' => 'Enum',
-			'LastEdited' => 'SS_Datetime',
-			'Created' => 'SS_Datetime',
-		);
-		
-		if(isset($fixedFields[$field])) return true;
+		if(isset(self::$fixed_fields[$field])) return true;
 
 		return array_key_exists($field, $this->inheritedDatabaseFields());
 	}
@@ -2658,7 +2640,15 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		// Special case for ID field
 		} else if($fieldName == 'ID') {
 			return new PrimaryKey($fieldName, $this);
-			
+
+		// Special case for ClassName
+		} else if($fieldName == 'ClassName') {
+			$val = get_class($this);
+			return DBField::create_field('Varchar', $val, $fieldName, $this);
+
+		} else if(array_key_exists($fieldName, self::$fixed_fields)) {
+			return DBField::create_field(self::$fixed_fields[$fieldName], $this->$fieldName, $fieldName, $this);
+
 		// General casting information for items in $db
 		} else if($helper = $this->db($fieldName)) {
 			$obj = Object::create_from_string($helper, $fieldName);
@@ -2669,11 +2659,6 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		} else if(preg_match('/ID$/', $fieldName) && $this->has_one(substr($fieldName,0,-2))) {
 			$val = $this->$fieldName;
 			return DBField::create_field('ForeignKey', $val, $fieldName, $this);
-			
-		// Special case for ClassName
-		} else if($fieldName == 'ClassName') {
-			$val = get_class($this);
-			return DBField::create_field('Varchar', $val, $fieldName, $this);
 		}
 	}
 

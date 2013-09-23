@@ -44,12 +44,12 @@ class GroupTest extends FunctionalTest {
 		$form->saveInto($member);
 		$updatedGroups = $member->Groups();
 
-		$this->assertEquals(
-			array($adminGroup->ID, $parentGroup->ID),
-			$updatedGroups->column(),
+		$this->assertEquals(2, count($updatedGroups->column()),
 			"Adding a toplevel group works"
 		);
-
+		$this->assertContains($adminGroup->ID, $updatedGroups->column('ID'));
+		$this->assertContains($parentGroup->ID, $updatedGroups->column('ID'));
+		
 		// Test unsetting relationship
 		$form->loadDataFrom($member);
 		$checkboxSetField = $form->Fields()->fieldByName('Groups');
@@ -60,11 +60,10 @@ class GroupTest extends FunctionalTest {
 		$form->saveInto($member);
 		$member->flushCache();
 		$updatedGroups = $member->Groups();
-		$this->assertEquals(
-			array($adminGroup->ID),
-			$updatedGroups->column(),
+		$this->assertEquals(1, count($updatedGroups->column()),
 			"Removing a previously added toplevel group works"
 		);
+		$this->assertContains($adminGroup->ID, $updatedGroups->column('ID'));
 
 		// Test adding child group
 
@@ -77,23 +76,21 @@ class GroupTest extends FunctionalTest {
 		$orphanGroup->ParentID = 99999;
 		$orphanGroup->write();
 		
-		$this->assertEquals(
-			array($parentGroup->ID), 
-			$parentGroup->collateAncestorIDs(),
+		$this->assertEquals(1, count($parentGroup->collateAncestorIDs()),
 			'Root node only contains itself'
 		);
+		$this->assertContains($parentGroup->ID, $parentGroup->collateAncestorIDs());
 		
-		$this->assertEquals(
-			array($childGroup->ID, $parentGroup->ID), 
-			$childGroup->collateAncestorIDs(),
+		$this->assertEquals(2, count($childGroup->collateAncestorIDs()),
 			'Contains parent nodes, with child node first'
 		);
+		$this->assertContains($parentGroup->ID, $childGroup->collateAncestorIDs());
+		$this->assertContains($childGroup->ID, $childGroup->collateAncestorIDs());
 		
-		$this->assertEquals(
-			array($orphanGroup->ID), 
-			$orphanGroup->collateAncestorIDs(),
+		$this->assertEquals(1, count($orphanGroup->collateAncestorIDs()),
 			'Orphaned nodes dont contain invalid parent IDs'
 		);
+		$this->assertContains($orphanGroup->ID, $orphanGroup->collateAncestorIDs());
 	}
 
 	public function testDelete() {
@@ -110,6 +107,49 @@ class GroupTest extends FunctionalTest {
 			'Child groups are removed');
 		$this->assertEquals(0, DataObject::get('Group', "\"ParentID\" = {$childGroupID}")->Count(),
 			'Grandchild groups are removed');
+	}
+
+	public function testValidatesPrivilegeLevelOfParent() {
+		$nonAdminUser = $this->objFromFixture('GroupTest_Member', 'childgroupuser');
+		$adminUser = $this->objFromFixture('GroupTest_Member', 'admin');
+		$nonAdminGroup = $this->objFromFixture('Group', 'childgroup');
+		$adminGroup = $this->objFromFixture('Group', 'admingroup');
+
+		$nonAdminValidateMethod = new ReflectionMethod($nonAdminGroup, 'validate');
+		$nonAdminValidateMethod->setAccessible(true);
+
+		// Making admin group parent of a non-admin group, effectively expanding is privileges
+		$nonAdminGroup->ParentID = $adminGroup->ID;
+
+		$this->logInWithPermission('APPLY_ROLES');
+		$result = $nonAdminValidateMethod->invoke($nonAdminGroup);
+		$this->assertFalse(
+			$result->valid(),
+			'Members with only APPLY_ROLES can\'t assign parent groups with direct ADMIN permissions'
+		);
+
+		$this->logInWithPermission('ADMIN');
+		$result = $nonAdminValidateMethod->invoke($nonAdminGroup);
+		$this->assertTrue(
+			$result->valid(),
+			'Members with ADMIN can assign parent groups with direct ADMIN permissions'
+		);
+		$nonAdminGroup->write();
+		$newlyAdminGroup = $nonAdminGroup;
+
+		$this->logInWithPermission('ADMIN');
+		$inheritedAdminGroup = $this->objFromFixture('Group', 'group1');
+		$inheritedAdminMethod = new ReflectionMethod($inheritedAdminGroup, 'validate');
+		$inheritedAdminMethod->setAccessible(true);
+		$inheritedAdminGroup->ParentID = $adminGroup->ID;
+		$inheritedAdminGroup->write(); // only works with ADMIN login
+
+		$this->logInWithPermission('APPLY_ROLES');
+		$result = $inheritedAdminMethod->invoke($nonAdminGroup);
+		$this->assertFalse(
+			$result->valid(),
+			'Members with only APPLY_ROLES can\'t assign parent groups with inherited ADMIN permission'
+		);
 	}
 
 }
