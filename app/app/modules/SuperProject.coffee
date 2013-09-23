@@ -49,8 +49,23 @@ define [
 					out.push obj if obj.ID isnt app.CurrentMemberPerson.id
 				out
 
+
+
 			getEditorsKey: () ->
 				if @.get('ClassName') is 'Project' then return 'BlockedEditors' else return 'Editors'
+
+			# sets the current detailed url of this project. Priority: person -> portfolio -> random contributor
+			setTempUrlPrefix: (preferPerson) ->
+				tempPrefix = '404'
+				personsColl = @get('Persons')
+				if @get('IsPortfolio')
+					tempPrefix = 'portfolio'
+				else if preferPerson and personsColl.get(preferPerson.id)
+					tempPrefix = 'about/' + preferPerson.get 'UrlSlug'
+				else if personsColl.length > 0
+					tempPrefix = 'about/' + personsColl.models[0].get 'UrlSlug'
+
+				@set 'TempUrlPrefix', tempPrefix
 
 
 		SuperProject

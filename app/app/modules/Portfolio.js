@@ -102,9 +102,24 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       $doc.trigger(this._codeEv);
       return $doc.trigger(this._afterRenderEv);
     },
+    appropriateUrl: function(projectItem, person) {
+      if (person == null) {
+        person = false;
+      }
+    },
     serialize: function() {
-      var json, types,
+      var coll, json, projType, types, _i, _len, _ref,
         _this = this;
+      _ref = ['Projects', 'ChildProjects', 'ParentProjects', 'Exhibitions', 'Workshops', 'Excursions'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        projType = _ref[_i];
+        coll = this.model.get(projType);
+        if (coll) {
+          coll.each(function(m) {
+            return m.setTempUrlPrefix(_this.ownedByPerson);
+          });
+        }
+      }
       json = this.model ? this.model.toJSON() : {};
       types = ['Projects', 'ChildProjects', 'ParentProjects'];
       json.Persons = _.sortBy(json.Persons, function(person) {
@@ -113,13 +128,13 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       if (parseInt(json.Persons.length) > parseInt(Portfolio.Config.person_group_length)) {
         json.IsGroup = true;
       }
-      console.log(json);
       json.combinedProjects = [];
       _.each(types, function(type) {
         if (_.isArray(json[type])) {
           return json.combinedProjects = json.combinedProjects.concat(json[type]);
         }
       });
+      console.log(json);
       return json;
     }
   });
@@ -192,7 +207,7 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     out = '<ul>';
     _.each(items, function(item) {
       if (item.IsPublished) {
-        out += '<li><a href="/portfolio/' + item.UglyHash + '/">' + item.Title + '</a></li>';
+        out += '<li><a href="/' + item.TempUrlPrefix + '/' + item.UglyHash + '/">' + item.Title + '</a></li>';
         return length++;
       }
     });
