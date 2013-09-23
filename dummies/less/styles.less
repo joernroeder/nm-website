@@ -27,7 +27,7 @@
 // ! - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 body {
-	background: @bgColor;
+	background: mix(@bgColor, @black, 90%);
 	.aller-light;
 	color: @black;
 	width: 100%;
@@ -732,6 +732,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 
 		section {
+			background: @bgColor;
 			float: left;
 			.columnsWidth(8 - @articleMarginCols, 4);
 			.wrapper;

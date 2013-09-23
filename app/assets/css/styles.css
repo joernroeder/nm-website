@@ -870,6 +870,7 @@ button.Zebra_DatePicker_Icon {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  background: #e6e6e6;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -895,6 +896,7 @@ button.Zebra_DatePicker_Icon {
   background: #e6e6e6;
   display: block;
   border: none;
+  padding: 0.75em;
 }
 .packery-item > div > a:hover {
   border: none;
@@ -909,7 +911,7 @@ button.Zebra_DatePicker_Icon {
   display: none;
 }
 body {
-  background: #e6e6e6;
+  background: #d3d3d3;
   font-family: 'AllerLight', 'Helvetica', sans-serif;
   font-weight: normal;
   color: #262626;
@@ -1438,6 +1440,7 @@ x:-o-prefocus,
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  background: #e6e6e6;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -1473,6 +1476,7 @@ x:-o-prefocus,
   background: #e6e6e6;
   display: block;
   border: none;
+  padding: 0.75em;
 }
 .packery-wrapper > img > div > a:hover,
 .packery-wrapper .packery-item > div > a:hover {
@@ -1583,6 +1587,9 @@ x:-o-prefocus,
   margin: 6.4375em 0;
   overflow: hidden;
 }
+.about article.packery-item {
+  overflow: visible;
+}
 .about .statement {
   float: right;
   width: 75%;
@@ -1692,6 +1699,7 @@ x:-o-prefocus,
   box-sizing: border-box;
 }
 .detail article section {
+  background: #e6e6e6;
   float: left;
   width: 66.66666666666667%;
   padding: 0 0.75em;
@@ -1819,6 +1827,7 @@ x:-o-prefocus,
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  background: #e6e6e6;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -1870,6 +1879,7 @@ x:-o-prefocus,
   background: #e6e6e6;
   display: block;
   border: none;
+  padding: 0.75em;
 }
 .editor .overview article > div > a:hover {
   border: none;
