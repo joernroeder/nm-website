@@ -1774,7 +1774,7 @@ function program3(depth0,data) {
   return "\n		<p>You are not logged in.</p>\n	";
   }
 
-  buffer += "<form style=\"margin-top:400px;\">\n	<div><input type=\"text\" name=\"email\" placeholder=\"Email\" /></div>\n	<div><input type=\"password\" name=\"password\" placeholder=\"Password\" /></div>\n	<div><input type=\"checkbox\" name=\"remember\" /> Remember me next time</div>\n	<button class=\"doLogin\" type=\"submit\">Log in</button>\n	";
+  buffer += "<form style=\"margin-top:400px;\">\n	<div><input type=\"text\" name=\"email\" placeholder=\"Email\" /></div>\n	<div><input type=\"password\" name=\"password\" placeholder=\"Password\" /></div>\n	<div><label><input type=\"checkbox\" name=\"remember\" /> Remember me next time</label></div>\n	<button class=\"doLogin\" type=\"submit\">Log in</button>\n	";
   stack1 = helpers['if'].call(depth0, depth0.Email, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</form>";
