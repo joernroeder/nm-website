@@ -28,7 +28,9 @@ define(['app', 'modules/JJPackery', 'modules/Portfolio'], function(app, JJPacker
       }
     });
     return JJRestApi.extendCollection('Person', {
-      foo: 'bar'
+      comparator: function(person) {
+        return person.get('Surname');
+      }
     });
   });
   Person.Views.PackeryContainer = JJPackery.Views.Container.extend({

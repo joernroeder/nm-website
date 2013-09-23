@@ -23,7 +23,8 @@ define [
 					return (if @.get('FirstName') then @.get('FirstName') else '') + ' ' + (if @.get('Surname') then @.get('Surname') else '')
 
 			JJRestApi.extendCollection 'Person',
-				foo: 'bar'
+				comparator: (person) ->
+					person.get 'Surname'
 
 			#Person.Views.Test = Backbone.View.extend({})
 		
