@@ -81,7 +81,7 @@ define [
 				stats.push 'Alumni'
 			
 			if @.IsEmployee
-				stats.push 'Employee'
+				stats.push @JobTitle || ('Employee')
 			
 			if @.IsExternal
 				stats.push 'External'

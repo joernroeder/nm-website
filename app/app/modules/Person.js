@@ -111,7 +111,7 @@ define(['app', 'modules/JJPackery', 'modules/Portfolio'], function(app, JJPacker
       stats.push('Alumni');
     }
     if (this.IsEmployee) {
-      stats.push('Employee');
+      stats.push(this.JobTitle ||  ('Employee'));
     }
     if (this.IsExternal) {
       stats.push('External');
