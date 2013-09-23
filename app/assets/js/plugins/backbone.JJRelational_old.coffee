@@ -1,10 +1,8 @@
 ###*
  * Backbone JJRelational
- * v0.2.6
+ * v0.2.5
  *
  * A relational plugin for Backbone JS that provides one-to-one, one-to-many and many-to-many relations between Backbone models.
- *
- * Tested with Backbone v1.0.0 and Underscore v.1.5.0
  * 
 ###
 
@@ -125,8 +123,6 @@ do () ->
 
 	Backbone.JJRelational = {}
 
-	Backbone.JJRelational.VERSION = '0.2.6'
-
 	Backbone.JJRelational.Config = {
 		url_id_appendix : '?ids='
 		# if this is true and you create a new model with an id that already exists in the store,
@@ -185,7 +181,6 @@ do () ->
 	 * @type {Backbone.JJRelationalModel}
 	 * 
 	###
-	Backbone.Model.prototype.__save = Backbone.Model.prototype.save
 	Backbone.JJRelationalModel = Backbone.Model.extend
 
 		# This flag checks whether all relations have been installed. If false, some "`set`"-functionality is suppressed.
@@ -311,8 +306,8 @@ do () ->
 		###
 		save: (key, value, options) ->
 			attrs
+			current
 			returnXhr = null
-			attributes = @.attributes
 
 			# Handle both '("key", value)' and '({key: value})` -style calls.'
 			# this doesn't differ from Backbone core
@@ -325,16 +320,21 @@ do () ->
 			options = if options then _.clone(options) else {}
 			options.isSave = true
 
-			# If we're not waiting and attributes exist, save acts as `set(attr).save(null, opts)`.
-			if attrs and (not options or not options.wait) and not @.set(attrs, options) then return false
+			# If we're "wait"-ing to set changed attributes, validate early
+			if options.wait
+				if not @._validate(attrs, options) then return false
+				
+				# 'flatten' the attributes: relational collections become an array of models + idQueue
+				current = flatten(_.clone(@.attributes))
 
-			options = _.extend {validate: true}, options
+			# Regular saves "set" attributes before persisting to the server (comparable to Backbone core).
+			silentOptions = _.extend {}, options, {silent:true}
+			optsToUse = if options.wait then silentOptions else options
+
+			if attrs and not @.set(attrs, optsToUse) then return false
 			
 			# Do not persist invalid models
-			if not this._validate(attrs,options) then return false
-
-			# Set temporary attributes if `{wait: true}`
-			if attrs and options.wait then @.attributes = _.extend({}, attributes, attrs)
+			if not attrs and not this._validate(null,options) then return false
 
 			#
 			# This is the actual save function that's called when all the new related models have been saved
@@ -347,29 +347,21 @@ do () ->
 				if not options.contentType then options.contentType = 'application/json'
 				
 				if not options.data then options.data = JSON.stringify(@.toJSON({isSave: true}))
-
-				if options.parse is undefined then options.parse = true
 				
+				done = false
 				options.success = (resp, status, xhr) =>
-					# Ensure attribtues are restored during synchronous saves
-					@attributes = attributes
-
-					serverAttrs = @.parse resp, options
+					done = true
+					serverAttrs = @.parse resp
 					if options.wait then serverAttrs = _.extend(attrs || {}, serverAttrs)
-					if _.isObject(serverAttrs) and not @.set(serverAttrs, options) then return false
-
-					if success then success @, resp, options
-					@.trigger 'sync', @, resp, options
-
-				wrapError @, options
+					if not @.set(serverAttrs, options) then return false
+					if success then success @, resp
 
 				method = if @.isNew() then 'create' else (if options.patch then 'patch' else 'update')
 				if method is 'patch' then options.attrs = attrs
-				xhr = @.sync method, @, options
-				
-				# Restore attributes
-				if attrs and options.wait then @.attributes = attributes
-
+				xhr = @.sync.call(@, method, @, options)
+				if not done and options.wait
+					@.clear silentOptions
+					@.set current, silentOptions
 				xhr
 
 			# Okay, so here's actually happening it. When we're saving - and a model in a relation is not yet saved
@@ -432,10 +424,6 @@ do () ->
 		###*
 		 * Override "`set`" method.
 		 * This is pretty much the most important override...
-		 * It's almost exactly the same as the core `set` except for one small code block handling relations.
-		 * See `@begin & @end edit` in the comments
-		 *
-		 * If `set` is the heart of the beast in Backbone, JJRelational makes sure it's not made of stone.
 		 * 
 		 * @param {String | Object} key                    See Backbone core
 		 * @param {mixed | Object} val                     See Backbone core
@@ -445,7 +433,7 @@ do () ->
 			if key is null then return @
 
 			# Handle both `"key", value` and `{key: value}` -style arguments.
-			if typeof key is 'object'
+			if _.isObject key
 				attrs = key
 				options = val
 			else
@@ -458,9 +446,9 @@ do () ->
 			if not @._validate(attrs, options) then return false
 
 			# Extract attributes and options
-			unset = options.unset
-			silent = options.silent
-	
+			silent = options and options.silent
+			unset = options and options.unset
+			ignoreChanges = options and options.ignoreChanges
 			changes = []
 			changing = @._changing
 			@._changing = true
@@ -474,13 +462,13 @@ do () ->
 			# Check for changes of `id`
 			if @.idAttribute of attrs then @.id = attrs[@.idAttribute]
 
+			# ignore changes for subsequent `set`-calls
+			options.ignoreChanges = true
+
 			# iterate over the attributes to set
 			for key, value of attrs
 				if not _.isEqual current[key], value then changes.push key
 				if not _.isEqual prev[key], value then @.changed[key] = val else delete @.changed[key]
-				###*
-				 * @begin edit JJRelational
-				###
 				# check if it's a relation that is to be set
 				if (relation = @.getRelationByKey key) and @.relationsInstalled
 					# if yes, empty relation
@@ -491,9 +479,6 @@ do () ->
 						@.checkAndAdd(v, relation, options) unless unset
 				else
 					if unset then delete current[key] else current[key] = value
-				###*
-				 * @end edit JJRelational
-				###
 
 
 			# Trigger all relevant attribute changes.
@@ -521,14 +506,15 @@ do () ->
 		 * @return {Boolean}                                 see Backbone core
 		###
 		_validate: (attrs, options) ->
-			if not options.validate or not @.validate then return true
+			if not @.validate then return true
 			attrs = _.extend {}, @.attributes, attrs
 			for relation in @.relations
 				val = attrs[relation.key]
 				if val instanceof Backbone.Collection is true then attrs[relation.key] = val.models
-			error = @.validationError = @.validate(attrs, options) || null
+			error = @.validate attrs, options
 			if not error then return true
-			@.trigger 'invalid', @, error, _.extend(options || {}, {validationError: error})
+			if options and options.error then options.error @, error, options
+			@.trigger 'error', @, error, options
 			false
 
 		###*
@@ -839,9 +825,8 @@ do () ->
 							@.set relation.key, model
 							
 							if success then success(model, resp)
-							model.trigger 'sync', model, resp, options
 
-						wrapError @, options
+
 						return @.sync.call(@, 'read', @, options)
 			@
 
@@ -919,9 +904,7 @@ do () ->
 						new relModel parsedObj
 
 					if success then success(@, resp)
-					@.trigger 'sync', @, resp, options
 	
-				wrapError @, options
 				return @.sync.call(this, 'read', this, options)
 
 		# call success function no matter what
@@ -936,17 +919,17 @@ do () ->
 	###
 
 
-	Backbone.Collection.prototype.__set = Backbone.Collection.prototype.set
+	Backbone.Collection.prototype.__add = Backbone.Collection.prototype.add
 	###*
-	 * This "`set`" hack checks if the collection belongs to the relation of a model.
+	 * This "`add`" hack checks if the collection belongs to the relation of a model.
 	 * If yes, handle the models accordingly.
 	 * 
-	 * @param {Array | Object | Backbone.Model} models         The models to set
+	 * @param {Array | Object | Backbone.Model} models         The models to add
 	 * @param {Object} options                                 Options object
 	###
-	Backbone.Collection.prototype.set = (models, options) ->
+	Backbone.Collection.prototype.add = (models, options) ->
 		# check if this collection belongs to a relation
-		if not @._relational then return @.__set models, options
+		if not @._relational then return @.__add models, options
 
 		if @._relational
 			# prepare options and models
@@ -972,12 +955,11 @@ do () ->
 						model = @._prepareModel model, options
 
 				# check if models are instances of this collection's model
-				if model
-					if model instanceof @.model is false
-						throw new TypeError 'Invalid model to be added to collection with relation key "' + @._relational.ownerKey + '"'
-					else
-						modelsToAdd.push model
-						if model.id then idsToRemove.push model.id
+				if model instanceof @.model is false
+					throw new TypeError 'Invalid model to be added to collection with relation key "' + @._relational.ownerKey + '"'
+				else
+					modelsToAdd.push model
+					if model.id then idsToRemove.push model.id
 
 			# handle idQueue
 			@.removeFromIdQueue idsToRemove
@@ -991,25 +973,17 @@ do () ->
 
 			# set options.silentRelation to false for subsequent `set` - calls
 			options.silentRelation = false
-
-			# set options.merge to false as we have alread merged it with the call to `_prepareModel` above (when working with store)
-			if Backbone.JJRelational.Config.work_with_store then options.merge = false
 		
 		# Normal "`add`" and return collection for chainability
-		@.__set modelsToAdd, options
+		@.__add modelsToAdd, options
 
 	###*
-	 *
-	 * @deprecated since Backbone v1.0.0, where `update` and `add` have been merged into `set`
-	 * still present in Backbone.JJRelational v0.2.5
-	 * 
 	 * "`update`" has to be overridden,
 	 * because in case of merging, we need to pass `silentRelation: true` to the options.
 	 * 
 	 * @param  {Object | Array | Backbone.Model} models         The models to add
 	 * @param  {Object} options                                 Options object
 	 * @return {Backbone.Collection}
-	###
 	###
 	Backbone.Collection.update = (models, options) ->
 		add = []
@@ -1047,7 +1021,7 @@ do () ->
 			@.add merge, mergeOptions
 
 		@
-	###
+
 
 	Backbone.Collection.prototype.__remove = Backbone.Collection.prototype.remove
 	###*
@@ -1065,7 +1039,7 @@ do () ->
 		if not _.isArray models
 			models = [models]
 		else
-			models = models.slice()
+			models = models.slice 0
 
 		_.each models, (model) =>
 				if model instanceof Backbone.Model is true
@@ -1149,16 +1123,14 @@ do () ->
 			# if yes, and 'reset', cleanup the whole collection, and ignore the owner model.
 			if @._relational then options.ignoreModel = @._relational.owner
 			models = existingModels.concat(parsedResp)
-			method = if options.reset then 'reset' else 'set'
+			method = if options.update then 'update' else 'reset'
 			# if update, set options.merge to false, as we've already merged the existing ones
-			if not options.reset then options.merge = false
+			if options.update then options.merge = false
 
 			@[method](models, options)
 
 			if success then success(@, resp)
-			@.trigger 'sync', @, resp, options
 
-		wrapError @, options
 		return @.sync.call(@, 'read', @, options)
 	
 	###*
@@ -1186,9 +1158,7 @@ do () ->
 				@.add(@.parse(resp), options)
 				
 				if success then success(@, resp)
-				@.trigger 'sync', @, resp, options
 
-			wrapError @, options
 			return @.sync.call(@, 'read', @, options)
 		@
 
@@ -1239,20 +1209,12 @@ do () ->
 
 	# !-
 	# !-
-	# ! Helpers
-	
-	# Wrap an optional error callback with a fallback error event.
-	# cloned from Backbone core
-	wrapError = (model, options) ->
-		error = options.error
-		options.error = (resp) ->
-			if error then error model, resp, options
-			model.trigger 'error', model, resp, options
+	# ! Backbone core helper clones
 
 	###*
 	 * Helper method that flattens relational collections within in an object to an array of models + idQueue.
-	 * @param  {Object} obj     The object to flatten
-	 * @return {Object}			The flattened object
+	 * @param  {Object} obj                                      The object to flatten
+	 * @return {Object}
 	###
 	flatten = (obj) ->
 		for key, value of obj
