@@ -262,6 +262,9 @@ class Person extends DataObject {
 		
 		$toUnset = array('Phone', 'Excursions.EditableByMember','Workshops.EditableByMember','Exhibitions.EditableByMember','Projects.EditableByMember', 'Projects.Images','Excursions.Images','Exhibitions.Images', 'Workshops.Images');
 		
+		// Make phone number visible to everyone
+		if ($currentMemberID) unset($toUnset[0]);
+
 		return array_diff($fields, $toUnset);
 	}
 

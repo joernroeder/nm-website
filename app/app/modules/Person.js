@@ -71,6 +71,24 @@ define(['app', 'modules/JJPackery', 'modules/Portfolio'], function(app, JJPacker
     tagName: 'article',
     className: 'packery-item person-info',
     template: 'person-info-item',
+    events: {
+      'click a.vcf-download': 'downloadVcf'
+    },
+    downloadVcf: function(e) {
+      var uriContent, vcfContent;
+      e.preventDefault();
+      vcfContent = "BEGIN:VCARD\rVERSION:3.0\rCLASS:PUBLIC\rFN:" + (this.model.get('FirstName')) + " " + (this.model.get('Surname')) + "\rN:" + (this.model.get('Surname')) + ";" + (this.model.get('FirstName')) + " ;;;\r";
+      if (this.model.get('Email')) {
+        vcfContent += "EMAIL;TYPE=INTERNET:" + (this.model.get('Email')) + "\r";
+      }
+      if (this.model.get('Phone')) {
+        vcfContent += "TEL;TYPE=PREF:" + (this.model.get('Phone')) + "\r";
+      }
+      vcfContent += "END:VCARD";
+      uriContent = "data:text/vcard," + encodeURIComponent(vcfContent);
+      window.location.href = uriContent;
+      return false;
+    },
     serialize: function() {
       if (this.model) {
         return this.model.toJSON();
