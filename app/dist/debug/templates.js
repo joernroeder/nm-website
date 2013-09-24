@@ -434,13 +434,39 @@ function program2(depth0,data) {
 function program4(depth0,data) {
   
   var buffer = "", stack1;
+  buffer += "\n				<p><a href=\"mailto:";
+  if (stack1 = helpers.Email) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.Email; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">";
+  if (stack1 = helpers.Email) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.Email; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</a></p>\n			";
+  return buffer;
+  }
+
+function program6(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n				<p>";
+  if (stack1 = helpers.Phone) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.Phone; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + " <a class=\"vcf-download\" href=\"#\">(Download vcf)</a></p>\n			";
+  return buffer;
+  }
+
+function program8(depth0,data) {
+  
+  var buffer = "", stack1;
   buffer += "\n			<ul class=\"websites\">\n				";
-  stack1 = helpers.each.call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  stack1 = helpers.each.call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n			</ul>\n		";
   return buffer;
   }
-function program5(depth0,data) {
+function program9(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n					<li>";
@@ -466,12 +492,18 @@ function program5(depth0,data) {
   if (stack2 = helpers.Surname) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.Surname; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</h1>\n		</header>\n\n		";
+    + "</h1>\n			";
+  stack2 = helpers['if'].call(depth0, depth0.Email, {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n			";
+  stack2 = helpers['if'].call(depth0, depth0.Phone, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n		</header>\n\n		";
   if (stack2 = helpers.MarkdownedBio) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.MarkdownedBio; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n		";
-  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n	</section>\n</div>\n<!-- /article -->";
   return buffer;

@@ -51,6 +51,24 @@ define [
 			tagName: 'article'
 			className: 'packery-item person-info'
 			template: 'person-info-item'
+			events:
+				'click a.vcf-download': 'downloadVcf'
+
+
+			downloadVcf: (e) ->
+				e.preventDefault()
+
+				# generate vcf string
+				vcfContent = "BEGIN:VCARD\rVERSION:3.0\rCLASS:PUBLIC\rFN:#{ @model.get('FirstName') } #{ @model.get('Surname') }\rN:#{ @model.get('Surname') };#{ @model.get('FirstName') } ;;;\r"
+				vcfContent += "EMAIL;TYPE=INTERNET:#{ @model.get('Email') }\r" if @model.get('Email')
+				vcfContent += "TEL;TYPE=PREF:#{ @model.get('Phone') }\r" if @model.get('Phone')
+				vcfContent += "END:VCARD"
+
+				uriContent = "data:text/vcard," + encodeURIComponent(vcfContent)
+				window.location.href = uriContent
+
+				false
+
 			serialize: ->
 				if @.model then @.model.toJSON()
 
