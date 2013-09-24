@@ -27,7 +27,7 @@
 // ! - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 body {
-	background: mix(@bgColor, @black, 90%);
+	background: @bg;
 	.aller-light;
 	color: @black;
 	width: 100%;
@@ -1840,7 +1840,7 @@ body.dragover {
 				color: @btnHover;
 
 				&:before {
-					color: @nmColor;
+					color: mix(@nmColor, @black, 80%);
 				}
 			}
 		}
@@ -1866,7 +1866,7 @@ body.dragover {
 }
 
 form.create-project {
-	background: lighten(@black, 68%);
+	background: darken(@bg, 8%);
 	padding: @line / 2 / @em;
 	position: absolute;
 	top: 50%;
@@ -1895,7 +1895,7 @@ form.create-project {
 
 	input {
 		border: none;
-		background: lighten(@bgColor, 5%);
+		background: @bgColor;
 		width: 60%;
 		padding: @line / 4 / @em;
 		margin-right: 5%;

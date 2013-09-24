@@ -85,6 +85,13 @@
   font-style: normal;
 }
 @font-face {
+  font-family: 'AllerLight-SmallCaps';
+  src: url('/app/assets/webfonts/aller-light-smallcaps/aller_lt-webfont.eot');
+  src: url('/app/assets/webfonts/aller-light-smallcaps/aller_lt-webfont.eot?#iefix') format('embedded-opentype'), url('/app/assets/webfonts/aller-light-smallcaps/aller_lt-webfont.woff') format('woff'), url('/app/assets/webfonts/aller-light-smallcaps/aller_lt-webfont.ttf') format('truetype'), url('/app/assets/webfonts/aller-light-smallcaps/aller_lt-webfont.svg#aller_lightsmallcaps') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
   font-family: 'Aller';
   src: url('/app/assets/webfonts/aller-regular/aller_rg-webfont.eot');
   src: url('/app/assets/webfonts/aller-regular/aller_rg-webfont.eot?#iefix') format('embedded-opentype'), url('/app/assets/webfonts/aller-regular/aller_rg-webfont.woff') format('woff'), url('/app/assets/webfonts/aller-regular/aller_rg-webfont.ttf') format('truetype'), url('/app/assets/webfonts/aller-regular/aller_rg-webfont.svg#allerregular') format('svg');
@@ -92,9 +99,16 @@
   font-style: normal;
 }
 @font-face {
+  font-family: 'AllerRegular-SmallCaps';
+  src: url('/app/assets/webfonts/aller-regular-smallcaps/aller_rg-webfont.eot');
+  src: url('/app/assets/webfonts/aller-regular-smallcaps/aller_rg-webfont.eot?#iefix') format('embedded-opentype'), url('/app/assets/webfonts/aller-regular-smallcaps/aller_rg-webfont.woff') format('woff'), url('/app/assets/webfonts/aller-regular-smallcaps/aller_rg-webfont.ttf') format('truetype'), url('/app/assets/webfonts/aller-regular-smallcaps/aller_rg-webfont.svg#aller_regularsmallcaps') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
   font-family: 'Entypo';
   src: url('/app/assets/webfonts/entypo/entypo-webfont.eot');
-  src: url('/app/assets/webfonts/entypo/entypo-webfont.eot?#iefix') format('embedded-opentype'), url('/app/assets/webfonts/entypo/entypo-webfont.woff') format('woff'), url('/app/assets/webfonts/entypo/entypo-webfont.ttf') format('truetype'), url('/app/assets/webfonts/entypo/entypo-webfont.svg#allerregular') format('svg');
+  src: url('/app/assets/webfonts/entypo/entypo-webfont.eot?#iefix') format('embedded-opentype'), url('/app/assets/webfonts/entypo/entypo-webfont.woff') format('woff'), url('/app/assets/webfonts/entypo/entypo-webfont.ttf') format('truetype'), url('/app/assets/webfonts/entypo/entypo-webfont.svg#entypo') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -118,6 +132,11 @@
 /**
  * Kapitälichen
  */
+/*-moz-font-feature-settings: 'smcp=1';
+	-ms-font-feature-settings: 'smcp';
+	-webkit-font-feature-settings: 'smcp';
+	-o-font-feature-settings: 'smcp';
+	font-feature-settings: 'smcp';*/
 /**
  * Kleine Kapitälchen 
  *
@@ -152,7 +171,7 @@
 .btn {
   font-family: 'Aller', 'Helvetica', sans-serif;
   font-weight: normal;
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
   color: #525252;
   display: inline-block;
   -webkit-transition: color .2s ease-out;
@@ -934,6 +953,11 @@ h3 {
   font-family: 'Aller', 'Helvetica', sans-serif;
   font-weight: normal;
 }
+h1 cite,
+h2 cite,
+h3 cite {
+  font-family: "AllerRegular-SmallCaps";
+}
 /** 
  * Überschrift ersten Rangs
  */
@@ -959,14 +983,14 @@ h3 {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
 }
 h1 + h2,
 h2 + h3 {
   margin-top: 0;
 }
 cite {
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-style: normal;
 }
 strong {
@@ -1010,7 +1034,7 @@ article header h1 {
   margin-bottom: -0.08333333333333333em;
 }
 article header p {
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -1047,7 +1071,7 @@ aside h4 {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
 }
 aside ul {
   list-style: none;
@@ -1181,7 +1205,7 @@ body.requesting .badge > a {
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
 }
 .calendar ul {
   list-style: none;
@@ -1202,7 +1226,7 @@ body.requesting .badge > a {
   margin-top: 0;
 }
 .calendar time {
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 0.875em;
   line-height: 1.7142857142857142em;
   margin-top: 0.25em;
@@ -1351,7 +1375,7 @@ span[data-picture] img {
   margin-bottom: -0.08333333333333333em;
 }
 .qtip-content header p {
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -1662,7 +1686,7 @@ x:-o-prefocus,
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   margin-top: 1.3333333333333333em;
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
 }
 .about .students ul,
 .about .alumni ul {
@@ -2062,7 +2086,7 @@ x:-o-prefocus,
   width: 100% !important;
   background: #191919;
   border-bottom: 1px solid #57590d;
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -2257,7 +2281,7 @@ x:-o-prefocus,
   background: none;
   font-family: 'Aller', 'Helvetica', sans-serif;
   font-weight: normal;
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
   color: #525252;
   display: inline-block;
   -webkit-transition: color .2s ease-out;
@@ -2400,7 +2424,7 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   box-sizing: content-box;
 }
 .editor-sidebar .editor-sidebar-content header h2 {
-  font-variant: small-caps;
+  font-family: "AllerRegular-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -2565,7 +2589,7 @@ body.editor-sidebar-open #layout.editor.open-split-markdown {
   border-bottom: 1px solid #5e5e5e;
   padding: 0.75em 0;
   color: #919191;
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   /* firefox 19+ */
 
   /* ie */
@@ -3251,7 +3275,7 @@ body.dragover.drag-inline #uploadzone .progress {
   display: block;
   font-family: 'Aller', 'Helvetica', sans-serif;
   font-weight: normal;
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   color: #525252;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -3272,7 +3296,7 @@ body.dragover.drag-inline #uploadzone .progress {
 .project-type-list li a:hover:before,
 .project-type-list li a:focus:before,
 .project-type-list li a.active:before {
-  color: #d9df20;
+  color: #b5ba21;
 }
 .project-type-list li a.excursion:before {
   font-family: 'Entypo';
@@ -3295,7 +3319,7 @@ body.dragover.drag-inline #uploadzone .progress {
   content: '\1F3A8';
 }
 form.create-project {
-  background: #d3d3d3;
+  background: #bebebe;
   padding: 0.75em;
   position: absolute;
   top: 50%;
@@ -3328,7 +3352,7 @@ form.create-project.active {
 }
 form.create-project input {
   border: none;
-  background: #f3f3f3;
+  background: #e6e6e6;
   width: 60%;
   padding: 0.375em;
   margin-right: 5%;
@@ -3498,7 +3522,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   min-width: 0.625em;
 }
 .editor-project-main.detail article .persons {
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -3911,7 +3935,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   z-index: 100;
   min-width: 4px;
   position: relative;
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -3937,7 +3961,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 }
 .VS-search .search_facet .category {
   float: left;
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
@@ -4015,7 +4039,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 }
 .search_input .ui-autocomplete .ui-autocomplete-category,
 .search_facet .ui-autocomplete .ui-autocomplete-category {
-  font-variant: small-caps;
+  font-family: "AllerLight-SmallCaps";
   font-size: 1.125em;
   line-height: 1.3333333333333333em;
   color: #919191;
