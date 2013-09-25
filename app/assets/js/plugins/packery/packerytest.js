@@ -534,7 +534,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           containerStyle: null,
           itemSelector: _this.itemSelector,
           gutter: 0,
-          stamped: '.stamp',
+          stamped: $('.stamp, .badge'),
           transitionDuration: 0,
           isResizeBound: false,
           isInitLayout: false

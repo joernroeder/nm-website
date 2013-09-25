@@ -553,7 +553,7 @@ do ($ = jQuery) ->
 					containerStyle: null
 					itemSelector: @itemSelector
 					gutter: 0
-					stamped: '.stamp'
+					stamped: $('.stamp, .badge')
 					#columnWidth: 20
 					#rowHeight: 20
 					transitionDuration: 0
