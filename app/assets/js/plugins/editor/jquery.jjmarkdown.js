@@ -311,7 +311,7 @@
             _this.insertAtEditorPosByEl($target, md + '  \n\n');
             JJMarkdownEditor._activeDraggable = null;
             return dfdParse.resolve();
-          } else if (e.dataTransfer.files.length) {
+          } else if (e.dataTransfer) {
             uploadDfd = JJFileUpload["do"](e, $dropzone, _this.options.imageUrl, _this.options.additionalPOSTData, _this.options.errorMsg, 'image.*');
             return uploadDfd.done(function(data) {
               var nl, obj, rawMd, _i, _len;

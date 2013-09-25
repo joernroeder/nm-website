@@ -122,7 +122,7 @@ define(['app', 'modules/DataRetrieval', 'modules/Auth', 'modules/Portfolio', 'mo
           if (data instanceof Backbone.Model === true) {
             $img = $("#editor-sidebar").find("li.DocImage img[data-id=\"" + data.id + "\"]");
             return setPreviewImage(data, $img.attr('src'));
-          } else {
+          } else if (data.length) {
             return DataRetrieval.forDocImage(data[0].id).done(function(model) {
               return setPreviewImage(model, data[0].url);
             });

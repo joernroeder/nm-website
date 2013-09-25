@@ -107,7 +107,7 @@ define [
 						$img = $("#editor-sidebar").find("li.DocImage img[data-id=\"#{data.id}\"]")
 						
 						setPreviewImage data, $img.attr('src')
-					else
+					else if data.length
 						DataRetrieval.forDocImage(data[0].id).done (model) ->
 							setPreviewImage model, data[0].url
 

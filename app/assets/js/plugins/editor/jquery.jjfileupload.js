@@ -25,7 +25,7 @@
 
 
     JJFileUpload["do"] = function(e, $dropzone, postUrl, additionalData, defaultErrorMsg, filematch, maxAllowed) {
-      var $progress, $progressText, a, b, errorMsg, files, formData, req,
+      var $progress, $progressText, a, b, errorMsg, files, formData, req, url,
         _this = this;
       errorMsg = null;
       $dropzone.removeClass('failed done');
@@ -37,6 +37,12 @@
         "class": 'progress-text'
       }).appendTo($dropzone);
       files = e.dataTransfer.files;
+      if (files.length === 0) {
+        url = e.dataTransfer.getData('URL');
+        if (url) {
+          additionalData['external'] = url;
+        }
+      }
       formData = new FormData();
       if (maxAllowed && files.length > maxAllowed) {
         files = array_slice(files, 0, 3);

@@ -133,7 +133,7 @@ do ($ = jQuery) ->
 							data.done @.options.responseHandler
 						else
 							@.options.responseHandler data
-				else if e.dataTransfer.files.length
+				else if e.dataTransfer
 					@.deferredUpload e
 
 

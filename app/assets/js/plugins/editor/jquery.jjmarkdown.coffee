@@ -318,7 +318,7 @@ do ($ = jQuery) ->
 						JJMarkdownEditor._activeDraggable = null
 						dfdParse.resolve()
 					# upload
-					else if e.dataTransfer.files.length
+					else if e.dataTransfer
 						uploadDfd = JJFileUpload.do e, $dropzone, @.options.imageUrl, @.options.additionalPOSTData, @.options.errorMsg, 'image.*'
 
 						uploadDfd.done (data) =>

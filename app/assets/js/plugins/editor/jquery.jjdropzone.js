@@ -174,7 +174,7 @@ var __hasProp = {}.hasOwnProperty,
               return _this.options.responseHandler(data);
             }
           }
-        } else if (e.dataTransfer.files.length) {
+        } else if (e.dataTransfer) {
           return _this.deferredUpload(e);
         }
       });

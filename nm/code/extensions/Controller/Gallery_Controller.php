@@ -154,46 +154,99 @@ class Gallery_Controller extends Controller {
 		}
 
 		foreach ($postVars as $key => $fileRequest) {
-			if ( !is_array($fileRequest) || !$fileRequest['tmp_name'] || $fileRequest['error'] ) continue;
-			if (strpos($fileRequest['type'], 'image') === false) continue;
+			$image = null;
 
-			// change the name to make it really unique
-			$fileRequest['name'] = md5(time()) . '-' . $fileRequest['name'];
+			if ( !is_array($fileRequest) || !$fileRequest['tmp_name'] || $fileRequest['error'] ) {
+				// check if external URL
+				if ($key == 'external') {
+					$image = $this->loadExternalImageFromUrl($fileRequest);
 
-			// make the ResponsiveImage subclass
-			$imgObj = new $this->imageType();
+				}
+			} else {
 
-			// add the OwnerID, if a PersonImage is uploaded
-			if ($this->imageType == 'PersonImage') $imgObj->OwnerID = $this->currentUser->ID;
+				if (strpos($fileRequest['type'], 'image') === false) continue;
 
-			$imgObj->write();
+				// change the name to make it really unique
+				$fileRequest['name'] = md5(time()) . '-' . $fileRequest['name'];
 
-			// make the image
-			$image = new SubdomainResponsiveImageObject();
-			$u = new Upload();
-			$u->loadIntoFile($fileRequest, $image);
-			$image->OwnerID = $this->currentUser->ID;
-			$image->ResponsiveID = $imgObj->ID;
-			$image->write();
+				// make the image
+				$image = new SubdomainResponsiveImageObject();
+				$u = new Upload();
+				$u->loadIntoFile($fileRequest, $image);
 
-			$gItem = $this->imageAsGalleryItem($imgObj, true);
-			if (!$gItem) continue;
-			$galleryItem = $gItem;
-			
-			$galleryItem['UploadedToClass'] = $this->imageType;
-
-			// handle uploads to a project
-			if ($project) {
-				$project->Images()->add($imgObj);
-				$project->write();
-				$galleryItem['FilterID'] = Convert::raw2att($project->class . '-' . $project->ID);	
 			}
-			
-			$response[] = $galleryItem;
+
+			if ($image) {
+				// make the ResponsiveImage subclass
+				$imgObj = new $this->imageType();
+
+				// add the OwnerID, if a PersonImage is uploaded
+				if ($this->imageType == 'PersonImage') $imgObj->OwnerID = $this->currentUser->ID;
+
+				$imgObj->write();
+
+				$image->OwnerID = $this->currentUser->ID;
+				$image->ResponsiveID = $imgObj->ID;
+				$image->write();
+
+				$gItem = $this->imageAsGalleryItem($imgObj, true);
+				
+				if (!$gItem) continue;
+				$galleryItem = $gItem;
+				
+				$galleryItem['UploadedToClass'] = $this->imageType;
+
+				// handle uploads to a project
+				if ($project) {
+					$project->Images()->add($imgObj);
+					$project->write();
+					$galleryItem['FilterID'] = Convert::raw2att($project->class . '-' . $project->ID);	
+				}
+				
+				$response[] = $galleryItem;
+			}
 		}
 
 		return json_encode($response);
 
+	}
+
+	private function loadExternalImageFromUrl($url) {
+		$basePath 	= Director::baseFolder() . DIRECTORY_SEPARATOR;
+		$filename 	= md5(time()) . '-' . preg_replace('/[^\da-z]/i', '', $url);
+		$uploadsFolderName = Upload::config()->uploads_folder;
+		$uploadsFolder = Folder::find_or_make($uploadsFolderName);
+
+		$relativePath =  'assets/' . $uploadsFolderName . '/' . $filename;
+		
+		$fullFilePath = $basePath . $relativePath;
+
+		// download the file
+		$fp = fopen($fullFilePath, 'w');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		fclose($fp);
+		
+		$imgSize = getimagesize($fullFilePath);
+		if ($imgSize && in_array($imgSize['mime'], array('image/jpeg', 'image/png', 'image/gif'))) {
+			// seems valid, add extension
+			$ext = str_replace('image/', '', $imgSize['mime']);
+			$newFullPath = $fullFilePath . '.' . $ext;
+			$relativePath .= '.' . $ext;
+			rename($fullFilePath, $newFullPath);
+			$baseFileName = basename($relativePath);
+			$file = new SubdomainResponsiveImageObject();
+			$file->ParentID		= $uploadsFolder->ID;
+			$file->Name 		= $baseFileName;
+			$file->Filename   	= $relativePath;
+			$file->Title 		= $baseFileName;
+
+			return $file;
+		}
+
+		return null;
 	}
 
 	/**

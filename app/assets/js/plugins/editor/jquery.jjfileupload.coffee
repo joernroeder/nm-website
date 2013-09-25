@@ -39,6 +39,14 @@ do ($ = jQuery) ->
 			.appendTo $dropzone
 
 			files = e.dataTransfer.files
+
+			if files.length is 0
+				# drag and drop from different browser window tryout
+				url = e.dataTransfer.getData('URL')
+				if url then additionalData['external'] = url
+					
+					
+						
 			formData = new FormData()
 
 			if maxAllowed and files.length > maxAllowed then files = array_slice(files, 0, 3)
