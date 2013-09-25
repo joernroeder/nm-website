@@ -20,3 +20,4 @@ docsviewer
 vendor
 
 /vendor/*
+/app/bower_components/

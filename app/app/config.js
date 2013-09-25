@@ -5,10 +5,19 @@ require.config({
     libs: '../assets/js/libs',
     plugins: '../assets/js/plugins',
     responsiveimage: '../../responsive-image/thirdparty/picturefill',
-    jquery: '../assets/js/libs/jquery.min',
-    underscore: '../assets/js/libs/underscore',
-    backbone: '../assets/js/libs/backbone',
-    handlebars: '../assets/js/libs/handlebars'
+    jquery: '../bower_components/jquery/jquery',
+    underscore: '../bower_components/underscore/underscore',
+    backbone: '../bower_components/backbone/backbone',
+    handlebars: '../bower_components/handlebars/handlebars',
+    'classie': '../bower_components/classie',
+    'doc-ready': '../bower_components/doc-ready',
+    'eventEmitter': '../bower_components/eventEmitter',
+    'eventie': '../bower_components/eventie',
+    'get-size': '../bower_components/get-size',
+    'get-style-property': '../bower_components/get-style-property',
+    'matches-selector': '../bower_components/matches-selector',
+    'outlayer': '../bower_components/outlayer',
+    'packery': '../bower_components/packery/js'
   },
   shim: {
     jquery: {
@@ -25,8 +34,7 @@ require.config({
       exports: 'Handlebars'
     },
     'plugins/tooltip/jquery.qtip': ['jquery'],
-    'plugins/packery/packery.pkgd': ['jquery'],
-    'plugins/packery/packerytest': ['plugins/packery/packery.pkgd', 'plugins/tooltip/jquery.qtip'],
+    'plugins/packery/packerytest': ['jquery', 'plugins/tooltip/jquery.qtip'],
     'modules/JJPackery': ['plugins/packery/packerytest'],
     'responsiveimage/picturefill': ['responsiveimage/external/matchmedia'],
     'plugins/misc/spin.min': ['jquery'],
