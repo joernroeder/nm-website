@@ -36,9 +36,8 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
         return _results;
       }
     },
-    afterRender: function() {
-      $(document).trigger($.Event('about:rendered'));
-      return JJPackeryMan();
+    _afterRender: function() {
+      return $(document).trigger($.Event('about:rendered'));
     },
     serialize: function() {
       return {

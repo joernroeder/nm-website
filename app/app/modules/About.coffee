@@ -22,9 +22,8 @@ define [
 					for employee in @.persons.employees
 						@.insertView '.packery', new About.Views.EmployeeItem {model: employee}
 
-			afterRender: ->
-				$(document).trigger $.Event 'about:rendered'
-				JJPackeryMan()
+			_afterRender: ->
+				$(document).trigger $.Event('about:rendered')
 
 			serialize: ->
 				{ GroupImage: @.groupImage }
