@@ -87,7 +87,8 @@ define [
 				if person = app.CurrentMemberPerson
 					@.$field.attr 'disabled', 'disabled'
 					m = JJRestApi.Model @.projectType
-					model = new m {Title: title, Persons: person}
+					model = new m {Title: title, Persons: person, EditableByMember: true}
+					console.log 'CurrentMemberPerson %o', person
 					model.save null,
 						success: =>
 							@.$field.removeAttr 'disabled'

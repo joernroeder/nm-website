@@ -79,8 +79,10 @@ define(['app'], function(app) {
           m = JJRestApi.Model(this.projectType);
           model = new m({
             Title: title,
-            Persons: person
+            Persons: person,
+            EditableByMember: true
           });
+          console.log('CurrentMemberPerson %o', person);
           model.save(null, {
             success: function() {
               _this.$field.removeAttr('disabled');
