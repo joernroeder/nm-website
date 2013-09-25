@@ -290,6 +290,7 @@ body.requesting .badge {
 .person {
 	// clearfix
 	overflow: hidden;
+	background: @bgColor;
 
 	// dummy image
 	.img {
@@ -306,7 +307,8 @@ body.requesting .badge {
 	}
 
 	h1 {
-		margin-top: 21 / @em;
+		padding-top: 21 / @em;
+		margin: 0;
 		font-size: @font-size / @em;
 	}
 
@@ -654,20 +656,25 @@ x:-o-prefocus, .qtip .qtip-tip{
 	.statement {
 		float: right;
 		.columnsWidth(8, 6);
-		.wrapper;
 		margin-right: 100% / 8 * 1;
 		height: auto !important; // @todo: fix javascript setter!
 
-		p:last-child {
-			margin-bottom: @line * 1 / @em;
+		&> div {
+			.wrapper;
+			padding-top: @line / 2 / @em;
+			padding-bottom: @line / @em;
 		}
+
+		/*p:last-child {
+			margin-bottom: @line * 1 / @em;
+		}*/
 	}
 
 	.group-image {
 		float: right;
 		.wrapper;
 		width: 100% / 8 * 3;
-		padding: @line / 2 / @em;
+		padding: 0;
 
 		img {
 			max-width: 100%;
@@ -680,6 +687,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		float: left;
 		.columnsWidth(8, 3);
 		.wrapper;
+		padding: 0;
 
 		a {
 			display: block;
@@ -702,8 +710,19 @@ x:-o-prefocus, .qtip .qtip-tip{
 	.alumni {
 		float: left;
 		.list-columns(2, 500);
+
+		h1, h2, h3, h4 {
+			margin-top: 0;
+			padding-top: @line / @h3Size * 1em;
+
+		}
 		.columnsWidth(8, 3);
-		.wrapper;
+		margin: 0;
+		
+		&> div {
+			.wrapper;
+			padding-bottom: @line * 2 / @em;
+		}
 	}
 
 	.students {
@@ -803,7 +822,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	> div > section:last-child {
 		.columnsWidth(8, 8 - @imageWidth);
-		padding: 0 0 (@line / @em) (@line / @em);
+		padding: (@line / 2 / @em) (@line / 2 / @em) (@line / @em) (@line / @em);
 		.box-sizing(border-box);
 	}
 

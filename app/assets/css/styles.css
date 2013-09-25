@@ -889,7 +889,6 @@ button.Zebra_DatePicker_Icon {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #e6e6e6;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -910,6 +909,9 @@ button.Zebra_DatePicker_Icon {
   width: 0;
   height: 0;
   visibility: hidden;
+}
+.packery-item > div {
+  background: #e6e6e6;
 }
 .packery-item > div > a {
   background: #e6e6e6;
@@ -1238,6 +1240,7 @@ body.requesting .badge > a {
 }
 .person {
   overflow: hidden;
+  background: #e6e6e6;
 }
 .person .img {
   display: block;
@@ -1251,7 +1254,8 @@ body.requesting .badge > a {
   max-width: 100%;
 }
 .person h1 {
-  margin-top: 1.3125em;
+  padding-top: 1.3125em;
+  margin: 0;
   font-size: 1em;
 }
 .person p {
@@ -1464,7 +1468,6 @@ x:-o-prefocus,
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #e6e6e6;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -1494,6 +1497,10 @@ x:-o-prefocus,
   width: 0;
   height: 0;
   visibility: hidden;
+}
+.packery-wrapper > img > div,
+.packery-wrapper .packery-item > div {
+  background: #e6e6e6;
 }
 .packery-wrapper > img > div > a,
 .packery-wrapper .packery-item > div > a {
@@ -1617,15 +1624,20 @@ x:-o-prefocus,
 .about .statement {
   float: right;
   width: 75%;
+  margin-right: 12.5%;
+  height: auto !important;
+  /*p:last-child {
+			margin-bottom: @line * 1 / @em;
+		}*/
+
+}
+.about .statement > div {
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  margin-right: 12.5%;
-  height: auto !important;
-}
-.about .statement p:last-child {
-  margin-bottom: 1.5em;
+  padding-top: 0.75em;
+  padding-bottom: 1.5em;
 }
 .about .group-image {
   float: right;
@@ -1634,7 +1646,7 @@ x:-o-prefocus,
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   width: 37.5%;
-  padding: 0.75em;
+  padding: 0;
 }
 .about .group-image img {
   max-width: 100%;
@@ -1648,6 +1660,7 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  padding: 0;
 }
 .about .person a {
   display: block;
@@ -1670,10 +1683,7 @@ x:-o-prefocus,
   width: 31.25em;
   margin-bottom: 3em;
   width: 37.5%;
-  padding: 0 0.75em;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  margin: 0;
 }
 .about .students h1,
 .about .alumni h1,
@@ -1704,6 +1714,25 @@ x:-o-prefocus,
   -webkit-column-gap: 2.5em;
   -moz-column-gap: 2.5em;
   column-gap: 2.5em;
+}
+.about .students h1,
+.about .alumni h1,
+.about .students h2,
+.about .alumni h2,
+.about .students h3,
+.about .alumni h3,
+.about .students h4,
+.about .alumni h4 {
+  margin-top: 0;
+  padding-top: 1.3333333333333333em;
+}
+.about .students > div,
+.about .alumni > div {
+  padding: 0 0.75em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-bottom: 3em;
 }
 .about .students {
   margin-left: 12.5%;
@@ -1804,7 +1833,7 @@ x:-o-prefocus,
 }
 .packery-item.person-info > div > section:last-child {
   width: 81.25%;
-  padding: 0 0 1.5em 1.5em;
+  padding: 0.75em 0.75em 1.5em 1.5em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1851,7 +1880,6 @@ x:-o-prefocus,
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #e6e6e6;
   /*
 	-webkit-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005) !important;
 	-moz-transition: margin @time @delay cubic-bezier(0.825, 1.610, 0.890, 1.005), !important;
@@ -1898,6 +1926,9 @@ x:-o-prefocus,
   width: 0;
   height: 0;
   visibility: hidden;
+}
+.editor .overview article > div {
+  background: #e6e6e6;
 }
 .editor .overview article > div > a {
   background: #e6e6e6;

@@ -127,7 +127,6 @@
 	margin: 0;
 	padding: 0;
 
-	background: @bgColor;
 	// !important doesn't work with mixings at the moment
 	//.transition(~"margin .15s 1s cubic-bezier(0.825, 1.610, 0.890, 1.005), -webkit-transform 0ms") !important;
 	//.transition-property(-webkit-transition-property, margin) !important;
@@ -155,6 +154,7 @@
 	}
 
 	&> div {
+		background: @bgColor;
 		//.transition(~"margin .15s 10s cubic-bezier(0.825, 1.610, 0.890, 1.005)");
 	}
 
