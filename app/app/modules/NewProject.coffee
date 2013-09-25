@@ -1,6 +1,7 @@
 define [
 		'app'
-], (app) ->
+		'modules/DataRetrieval'
+], (app, DataRetrieval) ->
 
 	NewProject = app.module()
 
@@ -95,6 +96,7 @@ define [
 							model._isCompletelyFetched = true
 							model._isFetchedWhenLoggedIn = true
 							Backbone.history.navigate '/secured/edit/' + model.get('UglyHash') + '/', true
+							DataRetrieval.addNewProjectToUserGallery model
 						
 						error: (e) =>
 							msg = '<h1>' + e.status + ': '+ e.statusText + '</h1><p>' + e.responseText + '</p>'
