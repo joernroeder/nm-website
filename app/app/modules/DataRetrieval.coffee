@@ -189,6 +189,14 @@ define [
 					dfd.resolve getRandom()
 				dfd.promise()
 
+			addNewProjectToUserGallery: (model) ->
+				userGallery = app.Cache.UserGallery
+				return unless userGallery.fetched.Projects
+				userGallery.images.Projects.push
+					FilterID: model.get('ClassName') + '-' + model.id
+					Title: model.get('Title')
+					Images: []
+
 			# getting the user gallery
 			forUserGallery: (type) ->
 				userGallery = app.Cache.UserGallery

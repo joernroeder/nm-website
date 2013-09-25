@@ -198,6 +198,18 @@ define(['app', 'modules/ProjectSearch'], function(app, ProjectSearch) {
       }
       return dfd.promise();
     },
+    addNewProjectToUserGallery: function(model) {
+      var userGallery;
+      userGallery = app.Cache.UserGallery;
+      if (!userGallery.fetched.Projects) {
+        return;
+      }
+      return userGallery.images.Projects.push({
+        FilterID: model.get('ClassName') + '-' + model.id,
+        Title: model.get('Title'),
+        Images: []
+      });
+    },
     forUserGallery: function(type) {
       var dfd, req, userGallery;
       userGallery = app.Cache.UserGallery;
