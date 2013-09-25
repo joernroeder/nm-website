@@ -545,10 +545,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           if (_this.rendered === 1) {
             console.log('hidden trigger');
           } else {
-            console.log('completed');
             _this.layoutIsComplete = true;
           }
-          console.log('layout is complete');
           return false;
         });
         _this.$window.on('resize', function() {

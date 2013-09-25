@@ -569,7 +569,7 @@ do ($ = jQuery) ->
 						#@packery.layout()
 						#@packery.options.transitionDuration = @transitionDuration
 					else
-						console.log 'completed'
+						#console.log 'completed'
 						@layoutIsComplete = true
 					#if @rendered is 2
 
@@ -588,7 +588,7 @@ do ($ = jQuery) ->
 					#	console.log 'loaded'
 
 	
-					console.log 'layout is complete'
+					#console.log 'layout is complete'
 					false
 	
 				#@rendered++
