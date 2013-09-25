@@ -3,13 +3,34 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 (function($) {
+  var JJPackery, JJPackeryMan, is3d, packery_layoutItems, supportsCSS3, transformCSSProperty, transformProperty, transitionEndEvent, transitionProperty, translate;
+  transitionProperty = getStyleProperty('transition');
+  transformProperty = getStyleProperty('transform');
+  supportsCSS3 = transitionProperty && transformProperty;
+  is3d = !!getStyleProperty('perspective');
+  transitionEndEvent = {
+    WebkitTransition: 'webkitTransitionEnd',
+    MozTransition: 'transitionend',
+    OTransition: 'otransitionend',
+    transition: 'transitionend'
+  }[transitionProperty];
+  transformCSSProperty = {
+    WebkitTransform: '-webkit-transform',
+    MozTransform: '-moz-transform',
+    OTransform: '-o-transform',
+    transform: 'transform'
+  }[transformProperty];
+  translate = (is3d ? function(x, y) {
+    return "translate3d( " + x + "px, " + y + "px, 0)";
+  } : function(x, y) {
+    return "translate( " + x + "px, " + y + "px)";
+  });
   /*
   	layout a collection of item elements
   	@param {Array} items - array of Packery.Items
   	@param {Boolean} isInstant - disable transitions for setting item position
   */
 
-  var JJPackery, JJPackeryMan, packery_layoutItems;
   packery_layoutItems = Packery.prototype.layoutItems;
   Packery.prototype.layoutItems = function(items, isInstant) {
     this.maxY = 0;
@@ -19,6 +40,47 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     $(this.element).addClass('hidden');
     return false;
   };
+  Packery.Item.prototype._transitionTo = function(x, y) {
+    var compareX, compareY, curX, curY, didNotMove, transX, transY, transitionStyle;
+    this.getPosition();
+    curX = this.position.x;
+    curY = this.position.y;
+    compareX = parseInt(x, 10);
+    compareY = parseInt(y, 10);
+    didNotMove = compareX === this.position.x && compareY === this.position.y;
+    this.setPosition(x, y);
+    if (didNotMove && !this.isTransitioning) {
+      this.layoutPosition();
+      return;
+    }
+    transX = Math.floor(x - curX);
+    transY = Math.floor(y - curY);
+    transitionStyle = {};
+    transitionStyle[transformCSSProperty] = translate(transX, transY);
+    return this.transition(transitionStyle, this.layoutPosition);
+  };
+  Packery.Item.prototype.moveTo = supportsCSS3 ? Packery.Item.prototype._transitionTo : Item.prototype.goTo;
+  /*
+  	 # get item elements to be used in layout
+  	 # @param {Array or NodeList or HTMLElement} elems
+  	 # @returns {Array} items - collection of new Packery Items
+  */
+
+  Packery.prototype._getItems = function(elems) {
+    var elem, item, itemElems, items, _i, _len;
+    itemElems = this._filterFindItemElements(elems);
+    items = [];
+    for (_i = 0, _len = itemElems.length; _i < _len; _i++) {
+      elem = itemElems[_i];
+      item = new Packery.Item(elem, this);
+      items.push(item);
+    }
+    return items;
+  };
+  /*
+  	 #
+  */
+
   JJPackery = (function() {
     /*
     		 # construct variables
@@ -208,8 +270,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       ba = third.top - center.top;
       bc = elPos.left - third.left;
       expFactor = this.getLineDistance(center, elPos) * this.factor / 200;
-      yFactor = (ba / Math.abs(ba)) * expFactor * this.getLineDistance(center, third);
-      xFactor = (bc / Math.abs(bc)) * expFactor * this.getLineDistance(elPos, third);
+      yFactor = Math.floor((ba / Math.abs(ba)) * expFactor * this.getLineDistance(center, third));
+      xFactor = Math.floor((bc / Math.abs(bc)) * expFactor * this.getLineDistance(elPos, third));
       margins = {
         'margin-top': yFactor,
         'margin-left': xFactor
@@ -262,7 +324,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           console.log('inverse margin');
           margin *= -1;
         }
-        return margin;
+        return Math.floor(margin);
       };
       if ($metaSection.length) {
         foo = this;
@@ -462,6 +524,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
     JJPackery.prototype.start = function() {
       var _this = this;
+      console.log('start method');
       return this.$container.imagesLoaded(function() {
         if (!_this.$packeryEl.length) {
           return;
@@ -502,7 +565,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
   })();
   JJPackeryMan = function() {
-    console.error('JJPackeryMan is deprecated! Use "new JJPackeryClass()" instead!');
+    console.error('JJPackeryMan/JJPackeryClass is deprecated! Use "new JJPackery()" instead!');
     return new JJPackery;
   };
   window.JJPackeryClass = JJPackery;

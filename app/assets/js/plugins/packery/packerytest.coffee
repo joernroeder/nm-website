@@ -2,6 +2,37 @@
 
 do ($ = jQuery) ->
 
+	# ! --- CSS3 support (Packery Helpers) ------------------------------------
+
+	transitionProperty = getStyleProperty 'transition'
+	transformProperty = getStyleProperty 'transform'
+	supportsCSS3 = transitionProperty && transformProperty
+	is3d = !!getStyleProperty 'perspective'
+
+	transitionEndEvent = {
+		WebkitTransition: 'webkitTransitionEnd',
+		MozTransition: 'transitionend',
+		OTransition: 'otransitionend',
+		transition: 'transitionend'
+	}[ transitionProperty ]
+
+	transformCSSProperty = {
+		WebkitTransform: '-webkit-transform',
+		MozTransform: '-moz-transform',
+		OTransform: '-o-transform',
+		transform: 'transform'
+	}[ transformProperty ]
+
+	# transform translate function
+	translate = (if is3d then (x, y) ->
+		"translate3d( " + x + "px, " + y + "px, 0)"
+	else (x, y) ->
+		"translate( " + x + "px, " + y + "px)"
+	)
+
+
+	# ! --- Packery Overrides -------------------------------------------------
+
 	###
 	layout a collection of item elements
 	@param {Array} items - array of Packery.Items
@@ -18,6 +49,57 @@ do ($ = jQuery) ->
 		$(@.element).addClass 'hidden'
 		false
 
+	Packery.Item::_transitionTo = (x, y) ->
+		this.getPosition();
+		# get current x & y from top/left
+		curX = this.position.x;
+		curY = this.position.y;
+
+		compareX = parseInt( x, 10 );
+		compareY = parseInt( y, 10 );
+		didNotMove = compareX is this.position.x and compareY is this.position.y;
+
+		# save end position
+		this.setPosition( x, y );
+
+		# if did not move and not transitioning, just go to layout
+		if ( didNotMove && !this.isTransitioning )
+			this.layoutPosition();
+			return;
+
+		transX = Math.floor x - curX
+		transY = Math.floor y - curY
+		transitionStyle = {}
+		transitionStyle[ transformCSSProperty ] = translate( transX, transY )
+
+		this.transition( transitionStyle, this.layoutPosition )
+
+	# use transition and transforms if supported
+	Packery.Item::moveTo = if supportsCSS3 then Packery.Item.prototype._transitionTo else Item.prototype.goTo
+
+	###
+	 # get item elements to be used in layout
+	 # @param {Array or NodeList or HTMLElement} elems
+	 # @returns {Array} items - collection of new Packery Items
+	###
+	Packery::_getItems = (elems) ->
+		itemElems = this._filterFindItemElements elems
+
+		# create new Packery Items for collection
+		items = [];
+		for elem in itemElems
+			# update Item to Packery.Item to use the custom overrides
+			item = new Packery.Item elem, this
+			items.push item
+
+		return items;
+
+
+	# ! --- JJPackery ---------------------------------------------------------
+
+	###
+	 #
+	###
 	class JJPackery
 
 		###
@@ -197,8 +279,8 @@ do ($ = jQuery) ->
 
 			expFactor = @getLineDistance(center, elPos) * @factor / 200
 
-			yFactor = (ba / Math.abs(ba)) * expFactor * @getLineDistance(center, third)
-			xFactor = (bc / Math.abs(bc)) * expFactor * @getLineDistance(elPos, third)
+			yFactor = Math.floor((ba / Math.abs(ba)) * expFactor * @getLineDistance(center, third))
+			xFactor = Math.floor((bc / Math.abs(bc)) * expFactor * @getLineDistance(elPos, third))
 
 			margins = 
 				'margin-top': yFactor
@@ -253,7 +335,7 @@ do ($ = jQuery) ->
 					console.log 'inverse margin'
 					margin *= -1
 
-				margin
+				Math.floor margin
 
 
 			if $metaSection.length
@@ -461,6 +543,7 @@ do ($ = jQuery) ->
 
 		# ! --- implementation ----------------------------
 		start: ->
+			console.log 'start method'
 			@$container.imagesLoaded =>
 				if not @$packeryEl.length then return
 
@@ -526,7 +609,7 @@ do ($ = jQuery) ->
 
 
 	JJPackeryMan = -> 
-		console.error 'JJPackeryMan is deprecated! Use "new JJPackeryClass()" instead!'
+		console.error 'JJPackeryMan/JJPackeryClass is deprecated! Use "new JJPackery()" instead!'
 		new JJPackery
 
 	# reveal
