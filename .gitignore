@@ -18,3 +18,5 @@ framework/admin/.sass-cache/*
 
 docsviewer
 vendor
+
+/vendor/*
