@@ -244,6 +244,9 @@ class Gallery_Controller extends Controller {
 			$file->Title 		= $baseFileName;
 
 			return $file;
+		} else {
+			// not valid, delete
+			unlink($fullFilePath);
 		}
 
 		return null;
