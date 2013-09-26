@@ -24,6 +24,8 @@
     "handlebars": "~1.0.0",
     "jquery": "<2.0.0",
     "visualsearch": "~0.4.0",
-    "jquery-ui": "~1.10.3"
+    "jquery-ui": "~1.10.3",
+    "layoutmanager": "~0.8.5",
+    "requirejs": "~2.1.8"
   }
 }

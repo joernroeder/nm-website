@@ -23,6 +23,12 @@ require.config
 		backbone	: '../bower_components/backbone/backbone'
 		handlebars	: '../bower_components/handlebars/handlebars'
 
+
+		# ! --- Backbone LayoutManager --------------------
+		
+		'layoutmanager'			: '../bower_components/layoutmanager/backbone.layoutmanager'
+
+
 		# ! --- Packery -----------------------------------
 
 		'classie'				: '../bower_components/classie'
@@ -51,35 +57,36 @@ require.config
 		handlebars:
 			exports: 'Handlebars'
 
-		'plugins/tooltip/jquery.qtip'			: ['jquery']
-		'plugins/packery/packerytest'			: ['jquery', 'plugins/tooltip/jquery.qtip']
-		'modules/JJPackery'						: ['plugins/packery/packerytest']
-		'responsiveimage/picturefill'			: ['responsiveimage/external/matchmedia']
+		'plugins/tooltip/jquery.qtip'				: ['jquery']
+		'plugins/packery/packerytest'				: ['jquery', 'plugins/tooltip/jquery.qtip']
+		'modules/JJPackery'							: ['plugins/packery/packerytest']
+		'responsiveimage/picturefill'				: ['responsiveimage/external/matchmedia']
 
-		'plugins/misc/spin.min'					: ['jquery']
-		'plugins/misc/misc'						: ['jquery']
-		'plugins/misc/jquery.list'				: ['jquery']
+		'plugins/misc/spin.min'						: ['jquery']
+		'plugins/misc/misc'							: ['jquery']
+		'plugins/misc/jquery.list'					: ['jquery']
 
-		'plugins/editor/jquery.jjfileupload'	: ['jquery']
-		'plugins/editor/jquery.tabby'			: ['jquery']
-		'plugins/misc/zebra_datepicker.src'		: ['jquery']
-		'plugins/editor/jquery.editor-sidebar'	: ['plugins/misc/misc']
-		'plugins/editor/jquery.jjdropzone'		: ['plugins/editor/jquery.jjfileupload']
-		'plugins/editor/jquery.jjmarkdown'		: ['plugins/editor/jquery.jjdropzone', 'plugins/editor/jquery.tabby', 'plugins/editor/jquery.jjfileupload', 'plugins/editor/marked_jjedit']
-		'plugins/editor/jquery.editor-popover'	: ['plugins/tooltip/jquery.qtip', 'plugins/editor/jquery.jjmarkdown', 'plugins/misc/zebra_datepicker.src']
+		# Editor
+		'plugins/editor/jquery.jjfileupload'		: ['jquery']
+		'plugins/editor/jquery.tabby'				: ['jquery']
+		'plugins/misc/zebra_datepicker.src'			: ['jquery']
+		'plugins/editor/jquery.editor-sidebar'		: ['plugins/misc/misc']
+		'plugins/editor/jquery.jjdropzone'			: ['plugins/editor/jquery.jjfileupload']
+		'plugins/editor/jquery.jjmarkdown'			: ['plugins/editor/jquery.jjdropzone', 'plugins/editor/jquery.tabby', 'plugins/editor/jquery.jjfileupload', 'plugins/editor/marked_jjedit']
+		'plugins/editor/jquery.editor-popover'		: ['plugins/tooltip/jquery.qtip', 'plugins/editor/jquery.jjmarkdown', 'plugins/misc/zebra_datepicker.src']
 
-		'plugins/backbone.layoutmanager'		: ['backbone']
-		'plugins/backbone.JJRelational'			: ['backbone']
-		'plugins/backbone.JJRestApi'			: ['backbone']
-
-		'modules/NMMarkdownParser'				: ['plugins/editor/jquery.jjmarkdown']
+		# Backbone
+		'layoutmanager'								: ['backbone']
+		'plugins/backbone.JJRelational'				: ['backbone']
+		'plugins/backbone.JJRestApi'				: ['backbone']
+	
+		'modules/NMMarkdownParser'					: ['plugins/editor/jquery.jjmarkdown']
 		
-		'bower/jquery-ui/ui/jquery.ui.autocomplete' : [
-			'bower/jquery-ui/ui/jquery.ui.widget'
-		]
-		'bower/jquery-ui/ui/jquery.ui.menu'	: ['bower/jquery-ui/ui/jquery.ui.widget']
-		'plugins/visualsearch/visualsearch'		: [
-			'plugins/backbone.layoutmanager',
+		# Visual Search
+		'bower/jquery-ui/ui/jquery.ui.autocomplete' : ['bower/jquery-ui/ui/jquery.ui.widget']
+		'bower/jquery-ui/ui/jquery.ui.menu'			: ['bower/jquery-ui/ui/jquery.ui.widget']
+		'plugins/visualsearch/visualsearch'			: [
+			'layoutmanager',
 			'bower/jquery-ui/ui/jquery.ui.core',
 			'bower/jquery-ui/ui/jquery.ui.autocomplete',
 			'bower/jquery-ui/ui/jquery.ui.menu'

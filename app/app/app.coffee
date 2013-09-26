@@ -5,7 +5,7 @@ define [
 		'underscore'
 		'backbone'
 		'handlebars'
-		'plugins/backbone.layoutmanager'
+		'layoutmanager'
 		'plugins/backbone.JJRelational'
 		'plugins/backbone.JJRestApi'
 		'responsiveimage/picturefill'

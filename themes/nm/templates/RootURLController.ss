@@ -58,6 +58,6 @@
 	</div>
 
 	<!-- Application source. -->
-	<script data-main="/app/app/config" src="/app/assets/js/libs/require.js"></script>
+	<script data-main="/app/app/config" src="/app/bower_components/requirejs/require.js"></script>
 </body>
 </html>
