@@ -19,7 +19,7 @@
 @import 'lesshat';			// LESSHat 					http://lesshat.com
 @import 'ggs';				// golden grid system		http://goldengridsystem.com
 @import 'animations';
-@import 'tooltip';
+//@import 'tooltip';
 @import 'datepicker';
 @import 'packery';
 
@@ -409,6 +409,16 @@ span[data-picture] {
 // Theme
 .qtip-default {
 	background-color: @bgColor;
+	border: @gravityItemBorder / @em solid @bg;
+	margin-top: @gravityItemBorder / @em;
+	
+	&:not(.qtip-pos-rb) {
+		border-left: none;
+	}
+
+	&.qtip-pos-rb {
+		border-right: none;
+	}
 }
 
 .editor-popover {

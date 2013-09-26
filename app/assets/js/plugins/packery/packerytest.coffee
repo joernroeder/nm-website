@@ -316,7 +316,6 @@ define [
 
 					Math.floor margin
 
-
 				if $metaSection.length
 					foo = @
 					$el
@@ -332,7 +331,8 @@ define [
 								$(@)
 									.stop(true, true)
 									.css
-										'margin-left': getMargin api
+										'margin-left'	: getMargin api
+										#'z-index'		: 15000 @todo
 									.show()
 									.animate
 										'margin-left': 0

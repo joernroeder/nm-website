@@ -620,41 +620,6 @@ h2 {
     border-bottom-width: 10px;
   }
 }
-.tooltip {
-  background: #111;
-  color: #fff;
-  padding: 15px;
-  position: absolute;
-  text-align: center;
-  z-index: 100;
-}
-.tooltip:after {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #111;
-  bottom: -10px;
-  content: '';
-  height: 0;
-  left: 50%;
-  margin-left: -10px;
-  position: absolute;
-  width: 0;
-}
-.tooltip.top:after {
-  border-bottom: 10px solid #111;
-  border-top-color: transparent;
-  bottom: auto;
-  top: -20px;
-}
-.tooltip.left:after {
-  left: 10px;
-  margin: 0;
-}
-.tooltip.right:after {
-  left: auto;
-  margin: 0;
-  right: 10px;
-}
 .Zebra_DatePicker .dp_header .dp_previous,
 .Zebra_DatePicker .dp_header .dp_next {
   width: 1.875em;
@@ -1360,6 +1325,14 @@ span[data-picture] img {
 }
 .qtip-default {
   background-color: #e6e6e6;
+  border: 0.625em solid #d3d3d3;
+  margin-top: 0.625em;
+}
+.qtip-default:not(.qtip-pos-rb) {
+  border-left: none;
+}
+.qtip-default.qtip-pos-rb {
+  border-right: none;
 }
 .editor-popover {
   background-color: #262626;
