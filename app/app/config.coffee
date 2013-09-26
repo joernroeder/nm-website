@@ -10,6 +10,7 @@ require.config
 		# JavaScript folders
 		libs		: '../assets/js/libs'
 		plugins		: '../assets/js/plugins'
+		bower		: '../bower_components'
 
 		responsiveimage: '../../responsive-image/thirdparty/picturefill'
 
@@ -73,6 +74,13 @@ require.config
 
 		'modules/NMMarkdownParser'				: ['plugins/editor/jquery.jjmarkdown']
 		
-		'plugins/visualsearch/jquery.ui.autocomplete' : ['plugins/visualsearch/jquery.ui.widget']
-		'plugins/visualsearch/jquery.ui.menu'	: ['plugins/visualsearch/jquery.ui.widget']
-		'plugins/visualsearch/visualsearch'		: ['plugins/backbone.layoutmanager', 'plugins/visualsearch/jquery.ui.core', 'plugins/visualsearch/jquery.ui.autocomplete', 'plugins/visualsearch/jquery.ui.menu']
+		'bower/jquery-ui/ui/jquery.ui.autocomplete' : [
+			'bower/jquery-ui/ui/jquery.ui.widget'
+		]
+		'bower/jquery-ui/ui/jquery.ui.menu'	: ['bower/jquery-ui/ui/jquery.ui.widget']
+		'plugins/visualsearch/visualsearch'		: [
+			'plugins/backbone.layoutmanager',
+			'bower/jquery-ui/ui/jquery.ui.core',
+			'bower/jquery-ui/ui/jquery.ui.autocomplete',
+			'bower/jquery-ui/ui/jquery.ui.menu'
+		]
