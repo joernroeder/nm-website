@@ -316,6 +316,8 @@ define [
 			tagName: 'div'
 			template: 'security/editor-sidebar-user'
 
+			projectItemViews: []
+
 			events:
 				'submit form.user-settings': 'changeUserCredentials'
 
@@ -324,8 +326,13 @@ define [
 					#@.PersonImage = if gallery.fetched then gallery.images.Projects
 					#@.Projects = if gallery.fetched then gallery.images.Projects
 					#console.log gallery
+					#
 			
+			initialize: ->
+				Backbone.Events.on 'new:project', @updateProjectList, @
+					
 			cleanup: ->
+				Backbone.Events.off 'new:project', @updateProjectList
 				@._cleanup()
 				@.metaEditor.destroy()
 				#@.bioEditor.cleanup()
@@ -349,9 +356,13 @@ define [
 				# kill and pending requests and replace it with this
 				UserSidebar.setPendingReq req
 
-			###
-			 # @todo add active class to current item
-			###
+
+			updateProjectList: (model) ->
+				_.each @projectItemViews, (projItem) =>
+					projItem.remove()
+				@projectItems = []
+				@initProjectList()
+			
 			initProjectList: ->
 				projects = []
 				for type in ['Projects', 'Exhibitions', 'Excursions', 'Workshops']
@@ -363,6 +374,7 @@ define [
 				_.each projects.reverse(), (project) =>
 					if project.EditableByMember
 						view = new UserSidebar.Views.ProjectItem {model: project}
+						@projectItemViews.push view
 						@.insertView '.editor-sidebar-content .project-list', view
 						view.render()
 
@@ -693,7 +705,7 @@ define [
 
 			afterRender: ->
 				@_afterRender()
-				if app.isEditor then @handleActive(app.ProjectEditor.model)
+				if app.isEditor and app.ProjectEditor then @handleActive(app.ProjectEditor.model)
 
 			handleActive: (model) ->
 				@.$el.find('a').removeClass 'active'
