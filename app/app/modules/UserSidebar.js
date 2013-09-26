@@ -321,10 +321,15 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
   UserSidebar.Views.UserSidebar = UserSidebar.Views.SidebarContainer.extend({
     tagName: 'div',
     template: 'security/editor-sidebar-user',
+    projectItemViews: [],
     events: {
       'submit form.user-settings': 'changeUserCredentials'
     },
+    initialize: function() {
+      return Backbone.Events.on('new:project', this.updateProjectList, this);
+    },
     cleanup: function() {
+      Backbone.Events.off('new:project', this.updateProjectList);
       this._cleanup();
       return this.metaEditor.destroy();
     },
@@ -347,10 +352,14 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
       });
       return UserSidebar.setPendingReq(req);
     },
-    /*
-    			 # @todo add active class to current item
-    */
-
+    updateProjectList: function(model) {
+      var _this = this;
+      _.each(this.projectItemViews, function(projItem) {
+        return projItem.remove();
+      });
+      this.projectItems = [];
+      return this.initProjectList();
+    },
     initProjectList: function() {
       var projects, type, _i, _len, _ref,
         _this = this;
@@ -369,6 +378,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
           view = new UserSidebar.Views.ProjectItem({
             model: project
           });
+          _this.projectItemViews.push(view);
           _this.insertView('.editor-sidebar-content .project-list', view);
           return view.render();
         }
@@ -746,7 +756,7 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
     },
     afterRender: function() {
       this._afterRender();
-      if (app.isEditor) {
+      if (app.isEditor && app.ProjectEditor) {
         return this.handleActive(app.ProjectEditor.model);
       }
     },

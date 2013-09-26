@@ -1407,10 +1407,10 @@ var __hasProp = {}.hasOwnProperty,
         preview: element,
         contentGetter: 'val',
         onChange: function(val) {
-          if (!initialTriggerDone) {
-            initialTriggerDone = true;
-            return;
-          }
+          /**
+          					 * @deprecated No longer needed, as JJMarkdownEditor doesn't call onChange on first render
+          */
+
           if (_this.markdownChangeTimeout) {
             clearTimeout(_this.markdownChangeTimeout);
           }

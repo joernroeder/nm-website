@@ -89,7 +89,8 @@ define(['app', 'modules/DataRetrieval'], function(app, DataRetrieval) {
               model._isCompletelyFetched = true;
               model._isFetchedWhenLoggedIn = true;
               Backbone.history.navigate('/secured/edit/' + model.get('UglyHash') + '/', true);
-              return DataRetrieval.addNewProjectToUserGallery(model);
+              DataRetrieval.addNewProjectToUserGallery(model);
+              return Backbone.Events.trigger('new:project', model);
             },
             error: function(e) {
               var msg;

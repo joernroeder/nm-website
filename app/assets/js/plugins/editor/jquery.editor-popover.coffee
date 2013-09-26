@@ -1136,12 +1136,14 @@ do ($ = jQuery) ->
 				preview : element
 				contentGetter: 'val'
 				onChange: (val) =>
+					###*
+					 * @deprecated No longer needed, as JJMarkdownEditor doesn't call onChange on first render
+					###
 					# dirty fix
-					if not initialTriggerDone
-						initialTriggerDone = true
-						return
+					#if not initialTriggerDone
+					#	initialTriggerDone = true
+					#	return
 
-					#console.log 'markdown changed'
 					if @markdownChangeTimeout
 						clearTimeout @markdownChangeTimeout
 

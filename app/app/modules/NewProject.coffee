@@ -97,6 +97,7 @@ define [
 							model._isFetchedWhenLoggedIn = true
 							Backbone.history.navigate '/secured/edit/' + model.get('UglyHash') + '/', true
 							DataRetrieval.addNewProjectToUserGallery model
+							Backbone.Events.trigger 'new:project', model
 						
 						error: (e) =>
 							msg = '<h1>' + e.status + ': '+ e.statusText + '</h1><p>' + e.responseText + '</p>'
