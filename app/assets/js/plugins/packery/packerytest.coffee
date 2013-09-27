@@ -134,8 +134,8 @@ define [
 					h = $el.height()
 					factor = Math.min(max, Math.max(min, Math.random() * (max+min)))
 					console.log factor
-					$el.width Math.floor(w * factor / floor) * floor
-					$el.height Math.floor(h * factor / floor) * floor
+					$el.width Math.floor (w * factor / floor) * floor
+					$el.height Math.floor (h * factor / floor) * floor
 
 			###
 			 # fill variables
@@ -305,16 +305,26 @@ define [
 				$metaSection = $ 'section[role=tooltip-content]', $el
 
 				marginOffset = -20
+				startOffset = 10
 
 				getMargin = (api) ->
 					margin = marginOffset
-					$tooltip = $ api.tooltip
-
-					if $tooltip.hasClass('qtip-pos-rb')
-						console.log 'inverse margin'
+					
+					if $(api.tooltip).hasClass('qtip-pos-rb')
 						margin *= -1
 
+					console.log margin
 					Math.floor margin
+
+				getStartOffset = (api) ->
+					offset = startOffset
+					if $(api.tooltip).hasClass('qtip-pos-rb')
+						console.log 'is invert'
+						offset *= -1
+
+					console.log offset
+					Math.floor offset
+
 
 				if $metaSection.length
 					foo = @
@@ -328,14 +338,14 @@ define [
 							event: 'mouseenter'
 							effect: (api) ->
 								$el.addClass 'has-tooltip'
+								debugger
 								$(@)
 									.stop(true, true)
 									.css
 										'margin-left'	: getMargin api
-										#'z-index'		: 15000 @todo
 									.show()
 									.animate
-										'margin-left': 0
+										'margin-left': getStartOffset api
 										'opacity': 1
 									, 200
 

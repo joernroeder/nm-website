@@ -570,6 +570,17 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
+	&:before {
+		background: @bg;
+		display: block;
+		content: '';
+		position: absolute;
+		width: inherit;
+		height: inherit;
+
+		.transition(~"padding .2s ease-out, margin .2s ease-out"); 
+	}
+
 	// @todo: fix z-index delay on fade out
 	&.has-tooltip {
 		z-index: 350;
@@ -582,6 +593,11 @@ x:-o-prefocus, .qtip .qtip-tip{
 		/*img {
 			opacity: 1;
 		}*/
+
+		&:before {
+			padding: (@gravityItemBorder / @em) * 2;
+			margin: (-@gravityItemBorder / @em) * 2;
+		}
 	}
 
 	&> section[role="tooltip-content"] {

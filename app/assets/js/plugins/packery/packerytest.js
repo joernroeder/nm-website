@@ -110,8 +110,8 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
         h = $el.height();
         factor = Math.min(max, Math.max(min, Math.random() * (max + min)));
         console.log(factor);
-        $el.width(Math.floor(w * factor / floor) * floor);
-        return $el.height(Math.floor(h * factor / floor) * floor);
+        $el.width(Math.floor((w * factor / floor) * floor));
+        return $el.height(Math.floor((h * factor / floor) * floor));
       });
     };
 
@@ -277,7 +277,7 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
     };
 
     JJPackery.prototype._initTooltip = function(el) {
-      var $el, $metaSection, api, foo, getMargin, hideTimeout, hideTip, marginOffset, mouseOutEl, mouseOutTip, showTimeout,
+      var $el, $metaSection, api, foo, getMargin, getStartOffset, hideTimeout, hideTip, marginOffset, mouseOutEl, mouseOutTip, showTimeout, startOffset,
         _this = this;
       mouseOutEl = true;
       mouseOutTip = true;
@@ -298,15 +298,25 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
       $el = $(el);
       $metaSection = $('section[role=tooltip-content]', $el);
       marginOffset = -20;
+      startOffset = 10;
       getMargin = function(api) {
-        var $tooltip, margin;
+        var margin;
         margin = marginOffset;
-        $tooltip = $(api.tooltip);
-        if ($tooltip.hasClass('qtip-pos-rb')) {
-          console.log('inverse margin');
+        if ($(api.tooltip).hasClass('qtip-pos-rb')) {
           margin *= -1;
         }
+        console.log(margin);
         return Math.floor(margin);
+      };
+      getStartOffset = function(api) {
+        var offset;
+        offset = startOffset;
+        if ($(api.tooltip).hasClass('qtip-pos-rb')) {
+          console.log('is invert');
+          offset *= -1;
+        }
+        console.log(offset);
+        return Math.floor(offset);
       };
       if ($metaSection.length) {
         foo = this;
@@ -320,10 +330,11 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
             effect: function(api) {
               var _this = this;
               $el.addClass('has-tooltip');
+              debugger;
               $(this).stop(true, true).css({
                 'margin-left': getMargin(api)
               }).show().animate({
-                'margin-left': 0,
+                'margin-left': getStartOffset(api),
                 'opacity': 1
               }, 200);
               if (api.tooltip) {
