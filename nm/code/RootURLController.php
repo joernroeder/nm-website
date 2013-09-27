@@ -20,11 +20,17 @@ class RootURLController extends Controller {
 	}
 
 	function index($request) {
-		$initialData = $this->getInitData($request->params());
-
-		return $this->customise(array(
-			'InitialData'	=> $initialData
-		));
+		$params = $request->params();
+		$initialData = $this->getInitData($params);
+		$getVars = $request->getVars();
+		if (isset($getVars['_escaped_fragment_'])) {
+			// Google bot
+			return $this->searchEngineResponse($params);
+		} else {
+			return $this->customise(array(
+				'InitialData'	=> $initialData
+			));
+		}
 	}
 
 	public function getDataArray($className, $id = null, $where = null, $sort = null) {
@@ -52,6 +58,110 @@ class RootURLController extends Controller {
 		}
 
 		return new ArrayList($result);
+	}
+
+	public function searchEngineResponse($params) {
+		$templates = array();
+		$customise = array();
+		$templates[] = 'SearchController';
+
+		switch ($params['Action']) {
+			// about pages
+			case 'about':
+				$person = null;
+				$detailed = null;
+				if (isset($params['OtherAction']) && $urlSlug = Convert::raw2sql($params['OtherAction'])) {
+					$person = $this->getDataArray('Person', null, "UrlSlug='$urlSlug'")->first();
+					if (isset($params['ID']) && $uglyHash = Convert::raw2sql($params['ID'])) {
+						// detailed project
+						$detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash);
+						$detailed = ($detailed && $detailed->canView()) ? $detailed : null;
+					} 
+					
+					if (!$person) return $this->fourOhFour();
+					$customise = array(
+						'Title'		=> ($detailed ? $detailed->Title . ' - ' : '') . $person->getFullName() . ' - New Media Kassel',
+						'Person'	=> $person ? $person : null,
+						'Project'	=> $detailed ? $detailed : null
+					);
+
+					$templates[] = 'SearchController_' . $detailed ? 'Project' : 'Person';
+				} else {
+					$groupImages = $this->getDataArray('GroupImage');
+					// get the persons
+					$persons = $this->getDataArray('Person', null, "IsExternal=0", array('Surname', 'ASC'));
+					$customise = array(
+						'Title'			=> 'About - New Media Kassel',
+						'GroupImages'	=> $groupImages
+					);
+				}
+
+			// portfolio pages
+			case 'portfolio':
+				$uglyHash = '';
+				// check if detailed
+				if (isset($params['OtherAction'])) $uglyHash = Convert::raw2sql($params['OtherAction']);
+				if ($uglyHash) {
+					if ($detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash) && $detailed->canView()) {
+						$customise = array(
+							'Title'		=> $detailed->Title . ' - Portfolio - New Media Kassel',
+							'Project'	=> $detailed
+						);
+
+						$templates[] = 'SearchController_Project';
+					}
+				} else {
+					// whole portfolio
+					$portfolioList = new ArrayList();
+					foreach (self::$project_types as $type) {
+						foreach ($this->getDataArray($type, null, 'IsPortfolio=1') as $item) {
+							if ($item->canView()) {
+								$portfolioList->push($item);
+							}
+						}
+						
+					}
+					$customise['Projects'] = $portfolioList;
+					$customise['Title'] = 'Portfolio - New Media Kassel';
+					$templates[] = 'SearchController_Portfolio';
+				}
+				break;
+			// calendar pages
+			case 'calendar':
+				// check if detailed
+				if (isset($params['OtherAction']) && $slug = Convert::raw2sql($params['OtherAction'])) {
+					if ($detailedCalendarItem = $this->getDataArray('CalendarEntry', null, "UrlHash='$slug'")->first()) {
+						$customise = array(
+							'Title'		=> $detailedCalendarItem->Title . ' - New Media Kassel',
+							'CalendarItem'	=> $detailedCalendarItem
+						);
+						$templates[] = 'SearchController_Calendar';
+					}
+				}
+				break;
+			// index page
+			case null:
+				// get featured projects/workshops/exhibtions/excursions
+				$featuredList = new ArrayList();
+				foreach (self::$project_types as $type) {
+					foreach ($this->getDataArray($type, null, 'IsFeatured=1')->toArray() as $item) {
+						if ($item->canView()) {
+							$featuredList->push($item);
+						}
+					}
+				}
+				$customise['Projects'] = $featuredList;
+				$customise['UpcomingEvents'] = singleton('UpcomingEvents_RestApiExtension')->getData();
+				$customise['Title'] = 'New Media Kassel';
+
+				$templates[] = 'SearchController_Home';
+
+				break;
+			default:
+				break;
+		}	
+
+		return $this->customise($customise)->renderWith($templates);
 	}
 
 	public function getInitData($params) {
