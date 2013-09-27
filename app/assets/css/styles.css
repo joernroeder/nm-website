@@ -3780,6 +3780,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   width: 600px;
   margin-left: -300px;
   z-index: 400;
+  border: 0.625em solid #d3d3d3;
 }
 #searchbar > section {
   display: none;
