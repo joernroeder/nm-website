@@ -154,7 +154,7 @@ class RootURLController extends Controller {
 				$customise['UpcomingEvents'] = singleton('UpcomingEvents_RestApiExtension')->getData();
 				$customise['Title'] = 'New Media Kassel';
 
-				$templates[] = 'SearchController_Home';
+				$templates[] = 'SearchController_Portfolio';
 
 				break;
 			default:
