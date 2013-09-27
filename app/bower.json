@@ -27,5 +27,8 @@
     "jquery-ui": "~1.10.3",
     "layoutmanager": "~0.8.5",
     "requirejs": "~2.1.8"
+  },
+  "resolutions": {
+    "underscore": "1.5.0"
   }
 }
