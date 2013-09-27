@@ -338,7 +338,6 @@ define [
 							event: 'mouseenter'
 							effect: (api) ->
 								$el.addClass 'has-tooltip'
-								debugger
 								$(@)
 									.stop(true, true)
 									.css

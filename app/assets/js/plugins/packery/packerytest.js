@@ -330,7 +330,6 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
             effect: function(api) {
               var _this = this;
               $el.addClass('has-tooltip');
-              debugger;
               $(this).stop(true, true).css({
                 'margin-left': getMargin(api)
               }).show().animate({
