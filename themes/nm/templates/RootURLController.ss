@@ -4,6 +4,7 @@
 	<% base_tag %>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta name="fragment" content="!"> <!-- Google AJAX app spec -->
 	<title>New Media Kassel ᴮᴱᵀᴬ</title>
 	
 	<!-- Please don't add "maximum-scale=1" here. It's bad for accessibility. -->
