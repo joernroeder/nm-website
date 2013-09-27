@@ -1524,6 +1524,20 @@ x:-o-prefocus,
 .packery-wrapper .packery-item > div > a img {
   display: block;
 }
+.packery-wrapper > img:before,
+.packery-wrapper .packery-item:before {
+  background: #d3d3d3;
+  display: block;
+  content: '';
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  -webkit-transition: padding .2s ease-out, margin .2s ease-out;
+  -moz-transition: padding .2s ease-out, margin .2s ease-out;
+  -o-transition: padding .2s ease-out, margin .2s ease-out;
+  -ms-transition: padding .2s ease-out, margin .2s ease-out;
+  transition: padding .2s ease-out, margin .2s ease-out;
+}
 .packery-wrapper > img.has-tooltip,
 .packery-wrapper .packery-item.has-tooltip {
   z-index: 350;
@@ -1536,6 +1550,11 @@ x:-o-prefocus,
 .packery-wrapper .packery-item.has-tooltip > div > a {
   padding: 0.625em;
   margin: -0.625em;
+}
+.packery-wrapper > img.has-tooltip:before,
+.packery-wrapper .packery-item.has-tooltip:before {
+  padding: 1.25em;
+  margin: -1.25em;
 }
 .packery-wrapper > img > section[role="tooltip-content"],
 .packery-wrapper .packery-item > section[role="tooltip-content"] {
@@ -1944,6 +1963,19 @@ x:-o-prefocus,
 .editor .overview article > div > a img {
   display: block;
 }
+.editor .overview article:before {
+  background: #d3d3d3;
+  display: block;
+  content: '';
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  -webkit-transition: padding .2s ease-out, margin .2s ease-out;
+  -moz-transition: padding .2s ease-out, margin .2s ease-out;
+  -o-transition: padding .2s ease-out, margin .2s ease-out;
+  -ms-transition: padding .2s ease-out, margin .2s ease-out;
+  transition: padding .2s ease-out, margin .2s ease-out;
+}
 .editor .overview article.has-tooltip {
   z-index: 350;
   /*img {
@@ -1954,6 +1986,10 @@ x:-o-prefocus,
 .editor .overview article.has-tooltip > div > a {
   padding: 0.625em;
   margin: -0.625em;
+}
+.editor .overview article.has-tooltip:before {
+  padding: 1.25em;
+  margin: -1.25em;
 }
 .editor .overview article > section[role="tooltip-content"] {
   display: none;
@@ -3744,6 +3780,7 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
   width: 600px;
   margin-left: -300px;
   z-index: 400;
+  border: 0.625em solid #d3d3d3;
 }
 #searchbar > section {
   display: none;
