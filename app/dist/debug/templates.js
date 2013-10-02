@@ -234,6 +234,15 @@ function program2(depth0,data,depth1) {
   return buffer;
   });
 
+this["JST"]["app/templates/layouts/auth.html"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "";
+
+
+  return buffer;
+  });
+
 this["JST"]["app/templates/layouts/editor.html"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1249,15 +1258,22 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["JST"]["app/templates/security/logging-out.html"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
-
-  buffer += "<div style=\"margin-top: 600px\">\n	<p>Logging out <strong>";
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n	<section class=\"logging-out\">\n		<a href=\"/\" class=\"logo\"><span></span></a>\n\n		<p>Logging out <strong>";
   if (stack1 = helpers.Email) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Email; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</strong>...</p>\n</div>";
+    + "</strong>...</p>\n	</section>\n";
   return buffer;
+  }
+
+  stack1 = helpers['if'].call(depth0, depth0.Email, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
   });
 
 this["JST"]["app/templates/security/login-form.html"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -1268,24 +1284,24 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n		<p>You are logged in as <strong>";
+  buffer += "\n		<p>\n			You are logged in as <strong>";
   if (stack1 = helpers.Email) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Email; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</strong>. <a href=\"/logout/\">Logout?</a></p>\n	";
+    + "</strong>.\n		</p>\n		<a href=\"/logout/\" class=\"btn\">Logout?</a>\n	";
   return buffer;
   }
 
 function program3(depth0,data) {
   
   
-  return "\n		<p>You are not logged in.</p>\n	";
+  return "\n\n	<form>\n		<label for=\"login-email\">\n			<span>E-Mail</span>\n			<input type=\"text\" name=\"email\" placeholder=\"E-Mail\" id=\"login-email\" />\n		</label>\n		\n		<label for=\"login-password\">\n			<span>Password</span>\n			<input type=\"password\" name=\"password\" placeholder=\"Password\" id=\"login-password\" />\n		</label>\n		\n		<label for=\"login-remember\">\n			<input type=\"checkbox\" name=\"remember\" id=\"login-remember\" /> Remember me next time\n		</label>\n\n		<button class=\"doLogin btn\" type=\"submit\">\n			Log in\n		</button>\n	</form>\n	";
   }
 
-  buffer += "<form style=\"margin-top:400px;\">\n	<div><input type=\"text\" name=\"email\" placeholder=\"Email\" /></div>\n	<div><input type=\"password\" name=\"password\" placeholder=\"Password\" /></div>\n	<div><label><input type=\"checkbox\" name=\"remember\" /> Remember me next time</label></div>\n	<button class=\"doLogin\" type=\"submit\">Log in</button>\n	";
+  buffer += "<section class=\"login\">\n	<a href=\"/\" class=\"logo\"><span></span></a>\n\n	";
   stack1 = helpers['if'].call(depth0, depth0.Email, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</form>";
+  buffer += "\n</section>";
   return buffer;
   });
 
