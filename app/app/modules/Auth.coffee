@@ -152,7 +152,8 @@ define [
 				return app.CurrentMember
 			afterRender: ->
 				$input = $ 'input:first', @$el
-				$input.focus() if not $input.val().length
+				val = $input.val()
+				$input.focus() if not val or not val.length
 
 		Auth.Views.Logout = Backbone.View.extend
 			tagName: 'section'

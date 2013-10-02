@@ -1871,6 +1871,24 @@ body.auth {
 		padding-top: 0;
 		padding-bottom: 0;
 	}
+
+	&.requesting {
+
+		.badge,
+		.badge > a {
+			.animation(none);
+		}
+
+		section.login .logo {
+			background-color: @nmColor;
+
+			span {
+				.logo-nmcolor;
+				.transition(~"top .25s ease-in-out");
+				.animation(~"jump 1s infinite alternate both");
+			}
+		}
+	}
 }
 
 section.login,
@@ -1885,16 +1903,11 @@ section.logging-out {
 	list-style: none;
 	margin-left: -20%;
 	margin-top: -@line * (@logoWidth * @logoScale - 3) / @em;
-	overflow: hidden;
 	z-index: 100;
-
 	text-align: center;
 
-	//border: 1px solid red;
-
-	//padding-top: @line * 10 / @em;
-
-	.logo {
+	.logo, .logo span {
+		position: relative;
 		display: block;
 		width: @logoWidth * @logoScale;
 		height: @logoWidth * @logoScale;
@@ -1902,13 +1915,18 @@ section.logging-out {
 		background-size: 70%;
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
-		background-color: @black;
-		.logo-white;
-
+	}
+	.logo {
 		margin: 0 auto (@line * 2 / @em);
+		background-color: transparent;
 
-		&:hover {
-			.logo-nmcolor;
+		span {
+			background-color: @black;
+			.logo-white;
+
+			&:hover {
+				.logo-nmcolor;
+			}
 		}
 	}
 
@@ -1923,7 +1941,7 @@ section.logging-out {
 
 section.login {
 	@inputFontSize: @line / @em;
-	
+
 	label {
 		margin-bottom: @line / @inputFontSize / @em;
 

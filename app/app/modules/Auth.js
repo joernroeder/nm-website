@@ -168,9 +168,10 @@ define(['app', 'modules/UserSidebar'], function(app, UserSidebar) {
       return app.CurrentMember;
     },
     afterRender: function() {
-      var $input;
+      var $input, val;
       $input = $('input:first', this.$el);
-      if (!$input.val().length) {
+      val = $input.val();
+      if (!val || !val.length) {
         return $input.focus();
       }
     }
