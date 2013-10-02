@@ -166,6 +166,13 @@ define(['app', 'modules/UserSidebar'], function(app, UserSidebar) {
     },
     serialize: function() {
       return app.CurrentMember;
+    },
+    afterRender: function() {
+      var $input;
+      $input = $('input:first', this.$el);
+      if (!$input.val().length) {
+        return $input.focus();
+      }
     }
   });
   Auth.Views.Logout = Backbone.View.extend({

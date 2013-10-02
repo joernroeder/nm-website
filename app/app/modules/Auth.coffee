@@ -150,6 +150,9 @@ define [
 				false
 			serialize: ->
 				return app.CurrentMember
+			afterRender: ->
+				$input = $ 'input:first', @$el
+				$input.focus() if not $input.val().length
 
 		Auth.Views.Logout = Backbone.View.extend
 			tagName: 'section'
