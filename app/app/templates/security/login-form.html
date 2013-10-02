@@ -1,11 +1,31 @@
-<form style="margin-top:400px;">
-	<div><input type="text" name="email" placeholder="Email" /></div>
-	<div><input type="password" name="password" placeholder="Password" /></div>
-	<div><label><input type="checkbox" name="remember" /> Remember me next time</label></div>
-	<button class="doLogin" type="submit">Log in</button>
+<section class="login">
+	<a href="/" class="logo"></a>
+
 	{{#if Email}}
-		<p>You are logged in as <strong>{{Email}}</strong>. <a href="/logout/">Logout?</a></p>
+		<p>
+			You are logged in as <strong>{{Email}}</strong>.
+		</p>
+		<a href="/logout/" class="btn">Logout?</a>
 	{{else}}
-		<p>You are not logged in.</p>
+
+	<form>
+		<label for="login-email">
+			<span>E-Mail</span>
+			<input type="text" name="email" placeholder="E-Mail" id="login-email" />
+		</label>
+		
+		<label for="login-password">
+			<span>Password</span>
+			<input type="password" name="password" placeholder="Password" id="login-password" />
+		</label>
+		
+		<label for="login-remember">
+			<input type="checkbox" name="remember" id="login-remember" /> Remember me next time
+		</label>
+
+		<button class="doLogin btn" type="submit">
+			Log in
+		</button>
+	</form>
 	{{/if}}
-</form>
+</section>

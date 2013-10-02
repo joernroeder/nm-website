@@ -1066,6 +1066,7 @@ aside a {
   padding: 1.5em 1.25em;
   position: fixed;
   z-index: 999999999;
+  max-height: 100%;
   -webkit-transition: padding .3s ease-in-out, height .3s ease-in-out;
   -moz-transition: padding .3s ease-in-out, height .3s ease-in-out;
   -o-transition: padding .3s ease-in-out, height .3s ease-in-out;
@@ -3313,6 +3314,129 @@ body.dragover.drag-inline #uploadzone .progress {
   -o-transition: none;
   -ms-transition: none;
   transition: none;
+}
+body.auth .badge {
+  overflow: hidden;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+section.login,
+section.logging-out {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  list-style: none;
+  margin-left: -20%;
+  margin-top: -17.0625em;
+  overflow: hidden;
+  z-index: 100;
+  text-align: center;
+}
+section.login .logo,
+section.logging-out .logo {
+  display: block;
+  width: 14.375em;
+  height: 14.375em;
+  border-radius: 7.1875em;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: #262626;
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNTA0cHgiIGhlaWdodD0iMjAwcHgiIHZpZXdCb3g9IjAgMCA1MDQgMjAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MDQgMjAwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNzAsMjAwIDAsMTMwIDAsMCA3MCwwIAkiLz4NCgk8cG9seWdvbiBmaWxsPSIjRkZGRkZGIiBwb2ludHM9IjE2OCwwIDg0LDAgODQsNzAgMTY4LDcwIDE2OCwyMDAgMjM4LDIwMCAyMzgsNzAgMjM4LDAgCSIvPg0KCTxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iNDM0LDAgMzM2LDAgMjY2LDAgMjY2LDcwIDI2NiwyMDAgMzM2LDIwMCAzMzYsNzAgMzUwLDcwIDQyMCwxNDAgNDIwLDcwIDQzNCw3MCA0MzQsMjAwIDUwNCwyMDAgDQoJCTUwNCw3MCAJIi8+DQo8L2c+DQo8L3N2Zz4NCg==");
+  margin: 0 auto 3em;
+}
+section.login .logo:hover,
+section.logging-out .logo:hover {
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNTA0cHgiIGhlaWdodD0iMjAwcHgiIHZpZXdCb3g9IjAgMCA1MDQgMjAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MDQgMjAwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwb2x5Z29uIGZpbGw9IiNEOURGMjAiIHBvaW50cz0iNzEsMjAwIDEsMTMwIDEsMCA3MSwwIAkiLz4NCgk8cG9seWdvbiBmaWxsPSIjRDlERjIwIiBwb2ludHM9IjE2OSwwIDg1LDAgODUsNzAgMTY5LDcwIDE2OSwyMDAgMjM5LDIwMCAyMzksNzAgMjM5LDAgCSIvPg0KCTxwb2x5Z29uIGZpbGw9IiNEOURGMjAiIHBvaW50cz0iNDM1LDAgMzM3LDAgMjY3LDAgMjY3LDcwIDI2NywyMDAgMzM3LDIwMCAzMzcsNzAgMzUxLDcwIDQyMSwxNDAgNDIxLDcwIDQzNSw3MCA0MzUsMjAwIDUwNSwyMDAgDQoJCTUwNSw3MCAJIi8+DQo8L2c+DQo8L3N2Zz4NCg==");
+}
+section.login p,
+section.logging-out p {
+  background: #e6e6e6;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  padding: 1em;
+  margin-bottom: 0.5em;
+}
+section.login label {
+  margin-bottom: 1em;
+}
+section.login label input {
+  font-size: 1.5em;
+}
+section.login label[for*="email"],
+section.login label[for*="password"] {
+  display: block;
+}
+section.login label[for*="email"] span,
+section.login label[for*="password"] span {
+  display: none;
+}
+section.login label[for*="email"] input,
+section.login label[for*="password"] input {
+  display: block;
+}
+section.login input[type="text"],
+section.login input[type="email"],
+section.login input[type="password"] {
+  border: none;
+  background: #e6e6e6;
+  width: 100%;
+  padding: 0.375em;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: background-color .3s;
+  -moz-transition: background-color .3s;
+  -o-transition: background-color .3s;
+  -ms-transition: background-color .3s;
+  transition: background-color .3s;
+  cursor: pointer;
+  text-align: center;
+}
+section.login input[type="text"]:not([disabled]):hover,
+section.login input[type="email"]:not([disabled]):hover,
+section.login input[type="password"]:not([disabled]):hover,
+section.login input[type="text"]:focus,
+section.login input[type="email"]:focus,
+section.login input[type="password"]:focus {
+  background: #fff;
+}
+section.login input[type="text"]:focus,
+section.login input[type="email"]:focus,
+section.login input[type="password"]:focus {
+  cursor: auto;
+}
+section.login input[type="text"][disabled],
+section.login input[type="email"][disabled],
+section.login input[type="password"][disabled] {
+  color: #919191;
+  background-color: #e6e6e6;
+}
+section.login label[for*="remember"] {
+  display: block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+section.login .btn {
+  background: #262626;
+  color: #d3d3d3;
+  font-size: 1.875em;
+  padding: 0.375em;
+}
+section.login .btn:hover,
+section.login .btn:active,
+section.login .btn:focus {
+  color: #d9df20;
+}
+section.login .btn:hover:after,
+section.login .btn:active:after,
+section.login .btn:focus:after {
+  color: #acb122;
 }
 .project-type-list {
   position: absolute;

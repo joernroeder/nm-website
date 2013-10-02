@@ -201,6 +201,7 @@ aside {
 	padding: (@line / @em) (@badgePaddingHorizontal / @em);
 	position: fixed;
 	z-index: 999999999;
+	max-height: 100%;
 
 	.transition(~"padding @{logoSmallTransition} ease-in-out, height @{logoSmallTransition} ease-in-out");
 
@@ -1855,6 +1856,148 @@ body.dragover {
 
 			.progress {
 				.transition(none) !important;
+			}
+		}
+	}
+}
+
+
+// ! --- Login ------------------------
+
+body.auth {
+	.badge {
+		overflow: hidden;
+		height: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+section.login,
+section.logging-out {
+	@inputFontSize: @line / @em;
+	@logoScale: 2;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 40%;
+	list-style: none;
+	margin-left: -20%;
+	margin-top: -@line * (@logoWidth * @logoScale - 3) / @em;
+	overflow: hidden;
+	z-index: 100;
+
+	text-align: center;
+
+	//border: 1px solid red;
+
+	//padding-top: @line * 10 / @em;
+
+	.logo {
+		display: block;
+		width: @logoWidth * @logoScale;
+		height: @logoWidth * @logoScale;
+		border-radius: @logoWidth * @logoScale / 2;
+		background-size: 70%;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-color: @black;
+		.logo-white;
+
+		margin: 0 auto (@line * 2 / @em);
+
+		&:hover {
+			.logo-nmcolor;
+		}
+	}
+
+	p {
+		background: @bgColor;
+		font-size: @inputFontSize;
+		line-height: 1.5em;
+		padding: @line / @inputFontSize / @em;
+		margin-bottom: @line / 2 / @inputFontSize / @em;
+	}
+}
+
+section.login {
+	@inputFontSize: @line / @em;
+	
+	label {
+		margin-bottom: @line / @inputFontSize / @em;
+
+		input {
+			font-size: @inputFontSize;
+		}
+	}
+
+	label[for*="email"],
+	label[for*="password"] {
+		display: block;
+
+		span {
+			display: none;
+		}
+
+		input {
+			display: block;
+		}
+
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="password"] {
+
+		border: none;
+		background: @bgColor;
+		width: 100%;
+		padding: @line / 4 / @em;
+		//margin-right: 5%;
+		outline: none;
+		.box-sizing(border-box);
+		.transition(~"background-color .3s");
+		//z-index: 90;
+		cursor: pointer;
+		text-align: center;
+
+		&:not([disabled]):hover,
+		&:focus {
+			background: #fff;
+		}
+
+		&:focus {
+			cursor: auto;
+		}
+
+		&[disabled] {
+			color: @gray;
+			background-color: @bgColor;
+		}
+	}
+
+	label[for*="remember"] {
+		display: block;
+		//text-align: center;
+		cursor: pointer;
+		.user-select(none);
+		//font-size: @inputFontSize;
+	}
+
+	.btn {
+		background: @black;
+		color: @bg;
+		font-size: @inputFontSize * 1.25;
+		padding: @line / 4 / @em;
+
+		&:hover,
+		&:active,
+		&:focus {
+			color: @nmColor;
+
+			&:after {
+				color: mix(@nmColor, @black, 75%);
 			}
 		}
 	}

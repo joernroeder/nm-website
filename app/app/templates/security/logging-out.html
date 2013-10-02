@@ -1,3 +1,7 @@
-<div style="margin-top: 600px">
-	<p>Logging out <strong>{{Email}}</strong>...</p>
-</div>
+{{#if Email}}
+	<section class="logging-out">
+		<a href="/" class="logo"></a>
+
+		<p>Logging out <strong>{{Email}}</strong>...</p>
+	</section>
+{{/if}}
