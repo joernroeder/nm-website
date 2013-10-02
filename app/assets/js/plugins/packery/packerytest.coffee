@@ -133,7 +133,7 @@ define [
 					w = $el.width()
 					h = $el.height()
 					factor = Math.min(max, Math.max(min, Math.random() * (max+min)))
-					console.log factor
+					#console.log factor
 					$el.width Math.floor (w * factor / floor) * floor
 					$el.height Math.floor (h * factor / floor) * floor
 
@@ -307,27 +307,26 @@ define [
 				marginOffset = -20
 				startOffset = 10
 
-				getMargin = (api) ->
+				getMargin = (api, switched) ->
 					margin = marginOffset
 					
 					if $(api.tooltip).hasClass('qtip-pos-rb')
 						margin *= -1
 
-					console.log margin
 					Math.floor margin
 
-				getStartOffset = (api) ->
+				getStartOffset = (api, switched) ->
 					offset = startOffset
-					if $(api.tooltip).hasClass('qtip-pos-rb')
-						console.log 'is invert'
-						offset *= -1
 
-					console.log offset
+					if $(api.tooltip).hasClass('qtip-pos-rb')
+						offset *= -1
+					else if switched
+						offset = 0
+
 					Math.floor offset
 
 
 				if $metaSection.length
-					foo = @
 					$el
 					.qtip
 						#prerender: true
@@ -338,15 +337,28 @@ define [
 							event: 'mouseenter'
 							effect: (api) ->
 								$el.addClass 'has-tooltip'
-								$(@)
+								$this = $ this
+								elHeight = $el.outerHeight true
+								ttHeight = $this.outerHeight true
+								switched = false
+
+								if ttHeight > elHeight + Math.abs(marginOffset * 2)
+									$el.add($this).addClass 'switch-borders'
+									console.log 'switch borders'
+									switched = true
+									$el.addClass 'pos-rb' if $this.hasClass 'qtip-pos-rb'
+
+
+								$this
 									.stop(true, true)
 									.css
-										'margin-left'	: getMargin api
+										'margin-left'	: getMargin api, switched
 									.show()
 									.animate
-										'margin-left': getStartOffset api
+										'margin-left': getStartOffset api, switched
 										'opacity': 1
 									, 200
+
 
 								if api.tooltip
 									$(api.tooltip).one 'mouseenter.tooltip', =>
@@ -374,8 +386,8 @@ define [
 										'margin-left': getMargin api
 										'opacity': 0
 									, 200, () ->
-										$el.removeClass 'has-tooltip'
-										$(@).hide()
+										$el.removeClass 'switch-borders has-tooltip pos-rb'
+										$(@).hide().removeClass 'switch-borders'
 						###
 						events:
 							show: (e, api) ->

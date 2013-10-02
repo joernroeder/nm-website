@@ -1328,11 +1328,14 @@ span[data-picture] img {
   border: 0.625em solid #d3d3d3;
   margin-top: 0.625em;
 }
-.qtip-default:not(.qtip-pos-rb) {
+.qtip-default:not(.switch-borders):not(.qtip-pos-rb) {
   border-left: none;
 }
-.qtip-default.qtip-pos-rb {
+.qtip-default:not(.switch-borders).qtip-pos-rb {
   border-right: none;
+}
+.qtip-default.switch-borders {
+  z-index: 350 !important;
 }
 .editor-popover {
   background-color: #262626;
@@ -1541,10 +1544,6 @@ x:-o-prefocus,
 .packery-wrapper > img.has-tooltip,
 .packery-wrapper .packery-item.has-tooltip {
   z-index: 350;
-  /*img {
-			opacity: 1;
-		}*/
-
 }
 .packery-wrapper > img.has-tooltip > div > a,
 .packery-wrapper .packery-item.has-tooltip > div > a {
@@ -1555,6 +1554,20 @@ x:-o-prefocus,
 .packery-wrapper .packery-item.has-tooltip:before {
   padding: 1.25em;
   margin: -1.25em;
+}
+.packery-wrapper > img.has-tooltip.switch-borders,
+.packery-wrapper .packery-item.has-tooltip.switch-borders {
+  z-index: 400;
+}
+.packery-wrapper > img.has-tooltip.switch-borders.pos-rb:before,
+.packery-wrapper .packery-item.has-tooltip.switch-borders.pos-rb:before {
+  padding-left: 0.625em;
+  margin-left: -0.625em;
+}
+.packery-wrapper > img.has-tooltip.switch-borders:not(.pos-rb):before,
+.packery-wrapper .packery-item.has-tooltip.switch-borders:not(.pos-rb):before {
+  padding-right: 0.625em;
+  margin-right: -0.625em;
 }
 .packery-wrapper > img > section[role="tooltip-content"],
 .packery-wrapper .packery-item > section[role="tooltip-content"] {
@@ -1978,10 +1991,6 @@ x:-o-prefocus,
 }
 .editor .overview article.has-tooltip {
   z-index: 350;
-  /*img {
-			opacity: 1;
-		}*/
-
 }
 .editor .overview article.has-tooltip > div > a {
   padding: 0.625em;
@@ -1990,6 +1999,17 @@ x:-o-prefocus,
 .editor .overview article.has-tooltip:before {
   padding: 1.25em;
   margin: -1.25em;
+}
+.editor .overview article.has-tooltip.switch-borders {
+  z-index: 400;
+}
+.editor .overview article.has-tooltip.switch-borders.pos-rb:before {
+  padding-left: 0.625em;
+  margin-left: -0.625em;
+}
+.editor .overview article.has-tooltip.switch-borders:not(.pos-rb):before {
+  padding-right: 0.625em;
+  margin-right: -0.625em;
 }
 .editor .overview article > section[role="tooltip-content"] {
   display: none;

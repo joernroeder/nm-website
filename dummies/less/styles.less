@@ -412,12 +412,16 @@ span[data-picture] {
 	border: @gravityItemBorder / @em solid @bg;
 	margin-top: @gravityItemBorder / @em;
 	
-	&:not(.qtip-pos-rb) {
+	&:not(.switch-borders):not(.qtip-pos-rb) {
 		border-left: none;
 	}
 
-	&.qtip-pos-rb {
+	&:not(.switch-borders).qtip-pos-rb {
 		border-right: none;
+	}
+
+	&.switch-borders {
+		z-index: 350 !important;
 	}
 }
 
@@ -590,13 +594,23 @@ x:-o-prefocus, .qtip .qtip-tip{
 			margin: -@gravityItemBorder / @em;
 		}
 
-		/*img {
-			opacity: 1;
-		}*/
-
 		&:before {
 			padding: (@gravityItemBorder / @em) * 2;
 			margin: (-@gravityItemBorder / @em) * 2;
+		}
+
+		&.switch-borders {
+			z-index: 400;
+
+			&.pos-rb:before {
+				padding-left: @gravityItemBorder / @em;
+				margin-left: -@gravityItemBorder / @em;
+			}
+
+			&:not(.pos-rb):before {
+				padding-right: @gravityItemBorder / @em;
+				margin-right: -@gravityItemBorder / @em;
+			}
 		}
 	}
 

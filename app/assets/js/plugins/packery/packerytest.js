@@ -109,7 +109,6 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
         w = $el.width();
         h = $el.height();
         factor = Math.min(max, Math.max(min, Math.random() * (max + min)));
-        console.log(factor);
         $el.width(Math.floor((w * factor / floor) * floor));
         return $el.height(Math.floor((h * factor / floor) * floor));
       });
@@ -277,7 +276,7 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
     };
 
     JJPackery.prototype._initTooltip = function(el) {
-      var $el, $metaSection, api, foo, getMargin, getStartOffset, hideTimeout, hideTip, marginOffset, mouseOutEl, mouseOutTip, showTimeout, startOffset,
+      var $el, $metaSection, api, getMargin, getStartOffset, hideTimeout, hideTip, marginOffset, mouseOutEl, mouseOutTip, showTimeout, startOffset,
         _this = this;
       mouseOutEl = true;
       mouseOutTip = true;
@@ -299,27 +298,25 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
       $metaSection = $('section[role=tooltip-content]', $el);
       marginOffset = -20;
       startOffset = 10;
-      getMargin = function(api) {
+      getMargin = function(api, switched) {
         var margin;
         margin = marginOffset;
         if ($(api.tooltip).hasClass('qtip-pos-rb')) {
           margin *= -1;
         }
-        console.log(margin);
         return Math.floor(margin);
       };
-      getStartOffset = function(api) {
+      getStartOffset = function(api, switched) {
         var offset;
         offset = startOffset;
         if ($(api.tooltip).hasClass('qtip-pos-rb')) {
-          console.log('is invert');
           offset *= -1;
+        } else if (switched) {
+          offset = 0;
         }
-        console.log(offset);
         return Math.floor(offset);
       };
       if ($metaSection.length) {
-        foo = this;
         $el.qtip({
           content: {
             text: $metaSection.html()
@@ -328,12 +325,25 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
             delay: 500,
             event: 'mouseenter',
             effect: function(api) {
-              var _this = this;
+              var $this, elHeight, switched, ttHeight,
+                _this = this;
               $el.addClass('has-tooltip');
-              $(this).stop(true, true).css({
-                'margin-left': getMargin(api)
+              $this = $(this);
+              elHeight = $el.outerHeight(true);
+              ttHeight = $this.outerHeight(true);
+              switched = false;
+              if (ttHeight > elHeight + Math.abs(marginOffset * 2)) {
+                $el.add($this).addClass('switch-borders');
+                console.log('switch borders');
+                switched = true;
+                if ($this.hasClass('qtip-pos-rb')) {
+                  $el.addClass('pos-rb');
+                }
+              }
+              $this.stop(true, true).css({
+                'margin-left': getMargin(api, switched)
               }).show().animate({
-                'margin-left': getStartOffset(api),
+                'margin-left': getStartOffset(api, switched),
                 'opacity': 1
               }, 200);
               if (api.tooltip) {
@@ -358,8 +368,8 @@ define(['jquery', 'get-style-property/get-style-property', 'packery/packery'], f
                 'margin-left': getMargin(api),
                 'opacity': 0
               }, 200, function() {
-                $el.removeClass('has-tooltip');
-                return $(this).hide();
+                $el.removeClass('switch-borders has-tooltip pos-rb');
+                return $(this).hide().removeClass('switch-borders');
               });
             }
           },
