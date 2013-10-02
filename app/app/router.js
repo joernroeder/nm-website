@@ -295,7 +295,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
       });
       return mainDfd.done(function() {
         var layout;
-        layout = app.useLayout('main');
+        layout = app.useLayout('auth');
         return layout.setViewAndRenderMaybe('', new Auth.Views.Login());
       });
     },
@@ -305,7 +305,7 @@ define(['app', 'modules/Auth', 'modules/Project', 'modules/Person', 'modules/Exc
         this.mainDfd.reject();
         this.mainDfd = null;
       }
-      layout = app.useLayout('main');
+      layout = app.useLayout('auth');
       dfd = $.Deferred();
       if (app.CurrentMember) {
         layout.setViewAndRenderMaybe('', new Auth.Views.Logout());

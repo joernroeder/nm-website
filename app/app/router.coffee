@@ -268,14 +268,14 @@ define [
 				mainDfd.resolve()
 
 			mainDfd.done ->
-				layout = app.useLayout 'main'
+				layout = app.useLayout 'auth'
 				layout.setViewAndRenderMaybe '', new Auth.Views.Login()
 
 		doLogout: ->
 			if @.mainDfd
 				@.mainDfd.reject()
 				@.mainDfd = null
-			layout = app.useLayout 'main'
+			layout = app.useLayout 'auth'
 			dfd = $.Deferred()
 			if app.CurrentMember
 				layout.setViewAndRenderMaybe '', new Auth.Views.Logout()
