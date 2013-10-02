@@ -295,7 +295,7 @@ body.requesting .badge {
 	// dummy image
 	.img {
 		display: block;
-		background-color: pink;
+		background-color: @black;
 		width: 85 / @em;
 		height: 85 / @em;
 		float: left;
@@ -701,8 +701,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		&> div {
 			.wrapper;
-			padding-top: @line / 2 / @em;
-			padding-bottom: @line / @em;
+			padding: @line / @em;
+			padding-bottom: @line * 1.5 / @em;
 		}
 
 		/*p:last-child {
@@ -761,7 +761,12 @@ x:-o-prefocus, .qtip .qtip-tip{
 		
 		&> div {
 			.wrapper;
-			padding-bottom: @line * 2 / @em;
+			padding: @line / @em;
+			padding-bottom: @line * 1.5 / @em;
+
+			h1 {
+				padding-top: 0;
+			}
 		}
 	}
 
@@ -792,6 +797,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		header  {
 			.wrapper;
+			padding: 0 @line / @em;
 		}
 
 		section {
@@ -799,6 +805,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 			float: left;
 			.columnsWidth(8 - @articleMarginCols, 4);
 			.wrapper;
+			padding: @line / @em;
+			padding-bottom: @line * 1.5 / @em;
 
 			img {
 				display: inline-block;
@@ -862,7 +870,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 	> div > section:last-child {
 		.columnsWidth(8, 8 - @imageWidth);
-		padding: (@line / 2 / @em) (@line / 2 / @em) (@line / @em) (@line / @em);
+		padding: (@line / @em) (@line / @em) (@line * 1.5 / @em);
 		.box-sizing(border-box);
 	}
 

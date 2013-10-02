@@ -1209,7 +1209,7 @@ body.requesting .badge > a {
 }
 .person .img {
   display: block;
-  background-color: pink;
+  background-color: #262626;
   width: 5.3125em;
   height: 5.3125em;
   float: left;
@@ -1641,8 +1641,8 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding-top: 0.75em;
-  padding-bottom: 1.5em;
+  padding: 1.5em;
+  padding-bottom: 2.25em;
 }
 .about .group-image {
   float: right;
@@ -1737,7 +1737,12 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding-bottom: 3em;
+  padding: 1.5em;
+  padding-bottom: 2.25em;
+}
+.about .students > div h1,
+.about .alumni > div h1 {
+  padding-top: 0;
 }
 .about .students {
   margin-left: 12.5%;
@@ -1755,6 +1760,7 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  padding: 0 1.5em;
 }
 .detail article section {
   background: #e6e6e6;
@@ -1764,6 +1770,8 @@ x:-o-prefocus,
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  padding: 1.5em;
+  padding-bottom: 2.25em;
 }
 .detail article section img {
   display: inline-block;
@@ -1838,7 +1846,7 @@ x:-o-prefocus,
 }
 .packery-item.person-info > div > section:last-child {
   width: 81.25%;
-  padding: 0.75em 0.75em 1.5em 1.5em;
+  padding: 1.5em 1.5em 2.25em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
