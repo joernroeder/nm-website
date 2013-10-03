@@ -106,7 +106,9 @@ class RootURLController extends Controller {
 				// check if detailed
 				if (isset($params['OtherAction'])) $uglyHash = Convert::raw2sql($params['OtherAction']);
 				if ($uglyHash) {
-					if ($detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash) && $detailed->canView()) {
+					$detailed = $this->getDetailedProjectTypeByUglyHash($uglyHash);
+
+					if ($detailed && $detailed->IsPortfolio && $detailed->canView()) {
 						$customise = array(
 							'Title'		=> $detailed->Title . ' - Portfolio - New Media Kassel',
 							'Project'	=> $detailed

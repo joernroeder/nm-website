@@ -14,26 +14,7 @@
 					<% end_with %>
 				<% end_if %>
 
-				<p>
-					<% if Persons.Count > 3 %>
-						Group project
-					<% else %>
-						<ul>
-							<% loop Persons %>
-								<li><a href="/about/{$UrlSlug}/">$FullName</a></li>
-							<% end_loop %>
-						</ul>
-					<% end_if %>
-				</p>
-				<p>
-					<% if DateRangeNice %>
-						$DateRangeNice
-					<% else %>
-						<% if Date %>
-							$Date.Year
-						<% end_if %>
-					<% end_if %>
-				</p>
+				<% include ProjectHeaderMeta %>
 			</header>
 			<section>
 				<p>$MarkdownedTeaser</p>
