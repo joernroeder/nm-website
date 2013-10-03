@@ -152,6 +152,7 @@ class Project extends DataObject {
 			'ParentProjects.UglyHash',
 			'ParentProjects.IsPortfolio',
 			'ParentProjects.IsPublished',
+
 			'ChildProjects.Title',
 			'ChildProjects.UglyHash',
 			'ChildProjects.IsPortfolio',

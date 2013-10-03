@@ -63,7 +63,6 @@ class RootURLController extends Controller {
 	public function searchEngineResponse($params) {
 		$templates = array();
 		$customise = array();
-		$templates[] = 'SearchController';
 
 		switch ($params['Action']) {
 			// about pages
@@ -88,14 +87,17 @@ class RootURLController extends Controller {
 					$templates[] = 'SearchController_' . $detailed ? 'Project' : 'Person';
 				} else {
 					$groupImages = $this->getDataArray('GroupImage');
+
 					// get the persons
 					$persons = $this->getDataArray('Person', null, "IsExternal=0", array('Surname', 'ASC'));
+					$templates[] = 'SearchController_About';
 					$customise = array(
 						'Title'			=> 'About - New Media Kassel',
-						'GroupImages'	=> $groupImages
+						'GroupImages'	=> $groupImages,
+						'Persons'		=> $persons
 					);
 				}
-
+				break;
 			// portfolio pages
 			case 'portfolio':
 				$uglyHash = '';
@@ -161,6 +163,7 @@ class RootURLController extends Controller {
 				break;
 		}	
 
+		$templates[] = 'SearchController';
 		return $this->customise($customise)->renderWith($templates);
 	}
 
