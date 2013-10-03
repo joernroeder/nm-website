@@ -23,16 +23,16 @@
 
 			<section>
 				<% if Projects %>
-					<% include ProjectOverview %>
+					<% include ProjectOverview LinkTo=$UrlSlug %>
 				<% end_if %>
 				<% if Exhibitions %>
-					<% include ProjectOverview Projects=$Exhibitions %>
+					<% include ProjectOverview Projects=$Exhibitions, LinkTo=$UrlSlug %>
 				<% end_if %>
 				<% if Excursions %>
-					<% include ProjectOverview Projects=$Excursions %>
+					<% include ProjectOverview Projects=$Excursions, LinkTo={$UrlSlug} %>
 				<% end_if %>
 				<% if Workshops %>
-					<% include ProjectOverview Projects=$Workshops %>
+					<% include ProjectOverview Projects=$Workshops, LinkTo=$UrlSlug %>
 				<% end_if %>
 			</section>
 		</article>
