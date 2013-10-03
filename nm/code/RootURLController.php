@@ -84,7 +84,9 @@ class RootURLController extends Controller {
 						'Project'	=> $detailed ? $detailed : null
 					);
 
-					$templates[] = 'SearchController_' . $detailed ? 'Project' : 'Person';
+					
+					$templates[] = 'SearchController_' . ($detailed ? 'Project' : 'Person');
+
 				} else {
 					$groupImages = $this->getDataArray('GroupImage');
 

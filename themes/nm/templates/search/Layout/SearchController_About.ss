@@ -52,6 +52,11 @@
 			<% loop Persons %>
 				<% if IsEmployee %>
 					<li>
+						<% if Image %>
+							<% with Image.Images.First %>
+								<img src="$Link" alt="$Top.FullName" />
+							<% end_with %>
+						<% end_if %>
 						<p>$JobTitle</p>
 						<p><a href="/about/$UrlSlug/">$FullName</a></p>
 					</li>
