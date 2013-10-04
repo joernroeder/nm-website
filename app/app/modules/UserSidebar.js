@@ -323,7 +323,8 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
     template: 'security/editor-sidebar-user',
     projectItemViews: [],
     events: {
-      'submit form.user-settings': 'changeUserCredentials'
+      'submit form.user-settings': 'changeUserCredentials',
+      'click a.new-project': 'closeSidebar'
     },
     initialize: function() {
       return Backbone.Events.on('new:project', this.updateProjectList, this);
@@ -528,6 +529,9 @@ define(['app', 'modules/DataRetrieval', 'modules/RecycleBin', 'modules/Website',
         }
       });
       return false;
+    },
+    closeSidebar: function(e) {
+      return this.__manager__.parent.close();
     }
   });
   UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend({
