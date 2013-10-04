@@ -74,6 +74,7 @@ define(['app'], function(app) {
       var personsColl, tempPrefix;
       tempPrefix = '404';
       personsColl = this.get('Persons');
+      console.log(this);
       if (this.get('IsPortfolio')) {
         tempPrefix = 'portfolio';
       } else if (preferPerson && personsColl.get(preferPerson.id)) {

@@ -152,26 +152,31 @@ class Project extends DataObject {
 			'ParentProjects.UglyHash',
 			'ParentProjects.IsPortfolio',
 			'ParentProjects.IsPublished',
+			'ParentProjects.Persons.UrlSlug',
 
 			'ChildProjects.Title',
 			'ChildProjects.UglyHash',
 			'ChildProjects.IsPortfolio',
 			'ChildProjects.IsPublished',
+			'ChildProjects.Persons.UrlSlug',
 
 			'Exhibitions.Title',
 			'Exhibitions.UglyHash',
 			'Exhibitions.IsPortfolio',
 			'Exhibitions.IsPublished',
+			'Exhibitions.Persons.UrlSlug',
 
 			'Workshops.Title',
 			'Workshops.UglyHash',
 			'Workshops.IsPortfolio',
 			'Workshops.IsPublished',
+			'Workshops.Persons.UrlSlug',
 
 			'Excursions.Title',
 			'Excursions.UglyHash',
 			'Excursions.IsPortfolio',
 			'Excursions.IsPublished',
+			'Excursions.Persons.UrlSlug',
 		),
 		'view.portfolio_init' => array(
 			'ClassName',

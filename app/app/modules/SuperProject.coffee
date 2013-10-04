@@ -58,6 +58,7 @@ define [
 			setTempUrlPrefix: (preferPerson) ->
 				tempPrefix = '404'
 				personsColl = @get('Persons')
+				console.log @
 				if @get('IsPortfolio')
 					tempPrefix = 'portfolio'
 				else if preferPerson and personsColl.get(preferPerson.id)
