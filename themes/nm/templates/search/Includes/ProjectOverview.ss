@@ -3,8 +3,9 @@
 	<% loop Projects %>
 	<% if IsPublished %>
 	<li>
-		<article itemscope itemtype="http://schema.org/Article">
-		<meta itemprop="articleBody" content="$MarkdownedTeaser.XML">
+		<article itemscope itemtype="http://schema.org/CreativeWork">
+		<meta itemprop="text" content="$MarkdownedTeaser.XML">
+		<meta itemprop="dateCreated" content="<% if StartDate %>$StartDate<% else %>$Date.Year<% end_if %>">
 			<header>
 				<h3><a itemprop="url" href="/<% if not $Top.LinkTo %>portfolio<% else %>about/{$Top.LinkTo}<% end_if %>/{$UglyHash}/"><span itemprop="name">$Title</span></a></h3>
 				<% if PreviewImage %>
