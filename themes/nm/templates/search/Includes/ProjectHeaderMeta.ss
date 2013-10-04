@@ -4,7 +4,9 @@
 	<% else %>
 		<ul>
 			<% loop Persons %>
-				<li><% if not IsExternal %><a href="/about/{$UrlSlug}/"><% end_if %><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">$FullName</span></span><% if not IsExternal %></a><% end_if %></li>
+				<li itemprop="author" itemscope itemtype="http://schema.org/Person">
+					<% if not IsExternal %><a itemprop="url" href="/about/{$UrlSlug}/"><% end_if %><span itemprop="name">$FullName</span><% if not IsExternal %></a><% end_if %>
+				</li>
 			<% end_loop %>
 		</ul>
 	<% end_if %>

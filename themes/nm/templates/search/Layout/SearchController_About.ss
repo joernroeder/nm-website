@@ -1,10 +1,12 @@
 <h1>About</h1>
-
+<section itemscope itemtype="http://schema.org/EducationalOrganization">
+<meta itemprop="name" content="New Media Kassel">
+<meta itemprop="location" content="Kunsthochschule Kassel">
 <section>
 	<% if GroupImages %>
 		<% loop GroupImages %>
 			<% with Images.First %>
-				<img src="{$Link}" />
+				<img itemprop="image" src="{$Link}" />
 			<% end_with %>
 		<% end_loop %>
 	<% end_if %>
@@ -12,7 +14,7 @@
 
 <section>
 	<article>
-		<div>
+		<div itemprop="description">
 			<p>The class <cite>New Media</cite> within the course <cite>Visual Communication</cite> at the <cite>School of Art and Design Kassel</cite> walks a fine line between art, design, provocation and study. The main focus lies on the media consumption of society and its perpetual obsession with technological progress, change and transformation; established processes and methods are permanently questioned and modified.</p>
 			<p>The students in the class <cite>New Media</cite> see themselves as researchers, artists, designers and developers at the same time.</p>
 			<p>Realising and publicly defending a deeply personal idea means also being able to realise the ideas of others. An outstanding developer of own concepts and ideas will have the ability to implement external ideas and concepts as well.</p>
@@ -29,7 +31,7 @@
 		<ul>
 			<% loop Persons %>
 				<% if IsStudent %>
-					<li><a href="/about/$UrlSlug/">$FullName</a></li>
+					<li itemprop="member" itemscope itemtype="http://schema.org/Person"><a itemprop="url" href="/about/$UrlSlug/"><span itemprop="name">$FullName</span></a></li>
 				<% end_if %>
 			<% end_loop %>
 		</ul>
@@ -40,7 +42,7 @@
 		<ul>
 			<% loop Persons %>
 				<% if IsAlumni %>
-					<li><a href="/about/$UrlSlug/">$FullName</a></li>
+					<li itemprop="alumni" itemscope itemtype="http://schema.org/Person"><a itemprop="url" href="/about/$UrlSlug/"><span itemprop="name">$FullName</span></a></li>
 				<% end_if %>
 			<% end_loop %>
 		</ul>
@@ -51,17 +53,18 @@
 		<ul>
 			<% loop Persons %>
 				<% if IsEmployee %>
-					<li>
+					<li itemprop="employee" itemscope itemtype="http://schema.org/Person">
 						<% if Image %>
 							<% with Image.Images.First %>
-								<img src="$Link" alt="$Top.FullName" />
+								<img itemprop="image" src="$Link" alt="$Top.FullName" />
 							<% end_with %>
 						<% end_if %>
-						<p>$JobTitle</p>
-						<p><a href="/about/$UrlSlug/">$FullName</a></p>
+						<p itemprop="jobTitle">$JobTitle</p>
+						<p><a itemprop="url" href="/about/$UrlSlug/"><span itemprop="name">$FullName</span></a></p>
 					</li>
 				<% end_if %>
 			<% end_loop %>
 		</ul>
 	</section>
 <% end_if %>
+</section>

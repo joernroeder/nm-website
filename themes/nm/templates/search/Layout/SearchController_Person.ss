@@ -1,23 +1,31 @@
 <% if Person %>
 	<% with Person %>
-		<article>
+		<article itemscope itemtype="http://schema.org/Person">
 			<header>
 				<p>
-					<% if IsStudent %>
-						Student<% if IsEmployee %>, <% end_if %>
-					<% else %>
-						<% if IsAlumni %>
-							Alumni
+					<span itemprop="">
+						<% if IsStudent %>
+							Student
+							<% if IsEmployee %>, <% end_if %>
+						<% else %>
+							<% if IsAlumni %>
+								Alumni
+							<% end_if %>
 						<% end_if %>
-					<% end_if %>
-					<% if IsEmployee %>$JobTitle<% end_if %>
+						<% if IsEmployee %>
+						<meta itemprop="worksFor" content="Kunsthochschule Kassel">
+						<span itemprop="jobTitle">$JobTitle</span>
+						<% end_if %>
+					</span>
+
 					<% if Image %>
 						<% with Image.Images.First %>
-							<img src="$Link" />
+							<img itemprop="image" src="$Link" />
 						<% end_with %>
 					<% end_if %>
 				</p>
-				<h1>$FullName</h1>
+				<h1 itemprop="name">$FullName</h1>
+				<meta itemprop="description" content="$MarkdownedBio.XML">
 				<p>$MarkdownedBio</p>
 			</header>
 

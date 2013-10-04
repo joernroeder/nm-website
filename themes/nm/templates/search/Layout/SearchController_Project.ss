@@ -1,11 +1,14 @@
 <% with Project %>
-	<section>
+	<section itemscope itemtype="http://schema.org/CreativeWork">
+	<meta itemprop="text" content="$MarkdownedText.XML">
+	<meta itemprop="dateCreated" content="<% if StartDate %>$StartDate<% else %>$Date.Year<% end_if %>">
+
 		<header>
-			<h1>$Title</h1>
+			<h1 itemprop="name">$Title</h1>
 			<% include ProjectHeaderMeta %>
 		</header>
 
-		<article>
+		<article >
 			$MarkdownedText
 		</article>
 
@@ -51,7 +54,9 @@
 				<h3>Contributors</h3>
 				<ul>
 					<% loop Persons %>
-						<li><% if not IsExternal %><a href="/about/{$UrlSlug}/"><% end_if %>$FullName<% if not IsExternal %></a><% end_if %></li>
+						<li itemprop="author" itemscope itemtype="http://schema.org/Person">
+							<% if not IsExternal %><a itemprop="url" href="/about/{$UrlSlug}/"><% end_if %><span itemprop="name">$FullName</span><% if not IsExternal %></a><% end_if %>
+						</li>
 					<% end_loop %>		
 				</ul>
 			<% end_if %>
