@@ -260,10 +260,12 @@ class Person extends DataObject {
 		$owner = $this->Member();
 		if ($currentMemberID && $owner && $owner->ID == $currentMemberID) return $fields;
 		
-		$toUnset = array('Phone', 'Excursions.EditableByMember','Workshops.EditableByMember','Exhibitions.EditableByMember','Projects.EditableByMember', 'Projects.Images','Excursions.Images','Exhibitions.Images', 'Workshops.Images');
+		$toUnset = array('Phone', 'Email', 'Excursions.EditableByMember','Workshops.EditableByMember','Exhibitions.EditableByMember','Projects.EditableByMember', 'Projects.Images','Excursions.Images','Exhibitions.Images', 'Workshops.Images');
 		
 		// Make phone number visible to everyone
-		if ($currentMemberID) unset($toUnset[0]);
+		if ($currentMemberID) {
+			unset($toUnset[0], $toUnset[1]);
+		}
 
 		return array_diff($fields, $toUnset);
 	}

@@ -25,7 +25,6 @@
 					<% end_if %>
 				</p>
 				<h1 itemprop="name">$FullName</h1>
-				<p itemprop="email">$Email</p>
 				<meta itemprop="description" content="$MarkdownedBio.XML">
 				<p>$MarkdownedBio</p>
 				<% if Websites %>
