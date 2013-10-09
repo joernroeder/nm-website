@@ -165,9 +165,8 @@ define [
 			out = []
 			if @Space then out.push @Space
 			if @Location then out.push @Location
-			out.join ', '
-			if out
-				out
+			
+			out.join ', ' if out
 
 		Handlebars.registerHelper 'hrIfNeeded', ->
 			# check if there's content below
