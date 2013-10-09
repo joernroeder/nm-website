@@ -282,7 +282,7 @@ class RootURLController extends Controller {
 		return "Page not found";
 	}
 
-	public function isLive() {
+	public function IsLive() {
 		return Director::isLive();
 	}
 

@@ -59,7 +59,7 @@
 	</div>
 
 	<!-- Application source. -->
-	<% if $isLive %>
+	<% if $IsLive %>
 		<script src="/app/bower_components/requirejs/require.js"></script>
 		<script src="/app/dist/release/require.js"></script>
 	<% else %>
