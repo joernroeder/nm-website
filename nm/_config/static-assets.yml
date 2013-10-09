@@ -1,0 +1,6 @@
+---
+Name: StaticUrls
+---
+SubdomainAssetsConfig:
+  domain_name: 'nm.local'
+  subdomain_points_to_assets: false
