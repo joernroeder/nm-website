@@ -753,7 +753,11 @@ function program25(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data};
   stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Workshop", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Workshop", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n	<hr/>\n\n	";
+  buffer += "\n\n	";
+  if (stack2 = helpers.hrIfNeeded) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.hrIfNeeded; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n	";
   stack2 = helpers['if'].call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
@@ -1234,7 +1238,7 @@ function program6(depth0,data) {
   buffer += "\n\n		";
   stack1 = helpers['if'].call(depth0, depth0.Member, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</hgroup>\n</header>\n<section class=\"editor-sidebar-content scrollbox\">\n	<header>\n		<h2>Person Images</h2>\n	</header>\n	<section>\n		<ul class=\"image-list\">\n		</ul>\n	</section>\n\n	<header>\n		<h2>Projects</h2>\n	</header>\n	<section>\n		<ul class=\"project-list\">\n		</ul>\n		<div>\n			<a class=\"btn\" href=\"/secured/new/\">Create Project</a>\n		</div>\n	</section>\n\n	<header>\n		<h2>Personal Information</h2>\n	</header>\n	<section class=\"meta-info\" data-editor-scope=\"\\CurrentPerson\">\n		<div id=\"bio\">\n			<h3>Bio</h3>\n			<div data-editor-type=\"markdown\" data-editor-name=\"Bio\" data-editor-placeholder=\"your shitty life!\" data-editor-options='{\"customParsers\":{}, \"position\":{\"my\": \"right top\", \"at\": \"left top\", \"adjust\": {\"x\": -24, \"y\": -15}}}'>"
+  buffer += "\n	</hgroup>\n</header>\n<section class=\"editor-sidebar-content scrollbox\">\n	<header>\n		<h2>Person Images</h2>\n	</header>\n	<section>\n		<ul class=\"image-list\">\n		</ul>\n	</section>\n\n	<header>\n		<h2>Projects</h2>\n	</header>\n	<section>\n		<ul class=\"project-list\">\n		</ul>\n		<div>\n			<a class=\"btn new-project\" href=\"/secured/new/\">Create Project</a>\n		</div>\n	</section>\n\n	<header>\n		<h2>Personal Information</h2>\n	</header>\n	<section class=\"meta-info\" data-editor-scope=\"\\CurrentPerson\">\n		<div id=\"bio\">\n			<h3>Bio</h3>\n			<div data-editor-type=\"markdown\" data-editor-name=\"Bio\" data-editor-placeholder=\"your shitty life!\" data-editor-options='{\"customParsers\":{}, \"position\":{\"my\": \"right top\", \"at\": \"left top\", \"adjust\": {\"x\": -24, \"y\": -15}}}'>"
     + escapeExpression(((stack1 = ((stack1 = depth0.Person),stack1 == null || stack1 === false ? stack1 : stack1.Bio)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n		</div>\n		<div>\n			<h3>Phone</h3>\n			<p data-editor-type=\"inline\" data-editor-name=\"Phone\">"
     + escapeExpression(((stack1 = ((stack1 = depth0.Person),stack1 == null || stack1 === false ? stack1 : stack1.Phone)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

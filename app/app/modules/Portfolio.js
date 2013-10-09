@@ -197,6 +197,23 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       return "<p>" + out + "</p>";
     }
   });
+  Handlebars.registerHelper('hrIfNeeded', function() {
+    var above, below, type, _i, _len, _ref;
+    above = false;
+    _ref = ['combinedProjects', 'Exhibitions', 'Excursions', 'Workshops'];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      type = _ref[_i];
+      if (this[type] && (this[type].length > 0)) {
+        above = true;
+      }
+    }
+    below = this.IsGroup || (this.Categories && this.Categories.length > 0) ? true : false;
+    if (above && below) {
+      return '<hr/>';
+    } else {
+      return '';
+    }
+  });
   Handlebars.registerHelper('portfoliolist', function(items, title, options) {
     var length, out;
     if (!options) {

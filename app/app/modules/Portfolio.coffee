@@ -169,6 +169,16 @@ define [
 			if out
 				"<p>#{out}</p>"
 
+		Handlebars.registerHelper 'hrIfNeeded', ->
+			# check if there's content above
+			above = false
+			for type in ['combinedProjects', 'Exhibitions', 'Excursions', 'Workshops']
+				if @[type] and ( @[type].length > 0 ) then above = true
+			# check if there's content below
+			below = if @IsGroup or ( @.Categories and @.Categories.length > 0 ) then true else false
+
+			if (above && below) then '<hr/>' else ''
+
 		Handlebars.registerHelper 'portfoliolist', (items, title, options) ->
 			if not options
 				options = title
