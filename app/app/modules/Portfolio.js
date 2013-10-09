@@ -193,7 +193,7 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       out.push(this.Location);
     }
     if (out) {
-      return out.join(', ');
+      return out.join(' – ');
     }
   });
   Handlebars.registerHelper('hrIfNeeded', function() {
