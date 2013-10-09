@@ -25,8 +25,16 @@
 					<% end_if %>
 				</p>
 				<h1 itemprop="name">$FullName</h1>
+				<p itemprop="email">$Email</p>
 				<meta itemprop="description" content="$MarkdownedBio.XML">
 				<p>$MarkdownedBio</p>
+				<% if Websites %>
+					<ul>
+						<% loop Websites %>
+							<li><a itemprop="sameAs" href="$Url" title="$Title">$Title</a></li>
+						<% end_loop %>
+					</ul>
+				<% end_if %>
 			</header>
 
 			<section>

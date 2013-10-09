@@ -3,6 +3,7 @@
 		<% loop UpcomingEvents %>
 			<li itemscope itemtype="http://schema.org/Event">
 				<meta itemprop="startDate" content="$StartDate">
+				<meta itemprop="endDate" content="$EndDate">
 				<a href="/calendar/{$UrlHash}/">
 					<time>$DateRangeNice</time>
 					<h3><span itemprop="name">$Title</span></h3>

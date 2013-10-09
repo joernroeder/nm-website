@@ -77,7 +77,7 @@ class RootURLController extends Controller {
 						$detailed = ($detailed && $detailed->canView()) ? $detailed : null;
 					} 
 					
-					if (!$person) return $this->fourOhFour();
+					if (!$person || (!$detailed && isset($params['ID']))) return $this->fourOhFour();
 					$customise = array(
 						'Title'		=> ($detailed ? $detailed->Title . ' - ' : '') . $person->getFullName() . ' - New Media Kassel',
 						'Person'	=> $person ? $person : null,
@@ -165,7 +165,9 @@ class RootURLController extends Controller {
 				break;
 			default:
 				break;
-		}	
+		}
+
+		if (empty($templates)) return $this->fourOhFour();
 
 		$templates[] = 'SearchController';
 		return $this->customise($customise)->renderWith($templates);
@@ -276,10 +278,17 @@ class RootURLController extends Controller {
 		return $returnVal;
 	}
 
+	public function fourOhFour() {
+		$this->getResponse()->setStatusCode(404);
+		$this->getResponse()->addHeader('Content-Type', 'text/plain');
+		return "Page not found";
+	}
+
 	public function getDetailedProjectTypeByUglyHash(string $uglyHash) {
 		$detailed = null;
 		$flipped = array_flip(UglyHashExtension::get_class_enc());
-		$className = $flipped[substr($uglyHash, 0, 1)];
+		$classIdent = substr($uglyHash, 0, 1);
+		$className = isset($flipped[$classIdent]) ? $flipped[$classIdent] : null;
 		if ($className) {
 			$detailed = $this->getDataArray($className, null, "UglyHash='$uglyHash'")->first();
 		}

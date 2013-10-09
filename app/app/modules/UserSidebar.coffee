@@ -320,6 +320,7 @@ define [
 
 			events:
 				'submit form.user-settings': 'changeUserCredentials'
+				'click a.new-project': 'closeSidebar'
 
 					#@.$el.html(@.serialize())
 					#@.render()
@@ -499,6 +500,9 @@ define [
 						@.showMessageAt msg.text, $form.parent(), msg.type
 
 				false
+
+			closeSidebar: (e) ->
+				@__manager__.parent.close()
 
 		UserSidebar.Views.GallerySidebar = UserSidebar.Views.SidebarContainer.extend
 			tagName: 'div'
