@@ -21,3 +21,4 @@ vendor
 
 /vendor/*
 /app/bower_components/
+/nm-website.esproj/
