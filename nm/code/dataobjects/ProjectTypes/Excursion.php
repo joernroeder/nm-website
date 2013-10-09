@@ -96,8 +96,8 @@ class Excursion extends DataObject {
 		'Text'
 	);
 
-	private static $start_date_format = 'd.m.Y';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
-	private static $end_date_format = 'd.m.Y';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $start_date_format = 'd.m.y';			// Format das Anfangsdatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
+	private static $end_date_format = 'd.m.y';				// Format das Enddatums (z.B. Tag.Monat.Jahr) {@see: StartEndDateExtension.php}
 
 	// ! Admin -----------------------------
 
