@@ -753,7 +753,11 @@ function program25(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data};
   stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Workshop", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Workshop", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n	<hr/>\n\n	";
+  buffer += "\n\n	";
+  if (stack2 = helpers.hrIfNeeded) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.hrIfNeeded; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n	";
   stack2 = helpers['if'].call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
