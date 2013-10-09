@@ -31,15 +31,25 @@ ResponsiveImage::set_image_tag('span');
 
 //CMSMenu::remove_menu_item('Help');
 
-SS_Cache::add_backend('two-level', 'Two_Levels', array(
- 	'slow_backend' => 'File',
- 	'fast_backend' => 'Apc',
- 	'slow_backend_options' => array(
- 		'cache_dir' => TEMP_FOLDER . DIRECTORY_SEPARATOR . 'cache'
- 	)
-));
+if (!Director::isDev()) {
+	SS_Cache::add_backend('two-level', 'Two_Levels', array(
+		'slow_backend' => 'File',
+		'fast_backend' => 'Apc',
+		'slow_backend_options' => array(
+			'cache_dir' => TEMP_FOLDER . DIRECTORY_SEPARATOR . 'cache'
+		)
+	));
 
-SS_Cache::pick_backend('two-level', 'any', 20);
+	SS_Cache::pick_backend('two-level', 'any', 20);
+
+}
+
+
+// ! Security ------------------------------------
+
+Security::setDefaultAdmin('default', '123456');
+
+
 
 // include environment config 
 require_once('conf/ConfigureFromEnv.php');
