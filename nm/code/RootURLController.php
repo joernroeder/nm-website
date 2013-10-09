@@ -174,8 +174,6 @@ class RootURLController extends Controller {
 	}
 
 	public function getInitData($params) {
-
-		
 		$returnVal = '';
 
 		/**
@@ -282,6 +280,10 @@ class RootURLController extends Controller {
 		$this->getResponse()->setStatusCode(404);
 		$this->getResponse()->addHeader('Content-Type', 'text/plain');
 		return "Page not found";
+	}
+
+	public function isLive() {
+		return Director::isLive();
 	}
 
 	public function getDetailedProjectTypeByUglyHash(string $uglyHash) {

@@ -59,6 +59,11 @@
 	</div>
 
 	<!-- Application source. -->
-	<script data-main="/app/app/config" src="/app/bower_components/requirejs/require.js"></script>
+	<% if $isLive %>
+		<script src="/app/bower_components/requirejs/require.js"></script>
+		<script src="/app/dist/release/require.js"></script>
+	<% else %>
+		<script data-main="/app/app/config" src="/app/bower_components/requirejs/require.js"></script>
+	<% end_if %>
 </body>
 </html>
