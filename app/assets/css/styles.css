@@ -1044,7 +1044,7 @@ aside ul {
   list-style: none;
 }
 aside li {
-  margin-top: 0.75em;
+  padding-top: 0.75em;
 }
 aside h1,
 aside h2,
@@ -1179,7 +1179,7 @@ body.requesting .badge > a {
   list-style: none;
 }
 .calendar li {
-  margin-top: 0.75em;
+  padding-top: 0.75em;
 }
 .calendar h1,
 .calendar h2,
@@ -1710,7 +1710,7 @@ x:-o-prefocus,
 }
 .about .students li,
 .about .alumni li {
-  margin-top: 0.75em;
+  padding-top: 0.75em;
 }
 .about .students ul,
 .about .alumni ul {
