@@ -46,9 +46,15 @@
 		</ul>
 	{{/if}}
 
-	{{#if IsGroup}}
+	{{#stringCompare "Project" ClassName}}
+		{{#if IsGroup}}
+			{{{personlist Persons}}}
+		{{/if}}
+	{{/stringCompare}}
+
+	{{#stringDiff "Project" ClassName}}
 		{{{personlist Persons}}}
-	{{/if}}
+	{{/stringDiff}}
 
 	{{{hrIfNeeded}}}
 
