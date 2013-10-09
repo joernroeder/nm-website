@@ -167,15 +167,15 @@ define [
 			if @Location then out.push @Location
 			out.join ', '
 			if out
-				"<p>#{out}</p>"
+				out
 
 		Handlebars.registerHelper 'hrIfNeeded', ->
-			# check if there's content above
-			above = false
-			for type in ['combinedProjects', 'Exhibitions', 'Excursions', 'Workshops']
-				if @[type] and ( @[type].length > 0 ) then above = true
 			# check if there's content below
-			below = if @IsGroup or ( @.Categories and @.Categories.length > 0 ) then true else false
+			below = false
+			for type in ['combinedProjects', 'Exhibitions', 'Excursions', 'Workshops']
+				if @[type] and ( @[type].length > 0 ) then below = true
+			# check if there's content below
+			above = if @.IsGroup or @.ClassName is 'Exhibition' or ( @.Categories and @.Categories.length > 0 ) or ( @.Websites and @.Websites.length > 0 ) then true else false
 
 			if (above && below) then '<hr/>' else ''
 

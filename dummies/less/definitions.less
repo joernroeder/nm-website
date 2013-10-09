@@ -310,10 +310,19 @@ button.btn {
 
 	h1, h2, h3, h4 {
 		color: @asideHeadline;
+		color: @gray;
 	}
 
 	a {
-		color: @asideColor;
+		color: @gray;
+		border: none;
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: @black;
+			border: none;
+		}
 	}
 }
 

@@ -543,9 +543,34 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["JST"]["app/templates/portfolio-detail.html"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", helperMissing=helpers.helperMissing, self=this, escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, stack2, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
+  
+  var buffer = "", stack1, stack2, options;
+  buffer += "\n		<p>\n			";
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.nameSummary || depth0.nameSummary),stack1 ? stack1.call(depth0, depth0.Persons, options) : helperMissing.call(depth0, "nameSummary", depth0.Persons, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += " // ";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options)))
+    + "\n		</p>\n	";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		<p>";
+  if (stack1 = helpers.SpaceAndLocation) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.SpaceAndLocation; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</p>\n	";
+  return buffer;
+  }
+
+function program5(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n		";
@@ -556,7 +581,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-function program3(depth0,data) {
+function program7(depth0,data) {
   
   var buffer = "", stack1, stack2, options;
   buffer += "\n		<p>";
@@ -567,118 +592,50 @@ function program3(depth0,data) {
   return buffer;
   }
 
-function program5(depth0,data) {
+function program9(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Exhibitions, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Workshops, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Excursions, {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	";
+  var buffer = "", stack1, options;
+  buffer += "\n		<p>";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options)))
+    + "</p>\n	";
   return buffer;
   }
-function program6(depth0,data) {
-  
-  var stack1, stack2, options;
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Exhibitions, "Exhibition", options) : helperMissing.call(depth0, "portfoliolist", depth0.Exhibitions, "Exhibition", options));
-  if(stack2 || stack2 === 0) { return stack2; }
-  else { return ''; }
-  }
 
-function program8(depth0,data) {
+function program11(depth0,data) {
   
-  var stack1, stack2, options;
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Workshops, "Workshop", options) : helperMissing.call(depth0, "portfoliolist", depth0.Workshops, "Workshop", options));
-  if(stack2 || stack2 === 0) { return stack2; }
-  else { return ''; }
+  var buffer = "", stack1;
+  buffer += "\n		<ul>\n		";
+  stack1 = helpers.each.call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		</ul>\n	";
+  return buffer;
   }
-
-function program10(depth0,data) {
-  
-  var stack1, stack2, options;
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Excursions, "Excursion", options) : helperMissing.call(depth0, "portfoliolist", depth0.Excursions, "Excursion", options));
-  if(stack2 || stack2 === 0) { return stack2; }
-  else { return ''; }
-  }
-
 function program12(depth0,data) {
   
-  var stack1, stack2, options;
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.combinedProjects, "Project", options) : helperMissing.call(depth0, "portfoliolist", depth0.combinedProjects, "Project", options));
-  if(stack2 || stack2 === 0) { return stack2; }
-  else { return ''; }
+  var buffer = "", stack1;
+  buffer += "\n			<li><a href=\"";
+  if (stack1 = helpers.Url) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.Url; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">";
+  if (stack1 = helpers.Title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.Title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</a></li>\n		";
+  return buffer;
   }
 
 function program14(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Workshops, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Excursions, {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	";
-  return buffer;
-  }
-
-function program16(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Exhibitions, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Workshops, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	";
-  return buffer;
-  }
-
-function program18(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Exhibitions, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.Excursions, {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
-  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	";
-  return buffer;
-  }
-
-function program20(depth0,data) {
-  
-  var buffer = "", stack1;
   buffer += "\n		<h4>Categories</h4>\n		<ul>\n		";
-  stack1 = helpers.each.call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
+  stack1 = helpers.each.call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n		</ul>\n	";
   return buffer;
   }
-function program21(depth0,data) {
+function program15(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n			<li><a href=\"/portfolio/search/Category:";
@@ -693,7 +650,7 @@ function program21(depth0,data) {
   return buffer;
   }
 
-function program23(depth0,data) {
+function program17(depth0,data) {
   
   var buffer = "", stack1, stack2, options;
   buffer += "\n		";
@@ -704,7 +661,109 @@ function program23(depth0,data) {
   return buffer;
   }
 
-function program25(depth0,data) {
+function program19(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Exhibitions, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Workshops, {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Excursions, {hash:{},inverse:self.noop,fn:self.program(24, program24, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(26, program26, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	";
+  return buffer;
+  }
+function program20(depth0,data) {
+  
+  var stack1, stack2, options;
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Exhibitions, "Exhibition", options) : helperMissing.call(depth0, "portfoliolist", depth0.Exhibitions, "Exhibition", options));
+  if(stack2 || stack2 === 0) { return stack2; }
+  else { return ''; }
+  }
+
+function program22(depth0,data) {
+  
+  var stack1, stack2, options;
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Workshops, "Workshop", options) : helperMissing.call(depth0, "portfoliolist", depth0.Workshops, "Workshop", options));
+  if(stack2 || stack2 === 0) { return stack2; }
+  else { return ''; }
+  }
+
+function program24(depth0,data) {
+  
+  var stack1, stack2, options;
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Excursions, "Excursion", options) : helperMissing.call(depth0, "portfoliolist", depth0.Excursions, "Excursion", options));
+  if(stack2 || stack2 === 0) { return stack2; }
+  else { return ''; }
+  }
+
+function program26(depth0,data) {
+  
+  var stack1, stack2, options;
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.combinedProjects, "Project", options) : helperMissing.call(depth0, "portfoliolist", depth0.combinedProjects, "Project", options));
+  if(stack2 || stack2 === 0) { return stack2; }
+  else { return ''; }
+  }
+
+function program28(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(26, program26, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Workshops, {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Excursions, {hash:{},inverse:self.noop,fn:self.program(24, program24, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	";
+  return buffer;
+  }
+
+function program30(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Exhibitions, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Workshops, {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(26, program26, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	";
+  return buffer;
+  }
+
+function program32(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Exhibitions, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.Excursions, {hash:{},inverse:self.noop,fn:self.program(24, program24, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n		";
+  stack1 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(26, program26, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	";
+  return buffer;
+  }
+
+function program34(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n<script type=\"text/javascript\">\n	$(document).one('code:kickoff', function (e) {\n		";
@@ -719,52 +778,60 @@ function program25(depth0,data) {
   if (stack1 = helpers.Title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\n	<p>\n		";
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.nameSummary || depth0.nameSummary),stack1 ? stack1.call(depth0, depth0.Persons, options) : helperMissing.call(depth0, "nameSummary", depth0.Persons, options));
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n	</p>\n	<p>";
-  options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options)))
-    + "</p>\n	";
+    + "</h1>\n	";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
-  stack2 = ((stack1 = helpers.stringDiff || depth0.stringDiff),stack1 ? stack1.call(depth0, "Project", depth0.ClassName, options) : helperMissing.call(depth0, "stringDiff", "Project", depth0.ClassName, options));
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n	";
-  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</header>\n<section>\n	";
-  if (stack2 = helpers.MarkdownedText) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.MarkdownedText; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</section>\n<aside>\n	\n	";
-  options = {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data};
   stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Project", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Project", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
-  options = {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data};
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data};
   stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Exhibition", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Exhibition", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n	";
-  options = {hash:{},inverse:self.noop,fn:self.program(16, program16, data),data:data};
-  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Excursion", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Excursion", depth0.ClassName, options));
+  buffer += "\n\n	<!--\n	";
+  options = {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data};
+  stack2 = ((stack1 = helpers.stringDiff || depth0.stringDiff),stack1 ? stack1.call(depth0, "Project", depth0.ClassName, options) : helperMissing.call(depth0, "stringDiff", "Project", depth0.ClassName, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n	\n	";
+  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n	-->\n</header>\n<section>\n	";
+  if (stack2 = helpers.MarkdownedText) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.MarkdownedText; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n</section>\n<aside>\n	";
+  options = {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data};
+  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Exhibition", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Exhibition", depth0.ClassName, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n	\n	";
+  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
-  options = {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data};
-  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Workshop", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Workshop", depth0.ClassName, options));
+  stack2 = helpers['if'].call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n	";
+  stack2 = helpers['if'].call(depth0, depth0.IsGroup, {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
   if (stack2 = helpers.hrIfNeeded) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.hrIfNeeded; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
-  stack2 = helpers['if'].call(depth0, depth0.Categories, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
+  options = {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data};
+  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Project", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Project", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
-  stack2 = helpers['if'].call(depth0, depth0.IsGroup, {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
+  options = {hash:{},inverse:self.noop,fn:self.program(28, program28, data),data:data};
+  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Exhibition", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Exhibition", depth0.ClassName, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n	";
+  options = {hash:{},inverse:self.noop,fn:self.program(30, program30, data),data:data};
+  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Excursion", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Excursion", depth0.ClassName, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n	";
+  options = {hash:{},inverse:self.noop,fn:self.program(32, program32, data),data:data};
+  stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Workshop", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Workshop", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n</aside>\n\n<!--";
-  stack2 = helpers['if'].call(depth0, depth0.Code, {hash:{},inverse:self.noop,fn:self.program(25, program25, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.Code, {hash:{},inverse:self.noop,fn:self.program(34, program34, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "-->\n\n<!-- /article -->";
   return buffer;

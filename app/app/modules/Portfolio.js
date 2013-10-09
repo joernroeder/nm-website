@@ -194,20 +194,20 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     }
     out.join(', ');
     if (out) {
-      return "<p>" + out + "</p>";
+      return out;
     }
   });
   Handlebars.registerHelper('hrIfNeeded', function() {
     var above, below, type, _i, _len, _ref;
-    above = false;
+    below = false;
     _ref = ['combinedProjects', 'Exhibitions', 'Excursions', 'Workshops'];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       type = _ref[_i];
       if (this[type] && (this[type].length > 0)) {
-        above = true;
+        below = true;
       }
     }
-    below = this.IsGroup || (this.Categories && this.Categories.length > 0) ? true : false;
+    above = this.IsGroup || this.ClassName === 'Exhibition' || (this.Categories && this.Categories.length > 0) || (this.Websites && this.Websites.length > 0) ? true : false;
     if (above && below) {
       return '<hr/>';
     } else {
