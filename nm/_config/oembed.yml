@@ -1,0 +1,9 @@
+---
+Name: oembed
+---
+OembedOptions:
+  options:
+    'http://*.vimeo.com/*':
+      title: false
+      portrait: false
+      color: '#f00'
