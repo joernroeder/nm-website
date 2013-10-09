@@ -1766,7 +1766,7 @@ x:-o-prefocus,
 .detail article section {
   background: #e6e6e6;
   float: left;
-  width: 66.66666666666667%;
+  width: 75%;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1791,11 +1791,17 @@ x:-o-prefocus,
 }
 .detail article aside {
   display: inline-block;
-  width: 33.333333333333336%;
+  width: 25%;
   padding: 0 0.75em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  padding-left: 1.5em;
+}
+.detail article aside hr {
+  border: 0;
+  border-top: 1px solid red;
+  height: 0;
 }
 .packery-item.person-info {
   width: 50%;

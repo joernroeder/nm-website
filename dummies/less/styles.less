@@ -804,7 +804,7 @@ x:-o-prefocus, .qtip .qtip-tip{
 		section {
 			background: @bgColor;
 			float: left;
-			.columnsWidth(8 - @articleMarginCols, 4);
+			.columnsWidth(8 - @articleMarginCols, 4.5);
 			.wrapper;
 			padding: @line / @em;
 			padding-bottom: @line * 1.5 / @em;
@@ -830,8 +830,15 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 		aside {
 			display: inline-block;
-			.columnsWidth(8 - @articleMarginCols, 2);
+			.columnsWidth(8 - @articleMarginCols, 1.5);
 			.wrapper;
+			padding-left: @line / @em;
+
+			hr {
+				border: 0;
+				border-top: 1px solid red;
+				height: 0;
+			}
 		}
 	}
 }
