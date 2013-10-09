@@ -6,4 +6,5 @@ OembedOptions:
     'http://*.vimeo.com/*':
       title: false
       portrait: false
-      color: '#f00'
+      byline: false
+      color: d9df20
