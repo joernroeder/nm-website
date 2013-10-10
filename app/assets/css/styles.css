@@ -1132,6 +1132,12 @@ aside a:active {
   top: 1.5em;
   right: 3em;
 }
+body:not(.index):not(.main):not(.portfolio):not(.editor) .badge {
+  overflow: hidden;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .badge {
   display: inline-block;
   background: #262626;
@@ -3469,12 +3475,6 @@ body.dragover.drag-inline #uploadzone .progress {
   -ms-transition: none;
   transition: none;
 }
-body.auth .badge {
-  overflow: hidden;
-  height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
 body.auth.requesting .badge,
 body.auth.requesting .badge > a {
   -webkit-animation: none;
@@ -4035,6 +4035,9 @@ body.dragover .editor-project-preview .dropzone.preview-image * {
 }
 .editor-sidebar-open .editor-project-main article aside,
 .open-split-markdown .editor-project-main article aside {
+  display: none;
+}
+body:not(.editor):not(.editor-sidebar-open) #recycle-bin {
   display: none;
 }
 #recycle-bin {

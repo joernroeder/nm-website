@@ -195,6 +195,15 @@ aside {
 
 // ! --- Badge ---------------------------------------------
 
+body:not(.index):not(.main):not(.portfolio):not(.editor) {
+	.badge {
+		overflow: hidden;
+		height: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
 .badge {
 	display: inline-block;
 	background: @badgeBg;
@@ -1877,13 +1886,6 @@ body.dragover {
 // ! --- Login ------------------------
 
 body.auth {
-	.badge {
-		overflow: hidden;
-		height: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-	}
-
 	&.requesting {
 
 		.badge,
@@ -2395,6 +2397,12 @@ body.dragover .editor-project-preview {
 }
 
 // ! --- recycle bin
+
+body:not(.editor):not(.editor-sidebar-open) {
+	#recycle-bin {
+		display: none;
+	}
+}
 
 #recycle-bin {
 	@width: 250px;
