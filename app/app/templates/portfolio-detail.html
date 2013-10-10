@@ -3,7 +3,7 @@
 	<h1>{{Title}}</h1>
 	{{#stringCompare "Project" ClassName}}
 		<p>
-			{{{nameSummary Persons}}} // {{niceDate this true}}
+			{{{nameSummary Persons}}} // {{{niceDate this true}}}
 		</p>
 	{{/stringCompare}}
 
@@ -26,7 +26,7 @@
 </section>
 <aside>
 	{{#stringCompare "Exhibition" ClassName}}
-		<p>{{niceDate this true}}</p>
+		<p>{{{niceDate this true}}}</p>
 	{{/stringCompare}}
 	
 	{{#if Websites}}
