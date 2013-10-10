@@ -240,7 +240,8 @@ module.exports = function(grunt) {
       all: {
         options: {
           dest: '../.git/hooks',
-          template: '.git-hooks/pre-commit.js'
+          template: '.git-hooks/pre-commit.js',
+          hashbang: '#!/usr/local/bin/node'
         },
         'pre-commit': 'release'
       }
