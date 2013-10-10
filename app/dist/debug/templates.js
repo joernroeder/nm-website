@@ -138,8 +138,9 @@ function program9(depth0,data) {
   buffer += escapeExpression(stack1)
     + "</h1>\n	<p>";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options)))
-    + "</p>\n	";
+  stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "</p>\n	";
   stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n</header>\n<section>\n	";
@@ -175,8 +176,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + "/\">\n	<time datetime=\"\">";
   if (stack1 = helpers.DateRangeNice) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.DateRangeNice; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "</time>\n	";
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</time>\n	";
   if (stack1 = helpers.Title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -543,7 +544,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["JST"]["app/templates/portfolio-detail.html"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, functionType="function", self=this;
+  var buffer = "", stack1, stack2, options, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -554,8 +555,9 @@ function program1(depth0,data) {
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += " // ";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options)))
-    + "\n		</p>\n	";
+  stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n		</p>\n	";
   return buffer;
   }
 
@@ -594,11 +596,12 @@ function program7(depth0,data) {
 
 function program9(depth0,data) {
   
-  var buffer = "", stack1, options;
+  var buffer = "", stack1, stack2, options;
   buffer += "\n		<p>";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options)))
-    + "</p>\n	";
+  stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "</p>\n	";
   return buffer;
   }
 
@@ -1073,17 +1076,18 @@ function program4(depth0,data) {
 
 function program6(depth0,data) {
   
-  var buffer = "", stack1, options;
+  var buffer = "", stack1, stack2, options;
   buffer += "\n			<p><span data-editor-type=\"date\" data-editor-name=\"Date\" data-editor-options='{ \"contentFormat\": \"M Y\"}'>";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options)))
-    + "</span></p>\n		";
+  stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "</span></p>\n		";
   return buffer;
   }
 
 function program8(depth0,data) {
   
-  var buffer = "", stack1, options;
+  var buffer = "", stack1, stack2, options;
   buffer += "\n			<p>\n				<span data-editor-type=\"date\" data-editor-name=\"StartDate\" data-editor-options='{\"format\": \"d. M Y\"}'>";
   if (stack1 = helpers.StartDate) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.StartDate; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
@@ -1094,8 +1098,9 @@ function program8(depth0,data) {
   buffer += escapeExpression(stack1)
     + "</span>\n			</p>\n			<p class=\"nice-date\">";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options)))
-    + "</p>\n		";
+  stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "</p>\n		";
   return buffer;
   }
 

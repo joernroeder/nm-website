@@ -236,6 +236,11 @@ module.exports = function(grunt) {
     //    }
     //  }
     //}
+    githooks: {
+      all: {
+        'pre-commit': 'release'
+      }
+    },
 
   });
 
@@ -244,6 +249,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-githooks');
+
   // The debug task will remove all contents inside the dist/ folder, lint
   // all your code, precompile all the underscore templates into
   // dist/debug/templates.js, compile all the application code into
