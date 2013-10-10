@@ -13,7 +13,7 @@ require [
 	'plugins/misc/misc'
 ], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, RecycleBin, Spinner, misc) ->
 
-	console.log 'foo'
+	console.log 'fo'
 	
 	# ! JJRELATIONAL CONFIG
 
