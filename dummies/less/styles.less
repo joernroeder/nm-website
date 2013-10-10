@@ -439,6 +439,17 @@ span[data-picture] {
 	background-color: @editorPopoverBg;
 	color: @editorPopoverColor; 
 	opacity: 1;
+
+//	border: @gravityItemBorder / @em solid @bg;
+//	margin-top: @gravityItemBorder / @em;
+	
+	&:not(.switch-borders):not(.qtip-pos-rb) {
+		border-left: @gravityItemBorder / @em solid @bg;
+	}
+
+	&.qtip-pos-tr {
+		border-right: none;
+	}
 }
 
 .qtip-content {
@@ -959,10 +970,32 @@ x:-o-prefocus, .qtip .qtip-tip{
 	}
 }
 
+.editor .detail {
+	aside {
+		h1, h3 {
+			padding-bottom: @line / 2 / @em;
+		}
+
+		ul {
+			padding: @line / 4 / @em;
+			margin: -@line / 4 / @em;
+		}
+
+		li {
+			padding-top: 0;
+			padding-bottom: @line / 4 / @em;
+
+			&:last-child {
+				padding-bottom: 0;
+			}
+		}
+	}
+}
+
 
 // ! --- Editables ----------------------------------------
 
-*[data-editor-type][editor-handled-by] {
+*[data-editor-type][editor-handled-by]:not(.btn) {
 	cursor: pointer;
 	.transition(~"background-color .2s ease-in-out");
 	background: @editorEditableBg;
@@ -1015,8 +1048,8 @@ x:-o-prefocus, .qtip .qtip-tip{
 
 [data-editor-type="markdown-split"][editor-handled-by].active {
 	background: #fff;
-	border: 10 / @em solid #fff;
-	margin: -10 / @em;
+	padding: @line / 2 / @em;
+	margin: (-@line / 2 / @em) (-@line / 2 / @em) (-@line / @em) (@line / 2 / @em);
 }
 
 .editor-popover {
@@ -2334,7 +2367,7 @@ body.dragover .editor-project-preview {
 
 	aside {
 		hr {
-			margin: (@line * 2 / @em) 0 (@line * 1.5 / @em);
+			margin: (@line * 2 / @em) (-@line / 4 / @em) (@line * 1.5 / @em);
 			height: @line / 4 / @em;
 			border: none;
 
