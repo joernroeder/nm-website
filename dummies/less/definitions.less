@@ -211,6 +211,10 @@
 	p {
 		.big-caps(@lightOrRegular);
 		padding-bottom: 1 / @em;
+
+		a {
+			.link-light;
+		}
 	}
 }
 
@@ -234,6 +238,21 @@
 	&:active,
 	&.active {
 		color: @linkHover;
+	}
+}
+
+.link-light() {
+	.link();
+	.transition(~"color .3s ease-out, border-color .3s ease-out");
+
+	color: @gray;
+	border-color: @bgColor;
+
+	&:hover,
+	&:focus,
+	&:active {
+		color: @black;
+		border-color: @bgColor;
 	}
 }
 
@@ -314,15 +333,7 @@ button.btn {
 	}
 
 	a {
-		color: @gray;
-		border: none;
-
-		&:hover,
-		&:focus,
-		&:active {
-			color: @black;
-			border: none;
-		}
+		.link-light;
 	}
 }
 
