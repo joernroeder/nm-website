@@ -206,11 +206,14 @@
 .btn:active:after {
   color: #525252;
 }
+.buttons button,
+button.btn {
+  outline: none;
+}
 button.btn {
   background: transparent;
   border: none;
   padding: 0;
-  outline: none;
 }
 /**
  * Liste
