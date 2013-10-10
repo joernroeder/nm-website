@@ -2,14 +2,15 @@
 <header>
 	<h1>{{Title}}</h1>
 	<p>{{{niceDate this}}}</p>
-	{{#if Websites}}
-		<p>{{{commaSeparatedWebsites Websites}}}</p>
-	{{/if}}
 </header>
 <section>
 	{{{MarkdownedText}}}
 </section>
 <aside>
+	{{#if Websites}}
+		{{{portfoliolist Websites "Website"}}}
+	{{/if}}
+
 	{{#if combinedProjects}}
 		{{{portfoliolist combinedProjects "Project"}}}
 	{{/if}}

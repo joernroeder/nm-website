@@ -80,11 +80,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, stack2, options;
-  buffer += "\n		<p>";
+  buffer += "\n		";
   options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.commaSeparatedWebsites || depth0.commaSeparatedWebsites),stack1 ? stack1.call(depth0, depth0.Websites, options) : helperMissing.call(depth0, "commaSeparatedWebsites", depth0.Websites, options));
+  stack2 = ((stack1 = helpers.portfoliolist || depth0.portfoliolist),stack1 ? stack1.call(depth0, depth0.Websites, "Website", options) : helperMissing.call(depth0, "portfoliolist", depth0.Websites, "Website", options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "</p>\n	";
+  buffer += "\n	";
   return buffer;
   }
 
@@ -140,14 +140,14 @@ function program9(depth0,data) {
   options = {hash:{},data:data};
   stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, options) : helperMissing.call(depth0, "niceDate", depth0, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "</p>\n	";
-  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</header>\n<section>\n	";
+  buffer += "</p>\n</header>\n<section>\n	";
   if (stack2 = helpers.MarkdownedText) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.MarkdownedText; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n</section>\n<aside>\n	";
+  stack2 = helpers['if'].call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n	";
   stack2 = helpers['if'].call(depth0, depth0.combinedProjects, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n	";
