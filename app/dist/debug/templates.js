@@ -597,7 +597,7 @@ function program7(depth0,data) {
 function program9(depth0,data) {
   
   var buffer = "", stack1, stack2, options;
-  buffer += "\n		<p>";
+  buffer += "\n		<h4>Duration</h4>\n		<p>";
   options = {hash:{},data:data};
   stack2 = ((stack1 = helpers.niceDate || depth0.niceDate),stack1 ? stack1.call(depth0, depth0, true, options) : helperMissing.call(depth0, "niceDate", depth0, true, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
@@ -608,7 +608,7 @@ function program9(depth0,data) {
 function program11(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n		<ul>\n		";
+  buffer += "\n		<ul>\n			<h4>Websites</h4>\n			";
   stack1 = helpers.each.call(depth0, depth0.Websites, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n		</ul>\n	";
@@ -617,7 +617,7 @@ function program11(depth0,data) {
 function program12(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n			<li><a href=\"";
+  buffer += "\n				<li><a href=\"";
   if (stack1 = helpers.Url) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Url; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -625,7 +625,7 @@ function program12(depth0,data) {
   if (stack1 = helpers.Title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</a></li>\n		";
+    + "</a></li>\n			";
   return buffer;
   }
 

@@ -26,14 +26,16 @@
 </section>
 <aside>
 	{{#stringCompare "Exhibition" ClassName}}
+		<h4>Duration</h4>
 		<p>{{{niceDate this true}}}</p>
 	{{/stringCompare}}
 	
 	{{#if Websites}}
 		<ul>
-		{{#each Websites}}
-			<li><a href="{{Url}}">{{Title}}</a></li>
-		{{/each}}
+			<h4>Websites</h4>
+			{{#each Websites}}
+				<li><a href="{{Url}}">{{Title}}</a></li>
+			{{/each}}
 		</ul>
 	{{/if}}
 
