@@ -213,16 +213,12 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
       return '';
     }
   });
-  Handlebars.registerHelper('portfoliolist', function(items, title, options) {
+  Handlebars.registerHelper('portfoliolist', function(items, title, ignorePublish) {
     var length, out;
-    if (!options) {
-      options = title;
-      title = '';
-    }
     length = 0;
     out = '<ul>';
     _.each(items, function(item) {
-      if (item.IsPublished) {
+      if (item.IsPublished || ignorePublish === true) {
         out += '<li><a href="/' + item.TempUrlPrefix + '/' + item.UglyHash + '/">' + item.Title + '</a></li>';
         return length++;
       }

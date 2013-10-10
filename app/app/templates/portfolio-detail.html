@@ -31,12 +31,13 @@
 	{{/stringCompare}}
 	
 	{{#if Websites}}
-		<ul>
+		{{{portfoliolist Websites "Website" true}}}
+		<!--<ul>
 			<h4>Websites</h4>
 			{{#each Websites}}
 				<li><a href="{{Url}}">{{Title}}</a></li>
 			{{/each}}
-		</ul>
+		</ul>-->
 	{{/if}}
 
 	{{#if Categories}}

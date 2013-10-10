@@ -178,17 +178,13 @@ define [
 
 			if (above && below) then '<hr/>' else ''
 
-		Handlebars.registerHelper 'portfoliolist', (items, title, options) ->
-			if not options
-				options = title
-				title = ''
-
+		Handlebars.registerHelper 'portfoliolist', (items, title, ignorePublish) ->
 			length = 0
 			out = '<ul>'
 
 			# build list
 			_.each items, (item) ->
-				if item.IsPublished
+				if item.IsPublished or ignorePublish is true
 					out += '<li><a href="/' + item.TempUrlPrefix + '/' + item.UglyHash + '/">' + item.Title + '</a></li>'
 					length++
 			out += '</ul>'
