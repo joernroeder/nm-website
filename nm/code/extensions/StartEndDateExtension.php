@@ -65,7 +65,7 @@ class StartEndDateExtension extends Extension {
 			$vals [] = ($end->format('H:i') == '00:00') ? $end->format('d.m.y') : $end->format('d.m.y H:i');
 		}
 
-		return implode(' - ', $vals);
+		return implode('&#150;<wbr/>', $vals); // En Dash with optional break
 	}
 
 	/**
