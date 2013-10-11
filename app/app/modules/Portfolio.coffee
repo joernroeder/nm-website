@@ -14,7 +14,6 @@ define [
 		Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend
 
 			cleanup: ->
-				console.log 'foo'
 				Backbone.Events.off 'search', @handleSearch
 
 			initialize: ->
@@ -65,6 +64,12 @@ define [
 			tagName: 'article'
 			className: 'packery-item resizable'
 			template: 'packery-list-item'
+
+			initialize: ->
+				@model.on 'destroy', @remove, @
+
+			cleanup: ->
+				@model.off 'destroy', @remove
 
 			doShow: ->
 				console.log 'showing %o', @model

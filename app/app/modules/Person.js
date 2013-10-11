@@ -74,6 +74,11 @@ define(['app', 'modules/JJPackery', 'modules/Portfolio'], function(app, JJPacker
     events: {
       'click a.vcf-download': 'downloadVcf'
     },
+    initialize: function() {
+      if (app.CurrentMemberPerson) {
+        return app.CurrentMemberPerson.on('change', this.renderIfSave, this);
+      }
+    },
     downloadVcf: function(e) {
       var uriContent, vcfContent;
       e.preventDefault();
@@ -88,6 +93,16 @@ define(['app', 'modules/JJPackery', 'modules/Portfolio'], function(app, JJPacker
       uriContent = "data:text/vcard," + encodeURIComponent(vcfContent);
       window.location.href = uriContent;
       return false;
+    },
+    renderIfSave: function(model, opts) {
+      if (opts.isSave) {
+        return this.render();
+      }
+    },
+    cleanup: function() {
+      if (app.CurrentMemberPerson) {
+        return app.CurrentMemberPerson.off('change', this.renderIfSave);
+      }
     },
     serialize: function() {
       if (this.model) {

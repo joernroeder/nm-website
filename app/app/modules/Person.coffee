@@ -55,6 +55,11 @@ define [
 				'click a.vcf-download': 'downloadVcf'
 
 
+			initialize: ->
+				if app.CurrentMemberPerson
+					app.CurrentMemberPerson.on 'change', @renderIfSave, @ 
+
+
 			downloadVcf: (e) ->
 				e.preventDefault()
 
@@ -68,6 +73,14 @@ define [
 				window.location.href = uriContent
 
 				false
+
+			renderIfSave: (model, opts) ->
+				if opts.isSave
+					@render()
+
+			cleanup: ->
+				if app.CurrentMemberPerson
+					app.CurrentMemberPerson.off 'change', @renderIfSave
 
 			serialize: ->
 				if @.model then @.model.toJSON()

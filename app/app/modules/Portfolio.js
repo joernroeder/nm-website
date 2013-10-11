@@ -8,7 +8,6 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
   };
   Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend({
     cleanup: function() {
-      console.log('foo');
       return Backbone.Events.off('search', this.handleSearch);
     },
     initialize: function() {
@@ -68,6 +67,12 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
     tagName: 'article',
     className: 'packery-item resizable',
     template: 'packery-list-item',
+    initialize: function() {
+      return this.model.on('destroy', this.remove, this);
+    },
+    cleanup: function() {
+      return this.model.off('destroy', this.remove);
+    },
     doShow: function() {
       console.log('showing %o', this.model);
       return this.$el.removeClass('hidden');
