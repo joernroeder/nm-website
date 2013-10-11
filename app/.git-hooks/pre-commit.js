@@ -1,5 +1,6 @@
 var exec = require('child_process').exec;
 
+console.log(__dirname);
 exec('git diff --cached --quiet', function (err, stdout, stderr) {
 
 	// only run if there are staged changes
