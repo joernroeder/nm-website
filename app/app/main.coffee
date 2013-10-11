@@ -12,8 +12,6 @@ require [
 	'plugins/misc/spin.min',
 	'plugins/misc/misc'
 ], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, RecycleBin, Spinner, misc) ->
-
-	console.log 'foo bar'
 	
 	# ! JJRELATIONAL CONFIG
 
