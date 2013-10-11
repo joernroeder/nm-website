@@ -8,7 +8,6 @@ define(['app', 'modules/JJPackery'], function(app, JJPackery) {
   };
   Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend({
     cleanup: function() {
-      console.log('foo12ssss');
       return Backbone.Events.off('search', this.handleSearch);
     },
     initialize: function() {
