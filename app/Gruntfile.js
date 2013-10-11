@@ -241,7 +241,9 @@ module.exports = function(grunt) {
         options: {
           dest: '../.git/hooks',
           template: '.git-hooks/pre-commit.js',
-          hashbang: '#!/usr/local/bin/node'
+          hashbang: '#!/bin/sh',
+          startMarker: '# Grunt githooks start',
+          endMarker: '# Grunt githooks end'
         },
         'pre-commit': 'release'
       }

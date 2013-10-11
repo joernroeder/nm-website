@@ -14,6 +14,7 @@ define [
 		Portfolio.Views.PackeryContainer = JJPackery.Views.Container.extend
 
 			cleanup: ->
+				console.log 'foo'
 				Backbone.Events.off 'search', @handleSearch
 
 			initialize: ->
