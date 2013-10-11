@@ -1006,10 +1006,10 @@ function program16(depth0,data) {
 function program18(depth0,data) {
   
   
-  return "\n		<h1>Additional editors</h1>\n		<ul data-editor-type=\"select-list\" data-editor-name=\"Editors\" data-editor-placeholder=\"Add…\" data-editor-confirm=\"Editors confirm text\"></ul>\n	";
+  return "\n		<h1>Additional editors</h1>\n		<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Editors\" data-editor-placeholder=\"Add…\" data-editor-confirm=\"Editors confirm text\"></ul>\n	";
   }
 
-  buffer += "<!-- article -->\n<header data-editor-scope=\"\\ProjectMain\">\n	<h1 data-editor-type=\"inline\" data-editor-name=\"Title\" data-editor-placeholder=\"Title\">";
+  buffer += "<!-- article -->\n<style type=\"text/css\">\n.invisible {\n	display: none!important;\n}\n</style>\n<header data-editor-scope=\"\\ProjectMain\">\n	<h1 data-editor-type=\"inline\" data-editor-name=\"Title\" data-editor-placeholder=\"Title\">";
   if (stack1 = helpers.Title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)

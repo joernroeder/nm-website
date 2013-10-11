@@ -1543,7 +1543,10 @@ var __hasProp = {}.hasOwnProperty,
       SelectEditable.__super__.init.call(this, element);
       this.$set = $('<div class="selectable-set">');
       this.setPopoverContent(this.$set);
-      return this.setSource(this._source);
+      this.setSource(this._source);
+      if (this._options.searchable) {
+        return this.initSearchbar();
+      }
     };
 
     SelectEditable.prototype.onElementChange = function(e, $el, value, id) {
@@ -1553,7 +1556,12 @@ var __hasProp = {}.hasOwnProperty,
     SelectEditable.prototype.createPopupContent = function() {
       var $input, $label, i, id, idAttr, source, title, _ref5,
         _this = this;
-      this.$set.empty();
+      this.$labels = [];
+      if (!this.$searchInput) {
+        this.$set.empty();
+      } else {
+        this.$set.children().not(this.$searchInput).remove();
+      }
       _ref5 = this.getSource();
       for (i in _ref5) {
         source = _ref5[i];
@@ -1596,6 +1604,7 @@ var __hasProp = {}.hasOwnProperty,
           return true;
         });
         this.$set.append($label.prepend($input));
+        this.$labels.push($label);
       }
       return true;
     };
@@ -1717,6 +1726,32 @@ var __hasProp = {}.hasOwnProperty,
 
     SelectEditable.prototype.updateContent = function(titles) {
       return this.element.html(titles.join(this.getSeperator()));
+    };
+
+    SelectEditable.prototype.initSearchbar = function() {
+      var $popoverEl, $searchInput,
+        _this = this;
+      $popoverEl = this.getPopoverContent();
+      this.$searchInput = $searchInput = $('<input type="text" placeholder="Search...">');
+      $popoverEl.prepend($searchInput);
+      return $searchInput.on(this.getNamespacedEventName('keyup'), function() {
+        var $label, method, txt, _i, _len, _ref5, _results;
+        txt = $searchInput.val().toLowerCase();
+        _ref5 = _this.$labels;
+        _results = [];
+        for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
+          $label = _ref5[_i];
+          method = $label.text().toLowerCase().indexOf(txt) < 0 && !$label.find('input')[0].checked ? 'addClass' : 'removeClass';
+          _results.push($label[method]('invisible'));
+        }
+        return _results;
+      });
+    };
+
+    SelectEditable.prototype.destroy = function() {
+      if (this.$searchInput) {
+        return this.$searchInput.off(this.getNamespacedEventName('keyup'));
+      }
     };
 
     SelectEditable.prototype.render = function() {

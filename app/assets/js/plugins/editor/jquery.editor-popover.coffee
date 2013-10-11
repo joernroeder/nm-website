@@ -1254,11 +1254,19 @@ do ($ = jQuery) ->
 
 			@setSource @_source
 
+			if @_options.searchable
+				@initSearchbar()
+
 		onElementChange: (e, $el, value, id) ->
 			true
 
 		createPopupContent: ->
-			@$set.empty()
+			@$labels = []
+
+			unless @$searchInput
+				@$set.empty()
+			else
+				@$set.children().not(@$searchInput).remove()
 
 			for i, source of @getSource()
 				id = source.id or source.ID
@@ -1299,6 +1307,7 @@ do ($ = jQuery) ->
 					true
 
 				@$set.append $label.prepend($input)
+				@$labels.push $label
 
 			true
 
@@ -1380,6 +1389,22 @@ do ($ = jQuery) ->
 		updateContent: (titles) ->
 			@element.html titles.join(@getSeperator())
 
+		initSearchbar: ->
+			$popoverEl = @getPopoverContent()
+			@$searchInput = $searchInput = $('<input type="text" placeholder="Search...">')
+			$popoverEl.prepend $searchInput
+
+			$searchInput.on @getNamespacedEventName('keyup'), =>
+				txt = $searchInput.val().toLowerCase()
+				for $label in @$labels
+					method = if ($label.text().toLowerCase().indexOf(txt) < 0 and not $label.find('input')[0].checked) then 'addClass' else 'removeClass'
+					$label[method] 'invisible'
+					
+					
+		destroy: ->
+			if @$searchInput
+				@$searchInput.off @getNamespacedEventName('keyup')
+
 		render: ->
 			value = @getValue()
 			if value and @isValidValue value
@@ -1388,6 +1413,7 @@ do ($ = jQuery) ->
 				@element.html @getPlaceholder()
 
 			#return if value then value else @getPlaceholder()
+
 	
 	class SelectPersonEditable extends SelectEditable
 

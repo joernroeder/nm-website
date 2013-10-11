@@ -1,4 +1,9 @@
 <!-- article -->
+<style type="text/css">
+.invisible {
+	display: none!important;
+}
+</style>
 <header data-editor-scope="\ProjectMain">
 	<h1 data-editor-type="inline" data-editor-name="Title" data-editor-placeholder="Title">{{Title}}</h1>
 	<div class="persons">
@@ -61,7 +66,7 @@
 		<ul data-editor-type="select-list-confirm" data-editor-name="BlockedEditors" data-editor-placeholder="Add…" data-editor-confirm="Blocked Editors confirm text"></ul>
 	{{else}}
 		<h1>Additional editors</h1>
-		<ul data-editor-type="select-list" data-editor-name="Editors" data-editor-placeholder="Add…" data-editor-confirm="Editors confirm text"></ul>
+		<ul data-editor-type="select-list" data-editor-options='{"searchable": true}' data-editor-name="Editors" data-editor-placeholder="Add…" data-editor-confirm="Editors confirm text"></ul>
 	{{/stringCompare}}
 
 </aside>
