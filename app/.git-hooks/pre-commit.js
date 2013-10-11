@@ -1,7 +1,7 @@
 var exec = require('child_process').exec;
 
 console.log(__dirname);
-exec('git diff --cached --quiet', function (err, stdout, stderr) {
+exec('cd ' + __dirname + '/../../; git diff --cached --quiet', function (err, stdout, stderr) {
 
 	// only run if there are staged changes
 	// i.e. what you would be committing if you ran "git commit" without "-a" option.
