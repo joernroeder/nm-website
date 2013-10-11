@@ -14,6 +14,7 @@ require [
 ], (app, Router, Auth, Project, Person, Excursion, Workshop, Exhibition, CalendarEntry, RecycleBin, Spinner, misc) ->
 	
 	# ! JJRELATIONAL CONFIG
+	console.log('foo ')
 
 	# work with store -> avoid duplicate data
 	Backbone.JJRelational.Config.work_with_store = true
