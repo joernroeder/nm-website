@@ -2413,7 +2413,15 @@ x:-o-prefocus,
 .editor-popover.dateeditable .Zebra_DatePicker .dp_footer td.dp_hover {
   color: #fff;
 }
-.editor-popover.modaleditable input,
+.editor-popover.selectlisteditable input[type=text] {
+  margin: 0.75em 0 0;
+}
+.editor-popover.selectlisteditable .invisible {
+  display: none;
+}
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]),
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]),
+.editor-popover.selectlisteditable textarea,
 .editor-popover.modaleditable textarea {
   font-size: 0.875em;
   -webkit-box-sizing: border-box;
@@ -2440,23 +2448,33 @@ x:-o-prefocus,
   width: 100%;
   margin-bottom: 0.75em;
 }
-.editor-popover.modaleditable input::-webkit-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio])::-webkit-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio])::-webkit-input-placeholder,
+.editor-popover.selectlisteditable textarea::-webkit-input-placeholder,
 .editor-popover.modaleditable textarea::-webkit-input-placeholder {
   color: #5e5e5e;
 }
-.editor-popover.modaleditable input::-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio])::-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio])::-moz-placeholder,
+.editor-popover.selectlisteditable textarea::-moz-placeholder,
 .editor-popover.modaleditable textarea::-moz-placeholder {
   color: #5e5e5e;
 }
-.editor-popover.modaleditable input:-ms-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):-ms-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):-ms-input-placeholder,
+.editor-popover.selectlisteditable textarea:-ms-input-placeholder,
 .editor-popover.modaleditable textarea:-ms-input-placeholder {
   color: #5e5e5e;
 }
-.editor-popover.modaleditable input:-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):-moz-placeholder,
+.editor-popover.selectlisteditable textarea:-moz-placeholder,
 .editor-popover.modaleditable textarea:-moz-placeholder {
   color: #5e5e5e;
 }
-.editor-popover.modaleditable input:hover,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):hover,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):hover,
+.editor-popover.selectlisteditable textarea:hover,
 .editor-popover.modaleditable textarea:hover {
   background: #3c3c29;
   /* firefox 19+ */
@@ -2469,25 +2487,37 @@ x:-o-prefocus,
   -ms-transition: color .3s ease-in-out;
   transition: color .3s ease-in-out;
 }
-.editor-popover.modaleditable input:hover::-webkit-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):hover::-webkit-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):hover::-webkit-input-placeholder,
+.editor-popover.selectlisteditable textarea:hover::-webkit-input-placeholder,
 .editor-popover.modaleditable textarea:hover::-webkit-input-placeholder {
   color: #919191;
 }
-.editor-popover.modaleditable input:hover::-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):hover::-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):hover::-moz-placeholder,
+.editor-popover.selectlisteditable textarea:hover::-moz-placeholder,
 .editor-popover.modaleditable textarea:hover::-moz-placeholder {
   color: #919191;
 }
-.editor-popover.modaleditable input:hover:-ms-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):hover:-ms-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):hover:-ms-input-placeholder,
+.editor-popover.selectlisteditable textarea:hover:-ms-input-placeholder,
 .editor-popover.modaleditable textarea:hover:-ms-input-placeholder {
   color: #919191;
 }
-.editor-popover.modaleditable input:hover:-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):hover:-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):hover:-moz-placeholder,
+.editor-popover.selectlisteditable textarea:hover:-moz-placeholder,
 .editor-popover.modaleditable textarea:hover:-moz-placeholder {
   color: #919191;
 }
-.editor-popover.modaleditable input:focus,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):focus,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):focus,
+.editor-popover.selectlisteditable textarea:focus,
 .editor-popover.modaleditable textarea:focus,
-.editor-popover.modaleditable input.active,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]).active,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]).active,
+.editor-popover.selectlisteditable textarea.active,
 .editor-popover.modaleditable textarea.active {
   color: #fff;
   outline: none;
@@ -2502,27 +2532,43 @@ x:-o-prefocus,
   -ms-transition: color .3s ease-in-out;
   transition: color .3s ease-in-out;
 }
-.editor-popover.modaleditable input:focus::-webkit-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):focus::-webkit-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):focus::-webkit-input-placeholder,
+.editor-popover.selectlisteditable textarea:focus::-webkit-input-placeholder,
 .editor-popover.modaleditable textarea:focus::-webkit-input-placeholder,
-.editor-popover.modaleditable input.active::-webkit-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]).active::-webkit-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]).active::-webkit-input-placeholder,
+.editor-popover.selectlisteditable textarea.active::-webkit-input-placeholder,
 .editor-popover.modaleditable textarea.active::-webkit-input-placeholder {
   color: #262626;
 }
-.editor-popover.modaleditable input:focus::-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):focus::-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):focus::-moz-placeholder,
+.editor-popover.selectlisteditable textarea:focus::-moz-placeholder,
 .editor-popover.modaleditable textarea:focus::-moz-placeholder,
-.editor-popover.modaleditable input.active::-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]).active::-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]).active::-moz-placeholder,
+.editor-popover.selectlisteditable textarea.active::-moz-placeholder,
 .editor-popover.modaleditable textarea.active::-moz-placeholder {
   color: #262626;
 }
-.editor-popover.modaleditable input:focus:-ms-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):focus:-ms-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):focus:-ms-input-placeholder,
+.editor-popover.selectlisteditable textarea:focus:-ms-input-placeholder,
 .editor-popover.modaleditable textarea:focus:-ms-input-placeholder,
-.editor-popover.modaleditable input.active:-ms-input-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]).active:-ms-input-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]).active:-ms-input-placeholder,
+.editor-popover.selectlisteditable textarea.active:-ms-input-placeholder,
 .editor-popover.modaleditable textarea.active:-ms-input-placeholder {
   color: #262626;
 }
-.editor-popover.modaleditable input:focus:-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]):focus:-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]):focus:-moz-placeholder,
+.editor-popover.selectlisteditable textarea:focus:-moz-placeholder,
 .editor-popover.modaleditable textarea:focus:-moz-placeholder,
-.editor-popover.modaleditable input.active:-moz-placeholder,
+.editor-popover.selectlisteditable input:not([type=checkbox]):not([type=radio]).active:-moz-placeholder,
+.editor-popover.modaleditable input:not([type=checkbox]):not([type=radio]).active:-moz-placeholder,
+.editor-popover.selectlisteditable textarea.active:-moz-placeholder,
 .editor-popover.modaleditable textarea.active:-moz-placeholder {
   color: #262626;
 }

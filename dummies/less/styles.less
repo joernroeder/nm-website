@@ -1199,15 +1199,31 @@ x:-o-prefocus, .qtip .qtip-tip{
 		}
 	}
 
+	&.selectlisteditable {
+		input[type=text] {
+			margin: (@line / 2 / @em) 0 0;
+
+		}
+
+		.invisible {
+			display: none;
+		}
+	}
+
+	// dark inputs
+	&.selectlisteditable,
 	&.modaleditable {
-		input,
+		input:not([type=checkbox]):not([type=radio]),
 		textarea {
 			.editable-dark-styles;
 
 			width: 100%;
 			margin-bottom: @line / 2 / @em;
 		}
+	}
 
+	// dark buttons
+	&.modaleditable {
 		.buttons {
 			text-align: right;
 
