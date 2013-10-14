@@ -1515,31 +1515,31 @@ function program6(depth0,data) {
 function program8(depth0,data) {
   
   
-  return "\n		<h1>Categories</h1>\n		<ul data-editor-type=\"select-list\" data-editor-name=\"Category\" data-editor-placeholder=\"Add...\"></ul>\n	";
+  return "\n		<h1>Categories</h1>\n		<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Category\" data-editor-placeholder=\"Add...\"></ul>\n	";
   }
 
 function program10(depth0,data) {
   
   
-  return "\n		<h1>Exhibitions</h1>\n		<ul data-editor-type=\"select-list\" data-editor-name=\"Exhibition\" data-editor-placeholder=\"Add…\"></ul>\n	";
+  return "\n		<h1>Exhibitions</h1>\n		<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Exhibition\" data-editor-placeholder=\"Add…\"></ul>\n	";
   }
 
 function program12(depth0,data) {
   
   
-  return "\n		<h1>Workshops</h1>\n		<ul data-editor-type=\"select-list\" data-editor-name=\"Workshop\" data-editor-placeholder=\"Add…\"></ul>\n	";
+  return "\n		<h1>Workshops</h1>\n		<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Workshop\" data-editor-placeholder=\"Add…\"></ul>\n	";
   }
 
 function program14(depth0,data) {
   
   
-  return "\n		<h1>Excursions</h1>\n		<ul data-editor-type=\"select-list\" data-editor-name=\"Excursion\" data-editor-placeholder=\"Add…\"></ul>\n	";
+  return "\n		<h1>Excursions</h1>\n		<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Excursion\" data-editor-placeholder=\"Add…\"></ul>\n	";
   }
 
 function program16(depth0,data) {
   
   
-  return "\n		<h1>Blocked editors</h1>\n		<ul data-editor-type=\"select-list-confirm\" data-editor-name=\"BlockedEditors\" data-editor-placeholder=\"Add…\" data-editor-confirm=\"Blocked Editors confirm text\"></ul>\n	";
+  return "\n		<h1>Blocked editors</h1>\n		<ul data-editor-type=\"select-list-confirm\" data-editor-options='{\"searchable\": true}' data-editor-name=\"BlockedEditors\" data-editor-placeholder=\"Add…\" data-editor-confirm=\"Blocked Editors confirm text\"></ul>\n	";
   }
 
 function program18(depth0,data) {
@@ -1548,14 +1548,14 @@ function program18(depth0,data) {
   return "\n		<h1>Additional editors</h1>\n		<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Editors\" data-editor-placeholder=\"Add…\" data-editor-confirm=\"Editors confirm text\"></ul>\n	";
   }
 
-  buffer += "<!-- article -->\n<style type=\"text/css\">\n.invisible {\n	display: none!important;\n}\n</style>\n<header data-editor-scope=\"\\ProjectMain\">\n	<h1 data-editor-type=\"inline\" data-editor-name=\"Title\" data-editor-placeholder=\"Title\">";
+  buffer += "<!-- article -->\n<header data-editor-scope=\"\\ProjectMain\">\n	<h1 data-editor-type=\"inline\" data-editor-name=\"Title\" data-editor-placeholder=\"Title\">";
   if (stack1 = helpers.Title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.Title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</h1>\n	<div class=\"persons\">\n		";
   stack1 = helpers['if'].call(depth0, depth0.CurrentMemberPerson, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		<div data-editor-type=\"select-person\" data-editor-name=\"Person\" data-editor-placeholder=\"Add Collaborators…\"></div>\n	</div>\n	\n	<!--<p>\n	";
+  buffer += "\n		<div data-editor-type=\"select-person\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Person\" data-editor-placeholder=\"Add Collaborators…\"></div>\n	</div>\n	\n	<!--<p>\n	";
   stack1 = helpers['if'].call(depth0, depth0.IsGroup, {hash:{},inverse:self.program(6, program6, data),fn:self.program(4, program4, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n	</p>-->\n</header>\n<section data-editor-scope=\"\\ProjectMain\">\n\n	<div data-editor-type=\"markdown-split\" data-editor-name=\"Text\" data-editor-options='{\"customParsers\": {\"images\": \"ImageMarkdownParser\", \"embed\": \"OEmbedMarkdownParser\"}}'>";
@@ -1566,7 +1566,7 @@ function program18(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data};
   stack2 = ((stack1 = helpers.stringCompare || depth0.stringCompare),stack1 ? stack1.call(depth0, "Project", depth0.ClassName, options) : helperMissing.call(depth0, "stringCompare", "Project", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n	<h1>Projects</h1>\n	<ul data-editor-type=\"select-list\" data-editor-name=\"Project\" data-editor-placeholder=\"Add…\"></ul>\n\n	";
+  buffer += "\n\n	<h1>Projects</h1>\n	<ul data-editor-type=\"select-list\" data-editor-options='{\"searchable\": true}' data-editor-name=\"Project\" data-editor-placeholder=\"Add…\"></ul>\n\n	";
   options = {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data};
   stack2 = ((stack1 = helpers.stringDiff || depth0.stringDiff),stack1 ? stack1.call(depth0, "Exhibition", depth0.ClassName, options) : helperMissing.call(depth0, "stringDiff", "Exhibition", depth0.ClassName, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
