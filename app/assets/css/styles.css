@@ -2307,6 +2307,7 @@ x:-o-prefocus,
   display: block;
   padding: 0.375em 0;
   cursor: pointer;
+  margin-left: 1.5em;
   -webkit-transition: color .15s ease-in-out;
   -moz-transition: color .15s ease-in-out;
   -o-transition: color .15s ease-in-out;
@@ -2317,7 +2318,8 @@ x:-o-prefocus,
   color: #fff;
 }
 .editor-popover.selectable .selectable-item input {
-  margin-right: 0.375em;
+  margin-left: -1.5em;
+  width: 1.5em;
 }
 .editor-popover.dateeditable .qtip-content {
   padding: 0.75em;
